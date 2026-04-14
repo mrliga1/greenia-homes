@@ -5,23 +5,27 @@ on:
       - 'assets/data/posts.json'
       - 'assets/data/products.json'
       - 'build.js'
-  workflow_dispatch: # Dòng này tạo ra nút bấm chạy thủ công
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Ép buộc cấp quyền ghi đè
+      contents: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Lấy toàn bộ lịch sử để tránh xung đột
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - run: node build.js
-      - name: Commit and push generated files
+      - name: Chay Script Build Web
+        run: node build.js
+      - name: Commit va Push
         run: |
-          git config --global user.name 'GitHub Action Bot'
-          git config --global user.email 'action@github.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
-          git commit -m "Auto build SEO directories" || echo "Không có thay đổi mới nào"
-          git push
+          git commit -m "Auto build SEO directories" || echo "Khong co thay doi"
+          git pull --rebase origin main || echo "Bo qua rebase"
+          git push origin HEAD:main
