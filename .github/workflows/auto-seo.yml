@@ -1,32 +1,24 @@
-name: Tự động đẻ URL SEO bài viết
-
+name: Auto Build SEO Pages
 on:
   push:
     paths:
       - 'assets/data/posts.json'
+      - 'assets/data/products.json'
       - 'build.js'
-      - 'bai-viet.html'
-
-permissions:
-  contents: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Chạy máy in thư mục tĩnh
-        run: node build.js
-
-      - name: Commit và Đẩy thư mục mới lên Web
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "🤖 Auto: Cập nhật URL tĩnh và Sitemap"
-          file_pattern: 'bai-viet/** sitemap.xml'
+      - run: node build.js
+      - name: Commit and push generated files
+        run: |
+          git config --global user.name 'GitHub Action Bot'
+          git config --global user.email 'action@github.com'
+          git add .
+          git commit -m "Auto build SEO directories" || exit 0
+          git push
