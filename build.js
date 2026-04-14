@@ -85,7 +85,21 @@ posts.forEach(post => {
     
     console.log(`✅ Đã tạo URL SEO & Sitemap: /bai-viet/${slug}/`);
 });
+// Thêm đoạn này vào build.js, bên dưới phần xử lý Tin tức
+const productTemplate = fs.readFileSync('san-pham.html', 'utf8'); // Bạn cần tạo file này làm khuôn mẫu cho sản phẩm
 
+products.forEach(prod => {
+    const prodFolder = path.join(__dirname, 'san-pham', prod.slug);
+    if (!fs.existsSync(prodFolder)) fs.mkdirSync(prodFolder, { recursive: true });
+
+    let html = productTemplate
+        .replace(/{{TITLE}}/g, prod.title)
+        .replace(/{{PRICE}}/g, prod.price)
+        .replace(/{{IMAGE}}/g, `../../${prod.img}`)
+        .replace('window.GREENIA_CURRENT_PRODUCT = null', `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)}`);
+
+    fs.writeFileSync(path.join(prodFolder, 'index.html'), html);
+});
 // 4. KẾT THÚC SITEMAP
 sitemapXML += `</urlset>`;
 fs.writeFileSync('./sitemap.xml', sitemapXML);
