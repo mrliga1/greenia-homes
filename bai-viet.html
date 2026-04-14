@@ -144,8 +144,8 @@
                 randomProds.forEach(p => {
                     const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
                     sidebarHTML += `
-                        <a href="../../chi-tiet-sp.html?id=${p.id}" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${p.img}"></div>
+                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="../../${p.img}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
                                 <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -163,8 +163,8 @@
                         <h2 style="color:#c5a059; font-size: 24px; margin-bottom: 20px;">Sản phẩm thuộc dự án này</h2>
                         <div class="gr-ro-hang-grid">
                             ${roHangDuAn.map(p => `
-                                <a href="../../chi-tiet-sp.html?id=${p.id}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${p.img}"></div>
+                                <a href="../../san-pham/${p.slug}/" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="../../${p.img}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
                                         <div class="gr-loc-mini" style="margin-bottom:10px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
