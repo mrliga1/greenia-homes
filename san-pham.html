@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm Bất Động Sản | Greenia Homes</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        /* =========================================================
+           CSS GIAO DIỆN SẢN PHẨM V282 (FULL 100%)
+        ========================================================= */
+        #g282-wrapper { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; }
+        #g282-wrapper * { box-sizing: border-box; }
+        #g282-wrapper a { text-decoration: none; color: inherit; }
+        .g282-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; }
+        .g282-clearfix { clear: both; display: block; width: 100%; height: 1px; }
+        .g282-spacer { height: 40px; width: 100%; display: block; margin-top: 20px; }
+        
+        /* STICKY NAV & FILTER */
+        .g282-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0; z-index: 900; background-color: #05080f; padding: 10px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
+        .g282-nav-bar { display: flex; justify-content: space-between; align-items: center; }
+        .g282-nav-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .g282-nav-right { display: flex; align-items: center; }
+        .g282-nav-item { cursor: pointer; padding: 5px 15px; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px; font-weight: 400; border-radius: 20px; transition: 0.3s; background: transparent; }
+        .g282-nav-item:hover, .g282-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
+        
+        .g282-search-wrap { position: relative; width: 250px; }
+        .g282-search-wrap input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 35px 8px 15px; border-radius: 30px; color: #fff; outline: none; font-size: 12px; height: 32px; }
+        .g282-search-wrap button { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; background: transparent; border: none; padding: 5px 10px; cursor: pointer; }
+        
+        /* DROPDOWN */
+        .g282-nav-group { position: relative; display: inline-block; }
+        .g282-dd-trigger i { margin-left: 5px; font-size: 11px; }
+        .g282-dropdown { position: absolute; top: 110%; left: 0; min-width: 180px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 9999; }
+        .g282-nav-group.active-drop .g282-dropdown { display: block; animation: g282FadeIn 0.3s; }
+        .g282-drop-item { padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;}
+        .g282-drop-item:hover, .g282-drop-item.selected { background: rgba(197, 160, 89, 0.1); color: #c5a059; font-weight: bold;}
+        @keyframes g282FadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* INFO & STATUS */
+        .g282-cat-info-box { padding: 30px 0 10px 0; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); margin-bottom: 15px; }
+        .g282-cat-title { font-family: 'Manrope', sans-serif; font-size: 26px; color: #c5a059; margin: 0 0 10px 0; font-weight: 700; }
+        .g282-cat-desc { font-size: 14px; color: #b0b8c4; line-height: 1.6; }
+        .g282-status-area { padding: 15px 0; color: #fff; font-size: 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
+        
+        /* GRID MAIN */
+        .g282-grid-wrapper { position: relative; min-height: 200px; margin-top: 20px;}
+        .g282-loader { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); color: #c5a059; font-size: 30px; display: none; z-index: 10;}
+        .g282-loader.show { display: block; }
+        .g282-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; transition: 0.3s;} 
+        .g282-grid.loading { opacity: 0.3; pointer-events: none;}
+        .g282-load-wrap { text-align: center; margin-top: 30px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 20px; }
+        .g282-load-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 10px 30px; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-block; font-size: 12px; border-radius: 4px; text-transform: uppercase;}
+        .g282-load-btn:hover { background: rgba(197, 160, 89, 0.15); }
+        
+        /* CARD SẢN PHẨM CHUNG */
+        .gr-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; position: relative;}
+        .gr-card:hover { border-color: #c5a059; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4);}
+        .gr-thumb-box { height: 180px; position: relative; overflow: hidden; }
+        .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
+        .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
+        .gr-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; z-index: 5; border-bottom-right-radius: 6px; }
+        .tag-ban { background: #ff4d4f; color: #fff; } .tag-thue { background: #00b894; color: #fff; }
+        .gr-tit { font-size: 14px !important; font-weight: 600; color: #fff; line-height: 1.4 !important; margin: 0 0 8px 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: 0.3s;}
+        .gr-card:hover .gr-tit { color: #c5a059; }
+        .gr-loc { font-size: 11px; color: #999; margin-bottom: 10px; display: flex; gap: 5px; align-items: center;}
+        .gr-loc i { color: #c5a059;}
+        .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; justify-content: space-between; margin-top: auto; }
+        .gr-hl { color: #c5a059; font-weight: 700; font-size: 15px; }
+        
+        /* SECTION & CAROUSEL (DÀNH CHO BẠN, BÁN, THUÊ, NỔI BẬT) */
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 20px; margin-top: 50px; }
+        .s-tit { font-size: 22px !important; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
+        .gr-carousel-wrapper { position: relative; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
+        .gr-carousel::-webkit-scrollbar { display: none; }
+        .gr-carousel .gr-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
+        .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(35, 45, 69, 1); background: rgba(14, 18, 27, 0.8); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .gr-nav-btn:hover { background: #c5a059; color: #000; border-color: #c5a059; }
+        .gr-prev { left: -20px; } .gr-next { right: -20px; }
+        .s2-footer { text-align: center; margin-top: 20px; padding-top: 15px; }
+        .s1-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 8px 25px; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-block; font-size: 12px; border-radius: 4px; text-transform: uppercase;}
+        .s1-btn:hover { background: rgba(197, 160, 89, 0.15); }
+
+        /* KHU VỰC DỰ ÁN (PROJECT SECTION) */
+        .gr-proj-section { margin-bottom: 60px; margin-top: 50px;}
+        .gr-proj-body { display: flex; gap: 30px; }
+        .gr-proj-left { width: 50%; padding-right: 15px; border-right: 1px dashed rgba(35,45,69,1); }
+        .gr-proj-right { width: 50%; padding-left: 15px; display: flex; flex-direction: column; }
+        .gr-proj-prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        /* Card Tin tức dự án */
+        .gr-news-card { display: flex; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(35, 45, 69, 1); }
+        .gr-news-card:last-child { border-bottom: none; }
+        .gr-news-thumb { width: 140px; height: 90px; border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+        .gr-news-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;} 
+        .gr-news-card:hover .gr-news-thumb img { transform: scale(1.1); }
+        .gr-news-info { flex: 1; display: flex; flex-direction: column; }
+        .gr-news-tit { font-size: 14px !important; font-weight: 600 !important; color: #e2e8f0; margin: 0 0 5px; line-height: 1.4; transition: 0.3s; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+        .gr-news-card:hover .gr-news-tit { color: #c5a059; }
+        .gr-news-desc { font-size: 12px; color: #888; margin-bottom: 5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .gr-news-date { font-size: 11px; color: #c5a059; margin-top: auto; }
+
+        @media (max-width: 1200px) { .g282-grid { grid-template-columns: repeat(4, 1fr); } .gr-carousel .gr-card { flex: 0 0 calc(25% - 15px); max-width: calc(25% - 15px); } }
+        @media (max-width: 992px) { .g282-grid { grid-template-columns: repeat(3, 1fr); } .gr-carousel .gr-card { flex: 0 0 calc(33.333% - 14px); max-width: calc(33.333% - 14px); } }
+        @media (max-width: 767px) { 
+            .g282-grid { grid-template-columns: repeat(2, 1fr); } 
+            .g282-nav-bar { flex-direction: column; align-items: flex-start; gap: 10px; } 
+            .g282-nav-left { width: 100%; overflow-x: auto; padding-bottom: 5px; flex-wrap: nowrap; white-space: nowrap; scrollbar-width: none;} 
+            .g282-nav-right { width: 100%; } 
+            .g282-search-wrap { width: 100%; } 
+            .gr-carousel .gr-card { flex: 0 0 calc(50% - 10px); max-width: calc(50% - 10px); } 
+            .gr-nav-btn { display: none; } 
+            .gr-proj-body { flex-direction: column; } .gr-proj-left, .gr-proj-right { width: 100%; border: none; padding: 0; } 
+            .gr-proj-prod-grid { grid-template-columns: 1fr; } .gr-news-thumb { width: 110px; height: 75px; } 
+        }
+        @media (max-width: 480px) { .g282-grid { grid-template-columns: 1fr; } .gr-carousel .gr-card { flex: 0 0 100%; max-width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
+
+    <main id="g282-wrapper">
+        <div class="g282-inner">
+            
+            <div class="g282-sticky-wrapper">
+                <div class="g282-nav-bar">
+                    <div class="g282-nav-left" id="g282-tabs">
+                        <div class="g282-nav-item active" data-type="all">Tất cả</div>
+                        <div class="g282-nav-item" data-type="Bán">Bán</div>
+                        <div class="g282-nav-item" data-type="Thuê">Cho thuê</div>
+                        
+                        <div class="g282-nav-group" id="g282-dd">
+                            <div class="g282-nav-item g282-dd-trigger"><span id="g282-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="g282-dropdown" id="g282-dropdown-menu">
+                                </div>
+                        </div>
+                    </div>
+                    <div class="g282-nav-right">
+                        <form id="g282-search-form" class="g282-search-wrap" onsubmit="return false;">
+                            <input type="text" id="g282-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
+                            <button type="submit" id="g282-search-btn"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="g282-anchor" style="height: 1px; visibility: hidden; margin-top: -1px;"></div>
+            <div class="g282-cat-info-box" id="g282-cat-info-box">
+                <h1 class="g282-cat-title" id="g282-dyn-title">Sản Phẩm Bất Động Sản</h1>
+                <div class="g282-cat-desc" id="g282-dyn-desc">Khám phá bộ sưu tập bất động sản đẳng cấp với giá trị đầu tư sinh lời bền vững.</div>
+            </div>
+            <div class="g282-status-area" id="g282-status" style="display:none;"></div>
+
+            <div id="g282-grid-main">
+                <div class="g282-grid-wrapper">
+                    <div class="g282-loader"><i class="fas fa-circle-notch fa-spin"></i></div>
+                    <div class="g282-grid" id="g282-grid-result">
+                        </div>
+                </div>
+                <div class="g282-load-wrap"><button id="g282-load-btn" class="g282-load-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>
+            </div>
+
+            <div id="dynamic-sections-container">
+                <div style="text-align:center; padding: 50px; color:#c5a059;"><i class="fas fa-circle-notch fa-spin fa-2x"></i></div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="assets/js/ui.js"></script>
+
+    <script>
+        let globalProducts = [];
+        let filterState = { type: "all", cat: "all", keyword: "" };
+
+        // Hàm tạo Card Sản phẩm chung
+        function createCardHTML(p, customTag = null) {
+            const tagClass = customTag ? 'tag-ban' : (p.type === 'Bán' ? 'tag-ban' : 'tag-thue');
+            const tagText = customTag ? customTag : (p.type === 'Bán' ? 'Đang bán' : 'Cho thuê');
+            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+            return `
+                <a href="chi-tiet-sp.html?id=${p.id}" class="gr-card">
+                    <div class="gr-thumb-box">
+                        <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                        <img src="${p.img}" alt="${p.title}">
+                    </div>
+                    <div class="gr-body">
+                        <h3 class="gr-tit">${p.title}</h3>
+                        <div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                        <div class="gr-meta">
+                            <span class="gr-hl">${p.price}</span>
+                            <div style="display:flex; gap:10px;">
+                                <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>
+                                ${bedHtml}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const grid = document.getElementById('g282-grid-result');
+            const loader = document.querySelector('.g282-loader');
+            const statusDiv = document.getElementById('g282-status');
+            const keywordInput = document.getElementById('g282-keyword');
+            const dropdownMenu = document.getElementById('g282-dropdown-menu');
+            const dynContainer = document.getElementById('dynamic-sections-container');
+
+            async function fetchAllData() {
+                grid.classList.add("loading"); loader.classList.add("show");
+                
+                try {
+                    // 1. Tải Sản Phẩm
+                    const prodRes = await fetch('assets/data/products.json');
+                    globalProducts = await prodRes.json();
+                    
+                    // 2. Tải Bài Viết (Tin Tức)
+                    let globalPosts = [];
+                    try {
+                        const postRes = await fetch('assets/data/posts.json');
+                        globalPosts = await postRes.json();
+                    } catch(e) { console.log("Chưa có posts.json"); }
+
+                    // ==========================================
+                    // XỬ LÝ DROPDOWN DANH MỤC
+                    // ==========================================
+                    const uniqueCategories = [];
+                    globalProducts.forEach(p => {
+                        let displayName = p.catName || p.cat.replace(/-/g, ' ').replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+                        if (!uniqueCategories.find(c => c.slug === p.cat)) {
+                            uniqueCategories.push({ slug: p.cat, name: displayName });
+                        }
+                    });
+
+                    let dropHTML = `<div class="g282-drop-item selected" data-cat="all" data-name="Tất cả danh mục">Tất cả danh mục</div>`;
+                    uniqueCategories.forEach(cat => {
+                        dropHTML += `<div class="g282-drop-item" data-cat="${cat.slug}" data-name="${cat.name}">${cat.name}</div>`;
+                    });
+                    dropdownMenu.innerHTML = dropHTML;
+
+                    document.querySelectorAll(".g282-drop-item").forEach(item => {
+                        item.addEventListener("click", function() {
+                            document.querySelectorAll("#g282-tabs .g282-nav-item:not(.g282-dd-trigger)").forEach(t => t.classList.remove("active")); 
+                            document.querySelector("#g282-tabs .g282-nav-item[data-type='all']").classList.add("active");
+                            document.querySelectorAll(".g282-drop-item").forEach(i => i.classList.remove("selected")); 
+                            this.classList.add("selected");
+                            
+                            document.getElementById('g282-current-cat-name').innerText = this.getAttribute("data-name");
+                            document.getElementById("g282-dd").classList.remove("active-drop");
+
+                            filterState.cat = this.getAttribute("data-cat");
+                            filterState.type = "all"; filterState.keyword = ""; keywordInput.value = "";
+                            document.getElementById('g282-dyn-title').innerText = this.getAttribute("data-name");
+                            runFilter();
+                        });
+                    });
+
+                    // ==========================================
+                    // VẼ CÁC SECTION BÊN DƯỚI (CHUẨN V282)
+                    // ==========================================
+                    
+                    // A. Bất động sản dành cho bạn (Ngẫu nhiên 10 căn)
+                    const forYouProds = [...globalProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
+                    let forYouHTML = forYouProds.map(p => createCardHTML(p)).join('');
+
+                    // B. Tin tức dự án (Lấy 3 bài viết mới nhất) & Sản phẩm dự án (Dựa vào projectCode)
+                    let newsHTML = '';
+                    globalPosts.slice(0, 3).forEach(post => {
+                        const tempDiv = document.createElement('div'); tempDiv.innerHTML = post.content;
+                        const firstImg = tempDiv.querySelector('img');
+                        const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
+                        const excerpt = tempDiv.textContent.substring(0, 80) + '...';
+
+                        newsHTML += `
+                            <a href="bai-viet/${post.slug}/" class="gr-news-card">
+                                <div class="gr-news-thumb"><img src="${thumbSrc}"></div>
+                                <div class="gr-news-info">
+                                    <h3 class="gr-news-tit">${post.title}</h3>
+                                    <div class="gr-news-desc">${excerpt}</div>
+                                    <div class="gr-news-date"><i class="far fa-clock"></i> ${post.date}</div>
+                                </div>
+                            </a>`;
+                    });
+
+                    const projProds = globalProducts.filter(p => p.projectCode && p.projectCode.trim() !== "").slice(0, 4);
+                    let projHTML = projProds.map(p => createCardHTML(p, 'Dự án')).join('');
+
+                    // C. Tin Bán (10 căn mới nhất)
+                    const saleProds = globalProducts.filter(p => p.type === 'Bán').slice(0, 10);
+                    let saleHTML = saleProds.map(p => createCardHTML(p)).join('');
+
+                    // D. Tin Thuê (10 căn mới nhất)
+                    const rentProds = globalProducts.filter(p => p.type === 'Thuê').slice(0, 10);
+                    let rentHTML = rentProds.map(p => createCardHTML(p)).join('');
+
+                    // E. Nổi bật (Ngẫu nhiên 10 căn)
+                    const featProds = [...globalProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
+                    let featHTML = featProds.map(p => createCardHTML(p)).join('');
+
+                    // Nối HTML vào container
+                    dynContainer.innerHTML = `
+                        <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'for-you-scroll')"><i class="fas fa-chevron-left"></i></button>
+                            <div id="for-you-scroll" class="gr-carousel">${forYouHTML}</div>
+                            <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'for-you-scroll')"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+
+                        <div class="gr-proj-section">
+                            <div class="gr-proj-body">
+                                <div class="gr-proj-left">
+                                    <h2 class="s-tit" style="margin-bottom: 20px;">Tin tức dự án</h2>
+                                    <div class="gr-news-list">${newsHTML || '<p style="color:#888;">Đang cập nhật tin tức.</p>'}</div>
+                                    <div class="s1-btn-wrap" style="text-align:left;"><a href="danh-muc.html" class="s1-btn">Xem thêm tin tức</a></div>
+                                </div>
+                                <div class="gr-proj-right">
+                                    <h2 class="s-tit" style="margin-bottom: 20px;">Sản phẩm dự án</h2>
+                                    <div class="gr-proj-prod-grid">${projHTML || '<p style="color:#888;">Đang cập nhật dự án.</p>'}</div>
+                                    <div class="s1-btn-wrap" style="margin-top: 15px;"><a href="#" class="s1-btn">Xem thêm sản phẩm</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="s-head"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll')"><i class="fas fa-chevron-left"></i></button>
+                            <div id="sale-scroll" class="gr-carousel">${saleHTML}</div>
+                            <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll')"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="s2-footer"><a href="#" class="s1-btn" onclick="document.querySelector('[data-type=Bán]').click(); window.scrollTo(0,0); return false;">Xem thêm</a></div>
+
+                        <div class="s-head"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll')"><i class="fas fa-chevron-left"></i></button>
+                            <div id="rent-scroll" class="gr-carousel">${rentHTML}</div>
+                            <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll')"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="s2-footer"><a href="#" class="s1-btn" onclick="document.querySelector('[data-type=Thuê]').click(); window.scrollTo(0,0); return false;">Xem thêm</a></div>
+
+                        <div class="s-head"><h2 class="s-tit">Dự án nổi bật</h2></div>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'feat-scroll')"><i class="fas fa-chevron-left"></i></button>
+                            <div id="feat-scroll" class="gr-carousel">${featHTML}</div>
+                            <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    `;
+
+                    // ==========================================
+                    // HOÀN TẤT TẢI
+                    // ==========================================
+                    runFilter();
+                    
+                } catch (error) {
+                    console.error("Lỗi:", error);
+                    grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#ff4d4f;'>Hệ thống đang bảo trì dữ liệu.</div>";
+                    loader.classList.remove("show");
+                }
+            }
+
+            // HÀM LỌC CHÍNH (KHU VỰC TRÊN CÙNG)
+            function runFilter() {
+                grid.classList.add("loading"); loader.classList.add("show");
+
+                setTimeout(() => { 
+                    let results = globalProducts.filter(p => {
+                        let matchType = (filterState.type === "all") || (p.type === filterState.type);
+                        let matchCat = (filterState.cat === "all") || (p.cat === filterState.cat);
+                        let matchKey = (filterState.keyword === "") || (p.title.toLowerCase().includes(filterState.keyword.toLowerCase()) || p.loc.toLowerCase().includes(filterState.keyword.toLowerCase()));
+                        return matchType && matchCat && matchKey;
+                    });
+
+                    grid.innerHTML = results.length > 0 
+                        ? results.map(p => createCardHTML(p)).join('') 
+                        : "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
+                    
+                    grid.classList.remove("loading"); loader.classList.remove("show");
+
+                    if(filterState.keyword !== "") {
+                        statusDiv.style.display = "flex";
+                        statusDiv.innerHTML = `Tìm thấy <strong>${results.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style="cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;" onclick="clearSearch()">Xóa</span>`;
+                    } else {
+                        statusDiv.style.display = "none";
+                    }
+                }, 300);
+            }
+
+            // Xử lý Tabs
+            document.querySelectorAll("#g282-tabs .g282-nav-item:not(.g282-dd-trigger)").forEach(tab => {
+                tab.addEventListener("click", function() {
+                    document.querySelectorAll("#g282-tabs .g282-nav-item:not(.g282-dd-trigger)").forEach(t => t.classList.remove("active"));
+                    this.classList.add("active");
+                    
+                    document.querySelectorAll(".g282-drop-item").forEach(i => i.classList.remove("selected"));
+                    const allCatItem = document.querySelector(".g282-drop-item[data-cat='all']");
+                    if (allCatItem) allCatItem.classList.add("selected");
+                    document.getElementById('g282-current-cat-name').innerText = "Danh mục khác";
+
+                    filterState.type = this.getAttribute("data-type"); filterState.cat = "all"; filterState.keyword = ""; keywordInput.value = "";
+                    runFilter();
+                });
+            });
+
+            // Xử lý Dropdown
+            const ddGroup = document.getElementById("g282-dd");
+            document.querySelector(".g282-dd-trigger").addEventListener("click", function(e) {
+                e.stopPropagation(); ddGroup.classList.toggle("active-drop");
+            });
+            document.addEventListener("click", function(e) {
+                if (!ddGroup.contains(e.target)) ddGroup.classList.remove("active-drop");
+            });
+
+            // Tìm kiếm
+            document.getElementById("g282-search-form").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const val = keywordInput.value.trim();
+                if(val !== "") {
+                    keywordInput.blur(); filterState.keyword = val; filterState.type = "all"; filterState.cat = "all";
+                    runFilter();
+                }
+            });
+
+            window.clearSearch = function() { keywordInput.value = ""; filterState.keyword = ""; runFilter(); };
+
+            // Vuốt ngang
+            window.grScroll = function(dir, id) {
+                var el = document.getElementById(id); if(!el) return;
+                var item = el.querySelector(".gr-card"); if(!item) return;
+                var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
+            };
+
+            // Khởi chạy
+            fetchAllData();
+        });
+    </script>
+</body>
+</html>
