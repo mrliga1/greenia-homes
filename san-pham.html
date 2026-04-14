@@ -183,13 +183,13 @@
         let globalProducts = [];
         let filterState = { type: "all", cat: "all", keyword: "" };
 
-        // Hàm tạo Card Sản phẩm chung
+        // Hàm tạo Card Sản phẩm chung (Đã cập nhật link SEO mới)
         function createCardHTML(p, customTag = null) {
             const tagClass = customTag ? 'tag-ban' : (p.type === 'Bán' ? 'tag-ban' : 'tag-thue');
             const tagText = customTag ? customTag : (p.type === 'Bán' ? 'Đang bán' : 'Cho thuê');
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
             return `
-                <a href="chi-tiet-sp.html?id=${p.id}" class="gr-card">
+                <a href="san-pham/${p.slug}/" class="gr-card">
                     <div class="gr-thumb-box">
                         <span class="gr-tag-abs ${tagClass}">${tagText}</span>
                         <img src="${p.img}" alt="${p.title}">
