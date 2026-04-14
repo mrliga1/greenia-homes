@@ -1,0 +1,64 @@
+{
+  "cat1": [
+    {
+      "id": 1,
+      "title": "Tuyến đường Vành Đai 3 TP.HCM chính thức hợp long nhịp cầu đầu tiên",
+      "desc": "Sự kiện đánh dấu cột mốc quan trọng, thúc đẩy mạnh mẽ tiềm năng tăng giá bất động sản khu Đông...",
+      "date": "13/04/2026",
+      "img": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    },
+    {
+      "id": 2,
+      "title": "Masterise Homes công bố chính sách bán hàng mới cực khủng",
+      "desc": "Khách hàng thanh toán nhanh sẽ được nhận chiết khấu lên đến 15% cùng nhiều quà tặng giá trị...",
+      "date": "12/04/2026",
+      "img": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    },
+    {
+      "id": 3,
+      "title": "Khu đô thị vệ tinh phía Nam rục rịch đón sóng đầu tư cuối năm",
+      "desc": "Các chuyên gia nhận định khu vực phía Nam đang là vùng trũng giá trị mới đầy tiềm năng...",
+      "date": "11/04/2026",
+      "img": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    },
+    {
+      "id": 4,
+      "title": "Bất động sản công nghiệp tiếp tục dẫn dắt thị trường",
+      "desc": "Sự dịch chuyển chuỗi cung ứng toàn cầu mang lại lợi thế cực lớn cho các khu công nghiệp...",
+      "date": "09/04/2026",
+      "img": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    },
+    {
+      "id": 5,
+      "title": "5 lưu ý quan trọng trước khi ký hợp đồng đặt cọc mua đất",
+      "desc": "Bí quyết giúp bạn tránh sập bẫy lừa đảo...",
+      "date": "05/04/2026",
+      "img": "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=150&q=80",
+      "link": "the-global.html"
+    }
+  ],
+  "cat2": [
+    {
+      "id": 6,
+      "title": "Cập nhật tiến độ thi công The Global City tháng 4/2026",
+      "desc": "Phân khu Soho đã hoàn thiện mặt ngoài, công viên kênh đào đang tiến hành bơm nước...",
+      "date": "10/04/2026",
+      "img": "https://images.unsplash.com/photo-1541881451259-7b243b593685?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    }
+  ],
+  "cat3": [
+    {
+      "id": 7,
+      "title": "Lãi suất cho vay mua nhà giảm sâu: Thời điểm vàng để xuống tiền?",
+      "desc": "Phân tích chuyên sâu về bài toán đòn bẩy tài chính...",
+      "date": "08/04/2026",
+      "img": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80",
+      "link": "the-global.html"
+    }
+  ]
+}

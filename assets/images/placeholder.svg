@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#2f2f2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <text x="50%" y="46%" text-anchor="middle" fill="#d4af37" font-family="Montserrat, sans-serif" font-size="48">Greenia Homes</text>
+  <text x="50%" y="56%" text-anchor="middle" fill="#f5f5f5" font-family="Montserrat, sans-serif" font-size="28">Thêm ảnh vào assets/images để hiển thị</text>
+</svg>
