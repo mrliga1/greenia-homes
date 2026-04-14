@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global City | Greenia Homes - Khu Đô Thị Biểu Tượng Đông Nam Á</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div id="site-header"></div>
+
+    <div id="sub-menu" class="sub-header"></div>
+
+    <main>
+        <section class="project-hero" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?q=80&w=2000&auto=format&fit=crop'); height: 80vh; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center;">
+            <div class="container">
+                <h1 style="font-size: 3.5rem; color: var(--primary-color); text-transform: uppercase; margin-bottom: 10px;">The Global City</h1>
+                <p style="font-size: 1.5rem; letter-spacing: 2px;">THE NEW CITY CENTER - TRUNG TÂM MỚI CỦA TP.HCM</p>
+            </div>
+        </section>
+
+        <div class="container" style="padding: 80px 20px;">
+            
+            <section id="tong-quan" style="margin-bottom: 100px;">
+                <h2 style="color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 30px;">Tổng Quan Dự Án</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <div>
+                        <p><strong>Chủ đầu tư:</strong> Masterise Homes</p>
+                        <p><strong>Vị trí:</strong> Phường An Phú, TP. Thủ Đức</p>
+                        <p><strong>Quy mô:</strong> 117.4 hecta</p>
+                        <p><strong>Loại hình:</strong> Căn hộ, Nhà phố Soho, Shophouse, Villa</p>
+                    </div>
+                    <div>
+                        <p>The Global City là khu đô thị phức hợp chuẩn quốc tế đầu tiên tại Việt Nam được thiết kế và quy hoạch bởi Công ty kiến trúc hàng đầu thế giới Foster + Partners.</p>
+                    </div>
+                </div>
+            </section>
+
+             <section>
+                <h3 style="color: var(--primary-color); padding-bottom: 5px; margin-bottom: 10px; text-align: center;">Đăng Ký nhận thông tin dự án</h3>
+                <p style="border-bottom: 1px solid var(--primary-color); text-align: center; margin-bottom: 30px; background-size: 10px 1px;">Đăng ký ngay để nhận bảng giá chi tiết, chính sách bán hàng và tài liệu pháp lý của The Global City.</p>
+                <div id="khay-form-footer"></div>   
+             </section> 
+             
+             <section>
+                <div id="gr-ap-wrapper">
+           <style>
+        /* 1. KHUNG NỀN ĐỒNG BỘ #05080f */
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+        #gr-ap-wrapper {
+            --bg: #05080f; 
+            --card: #0e121b; 
+            --border: rgba(197, 160, 89, 0.15); /* Đồng bộ màu viền với các section khác */
+            --gold: #c5a059; 
+            --text: #b0b8c4; 
+            --white: #fff;
+            
+            width: 100%;
+            background-color: var(--bg) !important; 
+            padding: 40px 0px 40px 0px; 
+            position: relative;
+            overflow: hidden !important; 
+            font-family: 'Be Vietnam Pro', sans-serif;
+            color: var(--text);
+        }
+
+        .gr-ap-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 60px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto; 
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        /* 2. HIỆU ỨNG XUẤT HIỆN TỪ TRÁI SANG (GIỮ NGUYÊN) */
+        .gr-ap-left, .gr-ap-right {
+            opacity: 0 !important;
+            transform: translate3d(-300px, 0, 0) !important; 
+            transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.2s ease !important;
+            will-change: opacity, transform;
+        }
+
+        /* Ảnh lướt vào trễ hơn một nhịp */
+        .gr-ap-right {
+            transition-delay: 0.2s !important;
+        }
+
+        /* 3. KHI CUỘN TỚI -> HIỆN VÀ NẰM IM VĨNH VIỄN */
+        #gr-ap-wrapper.is-active .gr-ap-left,
+        #gr-ap-wrapper.is-active .gr-ap-right {
+            opacity: 1 !important;
+            transform: translate3d(0, 0, 0) !important;
+        }
+
+        /* 4. NỘI DUNG CHI TIẾT & TRANG TRÍ TIÊU ĐỀ */
+        .gr-ap-left { flex: 1 1 50%; min-width: 320px; }
+        .gr-ap-right { flex: 1 1 40%; min-width: 320px; }
+
+        /* --- TRANG TRÍ TIÊU ĐỀ (ĐÃ ĐỒNG BỘ 28PX & 600) --- */
+        .gr-ap-title {
+            font-family: 'Playfair Display', serif; 
+            font-size: 28px; 
+            font-weight: 600; 
+            background: linear-gradient(90deg, #fff 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 35px 0; 
+            line-height: 1.3;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        /* Nét gạch trang trí mờ dần dưới tiêu đề */
+        .gr-ap-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        /* --- TRANG TRÍ ĐOẠN VĂN (ĐÃ ĐỒNG BỘ 15PX, LÙI 40PX, MÀU XÁM TRẦM) --- */
+        .gr-ap-left p {
+            font-size: 15px; 
+            line-height: 1.8;
+            margin-bottom: 18px;
+            text-align: justify;
+            font-weight: 300;
+            color: var(--text); 
+            text-indent: 40px; 
+        }
+
+        /* Đã đổi thẻ in đậm sang màu Vàng Gold */
+        .gr-ap-left p strong { color: var(--gold); font-weight: 600; }
+
+        /* --- HỘP HIGHLIGHT --- */
+        .gr-ap-highlight {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.02); /* Đồng bộ màu nền box của phần Giá Bán */
+            border: 1px solid var(--border); 
+            border-left: 4px solid var(--gold); 
+            border-radius: 4px;
+        }
+
+        .gr-ap-highlight span { display: block; margin-bottom: 12px; color: var(--text); font-size: 15px; }
+
+        .gr-hotline-text {
+            color: var(--gold) !important; /* Đổi màu hotline thành vàng luôn cho nổi */
+            font-weight: 700;
+            font-size: 19px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .gr-hotline-text:hover { color: var(--white) !important; }
+
+        .gr-ap-right img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px; /* Giảm bo góc từ 12px xuống 8px để đồng bộ với các hình trước */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 900px) {
+            .gr-ap-container { flex-direction: column; text-align: center; }
+            .gr-ap-left p { text-align: left; }
+            .gr-ap-left, .gr-ap-right { transform: translate3d(-100px, 0, 0) !important; }
+            
+            /* Căn giữa gạch chân khi ở giao diện Mobile */
+            .gr-ap-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+                width: 120px;
+            }
+        }
+    </style>
+
+    <div class="gr-ap-container">
+        <div class="gr-ap-left">
+            <h2 class="gr-ap-title">Dự án An Phú New City (Giai Đoạn 2)</h2>
+            <p>Với sự thành công của <strong>Dự án An Phú New City</strong> Quận 2, CĐT Công ty Nhà Phú Nhuận tiếp tục tung ra thị trường <strong>giai đoạn 2</strong> của dự án với 70 dòng sản phẩm <strong>Shophouse (nhà phố thương mại)</strong> ngay mặt tiền đường Nguyễn Hoàng.</p>
+            <p><strong>Dự án An Phú New City giai đoạn 2:</strong> Bao gồm 70 Shophouse được thiết kế 6 tầng (1 trệt + 5 lầu) với mặt tiền đường Nguyễn Hoàng rộng rãi thoáng mát, thuận tiện để đầu tư làm văn phòng công ty, cửa hàng kinh doanh mọi lĩnh vực...</p>
+            <p>Shophouse An Phú New City với số lượng có hạn, chỉ 70 căn Shophouse dự báo sẽ tạo nên sự cạnh tranh không hề nhỏ. Quý khách hàng quan tâm dự án <strong>Shophouse An Phú New City</strong> hãy liên hệ ngay với chúng tôi để giành cho mình cơ hội sở hữu sớm nhất và có ngay những chính sách ưu đãi hấp dẫn từ CĐT.</p>
+            <div class="gr-ap-highlight">
+                <span>Gọi ngay Hotline: <a href="tel:0932966700" class="gr-hotline-text">0932 966 700</a> để được tư vấn và nhận thông tin mới nhất!!!</span>
+                <span>Giá dự kiến: từ <strong style="color: #ff4d4f;">55-70 tỷ/Căn</strong> (dự kiến) hãy chờ công bố chính thức từ CĐT.</span>
+            </div>
+        </div>
+
+        <div class="gr-ap-right">
+            <img src="https://greeniahomes.vn/wp-content/uploads/2025/04/3.jpg" alt="Dự án An Phú New City giai đoạn 2">
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const wrapper = document.getElementById("gr-ap-wrapper");
+        if (!wrapper) return;
+
+        // Thêm đoạn timeout ngắn để chắc chắn Elementor load xong layout rồi mới đo tọa độ
+        setTimeout(() => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        wrapper.classList.add("is-active");
+                        observer.unobserve(wrapper); 
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }); // Đồng bộ thêm rootMargin chống giật
+            
+            observer.observe(wrapper);
+        }, 500);
+    });
+</script>
+             </section>
+            <section id="vi-tri" style="margin-bottom: 100px;">
+                <h2 style="color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 30px;">Vị Trí Kim Cương</h2>
+                <p>Nằm ngay mặt tiền đường Đỗ Xuân Hợp và cao tốc TP.HCM - Long Thành - Dầu Giây, The Global City sở hữu khả năng kết nối hoàn hảo đến trung tâm Quận 1 chỉ trong 10 phút.</p>
+                <div style="background: #222; height: 400px; margin-top: 30px; display: flex; align-items: center; justify-content: center; color: #666; border-radius: 8px;">
+                    [Bản đồ vị trí dự án]
+                </div>
+            </section>
+
+            <section id="mat-bang" style="margin-bottom: 100px;">
+                <h2 style="color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 30px;">Mặt Bằng Phân Khu</h2>
+                <p>Quy hoạch bài bản với các phân khu Soho sầm uất, khu căn hộ cao cấp và khu biệt thự ven sông đẳng cấp.</p>
+                <img src="https://images.unsplash.com/photo-1503387762-592dea58ea2a?q=80&w=1200&auto=format&fit=crop" alt="Mặt bằng Global City" style="width: 100%; border-radius: 8px; margin-top: 30px;">
+            </section>
+
+            <section id="chinh-sach" id="lien-he">
+                <h2 style="color: var(--primary-color); border-bottom: 1px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 30px;">Chính Sách Thanh Toán</h2>
+                <div style="background: rgba(212, 175, 55, 0.1); padding: 40px; border-radius: 12px; border-left: 5px solid var(--primary-color);">
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 15px;">✅ Hỗ trợ vay lên đến 80% giá trị sản phẩm.</li>
+                        <li style="margin-bottom: 15px;">✅ Ân hạn nợ gốc và lãi suất 0% lên đến 24 tháng.</li>
+                        <li style="margin-bottom: 15px;">✅ Chiết khấu hấp dẫn cho khách hàng thanh toán sớm.</li>
+                    </ul>
+                    <button class="btn-primary" style="margin-top: 20px;">TẢI TRỌN BỘ PHÁP LÝ & BẢNG GIÁ</button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="assets/js/ui.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Gọi Menu
+        if (typeof loadSpecificMenu === "function") {
+            await loadSpecificMenu('sub-menu', 'menu-the-global');
+        }
+
+        // GỌI FORM VÀ TRUYỀN TÊN DỰ ÁN VÀO
+        if (typeof loadSpecificForm === "function") {
+            // Cú pháp: loadSpecificForm('ID-của-khay', 'ID-của-bản-mẫu', 'TÊN DỰ ÁN MUỐN BÁO VỀ GOOGLE SHEET');
+            await loadSpecificForm('khay-form-footer', 'tpl-form-ngang', 'The Global City - Vị trí Footer');
+        }
+    });
+</script>
+</body>
+</html>
