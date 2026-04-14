@@ -1,12 +1,16 @@
 [
   {
     "id": 10,
-    "slug": "kiem-tra-dang-bai-viet",
     "title": "kiểm tra đăng bài viết",
+    "slug": "kiem-tra-dang-bai-viet",
     "cat": "tin dự án",
     "date": "15/4/2026",
     "author": "Ban Biên Tập",
-    "content": "<p>kiểm tra nội dung</p>"
+    "thumb": "",
+    "content": "<p>kiểm tra nội dung</p>\n",
+    "seoTitle": "kiểm tra đăng bài viết",
+    "seoDesc": "kiểm tra nội dung\n...",
+    "seoKeywords": "tin dự án, tin tức"
   },
   {
     "id": 1,
