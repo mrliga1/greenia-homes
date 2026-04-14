@@ -1,5 +1,28 @@
 [
   {
+    "id": 39,
+    "title": "bán nhà phố quận 2",
+    "img": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
+    "gallery": [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"
+    ],
+    "price": "15 tỷ",
+    "area": "145 m",
+    "bed": "4pn",
+    "wc": "",
+    "direction": "",
+    "floor": "",
+    "front": "",
+    "legal": "",
+    "loc": "an phú",
+    "type": "Bán",
+    "cat": "ban-nha-pho-quan-2",
+    "catName": "bán nhà phố quận 2",
+    "projectCode": "an-phu-new-city",
+    "desc": "bán nhà phố an phú quận 2",
+    "map": ""
+  },
+  {
     "id": 10,
     "title": "bán nhà",
     "img": "https://mrliga1.github.io/greenia-homes/bai-viet/kiem-tra-dang-bai-viet/",
