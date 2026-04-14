@@ -6,7 +6,8 @@
     <title>bán nhà phố quận 2 | Greenia Homes</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
         body { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; margin: 0; padding: 0; }
@@ -53,6 +54,7 @@
         .ct-desc-content { font-size: 15px; line-height: 1.8; color: #ccc; }
         .ct-desc-content p { margin-bottom: 15px; }
         .ct-desc-content strong { color: #c5a059; }
+        .ct-desc-content img { max-width: 100%; height: auto; border-radius: 6px; margin: 15px 0; border: 1px solid rgba(197, 160, 89, 0.2);}
 
         /* RELATED PRODUCTS */
         .ct-related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px;}
@@ -85,43 +87,38 @@
     </main>
 
     <div id="site-footer"></div>
-    <script src="assets/js/ui.js"></script>
+    <script src="../../assets/js/ui.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const prodId = urlParams.get('id');
             const container = document.getElementById('product-container');
 
-            if (!prodId) {
-                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Không tìm thấy mã sản phẩm.</h2>";
+            // LẤY DỮ LIỆU SSG TỪ TRÌNH ĐIỀU KHIỂN
+            const currentProd = window.GREENIA_CURRENT_PRODUCT;
+
+            if (!currentProd) {
+                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Đây là file khuôn mẫu. Vui lòng xem bản build tại thư mục /san-pham/slug/</h2>";
                 return;
             }
 
+            // XỬ LÝ HÌNH ẢNH (Thêm ../../ vì file HTML nằm sâu 2 cấp)
+            let galleryHTML = '';
+            if (currentProd.gallery && currentProd.gallery.length > 0) {
+                currentProd.gallery.forEach((imgSrc, index) => {
+                    const activeClass = index === 0 ? 'active' : '';
+                    galleryHTML += `<img src="../../${imgSrc}" class="ct-thumb ${activeClass}" onclick="changeMainImage('../../${imgSrc}', this)">`;
+                });
+            } else {
+                // Nếu không có thư viện ảnh, lấy ảnh bìa làm ảnh nhỏ
+                galleryHTML = `<img src="../../${currentProd.img}" class="ct-thumb active">`;
+            }
+
+            // XỬ LÝ SẢN PHẨM LIÊN QUAN (Lấy từ file JSON)
+            let relatedHTML = '';
             try {
-                const res = await fetch('assets/data/products.json');
+                const res = await fetch('../../assets/data/products.json');
                 const products = await res.json();
-                const currentProd = products.find(p => p.id == prodId);
-
-                if (!currentProd) {
-                    container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Sản phẩm không tồn tại hoặc đã bị xóa.</h2>";
-                    return;
-                }
                 
-                document.title = currentProd.title + " | Greenia Homes";
-
-                // XỬ LÝ HÌNH ẢNH
-                let galleryHTML = '';
-                if (currentProd.gallery && currentProd.gallery.length > 0) {
-                    currentProd.gallery.forEach((imgSrc, index) => {
-                        const activeClass = index === 0 ? 'active' : '';
-                        galleryHTML += `<img src="${imgSrc}" class="ct-thumb ${activeClass}" onclick="changeMainImage('${imgSrc}', this)">`;
-                    });
-                } else {
-                    galleryHTML = `<img src="${currentProd.img}" class="ct-thumb active">`;
-                }
-
-                // XỬ LÝ SẢN PHẨM LIÊN QUAN THEO MÃ DỰ ÁN
                 let relatedProds = [];
                 if (currentProd.projectCode && currentProd.projectCode.trim() !== "") {
                     relatedProds = products.filter(p => p.projectCode === currentProd.projectCode && p.id != currentProd.id).slice(0, 4);
@@ -130,16 +127,15 @@
                     relatedProds = products.filter(p => p.cat === currentProd.cat && p.id != currentProd.id).slice(0, 4);
                 }
 
-                let relatedHTML = '';
                 if (relatedProds.length > 0) {
                     relatedHTML = `<div style="margin-top: 60px;">
                         <h2 class="ct-section-title">Sản phẩm tương tự</h2>
                         <div class="ct-related-grid">
                             ${relatedProds.map(p => `
-                                <a href="chi-tiet-sp.html?id=${p.id}" class="gr-card">
+                                <a href="../../san-pham/${p.slug}/" class="gr-card">
                                     <div class="gr-thumb-box">
                                         <span style="position:absolute; top:0; left:0; background:${p.type==='Bán'?'#ff4d4f':'#00b894'}; color:#fff; font-size:10px; font-weight:700; padding:4px 10px; border-bottom-right-radius:6px; z-index:5;">${p.type}</span>
-                                        <img src="${p.img}">
+                                        <img src="../../${p.img}">
                                     </div>
                                     <div class="gr-body">
                                         <h3 class="gr-tit">${p.title}</h3>
@@ -149,59 +145,58 @@
                         </div>
                     </div>`;
                 }
-
-                // XÂY DỰNG HTML
-                container.innerHTML = `
-                    <div class="ct-breadcrumb">
-                        <a href="index.html">Trang chủ</a> / <a href="san-pham.html">Sản phẩm</a> / ${currentProd.catName || currentProd.cat}
-                    </div>
-
-                    <div class="ct-title-box">
-                        <h1 class="ct-title">${currentProd.title}</h1>
-                        <div class="ct-loc"><i class="fas fa-map-marker-alt"></i> ${currentProd.loc}</div>
-                    </div>
-
-                    <div class="ct-main-split">
-                        <div class="ct-gallery-col">
-                            <img src="${currentProd.img}" id="mainImage" class="ct-main-img">
-                            <div class="ct-thumb-list">${galleryHTML}</div>
-                        </div>
-
-                        <div class="ct-info-col">
-                            <div class="ct-price-box">
-                                <span class="ct-type-tag">${currentProd.type}</span>
-                                <h2 class="ct-price">${currentProd.price}</h2>
-                            </div>
-
-                            <div class="ct-specs">
-                                <h3 style="margin: 0 0 20px; color:#c5a059; font-size:16px; text-transform:uppercase;">Thông số kỹ thuật</h3>
-                                ${currentProd.area ? `<div class="ct-spec-item"><span>Diện tích</span><span>${currentProd.area} m²</span></div>` : ''}
-                                ${currentProd.bed ? `<div class="ct-spec-item"><span>Phòng ngủ</span><span>${currentProd.bed} PN</span></div>` : ''}
-                                ${currentProd.wc ? `<div class="ct-spec-item"><span>Phòng tắm</span><span>${currentProd.wc} WC</span></div>` : ''}
-                                ${currentProd.direction ? `<div class="ct-spec-item"><span>Hướng nhà</span><span>${currentProd.direction}</span></div>` : ''}
-                                ${currentProd.legal ? `<div class="ct-spec-item"><span>Pháp lý</span><span>${currentProd.legal}</span></div>` : ''}
-                            </div>
-
-                            <a href="tel:0932966700" class="ct-contact-btn"><i class="fas fa-phone-alt"></i> Gọi tư vấn ngay</a>
-                        </div>
-                    </div>
-
-                    <div class="ct-desc-box">
-                        <h2 class="ct-section-title">Thông tin chi tiết</h2>
-                        <div class="ct-desc-content">${currentProd.desc || 'Đang cập nhật nội dung chi tiết...'}</div>
-                    </div>
-
-                    ${currentProd.map ? `<div class="ct-desc-box" style="padding:15px;"><h2 class="ct-section-title" style="margin:15px;">Bản đồ vị trí</h2>${currentProd.map}</div>` : ''}
-
-                    ${relatedHTML}
-                `;
-
-            } catch (error) {
-                console.error(error);
-                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Lỗi kết nối máy chủ dữ liệu.</h2>";
+            } catch(e) {
+                console.log("Không tải được dữ liệu sản phẩm liên quan");
             }
+
+            // BƠM NỘI DUNG RA GIAO DIỆN
+            container.innerHTML = `
+                <div class="ct-breadcrumb">
+                    <a href="../../index.html">Trang chủ</a> / <a href="../../san-pham.html">Sản phẩm</a> / ${currentProd.catName || currentProd.cat}
+                </div>
+
+                <div class="ct-title-box">
+                    <h1 class="ct-title">${currentProd.title}</h1>
+                    <div class="ct-loc"><i class="fas fa-map-marker-alt"></i> ${currentProd.loc}</div>
+                </div>
+
+                <div class="ct-main-split">
+                    <div class="ct-gallery-col">
+                        <img src="../../${currentProd.img}" id="mainImage" class="ct-main-img">
+                        <div class="ct-thumb-list">${galleryHTML}</div>
+                    </div>
+
+                    <div class="ct-info-col">
+                        <div class="ct-price-box">
+                            <span class="ct-type-tag">${currentProd.type}</span>
+                            <h2 class="ct-price">${currentProd.price}</h2>
+                        </div>
+
+                        <div class="ct-specs">
+                            <h3 style="margin: 0 0 20px; color:#c5a059; font-size:16px; text-transform:uppercase;">Thông số kỹ thuật</h3>
+                            ${currentProd.area ? `<div class="ct-spec-item"><span>Diện tích</span><span>${currentProd.area} m²</span></div>` : ''}
+                            ${currentProd.bed ? `<div class="ct-spec-item"><span>Phòng ngủ</span><span>${currentProd.bed} PN</span></div>` : ''}
+                            ${currentProd.wc ? `<div class="ct-spec-item"><span>Phòng tắm</span><span>${currentProd.wc} WC</span></div>` : ''}
+                            ${currentProd.direction ? `<div class="ct-spec-item"><span>Hướng nhà</span><span>${currentProd.direction}</span></div>` : ''}
+                            ${currentProd.legal ? `<div class="ct-spec-item"><span>Pháp lý</span><span>${currentProd.legal}</span></div>` : ''}
+                        </div>
+
+                        <a href="tel:0932966700" class="ct-contact-btn"><i class="fas fa-phone-alt"></i> Gọi tư vấn ngay</a>
+                    </div>
+                </div>
+
+                <div class="ct-desc-box">
+                    <h2 class="ct-section-title">Thông tin chi tiết</h2>
+                    <div class="ct-desc-content">${currentProd.content || currentProd.desc || 'Đang cập nhật nội dung chi tiết...'}</div>
+                </div>
+
+                ${currentProd.map ? `<div class="ct-desc-box" style="padding:15px;"><h2 class="ct-section-title" style="margin:15px;">Bản đồ vị trí</h2>${currentProd.map}</div>` : ''}
+
+                ${relatedHTML}
+            `;
         });
 
+        // Hàm click đổi ảnh chính
         window.changeMainImage = function(src, element) {
             document.getElementById('mainImage').src = src;
             document.querySelectorAll('.ct-thumb').forEach(img => img.classList.remove('active'));
