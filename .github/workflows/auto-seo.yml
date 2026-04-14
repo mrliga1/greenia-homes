@@ -5,10 +5,13 @@ on:
       - 'assets/data/posts.json'
       - 'assets/data/products.json'
       - 'build.js'
+  workflow_dispatch: # Dòng này tạo ra nút bấm chạy thủ công
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Ép buộc cấp quyền ghi đè
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -20,5 +23,5 @@ jobs:
           git config --global user.name 'GitHub Action Bot'
           git config --global user.email 'action@github.com'
           git add .
-          git commit -m "Auto build SEO directories" || exit 0
+          git commit -m "Auto build SEO directories" || echo "Không có thay đổi mới nào"
           git push
