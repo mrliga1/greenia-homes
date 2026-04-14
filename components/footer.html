@@ -1,0 +1,369 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<footer id="lux-footer-v126" class="lft-wrapper">
+    <div class="lft-bg-pattern"></div>
+    <div class="lft-bg-glow"></div>
+
+    <style>
+        /* ==============================================================
+           1. CẤU HÌNH CSS CHUNG CHO FOOTER
+        ============================================================== */
+        #lux-footer-v126 {
+            --lux-gold: #c5a059;
+            --lux-dark: #05080f;      
+            --lux-text: #94a3b8;
+            --lux-white: #ffffff;
+            
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--lux-dark);
+            padding: 50px 0 0;
+            position: relative;
+            overflow: hidden;
+            color: var(--lux-text);
+            box-sizing: border-box;
+            z-index: 10;
+            border-top: 3px solid var(--lux-gold);
+        }
+
+        #lux-footer-v126 * { box-sizing: border-box; }
+
+        .lft-bg-pattern {
+            position: absolute; top: 0; right: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(197, 160, 89, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px; opacity: 0.3; pointer-events: none; z-index: 0;
+        }
+        .lft-bg-glow {
+             position: absolute; bottom: 0; left: 0; width: 100%; height: 300px;
+             background: linear-gradient(to top, rgba(11, 17, 32, 1), transparent);
+             pointer-events: none; z-index: 0;
+        }
+
+        .lft-container { max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+        
+        .lft-grid { 
+            display: grid; 
+            grid-template-columns: 1.2fr 0.8fr 0.8fr 1.2fr; 
+            gap: 20px 40px; 
+            align-items: start;
+        }
+
+        .lft-col h3 {
+            font-family: 'Cinzel', serif; font-size: 18px; color: #fff; margin: 0 0 25px 0;
+            position: relative; padding-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .lft-col h3::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2px; background: var(--lux-gold); }
+
+        .lft-logo-text { font-family: 'Cinzel', serif; font-size: 28px; color: var(--lux-gold); font-weight: 700; margin-bottom: 20px; display: block; line-height: 1; }
+        .lft-contact-list { list-style: none; padding: 0; margin: 0; }
+        .lft-contact-list li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.6; }
+        .lft-contact-list i { color: var(--lux-gold); margin-top: 4px; font-size: 16px; }
+        .lft-contact-list strong { color: #fff; font-weight: 600; }
+
+        .lft-links { list-style: none; padding: 0; margin: 0; }
+        .lft-links li { margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; }
+        .lft-links li:last-child { border: none; }
+        .lft-links a { color: var(--lux-text); text-decoration: none; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+        .lft-links a:hover { color: var(--lux-gold); transform: translateX(5px); }
+        .lft-links a::before { content: '›'; font-size: 18px; color: var(--lux-gold); line-height: 0; margin-top: -2px; }
+
+        .lft-form-col { grid-column: 4 / 5; grid-row: 1 / 3; }
+
+        .lft-disclaimer {
+            grid-column: 1 / 4; 
+            grid-row: 2 / 3;    
+            margin-top: 5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 11px; color: rgba(255,255,255,0.35); text-align: justify; line-height: 1.6; font-style: italic;
+        }
+
+        .lft-socials { display: flex; gap: 10px; margin-top: 25px; }
+        .lft-social { width: 36px; height: 36px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .lft-social:hover { background: var(--lux-gold); color: #05080f; border-color: var(--lux-gold); transform: translateY(-3px); }
+
+        .lft-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding: 0px 0; background: rgba(0,0,0,0.2); text-align: center; margin-top: 20px; }
+        .lft-copy { font-size: 12px; opacity: 0.7; letter-spacing: 0.5px; }
+
+        @media (max-width: 992px) { 
+            .lft-grid { grid-template-columns: 1fr 1fr; }
+            .lft-form-col { grid-column: auto; grid-row: auto; } 
+            .lft-disclaimer { grid-column: 1 / 3; grid-row: auto; } 
+        }
+        @media (max-width: 600px) { 
+            .lft-grid { grid-template-columns: 1fr; gap: 40px; } 
+            .lft-disclaimer { grid-column: 1 / 2; }
+        }
+
+        /* ==============================================================
+           2. FORM ĐĂNG KÝ BÊN TRONG FOOTER
+        ============================================================== */
+        #footer-vhgp-final-v15-vertical { 
+            --ft-v15-gold: #c5a059; --ft-v15-gold-hover: #d4af37; 
+            --ft-v15-input: rgba(255,255,255,0.05); --ft-v15-border: rgba(255,255,255,0.2);
+            background: transparent; border: none; padding: 0; font-family: 'Manrope', sans-serif; color: #fff; text-align: left; 
+        }
+        .footer-v15-ver-container { max-width: 100%; margin: 0; display: flex; flex-direction: column; align-items: flex-start; }
+        .footer-v15-ver-title { 
+            font-family: 'Manrope', sans-serif !important; font-size: 18px; font-weight: 700; color: #fff; 
+            margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: none; position: relative; padding-bottom: 15px; margin-bottom: 10px;
+        }
+        .footer-v15-ver-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2px; background: var(--ft-v15-gold); }
+        
+        .footer-v15-ver-rating-box { display: none !important; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .footer-v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
+        .footer-v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
+        .footer-v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 10px; max-width: 100%; line-height: 1.5; margin-top: 0px; }
+
+        .footer-v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
+        
+        .footer-v15-ver-input { 
+            width: 100%; background: var(--ft-v15-input); border: 1px solid var(--ft-v15-border); 
+            color: #fff; padding: 5px 10px; font-size: 10px; border-radius: 20px !important; outline: none; transition: 0.3s; box-sizing: border-box; 
+        }
+        .footer-v15-ver-input:focus { border-color: var(--ft-v15-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+
+        .footer-v15-ver-btn { 
+            width: 100%; padding: 10px 15px; margin-top: 5px;
+            background: var(--ft-v15-gold); color: #000; border: 1px solid var(--ft-v15-gold); 
+            font-weight: 700; font-family: 'Cinzel', serif; text-transform: uppercase; border-radius: 20px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 12px;
+        }
+        .footer-v15-ver-btn:hover { background: transparent; color: var(--ft-v15-gold); border-color: var(--ft-v15-gold); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+
+        .footer-success-overlay { display: none; padding: 20px; margin-top: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 4px; animation: footerFadeIn 0.5s ease forwards; width: 100%; text-align: left; }
+        .footer-success-title { color: #2ecc71; font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+        .footer-success-text { color: #ddd; font-size: 13px; line-height: 1.5; }
+
+        @keyframes footerFadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+        
+        /* ==============================================================
+           3. CSS NÚT NỔI, POPUP VÀ COOKIE (Đã tối ưu thon gọn 100%)
+        ============================================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500&family=Playfair+Display:wght@600;700&display=swap');
+
+        /* NÚT NỔI */
+        .greenia-floating-contact-new { position: fixed; bottom: 20px; left: 20px; z-index: 999990; display: flex; flex-direction: column-reverse; gap: 12px; align-items: center; }
+        .float-btn-new { width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: 0.3s; position: relative; overflow: hidden; background-color: #0b1120; }
+        .float-icon-new { font-size: 1.1rem; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; z-index: 2; transition: 0.3s; }
+        .zalo-img-fix { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+        .float-label-new { display: none; }
+        .float-btn-new:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(197, 160, 89, 0.4); }
+        .float-btn-new:hover .float-icon-new { transform: scale(1.1); }
+        .btn-form-new { background: #fff; color: #c5a059; border: 1px solid #c5a059; }
+        .btn-form-new:hover { background: #c5a059; color: #fff; }
+        .btn-zalo-new { background: #0b1120; border: 1px solid #c5a059; }
+        .btn-phone-new { background: #0b1120; color: #c5a059; border: 1px solid #c5a059; }
+        .sheen-effect-new::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); z-index: 1; animation: sheen-anim 3s infinite ease-in-out; }
+        @keyframes sheen-anim { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .pulse-effect-new { animation: pulse-gold 2s infinite; }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); } 100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); } }
+        .float-tooltip-new { position: absolute; left: 55px; top: 50%; transform: translateY(-50%) translateX(-5px); background: #0b1120; color: #c5a059; padding: 4px 10px; border-radius: 3px; border: 1px solid #c5a059; font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; white-space: nowrap; opacity: 0; visibility: hidden; transition: 0.2s; pointer-events: none; }
+        .float-btn-new:hover .float-tooltip-new { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
+
+        /* POPUP CHUẨN KÍCH THƯỚC */
+        .popup-overlay-new { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
+        .popup-overlay-new.active { opacity: 1; visibility: visible; }
+        .popup-container-new { position: relative; width: 90%; max-width: 350px; background-color: #080c17; border: 1px solid #b48c40; border-radius: 6px; padding: 20px 15px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
+        .popup-overlay-new.active .popup-container-new { transform: scale(1); }
+        .popup-close-new { position: absolute; top: 8px; right: 12px; font-size: 22px; color: #666; cursor: pointer; transition: 0.3s; line-height: 1; z-index: 10; }
+        .popup-close-new:hover { color: #ff4757; transform: rotate(90deg); }
+
+        .popup-content-new { padding: 0 !important; margin: 0 !important; }
+        .pp-title-new { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 !important; padding: 0 !important; margin-bottom: 5px !important; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2 !important; }
+        .pp-sub-new { font-family: 'Manrope', sans-serif; font-size: 12px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
+        .pp-rating-box-new { margin-bottom: 10px; display: inline-block; border-bottom: 1px solid rgba(180, 140, 64, 0.3); padding-bottom: 5px; }
+        .pp-stars-new { color: #dbb35e; font-size: 12px; letter-spacing: 1px; }
+        .pp-count-new { font-size: 11px; color: #888; font-family: 'Manrope', sans-serif; margin-left: 5px;}
+        
+       /* TRẢ LẠI NGUYÊN BẢN XUỐNG DÒNG CHO CÁC TAG */
+        .pp-tags-new { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+        .pp-tag-item-new { font-family: 'Manrope', sans-serif; font-size: 9px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 3px 10px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
+        .pp-check-new { color: #dbb35e; font-weight: bold; font-size: 10px; }
+        .pp-footer-new { margin-top: 10px; font-size: 9px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px; }
+        .pp-link-new { color: #777; text-decoration: none; transition: 0.3s; }
+        .pp-link-new:hover { color: #b48c40; text-decoration: underline; }
+        .pp-success-new { display: none; padding: 15px; margin-top: 10px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; animation: fadeIn 0.5s ease; }
+
+        /* FORM NGUYÊN BẢN TRONG POPUP */
+        .v15-form-new { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 8px !important; justify-content: center !important; align-items: center !important; margin-top: 5px !important; }
+        .v15-input-new { width: 100% !important; height: 32px !important; box-sizing: border-box !important; background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; padding: 0 15px !important; font-size: 12px !important; font-family: 'Manrope', sans-serif !important; border-radius: 40px !important; outline: none !important; transition: 0.3s !important; display: block !important; }
+        .v15-input-new:focus { border-color: #c5a059 !important; background: rgba(197, 160, 89, 0.1) !important; box-shadow: 0 0 10px rgba(197, 160, 89, 0.2) !important; }
+        .v15-btn-new { width: 100% !important; padding: 6px 25px !important; margin-top: 2px !important; background: #c5a059 !important; color: #0b1120 !important; border: 1px solid #c5a059 !important; font-family: 'Playfair Display', serif !important; font-weight: 700 !important; text-transform: uppercase !important; border-radius: 50px !important; cursor: pointer !important; transition: all 0.3s ease !important; font-size: 12px !important; }
+        .v15-btn-new:hover { background: transparent !important; color: #c5a059 !important; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4) !important; transform: translateY(-2px) !important; }
+
+        /* COOKIE BOX */
+        .cookie-box-new { position: fixed; bottom: 20px; right: 20px; width: 340px; background: rgba(11, 17, 32, 0.95); backdrop-filter: blur(10px); border: 1px solid #c5a059; border-radius: 8px; padding: 20px; z-index: 999999; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 15px; animation: slideInUp 0.5s ease-out; font-family: 'Manrope', sans-serif; }
+        .cookie-content-new { display: flex; gap: 15px; align-items: start; }
+        .cookie-icon-new { font-size: 24px; color: #c5a059; }
+        .cookie-text-new { font-size: 13px; color: #e2e8f0; line-height: 1.5; }
+        .cookie-text-new strong { color: #fff; display: block; margin-bottom: 4px; font-family: 'Cinzel', serif; }
+        .cookie-actions-new { display: flex; gap: 10px; }
+        .c-btn-new { flex: 1; padding: 10px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; border: 1px solid #c5a059; font-family: 'Manrope', sans-serif; }
+        .c-btn-outline-new { background: transparent; color: #aaa; border-color: #444; }
+        .c-btn-outline-new:hover { border-color: #fff; color: #fff; }
+        .c-btn-fill-new { background: #c5a059; color: #000; }
+        .c-btn-fill-new:hover { background: #fff; color: #c5a059; border-color: #fff; }
+
+        @media (max-width: 768px) { 
+            .greenia-floating-contact-new { left: 0 !important; bottom: 0 !important; width: 100% !important; background: rgba(11, 17, 32, 0.98); border-top: 1px solid #c5a059; padding: 6px 0; flex-direction: row !important; justify-content: space-around; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); backdrop-filter: blur(5px); } 
+            .float-btn-new { width: auto !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; border: none !important; background: transparent !important; flex-direction: column; gap: 3px; overflow: visible; } 
+            .float-label-new { display: block !important; font-size: 0.6rem; color: #ccc; text-transform: uppercase; } 
+            .float-tooltip-new { display: none !important; } 
+            .float-icon-new { width: 32px !important; height: 32px !important; overflow: hidden; border-radius: 50%; }
+            .float-icon-new img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+            .cookie-box-new { left: 20px; width: auto; bottom: 80px; }
+        }
+    </style>
+
+    <div class="lft-container">
+        <div class="lft-grid">
+            <div class="lft-col">
+                <span class="lft-logo-text">GREENIA HOMES</span>
+                <ul class="lft-contact-list">
+                    <li><i class="fas fa-map-marker-alt"></i><span><strong>Trụ sở:</strong> 67 Võ Văn Kiệt, P. An Lạc, Quận Bình Tân, TP.HCM.</span></li>
+                    <li><i class="fas fa-building"></i><span><strong>Văn phòng:</strong> 520 Võ Văn Kiệt, Quận Bình Tân, TP.HCM.</span></li>
+                    <li><i class="fas fa-phone-alt"></i><span><strong>Hotline:</strong> <a href="tel:0932966700" style="color:#fff;text-decoration:none;">0932 966 700</a></span></li>
+                    <li><i class="fas fa-envelope"></i><span><strong>Email:</strong> cskh@greeniahomes.vn</span></li>
+                </ul>
+                <div class="lft-socials">
+                    <a href="https://www.facebook.com/greeniahomes" target="_blank" class="lft-social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.youtube.com/@greeniahomes.vn" target="_blank" class="lft-social"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.tiktok.com/@greeniahomes.vn" target="_blank" class="lft-social"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://zalo.me/0932966700" target="_blank" class="lft-social"><i class="fas fa-comment-dots"></i></a>
+                </div>
+            </div>
+
+            <div class="lft-col">
+                <h3>Về Chúng Tôi</h3>
+                <ul class="lft-links">
+                    <li><a href="https://greeniahomes.vn/">Trang Chủ</a></li>
+                    <li><a href="https://greeniahomes.vn/gioi-thieu/">Giới Thiệu</a></li>
+                    <li><a href="https://greeniahomes.vn/trang-tin-tuc/">Tin Tức & Sự Kiện</a></li>
+                    <li><a href="https://greeniahomes.vn/tuyen-dung/">Tuyển Dụng</a></li>
+                    <li><a href="https://greeniahomes.vn/lien-he/">Liên Hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="lft-col">
+                <h3>Sản Phẩm</h3>
+                <ul class="lft-links">
+                    <li><a href="https://greeniahomes.vn/bds/">Tất Cả Sản Phẩm</a></li>
+                    <li><a href="https://greeniahomes.vn/danh-muc/can-ho/">Căn Hộ Cao Cấp</a></li>
+                    <li><a href="https://greeniahomes.vn/danh-muc/nha-pho/">Nhà Phố - Biệt Thự</a></li>
+                    <li><a href="https://greeniahomes.vn/danh-muc/dat-nen/">Đất Nền Dự Án</a></li>
+                    <li><a href="https://greeniahomes.vn/du-an/ansana-by-kita-group/">Dự Án Ansana</a></li>
+                </ul>
+            </div>
+
+            <div class="lft-col lft-form-col">
+                <section id="footer-vhgp-final-v15-vertical" class="cta-wrapper">
+                    <div class="footer-v15-ver-container">
+                        <h3 class="footer-v15-ver-title">Đăng Ký Tư Vấn</h3>
+                        <div class="footer-v15-ver-rating-box" id="footer-rating-container-v15-ver">
+                            <span class="footer-v15-ver-stars" id="footer-stars-v15-ver">★★★★★</span>
+                            <span class="footer-v15-ver-count" id="footer-count-v15-ver">(Checking...)</span>
+                        </div>
+                        <p class="footer-v15-ver-desc">Để lại thông tin để nhận bảng giá & phân tích dòng tiền chuyên sâu.</p>
+
+                        <form id="footer-leadFormV15Ver" class="greenia-master-form layout-doc footer-v15-ver-form" data-project="Footer Form">
+                            <input type="text" name="name" id="footer-v15-ver-name" class="footer-v15-ver-input" placeholder="Họ tên *" required>
+                            <input type="tel" name="phone" id="footer-v15-ver-phone" class="footer-v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                            <input type="email" name="email" id="footer-v15-ver-email" class="footer-v15-ver-input" placeholder="Email (Không bắt buộc)">
+                            <input type="text" name="demand" id="footer-v15-ver-demand" class="footer-v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                            <button type="submit" id="footer-btn-v15-ver-submit" class="footer-v15-ver-btn">NHẬN BÁO GIÁ</button>
+                        </form>
+
+                        <div id="footer-v15-ver-success" class="master-success-msg footer-success-overlay">
+                            <div class="footer-success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                            <div class="footer-success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách.</div>
+                        </div>
+                    </div>
+                    <script id="footer-seo-json-ld-v15-ver" type="application/ld+json">{}</script>
+                </section>
+            </div>
+
+            <div class="lft-disclaimer">
+                * Thông tin, hình ảnh, các tiện ích trên website chỉ mang tính chất tham khảo và có thể được điều chỉnh theo quy định của Chủ đầu tư hoặc cơ quan nhà nước có thẩm quyền tại từng thời điểm. Các cam kết chính thức sẽ được quy định cụ thể tại Hợp đồng mua bán. Chúng tôi không chịu trách nhiệm cho bất kỳ tổn thất nào phát sinh từ việc sử dụng thông tin trên trang web này mà chưa qua xác nhận trực tiếp từ chuyên viên tư vấn.
+            </div>
+        </div>
+    </div>
+
+    <div class="lft-bottom">
+        <div class="lft-container" style="justify-content: center; display: flex;">
+            <div class="lft-copy">© 2026 <strong>Greenia Homes</strong>. All Rights Reserved.</div>
+        </div>
+    </div>
+
+    <div class="greenia-floating-contact-new">
+        <a href="javascript:void(0)" onclick="openPopupNew()" class="float-btn-new btn-form-new sheen-effect-new">
+            <div class="float-icon-new"><i class="fas fa-file-contract"></i></div>
+            <span class="float-label-new">Báo Giá</span>
+            <span class="float-tooltip-new">Tải Bảng Giá</span>
+        </a>
+        <a href="https://zalo.me/0932966700" target="_blank" rel="nofollow" class="float-btn-new btn-zalo-new" onclick="triggerContactTracking('Zalo')">
+            <div class="float-icon-new">
+                <img src="https://greeniahomes.vn/wp-content/uploads/2025/12/Icon_of_Zalo.svg.webp" alt="Zalo" class="zalo-img-fix">
+            </div>
+            <span class="float-label-new">Zalo</span>
+            <span class="float-tooltip-new">Chat Zalo</span>
+        </a>
+        <a href="tel:0932966700" class="float-btn-new btn-phone-new pulse-effect-new" onclick="triggerContactTracking('Phone')">
+            <div class="float-icon-new"><i class="fas fa-phone-alt"></i></div>
+            <span class="float-label-new">Gọi Ngay</span>
+            <span class="float-tooltip-new">0932 966 700</span>
+        </a>
+    </div>
+
+    <div id="vhgp-popup-overlay-new" class="popup-overlay-new" style="display:none;">
+        <div class="popup-container-new">
+            <span class="popup-close-new" onclick="closePopupNew()">&times;</span>
+            <section id="vhgp-final-popup-new" class="popup-content-new">
+                <h3 class="pp-title-new">TẢI TÀI LIỆU & BẢNG GIÁ</h3>
+                <div class="pp-sub-new">Nhận trọn bộ thông tin dự án qua Email/Zalo ngay.</div>
+                
+                <div class="pp-rating-box-new">
+                    <span class="pp-stars-new">★★★★★</span>
+                    <span class="pp-count-new" id="count-popup-new">(Checking...)</span>
+                </div>
+
+                <div class="pp-tags-new">
+                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Bảng giá gốc đợt 1</div>
+                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Pháp lý 1/500</div>
+                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Bài toán dòng tiền</div>
+                </div>
+
+               <form id="leadFormGreeniaPopup" class="v15-form-new" style="display:flex !important;">
+                    <input type="text" id="v15-name-greenia" class="v15-input-new" placeholder="Họ tên *" required>
+                    <input type="tel" id="v15-phone-greenia" class="v15-input-new" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="v15-email-greenia" class="v15-input-new" placeholder="Email" required>
+                    <input type="text" id="v15-demand-greenia" class="v15-input-new" placeholder="Nhu cầu (Căn 2PN...)" required>
+                    <button type="submit" id="btn-v15-submit-greenia" class="v15-btn-new">NHẬN BÁO GIÁ</button>
+                </form>
+                
+                <div class="pp-footer-new">
+                    <span style="font-size: 10px; margin-right: 3px;">🔒</span> Thông tin bảo mật tuyệt đối theo 
+                    <a href="https://greeniahomes.vn/chinh-sach-bao-mat/" target="_blank" class="pp-link-new">Chính sách riêng tư</a>.
+                </div>
+                
+                <div id="v15-success-greenia" class="pp-success-new" style="display:none;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+                    <div style="color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px;">ĐĂNG KÝ THÀNH CÔNG!</div>
+                    <div style="color: #ddd; font-size: 13px;">Hệ thống đang gửi tài liệu cho bạn.</div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="cookie-consent-new" class="cookie-box-new" style="display: none;">
+        <div class="cookie-content-new">
+            <div class="cookie-icon-new"><i class="fas fa-cookie-bite"></i></div>
+            <div class="cookie-text-new">
+                <strong>Trải nghiệm tốt nhất</strong><br>
+                Chúng tôi sử dụng cookie để đo lường trải nghiệm của bạn.
+            </div>
+        </div>
+        <div class="cookie-actions-new">
+            <button id="cookie-reject-new" class="c-btn-new c-btn-outline-new">Từ Chối</button>
+            <button id="cookie-accept-new" class="c-btn-new c-btn-fill-new">Chấp Nhận</button>
+        </div>
+    </div>
+</footer>
