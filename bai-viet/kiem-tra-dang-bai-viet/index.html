@@ -3,43 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>kiểm tra đăng bài viết | Greenia Homes</title>
-    <meta name="description" content="kiểm tra đăng bài viết - Greenia Homes cung cấp giải pháp bất động sản cao cấp.">
-    <link rel="canonical" href="https://greeniahomes.vn/bai-viet/kiem-tra-dang-bai-viet/">
-    
-    <meta property="og:title" content="kiểm tra đăng bài viết">
-    <meta property="og:description" content="Đọc ngay bài viết phân tích chi tiết về kiểm tra đăng bài viết.">
-    <meta property="og:url" content="https://greeniahomes.vn/bai-viet/kiem-tra-dang-bai-viet/">
-    <meta property="og:type" content="article">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200">
-    
-    <script type="application/ld+json">
-        {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    "headline": "kiểm tra đăng bài viết",
-    "image": [
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200"
-    ],
-    "datePublished": "15/4/2026",
-    "author": [
-        {
-            "@type": "Person",
-            "name": "Ban Biên Tập"
-        }
-    ]
-}
-    </script>
-    
-    <script>
-        window.GREENIA_CURRENT_POST = {"id":10,"slug":"kiem-tra-dang-bai-viet","title":"kiểm tra đăng bài viết","cat":"tin dự án","date":"15/4/2026","author":"Ban Biên Tập","content":"<p>kiểm tra nội dung</p>"};
-    </script>
-    
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
         /* =======================================================
@@ -142,7 +110,7 @@
     </main>
 
     <div id="site-footer"></div>
-    <script src="../../assets/js/ui.js"></script>
+    <script src="assets/js/ui.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
@@ -176,8 +144,8 @@
                 randomProds.forEach(p => {
                     const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
                     sidebarHTML += `
-                        <a href="../../chi-tiet-sp.html?id=${p.id}" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${p.img}"></div>
+                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="../../${p.img}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
                                 <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -195,8 +163,8 @@
                         <h2 style="color:#c5a059; font-size: 24px; margin-bottom: 20px;">Sản phẩm thuộc dự án này</h2>
                         <div class="gr-ro-hang-grid">
                             ${roHangDuAn.map(p => `
-                                <a href="../../chi-tiet-sp.html?id=${p.id}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${p.img}"></div>
+                                <a href="../../san-pham/${p.slug}/" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="../../${p.img}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
                                         <div class="gr-loc-mini" style="margin-bottom:10px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
