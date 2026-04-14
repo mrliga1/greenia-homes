@@ -12,7 +12,7 @@ if (fs.existsSync(prodsPath)) products = JSON.parse(fs.readFileSync(prodsPath, '
 
 // 2. Đọc file khuôn mẫu
 const postTemplatePath = path.join(__dirname, 'bai-viet.html');
-const prodTemplatePath = path.join(__dirname, 'san-pham.html');
+const prodTemplatePath = path.join(__dirname, 'chi-tiet-sp.html'); // <--- ĐÃ SỬA LẠI ĐÚNG FILE NÀY
 
 let postTemplate = '';
 let prodTemplate = '';
