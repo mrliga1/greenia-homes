@@ -10,8 +10,8 @@ let products = [];
 if (fs.existsSync(postsPath)) posts = JSON.parse(fs.readFileSync(postsPath, 'utf8'));
 if (fs.existsSync(prodsPath)) products = JSON.parse(fs.readFileSync(prodsPath, 'utf8'));
 
-// 2. Đọc file khuôn mẫu
-const postTemplatePath = path.join(__dirname, 'bai-viet.html');
+// 2. Đọc file khuôn mẫu (ĐÃ ĐỔI THÀNH blog.html)
+const postTemplatePath = path.join(__dirname, 'blog.html');
 const prodTemplatePath = path.join(__dirname, 'chi-tiet-sp.html');
 
 let postTemplate = '';
