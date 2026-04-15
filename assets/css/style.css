@@ -186,7 +186,7 @@ section:not(.hero-slider-section) { padding-top: 80px; }
     .main-nav.show { display: block; }
     .nav-list {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         gap: 20px;
     }
 }
