@@ -6,32 +6,26 @@
     <title>Chi Tiết Sản Phẩm | Greenia Homes</title>
     
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            // Hàm tự động thêm ../../ vào tất cả các link và ảnh trên Menu để không bị vỡ
-            const fixLinks = (html) => html.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, '$1="../../$2"');
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            let url = args[0];
+            let isLayout = false;
             
-            try {
-                // Ép tải Header và Footer trực tiếp từ thư mục gốc
-                const [header, footer, sub] = await Promise.all([
-                    fetch('../../header.html').then(r => r.ok ? r.text() : ''),
-                    fetch('../../footer.html').then(r => r.ok ? r.text() : ''),
-                    fetch('../../sub-menu.html').then(r => r.ok ? r.text() : '')
-                ]);
-                
-                if (header) document.getElementById('site-header').innerHTML = fixLinks(header);
-                if (footer) document.getElementById('site-footer').innerHTML = fixLinks(footer);
-                if (sub) {
-                    let subEl = document.getElementById('sub-menu');
-                    if(subEl) subEl.innerHTML = fixLinks(sub);
+            if (typeof url === 'string' && (url.includes('header.html') || url.includes('footer.html') || url.includes('sub-menu.html'))) {
+                if (!url.startsWith('../../')) {
+                    args[0] = '../../' + url;
                 }
-            } catch(e) { console.log('Lỗi tải menu:', e); }
-        });
-
-        // Hàm thông minh xử lý link ảnh chống vỡ cho thân bài
-        const resolveImg = (src) => {
-            if (!src) return '';
-            if (src.startsWith('http') || src.startsWith('data:')) return src;
-            return '../../' + src.replace(/^\/+/, '');
+                isLayout = true;
+            }
+            
+            const response = await originalFetch.apply(this, args);
+            
+            if (isLayout && response.ok) {
+                const text = await response.clone().text();
+                const fixedText = text.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, '$1="../../$2"');
+                return new Response(fixedText, { status: response.status, headers: response.headers });
+            }
+            return response;
         };
     </script>
 
@@ -107,6 +101,12 @@
 
     <script>
         window.GREENIA_CURRENT_PRODUCT = null;
+        
+        window.resolveImg = (src) => {
+            if (!src) return '';
+            if (src.startsWith('http') || src.startsWith('data:')) return src;
+            return '../../' + src.replace(/^\/+/, '');
+        };
 
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('product-container');
