@@ -1,34 +1,31 @@
 /* ==============================================================
-   UI.JS - BỘ NÃO ĐIỀU KHIỂN GIAO DIỆN (FINAL V8 - FIXED PATHS)
+   UI.JS - BỘ NÃO ĐIỀU KHIỂN GIAO DIỆN (FIX ABSOLUTE PATH)
 ============================================================== */
 
 // --------------------------------------------------------------
-// PHẦN 1: HỆ THỐNG ĐỊNH VỊ ĐƯỜNG DẪN VẠN NĂNG (AUTO-PATHING)
+// PHẦN 1: HỆ THỐNG TẠO ĐƯỜNG DẪN TUYỆT ĐỐI (KHÔNG BAO GIỜ LỖI)
 // --------------------------------------------------------------
-function getRootPath() {
-    let rootPath = "";
-    const pathParts = window.location.pathname.split('/').filter(p => p.length > 0);
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    const offset = isGitHubPages ? 2 : 1; 
-
-    if (pathParts.length > offset) {
-        rootPath = "../".repeat(pathParts.length - offset);
+function getBaseUrl() {
+    // Nếu đang chạy trên GitHub Pages, lấy tên Repo làm gốc
+    if (window.location.hostname.includes('github.io')) {
+        const repoName = window.location.pathname.split('/')[1];
+        return '/' + repoName + '/'; // Kết quả: /greenia-homes/
     }
-    return rootPath;
+    return '/'; // Dành cho chạy thử ở máy tính (Localhost)
 }
-const ROOT = getRootPath();
+const BASE_URL = getBaseUrl();
 
-// Hàm sửa lại link và ảnh bên trong các component HTML sau khi tải
+// Hàm sửa lại link và ảnh trong Header/Footer để luôn gọi từ gốc
 function fixLinksInHtml(html) {
     return html.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, (match, p1, p2) => {
-        return `${p1}="${ROOT}${p2}"`;
+        return `${p1}="${BASE_URL}${p2}"`;
     });
 }
 
-// Hàm dùng ở file html bên ngoài để sửa link ảnh
+// Hàm hỗ trợ sửa ảnh cho nội dung bài viết
 window.resolveImg = (src) => {
-    if (!src || src.startsWith('http') || src.startsWith('data:')) return src;
-    return ROOT + src.replace(/^\/+/, '');
+    if (!src || src.startsWith('http') || src.startsWith('data:') || src.startsWith('/')) return src;
+    return BASE_URL + src.replace(/^\/+/, '');
 };
 
 // --------------------------------------------------------------
@@ -36,7 +33,8 @@ window.resolveImg = (src) => {
 // --------------------------------------------------------------
 async function loadComponent(elementId, filePath) {
     try {
-        const response = await fetch(ROOT + filePath);
+        // Luôn luôn gọi file từ thư mục gốc (VD: /greenia-homes/components/header.html)
+        const response = await fetch(BASE_URL + filePath);
         if (!response.ok) throw new Error('Không tìm thấy file ' + filePath);
         const html = await response.text();
         const container = document.getElementById(elementId);
@@ -44,22 +42,25 @@ async function loadComponent(elementId, filePath) {
         if(container) {
             container.innerHTML = fixLinksInHtml(html);
             
-            // Bẻ lại link neo (#) trỏ về trang chủ nếu đang ở thư mục sâu
-            if (ROOT !== "") {
+            // Xử lý nút bấm neo (#) trên Menu: Ép văng về trang chủ nếu đang ở bài viết
+            const currentPath = window.location.pathname;
+            const isHomePage = currentPath === BASE_URL || currentPath.endsWith('index.html');
+            
+            if (!isHomePage) {
                 container.querySelectorAll('a').forEach(el => {
                     let href = el.getAttribute('href');
                     if (href && href.startsWith('#')) {
-                        el.setAttribute('href', ROOT + 'index.html' + href);
+                        el.setAttribute('href', BASE_URL + 'index.html' + href);
                     }
                 });
             }
         }
-    } catch (error) { console.error("Lỗi lắp ráp:", error); }
+    } catch (error) { console.error("Lỗi lắp ráp " + elementId + ":", error); }
 }
 
 async function loadSpecificMenu(containerId, menuId) {
     try {
-        const response = await fetch(ROOT + 'components/sub-menus.html');
+        const response = await fetch(BASE_URL + 'components/sub-menus.html');
         if (!response.ok) throw new Error('Không tìm thấy kho menu');
         const html = await response.text();
         const tempDiv = document.createElement('div');
@@ -69,10 +70,12 @@ async function loadSpecificMenu(containerId, menuId) {
         
         if(container && targetMenu) {
             container.innerHTML = targetMenu.innerHTML;
-            if (ROOT !== "") {
+            const currentPath = window.location.pathname;
+            const isHomePage = currentPath === BASE_URL || currentPath.endsWith('index.html');
+            if (!isHomePage) {
                 container.querySelectorAll('a').forEach(el => {
                     let href = el.getAttribute('href');
-                    if (href && href.startsWith('#')) el.setAttribute('href', ROOT + 'index.html' + href);
+                    if (href && href.startsWith('#')) el.setAttribute('href', BASE_URL + 'index.html' + href);
                 });
             }
         }
@@ -81,7 +84,7 @@ async function loadSpecificMenu(containerId, menuId) {
 
 async function loadSpecificForm(containerId, templateId, projectName) {
     try {
-        const response = await fetch(ROOT + 'components/forms.html');
+        const response = await fetch(BASE_URL + 'components/forms.html');
         if (!response.ok) throw new Error('Không tìm thấy kho form');
         const html = await response.text();
         const tempDiv = document.createElement('div');
@@ -98,7 +101,7 @@ async function loadSpecificForm(containerId, templateId, projectName) {
 }
 
 // --------------------------------------------------------------
-// PHẦN 3: CÁC HÀM HIỆU ỨNG GIAO DIỆN
+// PHẦN 3: CÁC HÀM HIỆU ỨNG GIAO DIỆN (GIỮ NGUYÊN)
 // --------------------------------------------------------------
 function initScrollEffects() {
     const threshold = window.innerHeight * 0.6;
@@ -129,7 +132,7 @@ function initHeroSlider() {
 }
 
 // --------------------------------------------------------------
-// PHẦN 4: HỆ THỐNG FORM, POPUP & TRACKING
+// PHẦN 4: HỆ THỐNG FORM, POPUP & TRACKING (GIỮ NGUYÊN)
 // --------------------------------------------------------------
 function initMasterFormsAndPopup() {
     const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
@@ -293,7 +296,7 @@ function initMasterFormsAndPopup() {
 // PHẦN 5: ĐIỂM KHỞI ĐỘNG (IGNITION SWITCH)
 // --------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    // ĐÃ SỬA LẠI ĐÚNG ĐƯỜNG DẪN GỐC CỦA BẠN (CÓ CHỮ components/)
+    // 💥 NƠI GỌI HEADER / FOOTER TUYỆT ĐỐI KHÔNG LỖI
     await loadComponent('site-header', 'components/header.html');
     await loadComponent('site-footer', 'components/footer.html');
     
