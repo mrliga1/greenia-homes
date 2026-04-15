@@ -75,10 +75,31 @@
     <script src="../../assets/js/ui.js"></script>
 
     <script>
-        // ĐÂY LÀ DÒNG QUAN TRỌNG NHẤT ĐỂ BOT BƠM DỮ LIỆU VÀO
-        window.GREENIA_CURRENT_PRODUCT = {"id":40,"type":"Bán","title":"bán nhà phố quận 2","slug":"ban-nha-pho-quan-2","cat":"ban-nha-pho-quan-2","projectCode":"an-phu-new-city","loc":"an phú","price":"15 tỷ","area":"145 m","bed":"","img":"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800","gallery":["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"],"content":"<p><strong>👉 Xem chi tiết:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/undefined/\">b&aacute;n nh&agrave; phố quận 2</a><br />\n<a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\">text</a></p>\n\n<p>&nbsp;</p>\n<div style=\"background:#f9f9f9; padding:15px; border-left:4px solid #c5a059; margin:20px 0;\"><strong>👉 Xem chi tiết:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\" style=\"color:#c5a059; font-weight:bold; text-decoration:none;\">bán nhà phố quận 2</a></div>","seoTitle":"bán nhà phố quận 2","seoDesc":"👉 Xem chi tiết: bán nhà phố quận 2...","seoKeywords":"ban-nha-pho-quan-2, bất động sản"};
+        window.GREENIA_CURRENT_PRODUCT = {"id":40,"type":"Bán","title":"bán nhà phố quận 2","slug":"ban-nha-pho-quan-2","cat":"ban-nha-pho-quan-2","projectCode":"an-phu-new-city","loc":"an phú","price":"15 tỷ","area":"145 m","bed":"","img":"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800","gallery":["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800"],"content":"<p><strong>👉 Xem chi tiết:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/undefined/\">b&aacute;n nh&agrave; phố quận 2</a><br />\n<a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\">text</a></p>\n\n<p>&nbsp;</p>\n\n<p><strong>👉 Xem chi tiết:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\">b&aacute;n nh&agrave; phố quận 2</a></p>\n","seoTitle":"bán nhà phố quận 2","seoDesc":"👉 Xem chi tiết: bán nhà phố quận 2...","seoKeywords":"ban-nha-pho-quan-2, bất động sản"};
+
+        // BỘ CÔNG CỤ SỬA LỖI MENU VÀ FOOTER DÀNH CHO THƯ MỤC SÂU
+        async function loadRootLayout() {
+            try {
+                const fixPath = (html) => html.replace(/(href|src)="(?!\w+:|#|data:|\/)([^"]+)"/g, '$1="../../$2"');
+                
+                const [headRes, footRes] = await Promise.all([
+                    fetch('../../header.html'), fetch('../../footer.html')
+                ]);
+                
+                if(headRes.ok) document.getElementById('site-header').innerHTML = fixPath(await headRes.text());
+                if(footRes.ok) document.getElementById('site-footer').innerHTML = fixPath(await footRes.text());
+                
+                const subRes = await fetch('../../sub-menu.html').catch(()=>null);
+                if(subRes && subRes.ok) {
+                    const subEl = document.getElementById('sub-menu');
+                    if(subEl) subEl.innerHTML = fixPath(await subRes.text());
+                }
+            } catch(e) { console.log('Lỗi tải Menu:', e); }
+        }
 
         document.addEventListener("DOMContentLoaded", async function() {
+            loadRootLayout();
+
             const container = document.getElementById('product-container');
             const currentProd = window.GREENIA_CURRENT_PRODUCT;
 
@@ -87,7 +108,6 @@
                 return;
             }
 
-            // XỬ LÝ HÌNH ẢNH (Thêm ../../ vì file HTML nằm sâu 2 cấp)
             let galleryHTML = '';
             if (currentProd.gallery && currentProd.gallery.length > 0) {
                 currentProd.gallery.forEach((imgSrc, index) => {
@@ -98,7 +118,6 @@
                 galleryHTML = `<img src="../../${currentProd.img}" class="ct-thumb active">`;
             }
 
-            // XỬ LÝ SẢN PHẨM LIÊN QUAN
             let relatedHTML = '';
             try {
                 const res = await fetch('../../assets/data/products.json');
@@ -134,10 +153,9 @@
                     </div>`;
                 }
             } catch(e) {
-                console.log("Không tải được dữ liệu sản phẩm liên quan");
+                console.log("Không tải được dữ liệu");
             }
 
-            // BƠM NỘI DUNG RA GIAO DIỆN
             container.innerHTML = `
                 <div class="ct-breadcrumb">
                     <a href="../../index.html">Trang chủ</a> / <a href="../../san-pham.html">Sản phẩm</a> / ${currentProd.catName || currentProd.cat}
