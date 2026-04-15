@@ -3,14 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <base href="../../">
-    
     <title>Bài viết | Greenia Homes</title>
+    
+    <script>
+        // 1. Chặn công nghệ cũ (jQuery / XMLHttpRequest)
+        const origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url) {
+            if (typeof url === 'string' && (url.endsWith('header.html') || url.endsWith('footer.html') || url.endsWith('sub-menu.html'))) {
+                url = '../../' + url.split('/').pop();
+            }
+            origOpen.apply(this, arguments);
+        };
+
+        // 2. Chặn công nghệ mới (Fetch API)
+        const origFetch = window.fetch;
+        window.fetch = async function(...args) {
+            let url = args[0];
+            if (typeof url === 'string' && (url.endsWith('header.html') || url.endsWith('footer.html') || url.endsWith('sub-menu.html'))) {
+                args[0] = '../../' + url.split('/').pop();
+            }
+            return origFetch.apply(this, args);
+        };
+
+        // 3. Tự động nắn lại link sau khi Menu hiện ra (chạy lặp 3 lần để chắc chắn)
+        const fixMenuLinks = () => {
+            document.querySelectorAll('#site-header a, #site-footer a, #sub-menu a, #site-header img, #site-footer img').forEach(el => {
+                let href = el.getAttribute('href');
+                if (href) {
+                    if (href.startsWith('#')) {
+                        el.setAttribute('href', '../../index.html' + href); // Sửa link neo trỏ về trang chủ
+                    } else if (!href.startsWith('http') && !href.startsWith('../../') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('javascript:')) {
+                        el.setAttribute('href', '../../' + href.replace(/^\/+/, ''));
+                    }
+                }
+                let src = el.getAttribute('src');
+                if (src && !src.startsWith('http') && !src.startsWith('../../') && !src.startsWith('data:')) {
+                    el.setAttribute('src', '../../' + src.replace(/^\/+/, ''));
+                }
+            });
+        };
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(fixMenuLinks, 300);
+            setTimeout(fixMenuLinks, 1000);
+            setTimeout(fixMenuLinks, 2500);
+        });
+
+        // Hàm sửa link ảnh cho thân bài
+        window.resolveImg = (src) => {
+            if (!src) return '';
+            if (src.startsWith('http') || src.startsWith('data:')) return src;
+            return '../../' + src.replace(/^\/+/, '');
+        };
+    </script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
         #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
@@ -95,7 +144,7 @@
 
     <div id="site-footer"></div>
     
-    <script src="assets/js/ui.js"></script>
+    <script src="../../assets/js/ui.js"></script>
 
     <script>
         window.GREENIA_CURRENT_POST = null;
@@ -110,25 +159,24 @@
             }
 
             try {
-                const postRes = await fetch('assets/data/posts.json');
+                const postRes = await fetch('../../assets/data/posts.json');
                 const posts = await postRes.json();
-                
-                const prodRes = await fetch('assets/data/products.json');
+                const prodRes = await fetch('../../assets/data/products.json');
                 const prods = await prodRes.json();
 
                 let sidebarHTML = ''; let relatedNewsHTML = '';
                 
                 const otherPosts = posts.filter(p => p.id != post.id).slice(0, 5);
                 otherPosts.forEach(p => {
-                    relatedNewsHTML += `<a href="blog/${p.slug}/" style="display:block; color:#888; text-decoration:none; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="font-size:10px; color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
+                    relatedNewsHTML += `<a href="../../blog/${p.slug}/" style="display:block; color:#888; text-decoration:none; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="font-size:10px; color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
                 });
 
                 const randomProds = [...prods].sort(() => 0.5 - Math.random()).slice(0, 5);
                 randomProds.forEach(p => {
                     const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
                     sidebarHTML += `
-                        <a href="san-pham/${p.slug}/" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${p.img}"></div>
+                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${resolveImg(p.img)}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
                                 <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -145,8 +193,8 @@
                         <h2 style="color:#c5a059; font-size: 24px; margin-bottom: 20px;">Sản phẩm thuộc dự án này</h2>
                         <div class="gr-ro-hang-grid">
                             ${roHangDuAn.map(p => `
-                                <a href="san-pham/${p.slug}/" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${p.img}"></div>
+                                <a href="../../san-pham/${p.slug}/" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${resolveImg(p.img)}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
                                         <div class="gr-loc-mini" style="margin-bottom:10px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -163,8 +211,8 @@
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
-                            <a href="index.html">Trang chủ</a> <span class="sep">/</span>
-                            <a href="danh-muc.html">${post.cat}</a> <span class="sep">/</span>
+                            <a href="../../index.html">Trang chủ</a> <span class="sep">/</span>
+                            <a href="../../danh-muc.html">${post.cat}</a> <span class="sep">/</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
