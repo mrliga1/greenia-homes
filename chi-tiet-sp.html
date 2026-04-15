@@ -4,6 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Sản Phẩm | Greenia Homes</title>
+    
+    <script>
+        const originalFetch = window.fetch;
+        window.fetch = async function() {
+            let url = arguments[0];
+            if (typeof url === 'string') {
+                if (url === 'header.html' || url === 'footer.html' || url === 'sub-menu.html') {
+                    arguments[0] = '../../' + url;
+                }
+            }
+            return originalFetch.apply(this, arguments);
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.querySelectorAll('#site-header a, #site-footer a, #sub-menu a, #site-header img, #site-footer img').forEach(el => {
+                    ['href', 'src'].forEach(attr => {
+                        let val = el.getAttribute(attr);
+                        if (val && !val.startsWith('http') && !val.startsWith('../../') && !val.startsWith('#') && !val.startsWith('mailto:') && !val.startsWith('tel:') && !val.startsWith('javascript:')) {
+                            el.setAttribute(attr, '../../' + val.replace(/^\/+/, ''));
+                        }
+                    });
+                });
+            }, 1000);
+        });
+
+        const resolveImg = (src) => {
+            if (!src) return '';
+            if (src.startsWith('http') || src.startsWith('data:')) return src;
+            return '../../' + src.replace(/^\/+/, '');
+        };
+    </script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
@@ -77,29 +110,7 @@
     <script>
         window.GREENIA_CURRENT_PRODUCT = null;
 
-        // BỘ CÔNG CỤ SỬA LỖI MENU VÀ FOOTER DÀNH CHO THƯ MỤC SÂU
-        async function loadRootLayout() {
-            try {
-                const fixPath = (html) => html.replace(/(href|src)="(?!\w+:|#|data:|\/)([^"]+)"/g, '$1="../../$2"');
-                
-                const [headRes, footRes] = await Promise.all([
-                    fetch('../../header.html'), fetch('../../footer.html')
-                ]);
-                
-                if(headRes.ok) document.getElementById('site-header').innerHTML = fixPath(await headRes.text());
-                if(footRes.ok) document.getElementById('site-footer').innerHTML = fixPath(await footRes.text());
-                
-                const subRes = await fetch('../../sub-menu.html').catch(()=>null);
-                if(subRes && subRes.ok) {
-                    const subEl = document.getElementById('sub-menu');
-                    if(subEl) subEl.innerHTML = fixPath(await subRes.text());
-                }
-            } catch(e) { console.log('Lỗi tải Menu:', e); }
-        }
-
         document.addEventListener("DOMContentLoaded", async function() {
-            loadRootLayout();
-
             const container = document.getElementById('product-container');
             const currentProd = window.GREENIA_CURRENT_PRODUCT;
 
@@ -112,10 +123,10 @@
             if (currentProd.gallery && currentProd.gallery.length > 0) {
                 currentProd.gallery.forEach((imgSrc, index) => {
                     const activeClass = index === 0 ? 'active' : '';
-                    galleryHTML += `<img src="../../${imgSrc}" class="ct-thumb ${activeClass}" onclick="changeMainImage('../../${imgSrc}', this)">`;
+                    galleryHTML += `<img src="${resolveImg(imgSrc)}" class="ct-thumb ${activeClass}" onclick="changeMainImage('${resolveImg(imgSrc)}', this)">`;
                 });
             } else {
-                galleryHTML = `<img src="../../${currentProd.img}" class="ct-thumb active">`;
+                galleryHTML = `<img src="${resolveImg(currentProd.img)}" class="ct-thumb active">`;
             }
 
             let relatedHTML = '';
@@ -141,7 +152,7 @@
                                 <a href="../../san-pham/${pSlug}/" class="gr-card">
                                     <div class="gr-thumb-box">
                                         <span style="position:absolute; top:0; left:0; background:${p.type==='Bán'?'#ff4d4f':'#00b894'}; color:#fff; font-size:10px; font-weight:700; padding:4px 10px; border-bottom-right-radius:6px; z-index:5;">${p.type}</span>
-                                        <img src="../../${p.img}">
+                                        <img src="${resolveImg(p.img)}">
                                     </div>
                                     <div class="gr-body">
                                         <h3 class="gr-tit">${p.title}</h3>
@@ -152,9 +163,7 @@
                         </div>
                     </div>`;
                 }
-            } catch(e) {
-                console.log("Không tải được dữ liệu");
-            }
+            } catch(e) { console.log("Không tải được dữ liệu sản phẩm liên quan"); }
 
             container.innerHTML = `
                 <div class="ct-breadcrumb">
@@ -168,7 +177,7 @@
 
                 <div class="ct-main-split">
                     <div class="ct-gallery-col">
-                        <img src="../../${currentProd.img}" id="mainImage" class="ct-main-img">
+                        <img src="${resolveImg(currentProd.img)}" id="mainImage" class="ct-main-img">
                         <div class="ct-thumb-list">${galleryHTML}</div>
                     </div>
 
