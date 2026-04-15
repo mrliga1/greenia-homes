@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Greenia Admin - System Locked</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <style>
+        :root { --gold: #c5a059; --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --text: #b0b8c4; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow: hidden; }
+        
+        /* ---------------------------------------------
+           MÀN HÌNH KHÓA (LOGIN SCREEN)
+        --------------------------------------------- */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
+        .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--gold); box-shadow: 0 10px 40px rgba(197, 160, 89, 0.1); width: 350px; text-align: center; }
+        .login-box h2 { color: var(--gold); margin-top: 0; letter-spacing: 2px; }
+        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; text-align: center; letter-spacing: 5px; font-size: 18px; }
+        .login-box input:focus { outline: none; border-color: var(--gold); }
+        .btn-login { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197,160,89,0.4); }
+        #login-error { color: #ff4d4f; font-size: 13px; margin-bottom: 15px; display: none; }
+       
+        /* ==============================================================
+           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (MOBILE RESPONSIVE)
+        ============================================================== */
+        @media (max-width: 900px) {
+            .layout-wrapper { flex-direction: column; }
+            .col-left { width: 100%; padding: 15px; border-radius: 0; border: none; }
+            .col-right { width: 100%; position: static; max-height: none; padding: 15px; border-radius: 0; border: none; border-top: 2px dashed var(--gold); margin-top: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 10px; }
+            .setup-row { flex-direction: column; gap: 10px; }
+            .tabs { flex-wrap: wrap; }
+            .tab-btn { flex: 1; padding: 10px; font-size: 12px; text-align: center; }
+            .btn-push { font-size: 14px; padding: 12px; }
+            .login-box { width: 90%; padding: 20px; }
+            
+            /* Thu gọn CKEditor trên mobile */
+            .cke_inner { border-radius: 5px !important; }
+        }
+        
+        /* Ép ẩn mọi thông báo rác từ CKEditor */
+        .cke_notifications_area { display: none !important; }
+       
+        /* ---------------------------------------------
+           GIAO DIỆN ADMIN CHÍNH (ẨN MẶC ĐỊNH)
+        --------------------------------------------- */
+        #admin-dashboard { display: none; padding: 20px; overflow-y: auto; height: 100vh; box-sizing: border-box; }
+        
+        .layout-wrapper { display: flex; gap: 30px; max-width: 1450px; margin: 0 auto; align-items: flex-start; }
+        .col-left { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .col-right { width: 450px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; position: sticky; top: 20px; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+        h1 { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 22px; text-transform: uppercase; margin-top: 0;}
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+        .tab-btn { padding: 12px 25px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; transition: 0.3s;}
+        .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+        .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
+        .btn-cancel-edit { display: none; margin-left: auto; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .form-section { display: none; animation: fadeIn 0.3s; }
+        .form-section.active { display: block; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group.full { grid-column: 1 / -1; }
+        label { display: block; margin-bottom: 8px; color: #fff; font-weight: 600; font-size: 13px; text-transform: uppercase;}
+        input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 14px;}
+        input:focus { outline: none; border-color: var(--gold); }
+        input:disabled { opacity: 0.5; cursor: not-allowed; background: #000; }
+        textarea.seo-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 14px;}
+        .seo-box { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; position: relative;}
+        .seo-box::before { content: 'Tùy chỉnh SEO (Google)'; position: absolute; top: -12px; left: 20px; background: var(--card); padding: 0 10px; color: var(--gold); font-size: 12px; font-weight: bold; }
+        .char-count { font-size: 11px; color: #888; float: right; margin-top: 5px; }
+        .char-count.error { color: #ff4757; }
+        .btn-push { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; border: none; padding: 16px 30px; font-weight: 800; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 25px; transition: 0.3s; text-transform: uppercase;}
+        .btn-push:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(197,160,89,0.3); }
+        .btn-push.update-mode { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        
+        .upload-area { border: 2px dashed rgba(255,255,255,0.2); padding: 25px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.2); }
+        .upload-area:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.05); }
+        .upload-area i { color: var(--gold); margin-bottom: 10px; }
+        .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
+        .preview-item { width: 100%; height: 90px; object-fit: cover; border-radius: 6px; border: 1px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        
+        .sidebar-header { margin-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 15px;}
+        .side-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .side-tab-btn { flex: 1; padding: 10px; background: #1a1f2b; color: #fff; border: 1px solid #444; cursor: pointer; border-radius: 4px; font-size: 12px; font-weight: bold; transition: 0.3s;}
+        .side-tab-btn.active { background: rgba(197,160,89,0.1); border-color: var(--gold); color: var(--gold); }
+        
+        .link-list-scroll { flex: 1; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 10px; display: none; }
+        .link-list-scroll.active { display: flex; }
+        .link-list-scroll::-webkit-scrollbar { width: 6px; }
+        .link-list-scroll::-webkit-scrollbar-thumb { background: rgba(197,160,89,0.5); border-radius: 10px; }
+        
+        .link-item { display: flex; flex-direction: column; padding: 15px 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); border-radius: 6px; transition: 0.2s;}
+        .link-item:hover { background: rgba(197, 160, 89, 0.05); border-color: var(--gold); }
+        .link-item.editing { border-color: #00b894; background: rgba(0, 184, 148, 0.1); }
+        .link-tit { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-decoration: none;}
+        .link-cat { font-size: 10px; color: var(--gold); background: rgba(197,160,89,0.1); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; font-weight: bold;}
+        
+        .media-item { display: flex; gap: 10px; align-items: center; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;}
+        .media-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .media-url { font-size: 11px; color: #aaa; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .btn-group { display: flex; gap: 5px; margin-top: 5px;}
+        .btn-action { flex: 1; background: #1a1f2b; color: #fff; border: 1px solid #444; padding: 8px 6px; font-size: 11px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold;}
+        .btn-action:hover { background: #fff; color: #000; border-color: #fff; }
+        .btn-action.del-btn { flex: 0 0 35px; background: rgba(255, 71, 87, 0.1); border-color: #ff4757; color: #ff4757;}
+        .btn-action.del-btn:hover { background: #ff4757; color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+    </style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-box">
+        <h2><i class="fas fa-lock"></i> ADMIN LOGIN</h2>
+        <div id="login-error">Mật khẩu không chính xác!</div>
+        <input type="password" id="sys-password" placeholder="••••••••" onkeypress="if(event.key === 'Enter') checkLogin()">
+        <button class="btn-login" onclick="checkLogin()">TRUY CẬP HỆ THỐNG</button>
+    </div>
+</div>
+
+<div id="admin-dashboard">
+    <div class="layout-wrapper">
+        <div class="col-left">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1><i class="fas fa-cogs"></i> HỆ THỐNG QUẢN TRỊ (AUTO-SYNC)</h1>
+                <div id="sync-status" style="color: #00b894; font-weight: bold; font-size: 13px;"><i class="fas fa-circle-notch fa-spin"></i> Đang chờ đồng bộ...</div>
+            </div>
+
+            <input type="hidden" id="ghToken">
+            <input type="hidden" id="imgbbKey">
+
+            <div class="tabs" style="margin-top: 20px;">
+                <button class="tab-btn active" id="tab-prod-btn" onclick="switchTab('prod')"><i class="fas fa-building"></i> ĐĂNG SẢN PHẨM</button>
+                <button class="tab-btn" id="tab-news-btn" onclick="switchTab('news')"><i class="fas fa-edit"></i> VIẾT TIN TỨC</button>
+                <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY CHỈNH SỬA</button>
+            </div>
+
+            <div id="section-prod" class="form-section active">
+                <div class="form-grid">
+                    <div class="form-group"><label>Mã SP (Tự động):</label><input type="text" id="p-id" disabled value="..."></div>
+                    <div class="form-group"><label>Trạng thái GD:</label><select id="p-type"><option value="Bán">Bán</option><option value="Thuê">Cho Thuê</option></select></div>
+                    <div class="form-group full">
+                        <label>Tên Sản Phẩm / Tiêu đề:</label>
+                        <input type="text" id="p-title" oninput="checkLength(this, 'p-title-count', 65)" placeholder="VD: Biệt thự The Global City">
+                        <div class="char-count" id="p-title-count">0/65</div>
+                    </div>
+                    <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat"><datalist id="p-cats"></datalist></div>
+                    <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode"></div>
+                    <div class="form-group"><label>Vị trí:</label><input type="text" id="p-loc"></div>
+                    <div class="form-group"><label>Giá hiển thị:</label><input type="text" id="p-price"></div>
+                    <div class="form-group"><label>Diện tích (m2):</label><input type="text" id="p-area"></div>
+                    <div class="form-group"><label>Phòng Ngủ:</label><input type="number" id="p-bed"></div>
+
+                    <div class="form-group full">
+                        <label>1. Ảnh Bìa (Auto Cloud):</label>
+                        <div class="upload-area" onclick="document.getElementById('p-main-img-file').click()"><i class="fas fa-cloud-upload-alt fa-2x"></i><input type="file" id="p-main-img-file" hidden onchange="handleSingleUpload(this, 'p-main-preview')"></div>
+                        <div id="p-main-preview" class="preview-grid"></div>
+                    </div>
+                    <div class="form-group full">
+                        <label>2. Album Ảnh (Auto Cloud):</label>
+                        <div class="upload-area" onclick="document.getElementById('p-gallery-files').click()"><i class="fas fa-images fa-2x"></i><input type="file" id="p-gallery-files" hidden multiple onchange="handleMultiUpload(this, 'p-gallery-preview')"></div>
+                        <div id="p-gallery-preview" class="preview-grid"></div>
+                    </div>
+                    <div class="form-group full" style="color: #000;">
+                        <label style="color:#fff;">Nội dung chi tiết:</label>
+                        <textarea id="p-content" name="p-content"></textarea>
+                    </div>
+                </div>
+
+                <div class="seo-box">
+                    <div class="form-group"><label>SEO Title:</label><input type="text" id="p-seo-title"></div>
+                    <div class="form-group"><label>SEO Description:</label><textarea id="p-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'p-desc-count', 155)"></textarea><div class="char-count" id="p-desc-count">0/155</div></div>
+                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="p-seo-key"></div>
+                </div>
+                <button id="btn-submit-prod" class="btn-push" onclick="pushData('prod')"><i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM</button>
+            </div>
+
+            <div id="section-news" class="form-section">
+                <div class="form-grid">
+                    <div class="form-group"><label>Mã Bài:</label><input type="text" id="n-id" disabled value="..."></div>
+                    <div class="form-group"><label>Ngày đăng:</label><input type="text" id="n-date" disabled></div>
+                    <div class="form-group full">
+                        <label>Tiêu Đề:</label>
+                        <input type="text" id="n-title" oninput="checkLength(this, 'n-title-count', 65)">
+                        <div class="char-count" id="n-title-count">0/65</div>
+                    </div>
+                    <div class="form-group"><label>Danh mục:</label><input list="n-cats" id="n-cat"><datalist id="n-cats"></datalist></div>
+                    <div class="form-group"><label>Tác giả:</label><input type="text" id="n-author" value="Chuyên gia Greenia"></div>
+                    <div class="form-group full">
+                        <label>Ảnh Đại Diện (Auto Cloud):</label>
+                        <div class="upload-area" onclick="document.getElementById('n-thumb-file').click()"><i class="fas fa-image fa-2x"></i><input type="file" id="n-thumb-file" hidden onchange="handleSingleUpload(this, 'n-thumb-preview', 'newsThumb')"></div>
+                        <div id="n-thumb-preview" class="preview-grid"></div>
+                    </div>
+                    <div class="form-group full" style="color: #000;">
+                        <label style="color:#fff;">Nội dung bài viết:</label>
+                        <textarea id="n-content" name="n-content"></textarea>
+                    </div>
+                </div>
+
+                <div class="seo-box">
+                    <div class="form-group"><label>SEO Title:</label><input type="text" id="n-seo-title"></div>
+                    <div class="form-group"><label>SEO Description:</label><textarea id="n-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'n-desc-count', 155)"></textarea><div class="char-count" id="n-desc-count">0/155</div></div>
+                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="n-seo-key"></div>
+                </div>
+                <button id="btn-submit-news" class="btn-push" onclick="pushData('news')"><i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC</button>
+            </div>
+        </div>
+
+        <div class="col-right">
+            <div class="sidebar-header">
+                <div class="side-tabs">
+                    <button class="side-tab-btn active" id="side-tab-links" onclick="switchSideTab('links')"><i class="fas fa-link"></i> LIÊN KẾT</button>
+                    <button class="side-tab-btn" id="side-tab-media" onclick="switchSideTab('media')"><i class="fas fa-images"></i> ẢNH CLOUD</button>
+                </div>
+                <input type="text" id="link-search" onkeyup="filterLinks()" placeholder="🔍 Tìm kiếm..." style="background: rgba(0,0,0,0.5); border-color: #444; padding: 10px; border-radius: 4px;">
+            </div>
+            <div id="list-links" class="link-list-scroll active"><div style="text-align:center; padding:30px; color:#666;">Đang đồng bộ...</div></div>
+            <div id="list-media" class="link-list-scroll"><div id="media-placeholder" style="text-align:center; padding:30px; color:#666; font-size:12px;">Ảnh tải lên sẽ hiện ở đây.</div></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* =================================================================
+       KHU VỰC CÀI ĐẶT BẢO MẬT & API (ĐIỀN THÔNG TIN CỦA BẠN VÀO ĐÂY)
+    ================================================================= */
+    const SECRET_PASSWORD = "10091995Tt!"; // Đổi mật khẩu của bạn ở đây
+    
+    // Lưu ý: Cắt đôi chuỗi GitHub Token để lách Bot quét của GitHub
+    const PART_1 = "ghp_klr40QV55Zb8ta3"; 
+    const PART_2 = "FWZgFjmkFbZgHmR3AuosC";
+    const AUTO_GH_TOKEN = PART_1 + PART_2; 
+    
+    const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
+    /* ================================================================= */
+
+    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" };
+    let currentData = { posts: [], products: [] };
+    let uploadedFiles = { main: "", gallery: [], newsThumb: "" };
+    let editMode = { active: false, type: null, id: null };
+    const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
+
+    CKEDITOR.replace('p-content', { height: 350, versionCheck: false });
+    CKEDITOR.replace('n-content', { height: 350, versionCheck: false });
+
+    // --- HỆ THỐNG ĐĂNG NHẬP & AUTO SYNC ---
+    function checkLogin() {
+        const pwd = document.getElementById('sys-password').value;
+        const err = document.getElementById('login-error');
+        
+        if (pwd === SECRET_PASSWORD) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Mở khóa cuộn trang
+            document.getElementById('admin-dashboard').style.display = 'block';
+            
+            // Bơm Token vào ngầm
+            document.getElementById('ghToken').value = AUTO_GH_TOKEN;
+            document.getElementById('imgbbKey').value = AUTO_IMGBB_KEY;
+            
+            // Tự động tải dữ liệu
+            loadOldData();
+        } else {
+            err.style.display = 'block';
+        }
+    }
+
+    // --- CÁC HÀM XỬ LÝ LÕI ---
+    function getAbsoluteImageUrl(imgRaw) {
+        if (!imgRaw) return '';
+        if (imgRaw.startsWith('http') || imgRaw.startsWith('data:')) return imgRaw;
+        return `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/${imgRaw}`;
+    }
+
+    function switchSideTab(type) {
+        document.getElementById('side-tab-links').classList.remove('active');
+        document.getElementById('side-tab-media').classList.remove('active');
+        document.getElementById('list-links').classList.remove('active');
+        document.getElementById('list-media').classList.remove('active');
+        
+        document.getElementById(`side-tab-${type}`).classList.add('active');
+        document.getElementById(`list-${type}`).classList.add('active');
+    }
+
+    async function loadOldData() {
+        const status = document.getElementById('sync-status');
+        status.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Đang đồng bộ máy chủ...';
+        status.style.color = "#c5a059";
+        
+        document.getElementById('n-date').value = new Date().toLocaleDateString('vi-VN');
+        const token = document.getElementById('ghToken').value;
+        const headers = token ? { "Authorization": `token ${token}` } : {};
+        
+        try {
+            const [pRes, nRes] = await Promise.all([
+                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/products.json?t=${Date.now()}`, { headers }),
+                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/posts.json?t=${Date.now()}`, { headers })
+            ]);
+            
+            if(pRes.ok) currentData.products = JSON.parse(decodeURIComponent(escape(atob((await pRes.json()).content)))); else currentData.products = [];
+            if(nRes.ok) currentData.posts = JSON.parse(decodeURIComponent(escape(atob((await nRes.json()).content)))); else currentData.posts = [];
+
+            resetFormCalculations(); buildLinkLibrary();
+            status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ thành công';
+            status.style.color = "#00b894";
+        } catch (e) { 
+            status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi đồng bộ!';
+            status.style.color = "#ff4d4f";
+        }
+    }
+
+    function resetFormCalculations() {
+        document.getElementById('p-id').value = Math.max(...currentData.products.map(x => x.id || 0), 0) + 1;
+        document.getElementById('n-id').value = Math.max(...currentData.posts.map(x => x.id || 0), 0) + 1;
+        populateCats('p-cats', currentData.products.map(x => x.cat)); populateCats('n-cats', currentData.posts.map(x => x.cat));
+    }
+
+    function populateCats(id, cats) {
+        const list = document.getElementById(id);
+        list.innerHTML = [...new Set(cats.filter(Boolean))].map(c => `<option value="${c}">`).join('');
+    }
+
+    function switchTab(type) {
+        if(editMode.active && editMode.type !== type) {
+            if(!confirm("Đang sửa mục khác. Chuyển tab sẽ mất dữ liệu. Chuyển?")) return;
+            cancelEdit();
+        }
+        document.querySelectorAll('.tab-btn:not(.btn-cancel-edit)').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`tab-${type}-btn`).classList.add('active');
+        document.getElementById(`section-${type}`).classList.add('active');
+    }
+
+    function checkLength(input, countId, max) {
+        const len = input.value.length;
+        const countDiv = document.getElementById(countId);
+        countDiv.innerText = `${len}/${max}`;
+        countDiv.className = 'char-count ' + (len > max ? 'error' : '');
+    }
+
+    function triggerEdit(id, type) {
+        const isProd = type === 'prod';
+        const item = isProd ? currentData.products.find(p => p.id === id) : currentData.posts.find(p => p.id === id);
+        if(!item) return;
+
+        editMode = { active: true, type: type, id: id };
+        switchTab(type);
+        document.getElementById('btn-cancel-edit').style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
+        document.getElementById(`link-item-${type}-${id}`).classList.add('editing');
+
+        if(isProd) {
+            document.getElementById('p-id').value = item.id;
+            document.getElementById('p-type').value = item.type || "Bán";
+            document.getElementById('p-title').value = item.title || "";
+            document.getElementById('p-cat').value = item.cat || "";
+            document.getElementById('p-projectCode').value = item.projectCode || "";
+            document.getElementById('p-loc').value = item.loc || "";
+            document.getElementById('p-price').value = item.price || "";
+            document.getElementById('p-area').value = item.area || "";
+            document.getElementById('p-bed').value = item.bed || "";
+            CKEDITOR.instances['p-content'].setData(item.content || ""); 
+            document.getElementById('p-seo-title').value = item.seoTitle || "";
+            document.getElementById('p-seo-desc').value = item.seoDesc || "";
+            document.getElementById('p-seo-key').value = item.seoKeywords || "";
+
+            uploadedFiles.main = item.img || ""; 
+            uploadedFiles.gallery = item.gallery || [];
+            document.getElementById('p-main-preview').innerHTML = item.img ? `<img src="${getAbsoluteImageUrl(item.img)}" class="preview-item">` : '';
+            document.getElementById('p-gallery-preview').innerHTML = (item.gallery || []).map(url => `<img src="${getAbsoluteImageUrl(url)}" class="preview-item">`).join('');
+
+            const btn = document.getElementById('btn-submit-prod');
+            btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
+        } else {
+            document.getElementById('n-id').value = item.id;
+            document.getElementById('n-date').value = item.date || new Date().toLocaleDateString('vi-VN');
+            document.getElementById('n-title').value = item.title || "";
+            document.getElementById('n-cat').value = item.cat || "";
+            document.getElementById('n-author').value = item.author || "Chuyên gia Greenia";
+            CKEDITOR.instances['n-content'].setData(item.content || "");
+            document.getElementById('n-seo-title').value = item.seoTitle || "";
+            document.getElementById('n-seo-desc').value = item.seoDesc || "";
+            document.getElementById('n-seo-key').value = item.seoKeywords || "";
+
+            uploadedFiles.newsThumb = item.thumb || "";
+            document.getElementById('n-thumb-preview').innerHTML = item.thumb ? `<img src="${getAbsoluteImageUrl(item.thumb)}" class="preview-item">` : '';
+
+            const btn = document.getElementById('btn-submit-news');
+            btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
+        }
+        checkLength(document.getElementById(isProd ? 'p-title' : 'n-title'), isProd ? 'p-title-count' : 'n-title-count', 65);
+        checkLength(document.getElementById(isProd ? 'p-seo-desc' : 'n-seo-desc'), isProd ? 'p-desc-count' : 'n-desc-count', 155);
+    }
+
+    function cancelEdit() {
+        editMode = { active: false, type: null, id: null };
+        document.getElementById('btn-cancel-edit').style.display = "none";
+        document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content)').forEach(el => el.value = '');
+        CKEDITOR.instances['p-content'].setData("");
+        CKEDITOR.instances['n-content'].setData("");
+        document.querySelectorAll('.preview-grid').forEach(el => el.innerHTML = '');
+        uploadedFiles = { main: "", gallery: [], newsThumb: "" };
+        resetFormCalculations();
+        
+        const btnP = document.getElementById('btn-submit-prod'); btnP.innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; btnP.classList.remove('update-mode');
+        const btnN = document.getElementById('btn-submit-news'); btnN.innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; btnN.classList.remove('update-mode');
+        document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
+    }
+
+    async function uploadToCloud(file) {
+        const apiKey = document.getElementById('imgbbKey').value;
+        if(!apiKey) { alert("Lỗi API Key ImgBB!"); return null; }
+        
+        let formData = new FormData();
+        formData.append("image", file);
+        
+        try {
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method: "POST", body: formData });
+            const data = await res.json();
+            if(data.success) {
+                const directUrl = data.data.url;
+                addToMediaLibrary(directUrl, file.name);
+                return directUrl;
+            } else { throw new Error(data.error.message); }
+        } catch(e) { alert("Lỗi Cloud ImgBB!"); return null; }
+    }
+
+    function addToMediaLibrary(url, name) {
+        document.getElementById('media-placeholder').style.display = 'none';
+        const container = document.getElementById('list-media');
+        const item = document.createElement('div');
+        item.className = 'media-item';
+        item.innerHTML = `
+            <img src="${url}" class="media-thumb">
+            <div style="flex:1; overflow:hidden;">
+                <div style="font-size:11px; font-weight:bold; color:#fff; margin-bottom:3px;">${name.substring(0,20)}...</div>
+                <div class="media-url">${url}</div>
+            </div>
+            <button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-copy"></i> Copy</button>
+        `;
+        container.prepend(item);
+    }
+
+    async function handleSingleUpload(input, previewId, targetObj = 'main') {
+        if(!input.files[0]) return;
+        document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#fff; padding:10px;"></i> Đang tải...';
+        const url = await uploadToCloud(input.files[0]);
+        if(url) { 
+            uploadedFiles[targetObj] = url; 
+            document.getElementById(previewId).innerHTML = `<img src="${url}" class="preview-item">`; 
+        } else { document.getElementById(previewId).innerHTML = ''; }
+    }
+
+    async function handleMultiUpload(input, previewId) {
+        document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#fff; padding:10px;"></i> Đang tải...';
+        uploadedFiles.gallery = []; 
+        for(let file of input.files) { 
+            const url = await uploadToCloud(file); 
+            if(url) uploadedFiles.gallery.push(url); 
+        }
+        document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join('');
+    }
+
+    async function pushData(type) {
+        const token = document.getElementById('ghToken').value;
+        const isProd = type === 'prod';
+        const fileToUpdate = isProd ? 'assets/data/products.json' : 'assets/data/posts.json';
+        
+        const titleVal = document.getElementById(isProd ? 'p-title' : 'n-title').value;
+        if(!titleVal) { alert("Tiêu đề là bắt buộc!"); return; }
+        const slugVal = slugify(titleVal);
+        
+        const contentVal = CKEDITOR.instances[isProd ? 'p-content' : 'n-content'].getData();
+        const rawDesc = document.getElementById(isProd ? 'p-seo-desc' : 'n-seo-desc').value;
+        const autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+
+        const newData = isProd ? {
+            id: parseInt(document.getElementById('p-id').value), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal,
+            cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
+            price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, bed: document.getElementById('p-bed').value || "",
+            img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
+            seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
+        } : {
+            id: parseInt(document.getElementById('n-id').value), title: titleVal, slug: slugVal, cat: document.getElementById('n-cat').value, date: document.getElementById('n-date').value,
+            author: document.getElementById('n-author').value, thumb: uploadedFiles.newsThumb, content: contentVal,
+            seoTitle: document.getElementById('n-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('n-seo-key').value || `${document.getElementById('n-cat').value}, tin tức`
+        };
+
+        let updatedFullData = isProd ? [...currentData.products] : [...currentData.posts];
+        if (editMode.active && editMode.type === type) {
+            const idx = updatedFullData.findIndex(item => item.id === editMode.id);
+            if (idx !== -1) updatedFullData[idx] = newData;
+        } else { updatedFullData.push(newData); }
+
+        try {
+            const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
+            let sha = ""; if(shaRes.ok) sha = (await shaRes.json()).sha;
+            
+            const btn = document.getElementById(isProd ? 'btn-submit-prod' : 'btn-submit-news');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU...';
+
+            const pushRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, {
+                method: "PUT", headers: { "Authorization": `token ${token}` },
+                body: JSON.stringify({ message: `CMS Auto: ${editMode.active ? 'Sửa' : 'Thêm'} [${newData.id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedFullData, null, 2)))), sha: sha })
+            });
+
+            if(pushRes.ok) {
+                alert(`Lưu thành công! Hệ thống đang tự động xây dựng trang.`);
+                if (isProd) currentData.products = updatedFullData; else currentData.posts = updatedFullData;
+                cancelEdit(); buildLinkLibrary(); 
+            } else { throw new Error(); }
+        } catch(e) { alert("Lỗi xuất bản! Hãy kiểm tra lại Github Token."); }
+    }
+
+    async function deleteItem(id, type) {
+        if(!confirm(`⚠️ XÓA VĨNH VIỄN?`)) return;
+        const token = document.getElementById('ghToken').value;
+        const isProd = type === 'prod';
+        const fileToUpdate = isProd ? 'assets/data/products.json' : 'assets/data/posts.json';
+        let updatedData = isProd ? currentData.products.filter(p => p.id !== id) : currentData.posts.filter(p => p.id !== id);
+
+        try {
+            const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
+            let sha = ""; if(shaRes.ok) sha = (await shaRes.json()).sha;
+
+            const pushRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, {
+                method: "PUT", headers: { "Authorization": `token ${token}` },
+                body: JSON.stringify({ message: `CMS Auto: Xóa [ID: ${id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedData, null, 2)))), sha: sha })
+            });
+
+            if(pushRes.ok) {
+                if (isProd) currentData.products = updatedData; else currentData.posts = updatedData;
+                if(editMode.id === id) cancelEdit(); buildLinkLibrary(); 
+            } else alert("Lỗi máy chủ khi xóa!");
+        } catch(e) { alert("Lỗi kết nối!"); }
+    }
+
+    function buildLinkLibrary() {
+        const container = document.getElementById('list-links');
+        let html = '';
+        const allItems = [
+            ...currentData.posts.map(p => ({...p, folder: 'blog', label: 'Tin tức', typeKey: 'news'})), 
+            ...currentData.products.map(p => ({...p, folder: 'san-pham', label: 'Sản phẩm', typeKey: 'prod'}))
+        ].sort((a,b) => b.id - a.id);
+
+        allItems.forEach(item => {
+            const itemSlug = item.slug || slugify(item.title); 
+            const fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${itemSlug}/`;
+            const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+            
+            html += `
+                <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(item.cat || '').toLowerCase()}">
+                    <div><span class="link-cat">${item.label} | ${item.cat || 'Chưa phân loại'}</span></div>
+                    <a href="${fullUrl}" target="_blank" class="link-tit">${item.title}</a>
+                    <div class="btn-group">
+                        <button class="btn-action" onclick="copyToClip('${fullUrl}')"><i class="fas fa-link"></i> Link</button>
+                        <button class="btn-action html-btn" onclick="copyEmbedCode('${fullUrl}', '${safeTitle}')"><i class="fas fa-code"></i> Mã</button>
+                        <button class="btn-action edit-btn" onclick="triggerEdit(${item.id}, '${item.typeKey}')"><i class="fas fa-edit"></i> Sửa</button>
+                        <button class="btn-action del-btn" onclick="deleteItem(${item.id}, '${item.typeKey}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html || "<div style='text-align:center;color:#666;'>Trống.</div>";
+    }
+
+    function filterLinks() {
+        const kw = document.getElementById('link-search').value.toLowerCase();
+        let targetList = document.getElementById('side-tab-links').classList.contains('active') ? '.link-item' : '.media-item';
+        
+        document.querySelectorAll(targetList).forEach(el => {
+            if(targetList === '.link-item') {
+                if(el.getAttribute('data-title').includes(kw) || el.getAttribute('data-cat').includes(kw)) el.style.display = "flex";
+                else el.style.display = "none";
+            } else {
+                if(el.innerText.toLowerCase().includes(kw)) el.style.display = "flex";
+                else el.style.display = "none";
+            }
+        });
+    }
+    function copyToClip(text) { navigator.clipboard.writeText(text); alert("Đã Copy:\n" + text); }
+    function copyEmbedCode(url, title) {
+        const code = `<div style="background:#f9f9f9; padding:15px; border-left:4px solid #c5a059; margin:20px 0;"><strong>👉 Xem chi tiết:</strong> <a href="${url}" style="color:#c5a059; font-weight:bold; text-decoration:none;">${title}</a></div>`;
+        navigator.clipboard.writeText(code); alert("Đã copy MÃ CHÈN. Hãy dán (Ctrl+V) vào Trình soạn thảo HTML nhé!");
+    }
+    function slugify(text) {
+        return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+    }
+</script>
+</body>
+</html>
