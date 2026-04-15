@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kiểm tra đăng bài viết | Greenia Homes</title>
+    <title>kiểm tra đăng bài viết</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
-
     <style>
         #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
         #gr-single-post * { box-sizing: border-box; } 
@@ -76,205 +75,47 @@
     </style>
 </head>
 <body>
-
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
-
     <main id="gr-single-post">
         <div class="gr-con" id="post-container">
-            <div style="text-align:center; padding: 100px 0; color: #c5a059;">
-                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
-                <p>Đang tải nội dung bài viết...</p>
-            </div>
+            <div style="text-align:center; padding: 100px 0; color: #c5a059;"><i class="fas fa-circle-notch fa-spin fa-3x"></i><p>Đang tải nội dung...</p></div>
         </div>
     </main>
-
     <div id="site-footer"></div>
+    
     <script src="../../assets/js/ui.js"></script>
-
     <script>
-        // Ổ khóa cho Bot SSG
         window.GREENIA_CURRENT_POST = {"id":10,"title":"kiểm tra đăng bài viết","slug":"kiem-tra-dang-bai-viet","cat":"tin dự án","date":"15/4/2026","author":"Ban Biên Tập","thumb":"","content":"<p>kiểm tra nội dung</p>\n","seoTitle":"kiểm tra đăng bài viết","seoDesc":"kiểm tra nội dung\n...","seoKeywords":"tin dự án, tin tức"};
-
-        // BỘ CÔNG CỤ SỬA LỖI MENU VÀ FOOTER DÀNH CHO THƯ MỤC SÂU
-        async function loadRootLayout() {
-            try {
-                // Hàm tự động thêm ../../ vào các thẻ href và src
-                const fixPath = (html) => html.replace(/(href|src)="(?!\w+:|#|data:|\/)([^"]+)"/g, '$1="../../$2"');
-                
-                const [headRes, footRes] = await Promise.all([
-                    fetch('../../header.html'), fetch('../../footer.html')
-                ]);
-                
-                if(headRes.ok) document.getElementById('site-header').innerHTML = fixPath(await headRes.text());
-                if(footRes.ok) document.getElementById('site-footer').innerHTML = fixPath(await footRes.text());
-                
-                const subRes = await fetch('../../sub-menu.html').catch(()=>null);
-                if(subRes && subRes.ok) {
-                    const subEl = document.getElementById('sub-menu');
-                    if(subEl) subEl.innerHTML = fixPath(await subRes.text());
-                }
-            } catch(e) { console.log('Lỗi tải Menu:', e); }
-        }
-
         document.addEventListener("DOMContentLoaded", async function() {
-            // Chạy hàm vá lỗi menu
-            loadRootLayout();
-
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
-
-            if (!post) {
-                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Đây là file khuôn mẫu. Vui lòng xem bản build tại thư mục /blog/slug/</h2>";
-                return;
-            }
+            if (!post) { container.innerHTML = "<h2>Dữ liệu đang được xây dựng...</h2>"; return; }
 
             try {
-                const postRes = await fetch('../../assets/data/posts.json');
+                const [postRes, prodRes] = await Promise.all([fetch('../../assets/data/posts.json'), fetch('../../assets/data/products.json')]);
                 const posts = await postRes.json();
-                
-                const prodRes = await fetch('../../assets/data/products.json');
                 const prods = await prodRes.json();
 
                 let sidebarHTML = ''; let relatedNewsHTML = '';
-                
-                const otherPosts = posts.filter(p => p.id != post.id).slice(0, 5);
-                otherPosts.forEach(p => {
-                    relatedNewsHTML += `<a href="../../blog/${p.slug}/" style="display:block; color:#888; text-decoration:none; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="font-size:10px; color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
+                posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
+                    relatedNewsHTML += `<a href="../../blog/${p.slug}/" style="display:block; color:#888; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px;"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
                 });
 
                 const randomProds = [...prods].sort(() => 0.5 - Math.random()).slice(0, 5);
                 randomProds.forEach(p => {
-                    const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
-                    sidebarHTML += `
-                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="../../${p.img}"></div>
-                            <div class="gr-prod-info">
-                                <h4 class="gr-tit-mini">${p.title}</h4>
-                                <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-meta-mini"><span class="gr-hl">${p.price}</span> | ${p.area} m²</div>
-                            </div>
-                        </a>`;
+                    sidebarHTML += `<a href="../../san-pham/${p.slug}/" class="gr-prod-card"><div class="gr-prod-thumb"><img src="${window.resolveImg(p.img)}"></div><div class="gr-prod-info"><h4 class="gr-tit-mini">${p.title}</h4><div class="gr-meta-mini"><span class="gr-hl">${p.price}</span></div></div></a>`;
                 });
 
                 const roHangDuAn = prods.filter(p => p.projectCode === post.slug);
-                let roHangHTML = '';
-                if (roHangDuAn.length > 0) {
-                    roHangHTML = `
-                    <div style="margin-top: 60px; padding-top: 40px; border-top: 1px dashed rgba(197, 160, 89, 0.3);">
-                        <h2 style="color:#c5a059; font-size: 24px; margin-bottom: 20px;">Sản phẩm thuộc dự án này</h2>
-                        <div class="gr-ro-hang-grid">
-                            ${roHangDuAn.map(p => `
-                                <a href="../../san-pham/${p.slug}/" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="../../${p.img}"></div>
-                                    <div class="s2-body">
-                                        <h3 class="s2-tit">${p.title}</h3>
-                                        <div class="gr-loc-mini" style="margin-bottom:10px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                        <div class="gr-meta-mini" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
-                                            <span class="gr-hl" style="font-size:14px;">${p.price}</span> 
-                                            <span style="float:right">${p.area} m² ${p.bed ? `| ${p.bed} PN` : ''}</span>
-                                        </div>
-                                    </div>
-                                </a>`).join('')}
-                        </div>
-                    </div>`;
-                }
+                let roHangHTML = roHangDuAn.length > 0 ? `<div style="margin-top: 60px; padding-top: 40px; border-top: 1px dashed rgba(197, 160, 89, 0.3);"><h2 style="color:#c5a059; font-size: 24px;">Sản phẩm thuộc dự án</h2><div class="gr-ro-hang-grid">${roHangDuAn.map(p => `<a href="../../san-pham/${p.slug}/" class="s2-card"><div class="s2-thumb-box"><img src="${window.resolveImg(p.img)}"></div><div class="s2-body"><h3 class="s2-tit">${p.title}</h3><div class="gr-meta-mini"><span class="gr-hl">${p.price}</span></div></div></a>`).join('')}</div></div>` : '';
 
                 container.innerHTML = `
-                    <div class="gr-sp-header">
-                        <div class="gr-breadcrumbs">
-                            <a href="../../index.html">Trang chủ</a> <span class="sep">/</span>
-                            <a href="../../danh-muc.html">${post.cat}</a> <span class="sep">/</span>
-                            <span class="current">${post.title}</span>
-                        </div>
-                        <h1 class="gr-sp-title">${post.title}</h1>
-                        <div class="gr-sp-meta">
-                            <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
-                            <span><i class="far fa-user"></i> ${post.author}</span>
-                        </div>
-                    </div>
-
-                    <div class="gr-sp-body">
-                        <div class="gr-sp-main">
-                            <div class="gr-toc-wrap" id="gr-toc-wrapper">
-                                <div class="gr-toc-header" onclick="toggleTOC()">
-                                    <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span>
-                                    <i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i>
-                                </div>
-                                <ul class="gr-toc-list" id="gr-toc-list"></ul>
-                            </div>
-                            <div class="gr-entry-content" id="gr-content-body">
-                                ${post.content}
-                            </div>
-                            <div class="gr-bottom-bar">
-                                <div class="gr-bot-cta">Quan tâm dự án? Gọi ngay: <a href="tel:0932966700">0932 966 700</a></div>
-                                <div class="gr-share-group">
-                                    <span style="color:#fff; font-size:13px;">Chia sẻ:</span>
-                                    <button onclick="shareFB()" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></button>
-                                    <button onclick="copyLink()" class="gr-s-btn copy" style="background:#c5a059; color:#000;"><i class="fas fa-link"></i></button>
-                                </div>
-                            </div>
-                            ${roHangHTML}
-                        </div>
-
-                        <div class="gr-sp-sidebar">
-                            <div>
-                                <div class="gr-w-title">Bất động sản nổi bật</div>
-                                <div class="gr-prod-list">${sidebarHTML}</div>
-                            </div>
-                            <div style="margin-top: 20px;">
-                                <div class="gr-w-title">Tin tức mới nhất</div>
-                                <div style="padding-top: 10px;">${relatedNewsHTML}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                buildTOC();
-
-            } catch (error) {
-                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Lỗi xử lý dữ liệu.</h2>";
-            }
+                    <div class="gr-sp-header"><div class="gr-breadcrumbs"><a href="../../index.html">Trang chủ</a> <span class="sep">/</span> <a href="../../danh-muc.html">${post.cat}</a> <span class="sep">/</span> <span class="current">${post.title}</span></div><h1 class="gr-sp-title">${post.title}</h1><div class="gr-sp-meta"><span><i class="far fa-calendar-alt"></i> ${post.date}</span></div></div>
+                    <div class="gr-sp-body"><div class="gr-sp-main"><div class="gr-entry-content">${post.content}</div><div class="gr-bottom-bar"><div class="gr-bot-cta">Gọi ngay: <a href="tel:0932966700">0932 966 700</a></div></div>${roHangHTML}</div>
+                    <div class="gr-sp-sidebar"><div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarHTML}</div></div><div style="margin-top: 20px;"><div class="gr-w-title">Tin tức mới</div>${relatedNewsHTML}</div></div></div>`;
+            } catch (error) { container.innerHTML = "<h2>Lỗi hiển thị dữ liệu bài viết.</h2>"; }
         });
-
-        window.shareFB = function() { window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank', 'width=600,height=400'); };
-        window.copyLink = function() { navigator.clipboard.writeText(window.location.href); alert("Đã sao chép liên kết!"); };
-
-        window.toggleTOC = function() {
-            const list = document.getElementById('gr-toc-list');
-            const icon = document.getElementById('gr-toc-icon');
-            if(list.style.display === 'none' || list.style.display === '') {
-                list.style.display = 'block'; icon.style.transform = 'rotate(180deg)';
-            } else {
-                list.style.display = 'none'; icon.style.transform = 'rotate(0deg)';
-            }
-        };
-
-        function buildTOC() {
-            const content = document.getElementById('gr-content-body');
-            const tocList = document.getElementById('gr-toc-list');
-            const tocWrapper = document.getElementById('gr-toc-wrapper');
-            const headings = content.querySelectorAll('h2');
-            if(headings.length > 0) {
-                tocWrapper.style.display = 'block';
-                document.getElementById('gr-toc-icon').style.transform = 'rotate(180deg)';
-                headings.forEach((h2, index) => {
-                    const id = 'heading-' + index;
-                    h2.id = id;
-                    const li = document.createElement('li');
-                    li.className = 'gr-toc-item';
-                    li.innerHTML = `<a href="#${id}" class="gr-toc-link" onclick="scrollToId('${id}')">${index + 1}. ${h2.innerText}</a>`;
-                    tocList.appendChild(li);
-                });
-            }
-        }
-
-        window.scrollToId = function(id) {
-            event.preventDefault();
-            const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.scrollY - 80;
-            window.scrollTo({top: y, behavior: 'smooth'});
-        };
     </script>
 </body>
 </html>
