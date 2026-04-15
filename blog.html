@@ -3,37 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài viết | Greenia Homes</title>
     
-    <script>
-        const originalFetch = window.fetch;
-        window.fetch = async function(...args) {
-            let url = args[0];
-            let isLayout = false;
-            
-            // Nếu ui.js đòi tải header, footer, sub-menu
-            if (typeof url === 'string' && (url.includes('header.html') || url.includes('footer.html') || url.includes('sub-menu.html'))) {
-                if (!url.startsWith('../../')) {
-                    args[0] = '../../' + url; // Chỉ đường lùi về 2 cấp
-                }
-                isLayout = true;
-            }
-            
-            const response = await originalFetch.apply(this, args);
-            
-            // Ép sửa toàn bộ link bên trong Menu trước khi hiện ra
-            if (isLayout && response.ok) {
-                const text = await response.clone().text();
-                const fixedText = text.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, '$1="../../$2"');
-                return new Response(fixedText, { status: response.status, headers: response.headers });
-            }
-            return response;
-        };
-    </script>
-
+    <base href="../../">
+    
+    <title>Bài viết | Greenia Homes</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
         #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
@@ -117,18 +94,11 @@
     </main>
 
     <div id="site-footer"></div>
-    <script src="../../assets/js/ui.js"></script>
+    
+    <script src="assets/js/ui.js"></script>
 
     <script>
-        // Ổ KHÓA CỦA BOT SSG
         window.GREENIA_CURRENT_POST = null;
-        
-        // Hỗ trợ chống vỡ link ảnh
-        window.resolveImg = (src) => {
-            if (!src) return '';
-            if (src.startsWith('http') || src.startsWith('data:')) return src;
-            return '../../' + src.replace(/^\/+/, '');
-        };
 
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('post-container');
@@ -140,25 +110,26 @@
             }
 
             try {
-                const postRes = await fetch('../../assets/data/posts.json');
+                // Nhờ có thẻ <base>, ta không cần chèn ../../ lộn xộn nữa
+                const postRes = await fetch('assets/data/posts.json');
                 const posts = await postRes.json();
                 
-                const prodRes = await fetch('../../assets/data/products.json');
+                const prodRes = await fetch('assets/data/products.json');
                 const prods = await prodRes.json();
 
                 let sidebarHTML = ''; let relatedNewsHTML = '';
                 
                 const otherPosts = posts.filter(p => p.id != post.id).slice(0, 5);
                 otherPosts.forEach(p => {
-                    relatedNewsHTML += `<a href="../../blog/${p.slug}/" style="display:block; color:#888; text-decoration:none; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="font-size:10px; color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
+                    relatedNewsHTML += `<a href="blog/${p.slug}/" style="display:block; color:#888; text-decoration:none; margin-bottom:15px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:10px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="font-size:10px; color:#c5a059; margin-right:5px;"></i> ${p.title}</a>`;
                 });
 
                 const randomProds = [...prods].sort(() => 0.5 - Math.random()).slice(0, 5);
                 randomProds.forEach(p => {
                     const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
                     sidebarHTML += `
-                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${resolveImg(p.img)}"></div>
+                        <a href="san-pham/${p.slug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb"><span class="gr-tag-abs ${tagClass}">${p.type}</span><img src="${p.img}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
                                 <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -175,8 +146,8 @@
                         <h2 style="color:#c5a059; font-size: 24px; margin-bottom: 20px;">Sản phẩm thuộc dự án này</h2>
                         <div class="gr-ro-hang-grid">
                             ${roHangDuAn.map(p => `
-                                <a href="../../san-pham/${p.slug}/" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${resolveImg(p.img)}"></div>
+                                <a href="san-pham/${p.slug}/" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs ${p.type === 'Bán' ? 'tag-ban' : 'tag-thue'}">${p.type}</span><img src="${p.img}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
                                         <div class="gr-loc-mini" style="margin-bottom:10px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
@@ -193,8 +164,8 @@
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
-                            <a href="../../index.html">Trang chủ</a> <span class="sep">/</span>
-                            <a href="../../danh-muc.html">${post.cat}</a> <span class="sep">/</span>
+                            <a href="index.html">Trang chủ</a> <span class="sep">/</span>
+                            <a href="danh-muc.html">${post.cat}</a> <span class="sep">/</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
