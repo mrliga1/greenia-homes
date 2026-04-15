@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>Greenia Admin - System Locked</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <style>
+        /* ÉP BUỘC MỌI PHẦN TỬ KHÔNG ĐƯỢC PHÌNH TO QUÁ KÍCH THƯỚC KHUNG */
+        *, *::before, *::after { box-sizing: border-box; }
+
         :root { --gold: #c5a059; --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --text: #b0b8c4; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow: hidden; }
         
@@ -14,61 +18,56 @@
            MÀN HÌNH KHÓA (LOGIN SCREEN)
         --------------------------------------------- */
         #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
-        .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--gold); box-shadow: 0 10px 40px rgba(197, 160, 89, 0.1); width: 350px; text-align: center; }
+        .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--gold); box-shadow: 0 10px 40px rgba(197, 160, 89, 0.1); width: 350px; text-align: center; max-width: 90%; }
         .login-box h2 { color: var(--gold); margin-top: 0; letter-spacing: 2px; }
-        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; text-align: center; letter-spacing: 5px; font-size: 18px; }
+        .login-box input { width: 100%; padding: 15px; margin: 20px 0; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; text-align: center; letter-spacing: 5px; font-size: 18px; }
         .login-box input:focus { outline: none; border-color: var(--gold); }
         .btn-login { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; border: none; padding: 15px; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; font-size: 16px; }
         .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197,160,89,0.4); }
         #login-error { color: #ff4d4f; font-size: 13px; margin-bottom: 15px; display: none; }
        
         /* ==============================================================
-           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (BẢN CHỐNG VỠ KHUNG CHUẨN)
+           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (KHÓA KHUNG TUYỆT ĐỐI)
         ============================================================== */
         @media (max-width: 900px) {
-            /* 1. Nhường quyền cuộn trang lại cho Điện thoại, không ép 100vh nữa */
-            body { padding: 10px; }
-            #admin-dashboard { height: auto !important; overflow: visible !important; padding: 0; }
+            body { padding: 10px; overflow-x: hidden !important; }
+            #admin-dashboard { height: auto !important; overflow: visible !important; padding: 0; overflow-x: hidden !important; }
             
-            /* 2. Ép tất cả các khối phải co bóp vừa khung màn hình (box-sizing) */
             .layout-wrapper { flex-direction: column; width: 100%; display: flex; }
-            .col-left, .col-right { width: 100%; box-sizing: border-box; padding: 15px 10px; position: static; max-height: none; overflow: visible; border-radius: 8px; }
+            .col-left, .col-right { width: 100%; padding: 15px 10px; position: static; max-height: none; overflow: visible; border-radius: 8px; margin: 0; }
             .col-right { border-top: 2px dashed var(--gold); margin-top: 15px; }
             
-            /* 3. Chuyển Form từ Grid sang Flex dọc để chống tràn ngang */
             .form-grid { display: flex; flex-direction: column; gap: 15px; }
             .form-group { margin-bottom: 0; width: 100%; }
             .setup-row { flex-direction: column; gap: 10px; }
             
-            /* 4. Co gọn dàn Nút bấm (Tabs) */
             .tabs { display: flex; flex-wrap: wrap; gap: 5px; }
             .tab-btn { flex: 1 1 48%; padding: 12px 5px; font-size: 11px; text-align: center; }
-            .btn-cancel-edit { width: 100%; margin-top: 5px; text-align: center; }
-            .login-box { width: 90%; box-sizing: border-box; padding: 25px 20px; }
+            .btn-push { font-size: 14px; padding: 12px; }
+            .login-box { padding: 25px 20px; }
             
-            /* 5. Cấm các ô nhập liệu được phép vượt rào */
-            input, select, textarea { box-sizing: border-box; max-width: 100%; }
+            /* Ép thẻ input và textarea phải vừa khít */
+            input, select, textarea { max-width: 100%; width: 100%; }
             
-            /* 6. "Trói" thẳng tay CKEditor - Nguyên nhân chính gây vỡ ngang */
-            .cke_chrome, .cke_inner, .cke_contents { max-width: 100% !important; box-sizing: border-box !important; }
+            /* Trói chặt CKEditor - Chống tràn ngang */
+            .cke_chrome, .cke_inner, .cke_contents, .cke_top, .cke_bottom { max-width: 100% !important; width: 100% !important; }
             
-            /* 7. Thu nhỏ ảnh xem trước để không lấn chỗ */
             .preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
         }
-        
+       
         /* Ép ẩn mọi thông báo rác từ CKEditor */
         .cke_notifications_area { display: none !important; }
        
         /* ---------------------------------------------
            GIAO DIỆN ADMIN CHÍNH (ẨN MẶC ĐỊNH)
         --------------------------------------------- */
-        #admin-dashboard { display: none; padding: 20px; overflow-y: auto; height: 100vh; box-sizing: border-box; }
-        
+        #admin-dashboard { display: none; padding: 20px; overflow-y: auto; height: 100vh; }
+       
         .layout-wrapper { display: flex; gap: 30px; max-width: 1450px; margin: 0 auto; align-items: flex-start; }
         .col-left { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .col-right { width: 450px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; position: sticky; top: 20px; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
         h1 { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 22px; text-transform: uppercase; margin-top: 0;}
-        
+       
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
         .tab-btn { padding: 12px 25px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; transition: 0.3s;}
         .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
@@ -80,10 +79,10 @@
         .form-group { margin-bottom: 15px; }
         .form-group.full { grid-column: 1 / -1; }
         label { display: block; margin-bottom: 8px; color: #fff; font-weight: 600; font-size: 13px; text-transform: uppercase;}
-        input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 14px;}
+        input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         input:focus { outline: none; border-color: var(--gold); }
         input:disabled { opacity: 0.5; cursor: not-allowed; background: #000; }
-        textarea.seo-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; box-sizing: border-box; font-family: inherit; font-size: 14px;}
+        textarea.seo-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         .seo-box { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; position: relative;}
         .seo-box::before { content: 'Tùy chỉnh SEO (Google)'; position: absolute; top: -12px; left: 20px; background: var(--card); padding: 0 10px; color: var(--gold); font-size: 12px; font-weight: bold; }
         .char-count { font-size: 11px; color: #888; float: right; margin-top: 5px; }
@@ -91,29 +90,29 @@
         .btn-push { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; border: none; padding: 16px 30px; font-weight: 800; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 25px; transition: 0.3s; text-transform: uppercase;}
         .btn-push:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(197,160,89,0.3); }
         .btn-push.update-mode { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
-        
+       
         .upload-area { border: 2px dashed rgba(255,255,255,0.2); padding: 25px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.2); }
         .upload-area:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.05); }
         .upload-area i { color: var(--gold); margin-bottom: 10px; }
         .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
         .preview-item { width: 100%; height: 90px; object-fit: cover; border-radius: 6px; border: 1px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
-        
+       
         .sidebar-header { margin-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 15px;}
         .side-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
         .side-tab-btn { flex: 1; padding: 10px; background: #1a1f2b; color: #fff; border: 1px solid #444; cursor: pointer; border-radius: 4px; font-size: 12px; font-weight: bold; transition: 0.3s;}
         .side-tab-btn.active { background: rgba(197,160,89,0.1); border-color: var(--gold); color: var(--gold); }
-        
+       
         .link-list-scroll { flex: 1; overflow-y: auto; padding-right: 5px; display: flex; flex-direction: column; gap: 10px; display: none; }
         .link-list-scroll.active { display: flex; }
         .link-list-scroll::-webkit-scrollbar { width: 6px; }
         .link-list-scroll::-webkit-scrollbar-thumb { background: rgba(197,160,89,0.5); border-radius: 10px; }
-        
+       
         .link-item { display: flex; flex-direction: column; padding: 15px 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); border-radius: 6px; transition: 0.2s;}
         .link-item:hover { background: rgba(197, 160, 89, 0.05); border-color: var(--gold); }
         .link-item.editing { border-color: #00b894; background: rgba(0, 184, 148, 0.1); }
         .link-tit { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-decoration: none;}
         .link-cat { font-size: 10px; color: var(--gold); background: rgba(197,160,89,0.1); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; font-weight: bold;}
-        
+       
         .media-item { display: flex; gap: 10px; align-items: center; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;}
         .media-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
         .media-url { font-size: 11px; color: #aaa; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -141,17 +140,17 @@
     <div class="layout-wrapper">
         <div class="col-left">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1><i class="fas fa-cogs"></i> HỆ THỐNG QUẢN TRỊ (AUTO-SYNC)</h1>
-                <div id="sync-status" style="color: #00b894; font-weight: bold; font-size: 13px;"><i class="fas fa-circle-notch fa-spin"></i> Đang chờ đồng bộ...</div>
+                <h1><i class="fas fa-cogs"></i> QUẢN TRỊ CMS</h1>
+                <div id="sync-status" style="color: #00b894; font-weight: bold; font-size: 13px;"><i class="fas fa-circle-notch fa-spin"></i> Chờ đồng bộ...</div>
             </div>
 
             <input type="hidden" id="ghToken">
             <input type="hidden" id="imgbbKey">
 
             <div class="tabs" style="margin-top: 20px;">
-                <button class="tab-btn active" id="tab-prod-btn" onclick="switchTab('prod')"><i class="fas fa-building"></i> ĐĂNG SẢN PHẨM</button>
-                <button class="tab-btn" id="tab-news-btn" onclick="switchTab('news')"><i class="fas fa-edit"></i> VIẾT TIN TỨC</button>
-                <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY CHỈNH SỬA</button>
+                <button class="tab-btn active" id="tab-prod-btn" onclick="switchTab('prod')"><i class="fas fa-building"></i> SẢN PHẨM</button>
+                <button class="tab-btn" id="tab-news-btn" onclick="switchTab('news')"><i class="fas fa-edit"></i> TIN TỨC</button>
+                <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
             </div>
 
             <div id="section-prod" class="form-section active">
