@@ -1,5 +1,5 @@
 /* ==============================================================
-   UI.JS - BỘ NÃO ĐIỀU KHIỂN GIAO DIỆN (FINAL & BULLETPROOF V7)
+   UI.JS - BỘ NÃO ĐIỀU KHIỂN GIAO DIỆN (FINAL V8 - FIXED PATHS)
 ============================================================== */
 
 // --------------------------------------------------------------
@@ -16,7 +16,6 @@ function getRootPath() {
     }
     return rootPath;
 }
-
 const ROOT = getRootPath();
 
 // Hàm sửa lại link và ảnh bên trong các component HTML sau khi tải
@@ -33,7 +32,7 @@ window.resolveImg = (src) => {
 };
 
 // --------------------------------------------------------------
-// PHẦN 2: CÁC HÀM LẮP RÁP HỆ THỐNG TỰ ĐỘNG CHỈNH ĐƯỜNG DẪN
+// PHẦN 2: CÁC HÀM LẮP RÁP HỆ THỐNG
 // --------------------------------------------------------------
 async function loadComponent(elementId, filePath) {
     try {
@@ -41,10 +40,11 @@ async function loadComponent(elementId, filePath) {
         if (!response.ok) throw new Error('Không tìm thấy file ' + filePath);
         const html = await response.text();
         const container = document.getElementById(elementId);
+        
         if(container) {
             container.innerHTML = fixLinksInHtml(html);
             
-            // Nếu đang ở thư mục sâu, bẻ lại các link neo (#) trỏ về trang chủ
+            // Bẻ lại link neo (#) trỏ về trang chủ nếu đang ở thư mục sâu
             if (ROOT !== "") {
                 container.querySelectorAll('a').forEach(el => {
                     let href = el.getAttribute('href');
@@ -63,7 +63,7 @@ async function loadSpecificMenu(containerId, menuId) {
         if (!response.ok) throw new Error('Không tìm thấy kho menu');
         const html = await response.text();
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = fixLinksInHtml(html); // Sửa link trước khi lấy
+        tempDiv.innerHTML = fixLinksInHtml(html);
         const targetMenu = tempDiv.querySelector('#' + menuId);
         const container = document.getElementById(containerId);
         
@@ -293,7 +293,7 @@ function initMasterFormsAndPopup() {
 // PHẦN 5: ĐIỂM KHỞI ĐỘNG (IGNITION SWITCH)
 // --------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    // Gọi Header và Footer (Đã tự động cộng dồn Root Path ở trong hàm)
+    // ĐÃ SỬA LẠI ĐÚNG ĐƯỜNG DẪN GỐC CỦA BẠN (CÓ CHỮ components/)
     await loadComponent('site-header', 'components/header.html');
     await loadComponent('site-footer', 'components/footer.html');
     
