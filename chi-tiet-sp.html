@@ -11,87 +11,79 @@
         body { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; margin: 0; padding: 0; }
         .ct-container { max-width: 1200px; margin: 40px auto; padding: 0 15px; padding-bottom: 60px; }
         .ct-breadcrumb { font-size: 13px; color: #888; margin-bottom: 20px; }
-        .ct-breadcrumb a { color: #888; text-decoration: none; transition: 0.3s; } 
-        .ct-breadcrumb a:hover { color: #c5a059; }
+        .ct-breadcrumb a { color: #888; text-decoration: none; }
         .ct-title-box { border-bottom: 1px dashed rgba(197, 160, 89, 0.3); padding-bottom: 20px; margin-bottom: 30px; }
         .ct-title { font-size: 32px; color: #c5a059; margin: 0 0 10px; font-weight: 700; line-height: 1.3; }
-        .ct-loc { font-size: 14px; color: #b0b8c4; } 
-        .ct-loc i { color: #c5a059; margin-right: 5px; }
+        .ct-loc { font-size: 14px; } .ct-loc i { color: #c5a059; margin-right: 5px; }
+
         .ct-main-split { display: flex; gap: 30px; margin-bottom: 40px; }
-        .ct-gallery-col { width: 65%; }
-        .ct-info-col { width: 35%; }
+        .ct-gallery-col { width: 65%; } .ct-info-col { width: 35%; }
         .ct-main-img { width: 100%; height: 500px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(197, 160, 89, 0.2); margin-bottom: 15px; }
         .ct-thumb-list { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
-        .ct-thumb-list::-webkit-scrollbar { display: none; }
-        .ct-thumb { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: 0.3s; }
-        .ct-thumb:hover, .ct-thumb.active { opacity: 1; border-color: #c5a059; }
+        .ct-thumb { width: 100px; height: 75px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; }
+        .ct-thumb.active { opacity: 1; border-color: #c5a059; }
+
         .ct-price-box { background: rgba(197, 160, 89, 0.1); border: 1px solid #c5a059; border-radius: 8px; padding: 25px; text-align: center; margin-bottom: 20px; }
         .ct-price { font-size: 36px; color: #fff; font-weight: 800; margin: 0; }
         .ct-type-tag { display: inline-block; background: #c5a059; color: #000; font-size: 13px; font-weight: 700; padding: 5px 15px; border-radius: 20px; text-transform: uppercase; margin-bottom: 10px;}
+        
         .ct-specs { background: #0b1120; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
         .ct-spec-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); font-size: 15px; }
-        .ct-spec-item:last-child { border: none; padding-bottom: 0; }
-        .ct-spec-item span:first-child { color: #888; } 
-        .ct-spec-item span:last-child { color: #fff; font-weight: 600; }
-        .ct-contact-btn { display: block; width: 100%; background: linear-gradient(135deg, #c5a059 0%, #d4af37 100%); color: #000; text-align: center; padding: 16px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 4px; transition: 0.3s; text-transform: uppercase; }
-        .ct-contact-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197,160,89,0.3); }
+        .ct-spec-item:last-child { border: none; }
+        .ct-spec-item span:first-child { color: #888; } .ct-spec-item span:last-child { color: #fff; font-weight: 600; }
+
+        .ct-contact-btn { display: block; width: 100%; background: linear-gradient(135deg, #c5a059 0%, #d4af37 100%); color: #000; text-align: center; padding: 16px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 4px; text-transform: uppercase; }
         .ct-desc-box { background: #0b1120; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 30px; margin-bottom: 40px; }
         .ct-section-title { font-size: 22px; font-weight: 700; color: #fff; margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid #c5a059; display: inline-block; text-transform: uppercase;}
-        .ct-desc-content { font-size: 15px; line-height: 1.8; color: #ccc; }
-        .ct-desc-content img { max-width: 100%; height: auto; border-radius: 6px; margin: 15px 0; border: 1px solid rgba(197, 160, 89, 0.2);}
-        .ct-related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px;}
-        .gr-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
-        .gr-card:hover { border-color: #c5a059; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
-        .gr-thumb-box { height: 180px; overflow: hidden; position: relative;} 
-        .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s;}
-        .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
-        .gr-body { padding: 15px; display: flex; flex-direction: column; flex: 1;} 
-        .gr-tit { font-size: 14px; font-weight: 600; color: #fff; margin: 0 0 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;} 
-        .gr-card:hover .gr-tit { color: #c5a059; }
-        .gr-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto;}
-        .gr-meta span:first-child { color: #c5a059; font-weight: 700; font-size: 15px;}
-        .gr-meta span:last-child { color: #888; font-size: 12px;}
+
+        @media (max-width: 900px) { .ct-main-split { flex-direction: column; } .ct-gallery-col, .ct-info-col { width: 100%; } .ct-main-img { height: 350px; } }
     </style>
 </head>
 <body>
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
+
     <main class="ct-container" id="product-container">
-        <div style="text-align:center; padding: 150px 0; color: #c5a059;"><i class="fas fa-circle-notch fa-spin fa-3x"></i><p>Đang tải sản phẩm...</p></div>
+        <div style="text-align:center; padding: 150px 0; color: #c5a059;"><i class="fas fa-circle-notch fa-spin fa-3x"></i><p>Đang tải dữ liệu...</p></div>
     </main>
+
     <div id="site-footer"></div>
     <script src="../../assets/js/ui.js"></script>
+
     <script>
         window.GREENIA_CURRENT_PRODUCT = null;
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('product-container');
-            const currentProd = window.GREENIA_CURRENT_PRODUCT;
-            if (!currentProd) { container.innerHTML = "<h2>Dữ liệu đang xây dựng...</h2>"; return; }
+            const prod = window.GREENIA_CURRENT_PRODUCT;
+            if (!prod) { container.innerHTML = "<h2>Trang đang được xây dựng...</h2>"; return; }
 
-            let galleryHTML = '';
-            if (currentProd.gallery && currentProd.gallery.length > 0) {
-                currentProd.gallery.forEach((imgSrc, index) => {
-                    galleryHTML += `<img src="${window.resolveImg(imgSrc)}" class="ct-thumb ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${window.resolveImg(imgSrc)}', this)">`;
-                });
-            } else { galleryHTML = `<img src="${window.resolveImg(currentProd.img)}" class="ct-thumb active">`; }
-
-            let relatedHTML = '';
-            try {
-                const res = await fetch('../../assets/data/products.json');
-                const products = await res.json();
-                const relatedProds = products.filter(p => p.cat === currentProd.cat && p.id != currentProd.id).slice(0, 4);
-                if (relatedProds.length > 0) {
-                    relatedHTML = `<div style="margin-top: 60px;"><h2 class="ct-section-title">Sản phẩm tương tự</h2><div class="ct-related-grid">${relatedProds.map(p => `<a href="../../san-pham/${p.slug}/" class="gr-card"><div class="gr-thumb-box"><img src="${window.resolveImg(p.img)}"></div><div class="gr-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-meta"><span>${p.price}</span></div></div></a>`).join('')}</div></div>`;
-                }
-            } catch(e) {}
+            let galleryHTML = `<img src="${window.resolveImg(prod.img)}" class="ct-thumb active" onclick="changeMainImage('${window.resolveImg(prod.img)}', this)">`;
+            if (prod.gallery) prod.gallery.forEach(img => {
+                galleryHTML += `<img src="${window.resolveImg(img)}" class="ct-thumb" onclick="changeMainImage('${window.resolveImg(img)}', this)">`;
+            });
 
             container.innerHTML = `
-                <div class="ct-breadcrumb"><a href="../../index.html">Trang chủ</a> / <a href="../../san-pham.html">Sản phẩm</a> / ${currentProd.cat}</div>
-                <div class="ct-title-box"><h1 class="ct-title">${currentProd.title}</h1><div class="ct-loc"><i class="fas fa-map-marker-alt"></i> ${currentProd.loc}</div></div>
-                <div class="ct-main-split"><div class="ct-gallery-col"><img src="${window.resolveImg(currentProd.img)}" id="mainImage" class="ct-main-img"><div class="ct-thumb-list">${galleryHTML}</div></div><div class="ct-info-col"><div class="ct-price-box"><span class="ct-type-tag">${currentProd.type}</span><h2 class="ct-price">${currentProd.price}</h2></div><div class="ct-specs"><h3 style="color:#c5a059; font-size:16px;">Thông số</h3><div class="ct-spec-item"><span>Diện tích</span><span>${currentProd.area} m²</span></div>${currentProd.bed ? `<div class="ct-spec-item"><span>Phòng ngủ</span><span>${currentProd.bed} PN</span></div>` : ''}</div><a href="tel:0932966700" class="ct-contact-btn">Gọi tư vấn ngay</a></div></div>
-                <div class="ct-desc-box"><h2 class="ct-section-title">Chi tiết</h2><div class="ct-desc-content">${currentProd.content || 'Đang cập nhật...'}</div></div>${relatedHTML}`;
+                <div class="ct-breadcrumb"><a href="../../index.html">Trang chủ</a> / <a href="../../san-pham.html">Sản phẩm</a> / ${prod.cat}</div>
+                <div class="ct-title-box"><h1 class="ct-title">${prod.title}</h1><div class="ct-loc"><i class="fas fa-map-marker-alt"></i> ${prod.loc}</div></div>
+                <div class="ct-main-split">
+                    <div class="ct-gallery-col">
+                        <img src="${window.resolveImg(prod.img)}" id="mainImage" class="ct-main-img">
+                        <div class="ct-thumb-list">${galleryHTML}</div>
+                    </div>
+                    <div class="ct-info-col">
+                        <div class="ct-price-box"><span class="ct-type-tag">${prod.type}</span><h2 class="ct-price">${prod.price}</h2></div>
+                        <div class="ct-specs">
+                            <h3 style="color:#c5a059; font-size:16px; margin-top:0;">THÔNG SỐ KỸ THUẬT</h3>
+                            <div class="ct-spec-item"><span>Diện tích</span><span>${prod.area} m²</span></div>
+                            ${prod.bed ? `<div class="ct-spec-item"><span>Phòng ngủ</span><span>${prod.bed} PN</span></div>` : ''}
+                        </div>
+                        <a href="tel:0932966700" class="ct-contact-btn">GỌI TƯ VẤN NGAY</a>
+                    </div>
+                </div>
+                <div class="ct-desc-box"><h2 class="ct-section-title">Thông tin chi tiết</h2><div class="ct-desc-content">${prod.content || 'Đang cập nhật...'}</div></div>
+            `;
         });
-        window.changeMainImage = (src, el) => { document.getElementById('mainImage').src = src; document.querySelectorAll('.ct-thumb').forEach(i => i.classList.remove('active')); el.classList.add('active'); };
+        window.changeMainImage = (src, el) => { document.getElementById('mainImage').src = src; document.querySelectorAll('.ct-thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); };
     </script>
 </body>
 </html>
