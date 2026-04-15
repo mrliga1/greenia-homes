@@ -23,21 +23,37 @@
         #login-error { color: #ff4d4f; font-size: 13px; margin-bottom: 15px; display: none; }
        
         /* ==============================================================
-           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (MOBILE RESPONSIVE)
+           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (BẢN CHỐNG VỠ KHUNG CHUẨN)
         ============================================================== */
         @media (max-width: 900px) {
-            .layout-wrapper { flex-direction: column; }
-            .col-left { width: 100%; padding: 15px; border-radius: 0; border: none; }
-            .col-right { width: 100%; position: static; max-height: none; padding: 15px; border-radius: 0; border: none; border-top: 2px dashed var(--gold); margin-top: 20px; }
-            .form-grid { grid-template-columns: 1fr; gap: 10px; }
-            .setup-row { flex-direction: column; gap: 10px; }
-            .tabs { flex-wrap: wrap; }
-            .tab-btn { flex: 1; padding: 10px; font-size: 12px; text-align: center; }
-            .btn-push { font-size: 14px; padding: 12px; }
-            .login-box { width: 90%; padding: 20px; }
+            /* 1. Nhường quyền cuộn trang lại cho Điện thoại, không ép 100vh nữa */
+            body { padding: 10px; }
+            #admin-dashboard { height: auto !important; overflow: visible !important; padding: 0; }
             
-            /* Thu gọn CKEditor trên mobile */
-            .cke_inner { border-radius: 5px !important; }
+            /* 2. Ép tất cả các khối phải co bóp vừa khung màn hình (box-sizing) */
+            .layout-wrapper { flex-direction: column; width: 100%; display: flex; }
+            .col-left, .col-right { width: 100%; box-sizing: border-box; padding: 15px 10px; position: static; max-height: none; overflow: visible; border-radius: 8px; }
+            .col-right { border-top: 2px dashed var(--gold); margin-top: 15px; }
+            
+            /* 3. Chuyển Form từ Grid sang Flex dọc để chống tràn ngang */
+            .form-grid { display: flex; flex-direction: column; gap: 15px; }
+            .form-group { margin-bottom: 0; width: 100%; }
+            .setup-row { flex-direction: column; gap: 10px; }
+            
+            /* 4. Co gọn dàn Nút bấm (Tabs) */
+            .tabs { display: flex; flex-wrap: wrap; gap: 5px; }
+            .tab-btn { flex: 1 1 48%; padding: 12px 5px; font-size: 11px; text-align: center; }
+            .btn-cancel-edit { width: 100%; margin-top: 5px; text-align: center; }
+            .login-box { width: 90%; box-sizing: border-box; padding: 25px 20px; }
+            
+            /* 5. Cấm các ô nhập liệu được phép vượt rào */
+            input, select, textarea { box-sizing: border-box; max-width: 100%; }
+            
+            /* 6. "Trói" thẳng tay CKEditor - Nguyên nhân chính gây vỡ ngang */
+            .cke_chrome, .cke_inner, .cke_contents { max-width: 100% !important; box-sizing: border-box !important; }
+            
+            /* 7. Thu nhỏ ảnh xem trước để không lấn chỗ */
+            .preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
         }
         
         /* Ép ẩn mọi thông báo rác từ CKEditor */
