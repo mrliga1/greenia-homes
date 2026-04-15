@@ -110,7 +110,6 @@
             }
 
             try {
-                // Nhờ có thẻ <base>, ta không cần chèn ../../ lộn xộn nữa
                 const postRes = await fetch('assets/data/posts.json');
                 const posts = await postRes.json();
                 
