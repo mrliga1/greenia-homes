@@ -66,10 +66,18 @@
 
     <script src="../../assets/js/ui.js"></script>
     <script>
-        // Gọi form đăng ký (nhét form có ID 'master-form-1' vào div 'form-can-ho-can-gio')
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSpecificForm('form-can-ho-can-gio', 'master-form-1', 'Dự án Căn hộ Cần Giờ');
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Gọi Menu
+        if (typeof loadSpecificMenu === "function") {
+            await loadSpecificMenu('sub-menu', 'menu-the-global');
+        }
+
+        // GỌI FORM VÀ TRUYỀN TÊN DỰ ÁN VÀO
+        if (typeof loadSpecificForm === "function") {
+            // Cú pháp: loadSpecificForm('ID-của-khay', 'ID-của-bản-mẫu', 'TÊN DỰ ÁN MUỐN BÁO VỀ GOOGLE SHEET');
+            await loadSpecificForm('khay-form-footer', 'tpl-form-ngang', 'The Global City - Vị trí Footer');
+        }
+    });
+</script>
 </body>
 </html>
