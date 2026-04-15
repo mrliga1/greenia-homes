@@ -3,35 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi Tiết Sản Phẩm | Greenia Homes</title>
     
-    <script>
-        const originalFetch = window.fetch;
-        window.fetch = async function(...args) {
-            let url = args[0];
-            let isLayout = false;
-            
-            if (typeof url === 'string' && (url.includes('header.html') || url.includes('footer.html') || url.includes('sub-menu.html'))) {
-                if (!url.startsWith('../../')) {
-                    args[0] = '../../' + url;
-                }
-                isLayout = true;
-            }
-            
-            const response = await originalFetch.apply(this, args);
-            
-            if (isLayout && response.ok) {
-                const text = await response.clone().text();
-                const fixedText = text.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, '$1="../../$2"');
-                return new Response(fixedText, { status: response.status, headers: response.headers });
-            }
-            return response;
-        };
-    </script>
+    <base href="../../">
 
+    <title>Chi Tiết Sản Phẩm | Greenia Homes</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
         body { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; margin: 0; padding: 0; }
@@ -97,16 +75,10 @@
     </main>
 
     <div id="site-footer"></div>
-    <script src="../../assets/js/ui.js"></script>
+    <script src="assets/js/ui.js"></script>
 
     <script>
         window.GREENIA_CURRENT_PRODUCT = null;
-        
-        window.resolveImg = (src) => {
-            if (!src) return '';
-            if (src.startsWith('http') || src.startsWith('data:')) return src;
-            return '../../' + src.replace(/^\/+/, '');
-        };
 
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('product-container');
@@ -121,15 +93,15 @@
             if (currentProd.gallery && currentProd.gallery.length > 0) {
                 currentProd.gallery.forEach((imgSrc, index) => {
                     const activeClass = index === 0 ? 'active' : '';
-                    galleryHTML += `<img src="${resolveImg(imgSrc)}" class="ct-thumb ${activeClass}" onclick="changeMainImage('${resolveImg(imgSrc)}', this)">`;
+                    galleryHTML += `<img src="${imgSrc}" class="ct-thumb ${activeClass}" onclick="changeMainImage('${imgSrc}', this)">`;
                 });
             } else {
-                galleryHTML = `<img src="${resolveImg(currentProd.img)}" class="ct-thumb active">`;
+                galleryHTML = `<img src="${currentProd.img}" class="ct-thumb active">`;
             }
 
             let relatedHTML = '';
             try {
-                const res = await fetch('../../assets/data/products.json');
+                const res = await fetch('assets/data/products.json');
                 const products = await res.json();
                 
                 let relatedProds = [];
@@ -147,10 +119,10 @@
                             ${relatedProds.map(p => {
                                 const pSlug = p.slug || p.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
                                 return `
-                                <a href="../../san-pham/${pSlug}/" class="gr-card">
+                                <a href="san-pham/${pSlug}/" class="gr-card">
                                     <div class="gr-thumb-box">
                                         <span style="position:absolute; top:0; left:0; background:${p.type==='Bán'?'#ff4d4f':'#00b894'}; color:#fff; font-size:10px; font-weight:700; padding:4px 10px; border-bottom-right-radius:6px; z-index:5;">${p.type}</span>
-                                        <img src="${resolveImg(p.img)}">
+                                        <img src="${p.img}">
                                     </div>
                                     <div class="gr-body">
                                         <h3 class="gr-tit">${p.title}</h3>
@@ -165,7 +137,7 @@
 
             container.innerHTML = `
                 <div class="ct-breadcrumb">
-                    <a href="../../index.html">Trang chủ</a> / <a href="../../san-pham.html">Sản phẩm</a> / ${currentProd.catName || currentProd.cat}
+                    <a href="index.html">Trang chủ</a> / <a href="san-pham.html">Sản phẩm</a> / ${currentProd.catName || currentProd.cat}
                 </div>
 
                 <div class="ct-title-box">
@@ -175,7 +147,7 @@
 
                 <div class="ct-main-split">
                     <div class="ct-gallery-col">
-                        <img src="${resolveImg(currentProd.img)}" id="mainImage" class="ct-main-img">
+                        <img src="${currentProd.img}" id="mainImage" class="ct-main-img">
                         <div class="ct-thumb-list">${galleryHTML}</div>
                     </div>
 
