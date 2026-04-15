@@ -234,3 +234,35 @@ section:not(.hero-slider-section) { padding-top: 80px; }
    NÚT NỔI (FLOATING BUTTONS) & POPUP ĐÃ TỐI ƯU TỪ CODE CỦA BẠN
 ============================================================== */
 /* (Bạn dán toàn bộ đoạn CSS .greenia-floating-contact-new, .popup-overlay-new, .cookie-box-new của bạn vào ĐÂY, tôi bỏ qua để tránh dài dòng vì CSS của bạn đã rất đẹp rồi) */
+
+/* ==============================================================
+   HIỆU ỨNG CHÈN LINK BÀI VIẾT TỰ ĐỘNG (ICON ĐỘNG)
+============================================================== */
+@keyframes pointRight {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(6px); }
+}
+.gr-hot-icon {
+    display: inline-block;
+    animation: pointRight 0.5s infinite alternate ease-in-out;
+    margin-right: 5px;
+    font-size: 16px;
+}
+.gr-related-link {
+    color: #c5a059 !important;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(197, 160, 89, 0.5);
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+.gr-related-link:hover {
+    color: #fff !important;
+    border-bottom-color: #fff;
+    padding-left: 5px;
+}
+.gr-related-item {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
