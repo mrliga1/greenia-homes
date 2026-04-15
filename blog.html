@@ -6,31 +6,28 @@
     <title>Bài viết | Greenia Homes</title>
     
     <script>
-        const originalFetch = window.fetch;
-        window.fetch = async function() {
-            let url = arguments[0];
-            if (typeof url === 'string') {
-                if (url === 'header.html' || url === 'footer.html' || url === 'sub-menu.html') {
-                    arguments[0] = '../../' + url;
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Hàm tự động thêm ../../ vào tất cả các link và ảnh trên Menu để không bị vỡ
+            const fixLinks = (html) => html.replace(/(href|src)=["'](?!\w+:|#|data:|\/|tel:|mailto:)([^"']+)["']/g, '$1="../../$2"');
+            
+            try {
+                // Ép tải Header và Footer trực tiếp từ thư mục gốc
+                const [header, footer, sub] = await Promise.all([
+                    fetch('../../header.html').then(r => r.ok ? r.text() : ''),
+                    fetch('../../footer.html').then(r => r.ok ? r.text() : ''),
+                    fetch('../../sub-menu.html').then(r => r.ok ? r.text() : '')
+                ]);
+                
+                if (header) document.getElementById('site-header').innerHTML = fixLinks(header);
+                if (footer) document.getElementById('site-footer').innerHTML = fixLinks(footer);
+                if (sub) {
+                    let subEl = document.getElementById('sub-menu');
+                    if(subEl) subEl.innerHTML = fixLinks(sub);
                 }
-            }
-            return originalFetch.apply(this, arguments);
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            setTimeout(() => {
-                document.querySelectorAll('#site-header a, #site-footer a, #sub-menu a, #site-header img, #site-footer img').forEach(el => {
-                    ['href', 'src'].forEach(attr => {
-                        let val = el.getAttribute(attr);
-                        if (val && !val.startsWith('http') && !val.startsWith('../../') && !val.startsWith('#') && !val.startsWith('mailto:') && !val.startsWith('tel:') && !val.startsWith('javascript:')) {
-                            el.setAttribute(attr, '../../' + val.replace(/^\/+/, ''));
-                        }
-                    });
-                });
-            }, 1000); // Quét và sửa link Menu sau 1 giây
+            } catch(e) { console.log('Lỗi tải menu:', e); }
         });
 
-        // Hàm thông minh xử lý link ảnh chống vỡ
+        // Hàm thông minh xử lý link ảnh chống vỡ cho thân bài
         const resolveImg = (src) => {
             if (!src) return '';
             if (src.startsWith('http') || src.startsWith('data:')) return src;
