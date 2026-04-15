@@ -41,25 +41,22 @@
   },
   {
     "id": 1,
+    "type": "Bán",
     "title": "Biệt thự ven sông The Global City",
+    "slug": "biet-thu-ven-song-the-global-city",
+    "cat": "nha-pho",
+    "projectCode": "the-global-city",
+    "loc": "Đường Đỗ Xuân Hợp, An Phú, TP. Thủ Đức",
+    "price": "45 Tỷ",
+    "area": "320",
+    "bed": "4",
     "img": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
     "gallery": [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200"
     ],
-    "price": "45 Tỷ",
-    "area": "320",
-    "bed": "4",
-    "wc": "5",
-    "direction": "Đông Nam",
-    "floor": "3",
-    "front": "12",
-    "legal": "Sổ hồng hoàn công",
-    "loc": "Đường Đỗ Xuân Hợp, An Phú, TP. Thủ Đức",
-    "type": "Bán",
-    "cat": "nha-pho",
-    "catName": "Nhà phố - Biệt thự",
-    "projectCode": "the-global-city",
-    "desc": "Căn biệt thự góc 2 mặt tiền hiếm hoi tại The Global City. Tầm view trực diện kênh đào nhạc nước.",
-    "map": ""
+    "content": "",
+    "seoTitle": "Biệt thự ven sông The Global City",
+    "seoDesc": "...",
+    "seoKeywords": "nha-pho, bất động sản"
   }
 ]
