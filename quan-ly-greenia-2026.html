@@ -584,8 +584,9 @@
     }
     function copyToClip(text) { navigator.clipboard.writeText(text); alert("Đã Copy:\n" + text); }
     function copyEmbedCode(url, title) {
-        const code = `<div style="background:#f9f9f9; padding:15px; border-left:4px solid #c5a059; margin:20px 0;"><strong>👉 Xem chi tiết:</strong> <a href="${url}" style="color:#c5a059; font-weight:bold; text-decoration:none;">${title}</a></div>`;
-        navigator.clipboard.writeText(code); alert("Đã copy MÃ CHÈN. Hãy dán (Ctrl+V) vào Trình soạn thảo HTML nhé!");
+        const code = `<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a href="${url}" class="gr-related-link" target="_blank">${title}</a></div>`;
+        navigator.clipboard.writeText(code); 
+        alert("Đã copy MÃ CHÈN có Icon động!\n\nMẹo:\n1. Tự gõ dòng 'Tham khảo các bài viết liên quan:' trong khung soạn thảo.\n2. Bấm nút 'Nguồn' (Source) và dán (Ctrl+V) mã này xuống dưới.");
     }
     function slugify(text) {
         return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
