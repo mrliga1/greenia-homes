@@ -157,7 +157,16 @@ section:not(.hero-slider-section) { padding-top: 80px; }
 @media (max-width: 992px) {
     .header-container { 
         padding: 0 20px; 
-        justify-content: space-between; /* Trên di động dạt ra 2 bên để Logo bên trái, nút ☰ bên phải */
+        justify-content: center; /* 1. Đưa Logo ra chính giữa */
+        position: relative; /* 2. Làm mốc tọa độ cho nút menu bên phải */
+    }
+    
+    /* 3. Ghim nút Menu sang bên phải */
+    .header-action {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%); /* Đảm bảo nút menu luôn canh giữa theo chiều dọc */
     }
     
     .mobile-menu-btn { display: block; }
