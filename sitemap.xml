@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://greeniahomes.vn/index.html</loc>
+    <loc>https://mrliga1.github.io/greenia-homes/</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://greeniahomes.vn/san-pham.html</loc>
+    <loc>https://mrliga1.github.io/greenia-homes/danh-muc.html</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://greeniahomes.vn/danh-muc.html</loc>
+    <loc>https://mrliga1.github.io/greenia-homes/san-pham.html</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://greeniahomes.vn/bai-viet/kiem-tra-dang-bai-viet/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://mrliga1.github.io/greenia-homes/blog/kiem-tra-dang-bai-viet/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://greeniahomes.vn/bai-viet/vanh-dai-3-hop-long-nhip-cau-dau-tien/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://mrliga1.github.io/greenia-homes/blog/tuyen-duong-vanh-dai-3-tphcm-chinh-thuc-hop-long/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://mrliga1.github.io/greenia-homes/blog/rdfdsfdsf/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://mrliga1.github.io/greenia-homes/san-pham/ban-nha/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://mrliga1.github.io/greenia-homes/san-pham/biet-thu-ven-song-the-global-city/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>daily</changefreq>
   </url>
 </urlset>
