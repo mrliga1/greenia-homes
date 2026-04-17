@@ -155,13 +155,16 @@
 
                 // 🔥 Tạo slug danh mục cho Breadcrumb
                 const catSlug = createSafeSlug(post.cat);
+                
+                // 🔥 SỬ DỤNG BASE_URL ĐỂ ĐẢM BẢO LINK LUÔN ĐÚNG TRÊN MỌI MÔI TRƯỜNG
+                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
                 // Bơm HTML
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
-                            <a href="../../index.html">Trang chủ</a> <span class="sep">/</span>
-                            <a href="../../${catSlug}/">${post.cat}</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}${catSlug}/">${post.cat}</a> <span class="sep">/</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
