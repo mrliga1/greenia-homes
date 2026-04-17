@@ -15,7 +15,7 @@ let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 
 // Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
 const prodTemplate = fs.existsSync('chi-tiet-sp.html') ? fs.readFileSync('chi-tiet-sp.html', 'utf8') : '';
-const catNewsTemplate = fs.existsSync('danh-muc.html') ? fs.readFileSync('danh-muc.html', 'utf8') : '';
+const catNewsTemplate = fs.existsSync('danh-muc-tin.html') ? fs.readFileSync('danh-muc-tin.html', 'utf8') : ''; // ĐÃ ĐỔI TÊN KHUÔN
 const catProdTemplate = fs.existsSync('danh-muc-sp.html') ? fs.readFileSync('danh-muc-sp.html', 'utf8') : '';
 
 // Hàm tạo URL thân thiện chuẩn SEO
