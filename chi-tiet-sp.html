@@ -50,6 +50,7 @@
     </main>
 
     <div id="site-footer"></div>
+    
     <script src="../../assets/js/ui.js"></script>
 
     <script>
@@ -57,7 +58,13 @@
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('product-container');
             const prod = window.GREENIA_CURRENT_PRODUCT;
-            if (!prod) { container.innerHTML = "<h2>Trang đang được xây dựng...</h2>"; return; }
+            
+            // CƠ CHẾ CHUYỂN HƯỚNG THÔNG MINH
+            if (!prod) { 
+                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+                window.location.replace(safeBaseUrl + 'san-pham.html'); 
+                return; 
+            }
 
             let galleryHTML = `<img src="${window.resolveImg(prod.img)}" class="ct-thumb active" onclick="changeMainImage('${window.resolveImg(prod.img)}', this)">`;
             if (prod.gallery) prod.gallery.forEach(img => {
