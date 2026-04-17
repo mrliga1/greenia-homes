@@ -49,8 +49,7 @@
     <script src="../../assets/js/ui.js"></script>
 
     <script>
-        // Ổ khóa kết nối với bot build.js
-        window.GREENIA_CURRENT_CATEGORY = null; 
+        window.GREENIA_CURRENT_CATEGORY = null;
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -60,17 +59,16 @@
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('cat-main');
             const cat = window.GREENIA_CURRENT_CATEGORY;
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            // Nếu truy cập nhầm file khuôn, đẩy về trang tổng
             if (!cat) {
-                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
                 window.location.replace(safeBaseUrl + 'tin-tuc.html');
                 return;
             }
 
             let htmlStr = `
                 <div class="cat-header">
-                    <div class="cat-breadcrumb"><a href="../../index.html">Trang chủ</a> / <a href="../../tin-tuc.html">Tin tức</a> / <span style="color:#fff;">${cat.name}</span></div>
+                    <div class="cat-breadcrumb"><a href="${safeBaseUrl}">Trang chủ</a> / <a href="${safeBaseUrl}tin-tuc.html">Tin tức</a> / <span style="color:#fff;">${cat.name}</span></div>
                     <h1 class="cat-title">${cat.name}</h1>
                     <p class="cat-desc">${cat.desc || `Cập nhật những bài viết mới nhất thuộc chuyên mục ${cat.name}.`}</p>
                 </div>
@@ -79,8 +77,6 @@
             try {
                 const res = await fetch('../../assets/data/posts.json');
                 const posts = await res.json();
-                
-                // 🔥 ĐÂY LÀ DÒNG QUYẾT ĐỊNH: Lọc đúng các bài thuộc danh mục này
                 const filteredPosts = posts.filter(p => p.cat === cat.name);
 
                 if (filteredPosts.length === 0) {
@@ -92,11 +88,10 @@
                         const firstImg = tempDiv.querySelector('img');
                         const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; 
                         const excerpt = tempDiv.textContent.substring(0, 120) + '...';
-                        
                         const pSlug = post.slug || createSafeSlug(post.title);
 
                         htmlStr += `
-                            <a href="../../${cat.slug}/${pSlug}/" class="blog-card">
+                            <a href="${safeBaseUrl}${cat.slug}/${pSlug}/" class="blog-card">
                                 <div class="bc-thumb"><img src="${window.resolveImg(thumbSrc)}"></div>
                                 <div class="bc-body">
                                     <h3 class="bc-title">${post.title}</h3>
