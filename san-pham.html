@@ -170,8 +170,9 @@
         let globalProducts = [];
         let filterState = { type: "all", cat: "all", keyword: "" };
 
-        // Hàm tạo Slug an toàn để fix lỗi Undefined
+        // Hàm tạo Slug an toàn để fix lỗi Undefined và tạo link thư mục
         function createSafeSlug(title) {
+            if(!title) return 'danh-muc';
             return title.toString().toLowerCase().trim()
                 .replace(/\s+/g, '-')
                 .replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e')
@@ -186,11 +187,12 @@
             const tagText = customTag ? customTag : (p.type === 'Bán' ? 'Đang bán' : 'Cho thuê');
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
             
-            // CHỐNG LỖI UNDEFINED CHO DỮ LIỆU CŨ
+            // 🔥 Tự động tạo link: /ten-danh-muc/ten-san-pham/
+            const catSlug = createSafeSlug(p.cat || 'san-pham');
             const finalSlug = p.slug || createSafeSlug(p.title);
 
             return `
-                <a href="san-pham/${finalSlug}/" class="gr-card">
+                <a href="${catSlug}/${finalSlug}/" class="gr-card">
                     <div class="gr-thumb-box">
                         <span class="gr-tag-abs ${tagClass}">${tagText}</span>
                         <img src="${p.img}" alt="${p.title}">
@@ -271,10 +273,13 @@
                         const firstImg = tempDiv.querySelector('img');
                         const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
                         const excerpt = tempDiv.textContent.substring(0, 80) + '...';
+                        
+                        // 🔥 Tự động tạo link: /ten-danh-muc/ten-bai-viet/
+                        const catSlug = createSafeSlug(post.cat || 'tin-tuc');
                         const pSlug = post.slug || createSafeSlug(post.title);
 
                         newsHTML += `
-                            <a href="blog/${pSlug}/" class="gr-news-card">
+                            <a href="${catSlug}/${pSlug}/" class="gr-news-card">
                                 <div class="gr-news-thumb"><img src="${thumbSrc}"></div>
                                 <div class="gr-news-info">
                                     <h3 class="gr-news-tit">${post.title}</h3>
@@ -309,7 +314,7 @@
                                 <div class="gr-proj-left">
                                     <h2 class="s-tit" style="margin-bottom: 20px;">Tin tức dự án</h2>
                                     <div class="gr-news-list">${newsHTML || '<p style="color:#888;">Đang cập nhật tin tức.</p>'}</div>
-                                    <div class="s1-btn-wrap" style="text-align:left;"><a href="danh-muc.html" class="s1-btn">Xem thêm tin tức</a></div>
+                                    <div class="s1-btn-wrap" style="text-align:left;"><a href="tin-tuc.html" class="s1-btn">Xem thêm tin tức</a></div>
                                 </div>
                                 <div class="gr-proj-right">
                                     <h2 class="s-tit" style="margin-bottom: 20px;">Sản phẩm dự án</h2>
