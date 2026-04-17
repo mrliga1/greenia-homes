@@ -98,6 +98,12 @@
         // Ổ khóa nhận dữ liệu từ Bot SSG
         window.GREENIA_CURRENT_POST = {"id":11,"title":"rdfdsfdsf","slug":"rdfdsfdsf","cat":"tin dự án","date":"16/4/2026","author":"Chuyên gia Greenia","thumb":"https://i.ibb.co/rKL8hWyg/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg","content":"<p>Kiểm tra b&agrave;i viết</p>\n\n<p><strong>👉 Xem chi tiết:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\">b&aacute;n nh&agrave; phố quận 2</a></p>\n\n<p><strong>👉 C&oacute; thể bạn quan t&acirc;m:</strong> <a href=\"https://mrliga1.github.io/greenia-homes/blog/kiem-tra-dang-bai-viet/\">kiểm tra đăng b&agrave;i viết</a></p>\n\n<p>&nbsp;</p>\n<div style=\"background:#f9f9f9; padding:15px; border-left:4px solid #c5a059; margin:20px 0;\"> <a href=\"https://mrliga1.github.io/greenia-homes/blog/kiem-tra-dang-bai-viet/\" style=\"color:#c5a059; font-weight:bold; text-decoration:none;\">kiểm tra đăng bài viết</a></div>","seoTitle":"rdfdsfdsf","seoDesc":"Kiểm tra b&agrave;i viết\n\n👉 Xem chi tiết: b&aacute;n nh&agrave; phố quận 2\n...","seoKeywords":"tin dự án, tin tức"};
 
+        // Hàm tạo đường dẫn (slug) an toàn
+        function createSafeSlug(title) {
+            if(!title) return 'tin-tuc';
+            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
@@ -117,17 +123,21 @@
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
-                // 1. Sidebar - Tin tức khác
+                // 1. Sidebar - Tin tức khác (Cập nhật link)
                 let relatedNewsHTML = '';
                 posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
-                    relatedNewsHTML += `<a href="../../blog/${p.slug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px;"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
+                    const relatedCatSlug = createSafeSlug(p.cat);
+                    const relatedPostSlug = p.slug || createSafeSlug(p.title);
+                    relatedNewsHTML += `<a href="../../${relatedCatSlug}/${relatedPostSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px;"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
-                // 2. Sidebar - Sản phẩm nổi bật
+                // 2. Sidebar - Sản phẩm nổi bật (Cập nhật link)
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
+                    const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                    const pSlug = p.slug || createSafeSlug(p.title);
                     sidebarProdHTML += `
-                        <a href="../../san-pham/${p.slug}/" class="gr-prod-card">
+                        <a href="../../${pCatSlug}/${pSlug}/" class="gr-prod-card">
                             <div class="gr-prod-thumb"><img src="${window.resolveImg(p.img)}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
@@ -136,29 +146,39 @@
                         </a>`;
                 });
 
-                // 3. Rổ hàng theo dự án
+                // 3. Rổ hàng theo dự án (Cập nhật link)
                 const projectProds = prods.filter(p => p.projectCode === post.slug);
                 let roHangHTML = projectProds.length > 0 ? `
                     <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333;">
                         <h2 style="color:#c5a059; font-size: 22px; margin-bottom: 20px;">Sản phẩm thuộc dự án</h2>
                         <div class="gr-ro-hang-grid">
-                            ${projectProds.map(p => `
-                                <a href="../../san-pham/${p.slug}/" class="s2-card">
+                            ${projectProds.map(p => {
+                                const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                                const pSlug = p.slug || createSafeSlug(p.title);
+                                return `
+                                <a href="../../${pCatSlug}/${pSlug}/" class="s2-card">
                                     <div class="s2-thumb-box"><img src="${window.resolveImg(p.img)}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
                                         <div style="color:#c5a059; font-weight:bold; font-size:14px;">${p.price}</div>
                                     </div>
-                                </a>`).join('')}
+                                </a>`;
+                            }).join('')}
                         </div>
                     </div>` : '';
+
+                // 🔥 Tạo slug danh mục cho Breadcrumb
+                const catSlug = createSafeSlug(post.cat);
+                
+                // 🔥 SỬ DỤNG BASE_URL ĐỂ ĐẢM BẢO LINK LUÔN ĐÚNG TRÊN MỌI MÔI TRƯỜNG
+                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
                 // Bơm HTML
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
-                            <a href="../../index.html">Trang chủ</a> <span class="sep">/</span>
-                            <a href="../../tin-tuc.html">${post.cat}</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}${catSlug}/">${post.cat}</a> <span class="sep">/</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
