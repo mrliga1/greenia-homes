@@ -15,13 +15,18 @@ let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 
 // Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
 const prodTemplate = fs.existsSync('chi-tiet-sp.html') ? fs.readFileSync('chi-tiet-sp.html', 'utf8') : '';
-const catNewsTemplate = fs.existsSync('danh-muc-tin.html') ? fs.readFileSync('danh-muc-tin.html', 'utf8') : ''; // ĐÃ ĐỔI TÊN KHUÔN
+const catNewsTemplate = fs.existsSync('danh-muc-tin.html') ? fs.readFileSync('danh-muc-tin.html', 'utf8') : '';
 const catProdTemplate = fs.existsSync('danh-muc-sp.html') ? fs.readFileSync('danh-muc-sp.html', 'utf8') : '';
 
 // Hàm tạo URL thân thiện chuẩn SEO
 function makeSafeSlug(t) { 
     if(!t) return 'chuyen-muc';
-    return t.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-'); 
+    return t.toString().toLowerCase().trim()
+        .replace(/\s+/g, '-')
+        .replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e')
+        .replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
+        .replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y')
+        .replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-'); 
 }
 
 // ==========================================
@@ -51,19 +56,18 @@ if (catNewsTemplate) {
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
         const pageUrl = `${DOMAIN}/${cat.slug}/`;
-        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+        sitemapUrls.push(pageUrl);
 
-        // Đổ dữ liệu vào khuôn & Sửa lỗi ../../ thành ../ vì danh mục chỉ sâu 1 cấp
         let html = catNewsTemplate
             .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Tin Tức | Greenia Homes</title>`)
             .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`)
-            .replace(/\.\.\/\.\.\//g, '../');
+            .replace(/\.\.\/\.\.\//g, '../'); // Sửa link cho danh mục (sâu 1 cấp)
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
 }
 
-// 1.2 Quét và tạo Danh mục Sản phẩm (Lọc theo cat và type)
+// 1.2 Quét và tạo Danh mục Sản phẩm
 let prodCategories = [];
 products.forEach(p => {
     if (p.cat && !prodCategories.find(c => c.name === p.cat)) {
@@ -80,7 +84,7 @@ if (catProdTemplate) {
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
         const pageUrl = `${DOMAIN}/${cat.slug}/`;
-        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+        sitemapUrls.push(pageUrl);
 
         let html = catProdTemplate
             .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Sản Phẩm | Greenia Homes</title>`)
@@ -92,16 +96,20 @@ if (catProdTemplate) {
 }
 
 // ==========================================
-// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (NẰM TRONG DANH MỤC)
+// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (PHÂN CẤP THỰC TẾ)
 // ==========================================
 if (blogTemplate) {
     posts.forEach(post => {
         const catSlug = makeSafeSlug(post.cat || 'tin-tuc');
         const postSlug = post.slug || makeSafeSlug(post.title);
         
-        // Cấu trúc URL mới: /ten-danh-muc/ten-bai-viet/
-        const folder = path.join(__dirname, catSlug, postSlug);
-        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+        // Tạo folder cha (Danh mục)
+        const catFolder = path.join(__dirname, catSlug);
+        if (!fs.existsSync(catFolder)) fs.mkdirSync(catFolder, { recursive: true });
+
+        // Tạo folder con (Bài viết) nằm TRONG folder cha
+        const postFolder = path.join(catFolder, postSlug);
+        if (!fs.existsSync(postFolder)) fs.mkdirSync(postFolder, { recursive: true });
 
         const pageUrl = `${DOMAIN}/${catSlug}/${postSlug}/`;
         sitemapUrls.push(pageUrl);
@@ -123,20 +131,24 @@ if (blogTemplate) {
         
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
-        fs.writeFileSync(path.join(folder, 'index.html'), html);
+        fs.writeFileSync(path.join(postFolder, 'index.html'), html);
     });
 }
 
 // ==========================================
-// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (NẰM TRONG DANH MỤC)
+// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (PHÂN CẤP THỰC TẾ)
 // ==========================================
 if (prodTemplate) {
     products.forEach(prod => {
         const catSlug = makeSafeSlug(prod.cat || 'san-pham');
         const prodSlug = prod.slug || makeSafeSlug(prod.title);
         
-        // Cấu trúc URL mới: /ten-danh-muc/ten-san-pham/
-        const folder = path.join(__dirname, catSlug, prodSlug);
+        // Tạo folder cha (Danh mục)
+        const catFolder = path.join(__dirname, catSlug);
+        if (!fs.existsSync(catFolder)) fs.mkdirSync(catFolder, { recursive: true });
+
+        // Tạo folder con (Sản phẩm)
+        const folder = path.join(catFolder, prodSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
         const pageUrl = `${DOMAIN}/${catSlug}/${prodSlug}/`;
@@ -179,4 +191,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Đã tạo thành công Cấu trúc URL Danh mục mới, cập nhật Thẻ Title, Canonical, Schema và xuất file Sitemap.xml.');
+console.log('✅ Build hoàn tất! Đã tạo cấu trúc thư mục phân cấp /danh-muc/bai-viet/ chuẩn SEO.');
