@@ -50,18 +50,5 @@
     "seoTitle": "kiểm tra thư mục bài viết",
     "seoDesc": "ki&ecirc;m tra nhanh nội dung b&agrave;i viết\n👉 kiểm tra đăng bài viết\n...",
     "seoKeywords": "thư mục test, tin tức"
-  },
-  {
-    "id": 13,
-    "title": "nội dung mới",
-    "slug": "noi-dung-moi",
-    "cat": "test dự án",
-    "date": "18/4/2026",
-    "author": "Chuyên gia Greenia",
-    "thumb": "",
-    "content": "<p>kiểm tra nội dung</p>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/\" class=\"gr-related-link\" target=\"_blank\">bán nhà phố quận 2</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/blog/rdfdsfdsf/\" class=\"gr-related-link\" target=\"_blank\">rdfdsfdsf</a></div>",
-    "seoTitle": "nội dung mới",
-    "seoDesc": "kiểm tra nội dung\n👉 bán nhà phố quận 2\n👉 rdfdsfdsf...",
-    "seoKeywords": "test dự án, tin tức"
   }
 ]
