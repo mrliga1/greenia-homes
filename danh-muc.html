@@ -49,9 +49,11 @@
     <script src="../../assets/js/ui.js"></script>
 
     <script>
-        window.GREENIA_CURRENT_CATEGORY = null; // { name: "Tin Thị Trường", slug: "tin-thi-truong" }
+        // Ổ khóa kết nối với bot build.js
+        window.GREENIA_CURRENT_CATEGORY = null; 
 
         function createSafeSlug(title) {
+            if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
@@ -59,6 +61,7 @@
             const container = document.getElementById('cat-main');
             const cat = window.GREENIA_CURRENT_CATEGORY;
 
+            // Nếu truy cập nhầm file khuôn, đẩy về trang tổng
             if (!cat) {
                 const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
                 window.location.replace(safeBaseUrl + 'tin-tuc.html');
@@ -76,6 +79,8 @@
             try {
                 const res = await fetch('../../assets/data/posts.json');
                 const posts = await res.json();
+                
+                // 🔥 ĐÂY LÀ DÒNG QUYẾT ĐỊNH: Lọc đúng các bài thuộc danh mục này
                 const filteredPosts = posts.filter(p => p.cat === cat.name);
 
                 if (filteredPosts.length === 0) {
@@ -87,6 +92,7 @@
                         const firstImg = tempDiv.querySelector('img');
                         const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; 
                         const excerpt = tempDiv.textContent.substring(0, 120) + '...';
+                        
                         const pSlug = post.slug || createSafeSlug(post.title);
 
                         htmlStr += `
