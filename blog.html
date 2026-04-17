@@ -88,8 +88,10 @@
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
 
+            // CƠ CHẾ CHUYỂN HƯỚNG THÔNG MINH
             if (!post) {
-                container.innerHTML = "<h2 style='text-align:center; color:#ff4d4f;'>Dữ liệu chưa được xây dựng hoàn tất.</h2>";
+                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+                window.location.replace(safeBaseUrl + 'tin-tuc.html');
                 return;
             }
 
