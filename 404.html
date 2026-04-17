@@ -4,40 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Không tìm thấy trang | Greenia Homes</title>
-    <link rel="shortcut icon" href="/greenia-homes/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        :root { --gold: #c5a059; --bg: #05080f; --text: #b0b8c4; }
-        body { 
-            margin: 0; padding: 0; background: var(--bg); color: #fff; 
-            font-family: 'Segoe UI', sans-serif; display: flex; 
-            justify-content: center; align-items: center; height: 100vh; text-align: center;
-        }
-        .container { padding: 20px; max-width: 500px; }
-        .error-code { font-size: 120px; font-weight: 800; color: var(--gold); margin: 0; line-height: 1; }
-        h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 2px; margin: 20px 0; }
-        p { color: var(--text); line-height: 1.6; margin-bottom: 30px; }
-        .btn-home { 
-            display: inline-block; padding: 15px 35px; 
-            background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); 
-            color: #000; text-decoration: none; font-weight: bold; 
-            border-radius: 5px; transition: 0.3s; text-transform: uppercase;
-        }
+        .error-container { text-align: center; padding: 100px 20px; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .error-code { font-size: 120px; color: var(--gold); font-weight: 900; margin: 0; line-height: 1; text-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .error-container h1 { color: #fff; margin: 20px 0; text-transform: uppercase; }
+        .error-container p { color: var(--text); margin-bottom: 30px; font-size: 16px; }
+        .btn-home { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 5px; text-transform: uppercase; transition: 0.3s; }
         .btn-home:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197,160,89,0.3); }
-        .icon-box { font-size: 50px; color: var(--gold); margin-bottom: 10px; opacity: 0.5; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="icon-box"><i class="fas fa-map-marked-alt"></i></div>
-    <p class="error-code">404</p>
-    <h1>Đường dẫn không tồn tại</h1>
-    <p>Rất tiếc, trang bạn đang tìm kiếm đã được di chuyển, bị xóa hoặc đường dẫn không chính xác. Hãy quay về trang chủ để xem các dự án mới nhất của Greenia Homes.</p>
-    
-    <a href="/greenia-homes/" class="btn-home">Quay về trang chủ</a>
-</div>
+    <header id="site-header"></header>
+    <nav id="sub-menus"></nav>
 
+    <main class="error-container">
+        <p class="error-code">404</p>
+        <h1>Đường dẫn không tồn tại</h1>
+        <p>Rất tiếc, trang bạn đang tìm kiếm đã được di chuyển, bị xóa hoặc không chính xác.</p>
+        <a href="/greenia-homes/" class="btn-home">VỀ TRANG CHỦ</a>
+    </main>
+
+    <footer id="site-footer"></footer>
+
+    <script src="assets/js/ui.js"></script>
 </body>
 </html>
