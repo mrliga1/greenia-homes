@@ -65,6 +65,12 @@
     <script>
         let allPosts = [];
 
+        // Hàm tạo Slug để link đúng thư mục danh mục
+        function createSafeSlug(title) {
+            if(!title) return 'tin-tuc';
+            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+
         function createPostCard(post) {
             const tempDiv = document.createElement('div'); 
             tempDiv.innerHTML = post.content;
@@ -72,8 +78,12 @@
             const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; 
             const excerpt = tempDiv.textContent.substring(0, 150) + '...';
 
+            // 🔥 Tự động tạo link: /ten-danh-muc/ten-bai-viet/
+            const catSlug = createSafeSlug(post.cat);
+            const postSlug = post.slug || createSafeSlug(post.title);
+
             return `
-                <a href="blog/${post.slug}/" class="blog-card">
+                <a href="${catSlug}/${postSlug}/" class="blog-card">
                     <div class="bc-thumb">
                         <span class="bc-cat-tag">${post.cat}</span>
                         <img src="${thumbSrc}" alt="${post.title}">
