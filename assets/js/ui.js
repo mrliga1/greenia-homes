@@ -112,9 +112,9 @@ function initScrollEffects() {
 
         if (currentScroll > threshold) {
             if (mainHeader) mainHeader.classList.add('hide');
-            if (subMenu) subMenu.classList.add('show');       
+            if (subMenu) subMenu.classList.add('show');        
         } else {
-            if (subMenu) subMenu.classList.remove('show');       
+            if (subMenu) subMenu.classList.remove('show');        
             if (mainHeader) mainHeader.classList.remove('hide'); 
         }
     });
@@ -132,13 +132,23 @@ function initHeroSlider() {
 }
 
 // --------------------------------------------------------------
-// PHẦN 4: HỆ THỐNG FORM, POPUP & TRACKING (GIỮ NGUYÊN)
+// PHẦN 4: HỆ THỐNG FORM, POPUP & TRACKING ĐƯỢC NÂNG CẤP
 // --------------------------------------------------------------
 function initMasterFormsAndPopup() {
     const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-    const FB_PIXEL_ID = "921887710208023";
-    const GG_ADS_ID   = "AW-344693658";
     
+    // =========================================================
+    // HỆ THỐNG QUẢN LÝ MÃ THEO DÕI (TRACKING MANAGER TÍCH HỢP)
+    // =========================================================
+    const TRACKING_CONFIG = {
+        FB_PIXEL_ID: "921887710208023", // Mã cũ của bạn đang dùng
+        GG_ADS_ID: "AW-344693658",      // Mã cũ của bạn đang dùng
+        GA4_ID: "",                     // [Danh sách chờ] Nhập mã GA4 (VD: G-XXXXXXXXXX)
+        GTM_ID: "",                     // [Danh sách chờ] Nhập mã GTM (VD: GTM-XXXXXXX)
+        ZALO_WIDGET_ID: ""              // [Danh sách chờ] Nhập mã Zalo OA (VD: 1234567890)
+    };
+    // =========================================================
+
     let clientIP = "Unknown";
     window.isTrackingActive = false;
 
@@ -154,18 +164,58 @@ function initMasterFormsAndPopup() {
 
     window.initTrackingSystem = function() {
         if (window.isTrackingActive) return;
-        if (typeof fbq === 'undefined') {
+        
+        // 1. Khởi động Facebook Pixel (Hoạt động như cũ)
+        if (TRACKING_CONFIG.FB_PIXEL_ID && typeof fbq === 'undefined') {
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', FB_PIXEL_ID); fbq('track', 'PageView');
+            fbq('init', TRACKING_CONFIG.FB_PIXEL_ID); fbq('track', 'PageView');
         }
-        if (typeof gtag === 'undefined') {
+        
+        // 2. Khởi động Google Ads (Hoạt động như cũ)
+        if (TRACKING_CONFIG.GG_ADS_ID && typeof gtag === 'undefined') {
             let script = document.createElement('script');
-            script.src = "https://www.googletagmanager.com/gtag/js?id=" + GG_ADS_ID;
+            script.src = "https://www.googletagmanager.com/gtag/js?id=" + TRACKING_CONFIG.GG_ADS_ID;
             script.async = true; document.head.appendChild(script);
             window.dataLayer = window.dataLayer || [];
             window.gtag = function(){dataLayer.push(arguments);}
-            gtag('js', new Date()); gtag('config', GG_ADS_ID);
+            gtag('js', new Date()); gtag('config', TRACKING_CONFIG.GG_ADS_ID);
         }
+
+        // 3. Khởi động Google Analytics 4 (Nếu có điền ở danh sách chờ)
+        if (TRACKING_CONFIG.GA4_ID) {
+            if (typeof gtag === 'undefined') {
+                let script = document.createElement('script');
+                script.src = "https://www.googletagmanager.com/gtag/js?id=" + TRACKING_CONFIG.GA4_ID;
+                script.async = true; document.head.appendChild(script);
+                window.dataLayer = window.dataLayer || [];
+                window.gtag = function(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+            }
+            gtag('config', TRACKING_CONFIG.GA4_ID);
+        }
+
+        // 4. Khởi động Zalo Widget (Nếu có điền ở danh sách chờ)
+        if (TRACKING_CONFIG.ZALO_WIDGET_ID) {
+            const zaloDiv = document.createElement('div');
+            zaloDiv.className = "zalo-chat-widget";
+            zaloDiv.setAttribute("data-oaid", TRACKING_CONFIG.ZALO_WIDGET_ID);
+            zaloDiv.setAttribute("data-welcome-message", "Greenia Homes xin chào!");
+            zaloDiv.setAttribute("data-autopopup", "0");
+            zaloDiv.setAttribute("data-width", "350");
+            zaloDiv.setAttribute("data-height", "420");
+            document.body.appendChild(zaloDiv);
+            const zaloScript = document.createElement('script');
+            zaloScript.src = "https://sp.zalo.me/plugins/sdk.js";
+            document.body.appendChild(zaloScript);
+        }
+
+        // 5. Khởi động GTM (Nếu có điền ở danh sách chờ)
+        if (TRACKING_CONFIG.GTM_ID) {
+            let script = document.createElement('script');
+            script.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${TRACKING_CONFIG.GTM_ID}');`;
+            document.head.appendChild(script);
+        }
+
         window.isTrackingActive = true;
     }
 
@@ -173,7 +223,7 @@ function initMasterFormsAndPopup() {
         initTrackingSystem();
         setTimeout(() => {
             if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: channel });
-            if (typeof gtag === 'function') gtag('event', 'Click_' + channel, { 'send_to': GG_ADS_ID });
+            if (typeof gtag === 'function') gtag('event', 'Click_' + channel, { 'send_to': TRACKING_CONFIG.GG_ADS_ID });
         }, 300);
     };
 
@@ -200,7 +250,7 @@ function initMasterFormsAndPopup() {
             fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
                 initTrackingSystem();
                 if(typeof fbq === 'function') fbq('track', 'Lead');
-                if(typeof gtag === 'function') gtag('event', 'Dang_Ky_Form', {'send_to': GG_ADS_ID});
+                if(typeof gtag === 'function') gtag('event', 'Dang_Ky_Form', {'send_to': TRACKING_CONFIG.GG_ADS_ID});
 
                 sessionStorage.setItem('greenia_form_submitted', 'true');
                 formPopup.style.setProperty('display', 'none', 'important');
@@ -234,7 +284,7 @@ function initMasterFormsAndPopup() {
             fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
                 initTrackingSystem();
                 if(typeof fbq === 'function') fbq('track', 'Lead');
-                if(typeof gtag === 'function') gtag('event', 'Dang_Ky_Form', {'send_to': GG_ADS_ID});
+                if(typeof gtag === 'function') gtag('event', 'Dang_Ky_Form', {'send_to': TRACKING_CONFIG.GG_ADS_ID});
                 
                 form.style.display = 'none';
                 const successMsg = form.nextElementSibling;
