@@ -12,33 +12,100 @@ const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
 let posts = fs.existsSync(postsPath) ? JSON.parse(fs.readFileSync(postsPath, 'utf8')) : [];
 let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 'utf8')) : [];
 
+// Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
 const prodTemplate = fs.existsSync('chi-tiet-sp.html') ? fs.readFileSync('chi-tiet-sp.html', 'utf8') : '';
+const catNewsTemplate = fs.existsSync('danh-muc.html') ? fs.readFileSync('danh-muc.html', 'utf8') : '';
+const catProdTemplate = fs.existsSync('danh-muc-sp.html') ? fs.readFileSync('danh-muc-sp.html', 'utf8') : '';
 
-function makeSafeSlug(t) { return t.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-'); }
+// Hàm tạo URL thân thiện chuẩn SEO
+function makeSafeSlug(t) { 
+    if(!t) return 'chuyen-muc';
+    return t.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-'); 
+}
 
 // ==========================================
 // KHỞI TẠO BẢN ĐỒ TRANG WEB (SITEMAP)
 // ==========================================
 let sitemapUrls = [
     `${DOMAIN}/`,
-    `${DOMAIN}/danh-muc.html`,
+    `${DOMAIN}/tin-tuc.html`,
     `${DOMAIN}/san-pham.html`
 ];
 
 // ==========================================
-// XỬ LÝ TRANG TIN TỨC (BLOG)
+// BƯỚC 1: XUẤT BẢN CÁC TRANG DANH MỤC (CATEGORY PAGES)
+// ==========================================
+
+// 1.1 Quét và tạo Danh mục Tin tức
+let newsCategories = [];
+posts.forEach(p => {
+    if (p.cat && !newsCategories.find(c => c.name === p.cat)) {
+        newsCategories.push({ name: p.cat, slug: makeSafeSlug(p.cat), type: 'news' });
+    }
+});
+
+if (catNewsTemplate) {
+    newsCategories.forEach(cat => {
+        const folder = path.join(__dirname, cat.slug);
+        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
+        const pageUrl = `${DOMAIN}/${cat.slug}/`;
+        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+
+        // Đổ dữ liệu vào khuôn & Sửa lỗi ../../ thành ../ vì danh mục chỉ sâu 1 cấp
+        let html = catNewsTemplate
+            .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Tin Tức | Greenia Homes</title>`)
+            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`)
+            .replace(/\.\.\/\.\.\//g, '../');
+
+        fs.writeFileSync(path.join(folder, 'index.html'), html);
+    });
+}
+
+// 1.2 Quét và tạo Danh mục Sản phẩm (Lọc theo cat và type)
+let prodCategories = [];
+products.forEach(p => {
+    if (p.cat && !prodCategories.find(c => c.name === p.cat)) {
+        prodCategories.push({ name: p.cat, slug: makeSafeSlug(p.cat), type: 'product' });
+    }
+    if (p.type && !prodCategories.find(c => c.name === p.type)) {
+        prodCategories.push({ name: p.type, slug: makeSafeSlug(p.type), type: 'product' });
+    }
+});
+
+if (catProdTemplate) {
+    prodCategories.forEach(cat => {
+        const folder = path.join(__dirname, cat.slug);
+        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
+        const pageUrl = `${DOMAIN}/${cat.slug}/`;
+        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+
+        let html = catProdTemplate
+            .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Sản Phẩm | Greenia Homes</title>`)
+            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`)
+            .replace(/\.\.\/\.\.\//g, '../');
+
+        fs.writeFileSync(path.join(folder, 'index.html'), html);
+    });
+}
+
+// ==========================================
+// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (NẰM TRONG DANH MỤC)
 // ==========================================
 if (blogTemplate) {
     posts.forEach(post => {
-        const slug = post.slug || makeSafeSlug(post.title);
-        const folder = path.join(__dirname, 'blog', slug);
+        const catSlug = makeSafeSlug(post.cat || 'tin-tuc');
+        const postSlug = post.slug || makeSafeSlug(post.title);
+        
+        // Cấu trúc URL mới: /ten-danh-muc/ten-bai-viet/
+        const folder = path.join(__dirname, catSlug, postSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        const pageUrl = `${DOMAIN}/blog/${slug}/`;
-        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+        const pageUrl = `${DOMAIN}/${catSlug}/${postSlug}/`;
+        sitemapUrls.push(pageUrl);
 
-        // 1. Dữ liệu SEO tự động
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
         const schemaObj = {
             "@context": "https://schema.org",
@@ -50,12 +117,10 @@ if (blogTemplate) {
         };
         const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n</script>`;
 
-        // 2. Thay thế dữ liệu gốc của bạn
         let html = blogTemplate
             .replace(/<title>.*?<\/title>/, `<title>${post.seoTitle || post.title}</title>`)
             .replace(/window\.GREENIA_CURRENT_POST\s*=\s*null;?/g, `window.GREENIA_CURRENT_POST = ${JSON.stringify(post)};`);
         
-        // 3. Chèn Canonical & Schema vào trước </head>
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
@@ -63,18 +128,20 @@ if (blogTemplate) {
 }
 
 // ==========================================
-// XỬ LÝ TRANG SẢN PHẨM (PROD)
+// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (NẰM TRONG DANH MỤC)
 // ==========================================
 if (prodTemplate) {
     products.forEach(prod => {
-        const slug = prod.slug || makeSafeSlug(prod.title);
-        const folder = path.join(__dirname, 'san-pham', slug);
+        const catSlug = makeSafeSlug(prod.cat || 'san-pham');
+        const prodSlug = prod.slug || makeSafeSlug(prod.title);
+        
+        // Cấu trúc URL mới: /ten-danh-muc/ten-san-pham/
+        const folder = path.join(__dirname, catSlug, prodSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        const pageUrl = `${DOMAIN}/san-pham/${slug}/`;
-        sitemapUrls.push(pageUrl); // Thêm vào Sitemap
+        const pageUrl = `${DOMAIN}/${catSlug}/${prodSlug}/`;
+        sitemapUrls.push(pageUrl);
 
-        // 1. Dữ liệu SEO tự động
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
         const schemaObj = {
             "@context": "https://schema.org/",
@@ -92,12 +159,10 @@ if (prodTemplate) {
         };
         const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n</script>`;
 
-        // 2. Thay thế dữ liệu gốc của bạn
         let html = prodTemplate
             .replace(/<title>.*?<\/title>/, `<title>${prod.seoTitle || prod.title}</title>`)
             .replace(/window\.GREENIA_CURRENT_PRODUCT\s*=\s*null;?/g, `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)};`);
 
-        // 3. Chèn Canonical & Schema vào trước </head>
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
@@ -105,7 +170,7 @@ if (prodTemplate) {
 }
 
 // ==========================================
-// XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
+// BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
 // ==========================================
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -114,4 +179,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('Build hoàn tất! Đã cập nhật Thẻ Title, Canonical, Schema và xuất file Sitemap.xml thành công.');
+console.log('✅ Build hoàn tất! Đã tạo thành công Cấu trúc URL Danh mục mới, cập nhật Thẻ Title, Canonical, Schema và xuất file Sitemap.xml.');
