@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bán - Sản Phẩm | Greenia Homes</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        body { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; margin: 0; padding: 0; }
+        .cat-wrapper { max-width: 1200px; margin: 50px auto; padding: 0 15px; padding-bottom: 60px; min-height: 50vh;}
+        
+        .cat-header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
+        .cat-title { font-size: 32px; color: #c5a059; margin: 0 0 10px; font-weight: 800; text-transform: uppercase; }
+        .cat-desc { font-size: 15px; color: #888; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+        .cat-breadcrumb { font-size: 13px; color: #666; margin-bottom: 15px; }
+        .cat-breadcrumb a { color: #888; text-decoration: none; transition: 0.3s; }
+        .cat-breadcrumb a:hover { color: #c5a059; }
+
+        .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .gr-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; position: relative;}
+        .gr-card:hover { border-color: #c5a059; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4);}
+        .gr-thumb-box { height: 180px; position: relative; overflow: hidden; }
+        .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
+        .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
+        .gr-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; z-index: 5; border-bottom-right-radius: 6px; }
+        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
+        .gr-tit { font-size: 14px !important; font-weight: 600; color: #fff; line-height: 1.4; margin: 0 0 8px 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: 0.3s;}
+        .gr-card:hover .gr-tit { color: #c5a059; }
+        .gr-loc { font-size: 11px; color: #999; margin-bottom: 10px; display: flex; gap: 5px; align-items: center;}
+        .gr-loc i { color: #c5a059;}
+        .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; justify-content: space-between; margin-top: auto; }
+        .gr-hl { color: #c5a059; font-weight: 700; font-size: 15px; }
+
+        @media (max-width: 992px) { .prod-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .prod-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .prod-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
+
+    <main class="cat-wrapper" id="cat-main">
+        <div style="text-align:center; padding: 150px 0; color: #c5a059;"><i class="fas fa-circle-notch fa-spin fa-3x"></i><p>Đang tải danh mục...</p></div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script src="../assets/js/ui.js"></script>
+
+    <script>
+        window.GREENIA_CURRENT_CATEGORY = {"name":"Bán","slug":"ban","type":"product"}; // { name: "Cho Thuê", slug: "cho-thue" }
+
+        function createSafeSlug(title) {
+            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            const container = document.getElementById('cat-main');
+            const cat = window.GREENIA_CURRENT_CATEGORY;
+
+            if (!cat) {
+                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+                window.location.replace(safeBaseUrl + 'san-pham.html');
+                return;
+            }
+
+            let htmlStr = `
+                <div class="cat-header">
+                    <div class="cat-breadcrumb"><a href="../index.html">Trang chủ</a> / <a href="../san-pham.html">Sản phẩm</a> / <span style="color:#fff;">${cat.name}</span></div>
+                    <h1 class="cat-title">${cat.name}</h1>
+                    <p class="cat-desc">${cat.desc || `Tổng hợp các bất động sản nổi bật thuộc danh mục ${cat.name}.`}</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch('../assets/data/products.json');
+                const prods = await res.json();
+                
+                const filteredProds = prods.filter(p => p.type === cat.name || p.cat === cat.name);
+
+                if (filteredProds.length === 0) {
+                    htmlStr += `<div style="text-align:center; padding:50px; color:#888;">Chưa có sản phẩm nào trong chuyên mục này.</div>`;
+                } else {
+                    htmlStr += `<div class="prod-grid">`;
+                    filteredProds.forEach(p => {
+                        const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+                        const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+                        const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+                        const pSlug = p.slug || createSafeSlug(p.title);
+
+                        htmlStr += `
+                            <a href="../${cat.slug}/${pSlug}/" class="gr-card">
+                                <div class="gr-thumb-box">
+                                    <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                    <img src="${window.resolveImg(p.img)}" alt="${p.title}">
+                                </div>
+                                <div class="gr-body">
+                                    <h3 class="gr-tit">${p.title}</h3>
+                                    <div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                    <div class="gr-meta">
+                                        <span class="gr-hl">${p.price}</span>
+                                        <div style="display:flex; gap:10px;">
+                                            <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>
+                                            ${bedHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>`;
+                    });
+                    htmlStr += `</div>`;
+                }
+                container.innerHTML = htmlStr;
+                document.title = `${cat.name} | Greenia Homes`;
+
+            } catch (e) {
+                container.innerHTML = "<div style='text-align:center; padding:50px; color:#ff4d4f;'>Hệ thống đang cập nhật dữ liệu.</div>";
+            }
+        });
+    </script>
+</body>
+</html>
