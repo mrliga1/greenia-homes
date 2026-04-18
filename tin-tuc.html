@@ -163,25 +163,16 @@
     <script src="assets/js/ui.js"></script>
 
     <script>
+        // KHO KHAI BÁO BIẾN (Tuyệt đối không dùng await ở đây)
         let allPosts = [];
         let allProducts = [];
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
         let mixedPostsPool = [];
+        let independentProjects = [];
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
-
-        // ==========================================
-        // CẤU HÌNH CÁC PAGE DỰ ÁN ĐỘC LẬP TẠI ĐÂY
-        // ==========================================
-            let independentProjects = [];
-        try {
-            const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
-            independentProjects = await projRes.json();
-        } catch(e) {
-            console.log("Chưa có dự án nào được quét");
-        }
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -221,6 +212,7 @@
             }
         }
 
+        // TẢI DỮ LIỆU KHI TRANG SẴN SÀNG
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
@@ -230,7 +222,17 @@
                 allPosts = await postRes.json();
                 allProducts = await prodRes.json();
 
-                // TẠO TABS ĐỘNG
+                // Load Project Độc Lập an toàn
+                try {
+                    const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
+                    if (projRes.ok) {
+                        independentProjects = await projRes.json();
+                    }
+                } catch(e) {
+                    console.log("File projects.json chưa có dữ liệu.");
+                }
+
+                // TẠO TABS
                 const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
                 const tabsHtml = categories.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
@@ -239,11 +241,10 @@
                 mixedPostsPool = [...allPosts];
                 switchTab('Tất cả', document.querySelector('.s1-tab'));
                 
-                // Sidebar Phải
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
-                // KHỐI CAROUSEL DƯỚI
+                // CAROUSEL BÊN DƯỚI
                 const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
                 document.getElementById('foryou-grid').innerHTML = forYouProds.map(p => createProdCardHTML(p)).join('');
 
@@ -253,18 +254,23 @@
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
 
-                // 🔥 VẼ CAROUSEL PAGE DỰ ÁN ĐỘC LẬP TỪ MẢNG CẤU HÌNH
-                document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
-                    return `<a href="${p.link}" class="s2-card">
-                                <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${p.img}"></div>
-                                <div class="s2-body">
-                                    <h3 class="gr-tit">${p.title}</h3>
-                                    <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
-                                        <i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status}
+                // CAROUSEL DỰ ÁN (Load từ bot Build.js)
+                if (independentProjects.length > 0) {
+                    document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
+                        const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                        return `<a href="${p.link}" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}"></div>
+                                    <div class="s2-body">
+                                        <h3 class="gr-tit">${p.title}</h3>
+                                        <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
+                                            <i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}
+                                        </div>
                                     </div>
-                                </div>
-                            </a>`;
-                }).join('');
+                                </a>`;
+                    }).join('');
+                } else {
+                    document.getElementById('feat-scroll').innerHTML = '<div style="color:#888; padding:20px;">Đang cập nhật dự án...</div>';
+                }
 
             } catch(e) {
                 document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang cập nhật dữ liệu.</div>";
@@ -272,6 +278,7 @@
             }
         });
 
+        // LOGIC HOẠT ĐỘNG UI
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
