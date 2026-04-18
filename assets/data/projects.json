@@ -24,5 +24,18 @@
     "seoTitle": "vinhomes",
     "seoDesc": "Dự án vinhomes",
     "seoKeywords": "dự án vinhomes, bất động sản"
+  },
+  {
+    "id": 3,
+    "title": "căn hộ",
+    "slug": "can-ho",
+    "status": "Đang mở bán",
+    "loc": "1",
+    "price": "3",
+    "img": "https://i.ibb.co/bjTJN31W/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg",
+    "link": "https://mrliga1.github.io/greenia-homes/du-an/can-ho/",
+    "seoTitle": "căn hộ",
+    "seoDesc": "Dự án căn hộ",
+    "seoKeywords": "dự án căn hộ, bất động sản"
   }
 ]
