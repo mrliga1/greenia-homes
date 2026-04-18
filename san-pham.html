@@ -170,7 +170,6 @@
         let globalProducts = [];
         let filterState = { type: "all", cat: "all", keyword: "" };
 
-        // Hàm tạo Slug an toàn để fix lỗi Undefined và tạo link thư mục
         function createSafeSlug(title) {
             if(!title) return 'danh-muc';
             return title.toString().toLowerCase().trim()
@@ -181,21 +180,21 @@
                 .replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        // Hàm tạo Card Sản phẩm
-        function createCardHTML(p, customTag = null) {
+        // Đã thêm tham số safeBaseUrl để chèn vào link
+        function createCardHTML(p, safeBaseUrl, customTag = null) {
             const tagClass = customTag ? 'tag-ban' : (p.type === 'Bán' ? 'tag-ban' : 'tag-thue');
             const tagText = customTag ? customTag : (p.type === 'Bán' ? 'Đang bán' : 'Cho thuê');
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
             
-            // 🔥 Tự động tạo link: /ten-danh-muc/ten-san-pham/
+            // 🔥 Link chuẩn Silo: /san-pham/ten-danh-muc/ten-san-pham/
             const catSlug = createSafeSlug(p.cat || 'san-pham');
             const finalSlug = p.slug || createSafeSlug(p.title);
 
             return `
-                <a href="${catSlug}/${finalSlug}/" class="gr-card">
+                <a href="${safeBaseUrl}san-pham/${catSlug}/${finalSlug}/" class="gr-card">
                     <div class="gr-thumb-box">
                         <span class="gr-tag-abs ${tagClass}">${tagText}</span>
-                        <img src="${p.img}" alt="${p.title}">
+                        <img src="${window.resolveImg ? window.resolveImg(p.img) : p.img}" alt="${p.title}">
                     </div>
                     <div class="gr-body">
                         <h3 class="gr-tit">${p.title}</h3>
@@ -219,17 +218,21 @@
             const keywordInput = document.getElementById('g282-keyword');
             const dropdownMenu = document.getElementById('g282-dropdown-menu');
             const dynContainer = document.getElementById('dynamic-sections-container');
+            
+            // Base URL an toàn
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
             async function fetchAllData() {
                 grid.classList.add("loading"); loader.classList.add("show");
                 
                 try {
-                    const prodRes = await fetch('assets/data/products.json');
+                    // Dùng safeBaseUrl để fetch dữ liệu không bị lỗi path
+                    const prodRes = await fetch(safeBaseUrl + 'assets/data/products.json');
                     globalProducts = await prodRes.json();
                     
                     let globalPosts = [];
                     try {
-                        const postRes = await fetch('assets/data/posts.json');
+                        const postRes = await fetch(safeBaseUrl + 'assets/data/posts.json');
                         globalPosts = await postRes.json();
                     } catch(e) { console.log("Chưa có posts.json"); }
 
@@ -265,7 +268,7 @@
                     });
 
                     const forYouProds = [...globalProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
-                    let forYouHTML = forYouProds.map(p => createCardHTML(p)).join('');
+                    let forYouHTML = forYouProds.map(p => createCardHTML(p, safeBaseUrl)).join('');
 
                     let newsHTML = '';
                     globalPosts.slice(0, 3).forEach(post => {
@@ -274,13 +277,13 @@
                         const thumbSrc = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
                         const excerpt = tempDiv.textContent.substring(0, 80) + '...';
                         
-                        // 🔥 Tự động tạo link: /ten-danh-muc/ten-bai-viet/
+                        // 🔥 Link bài viết dự án chuẩn Silo: /tin-tuc/ten-danh-muc/ten-bai-viet/
                         const catSlug = createSafeSlug(post.cat || 'tin-tuc');
                         const pSlug = post.slug || createSafeSlug(post.title);
 
                         newsHTML += `
-                            <a href="${catSlug}/${pSlug}/" class="gr-news-card">
-                                <div class="gr-news-thumb"><img src="${thumbSrc}"></div>
+                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/${pSlug}/" class="gr-news-card">
+                                <div class="gr-news-thumb"><img src="${window.resolveImg ? window.resolveImg(thumbSrc) : thumbSrc}"></div>
                                 <div class="gr-news-info">
                                     <h3 class="gr-news-tit">${post.title}</h3>
                                     <div class="gr-news-desc">${excerpt}</div>
@@ -290,16 +293,16 @@
                     });
 
                     const projProds = globalProducts.filter(p => p.projectCode && p.projectCode.trim() !== "").slice(0, 4);
-                    let projHTML = projProds.map(p => createCardHTML(p, 'Dự án')).join('');
+                    let projHTML = projProds.map(p => createCardHTML(p, safeBaseUrl, 'Dự án')).join('');
 
                     const saleProds = globalProducts.filter(p => p.type === 'Bán').slice(0, 10);
-                    let saleHTML = saleProds.map(p => createCardHTML(p)).join('');
+                    let saleHTML = saleProds.map(p => createCardHTML(p, safeBaseUrl)).join('');
 
                     const rentProds = globalProducts.filter(p => p.type === 'Thuê').slice(0, 10);
-                    let rentHTML = rentProds.map(p => createCardHTML(p)).join('');
+                    let rentHTML = rentProds.map(p => createCardHTML(p, safeBaseUrl)).join('');
 
                     const featProds = [...globalProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
-                    let featHTML = featProds.map(p => createCardHTML(p)).join('');
+                    let featHTML = featProds.map(p => createCardHTML(p, safeBaseUrl)).join('');
 
                     dynContainer.innerHTML = `
                         <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
@@ -314,12 +317,12 @@
                                 <div class="gr-proj-left">
                                     <h2 class="s-tit" style="margin-bottom: 20px;">Tin tức dự án</h2>
                                     <div class="gr-news-list">${newsHTML || '<p style="color:#888;">Đang cập nhật tin tức.</p>'}</div>
-                                    <div class="s1-btn-wrap" style="text-align:left;"><a href="tin-tuc.html" class="s1-btn">Xem thêm tin tức</a></div>
+                                    <div class="s1-btn-wrap" style="text-align:left;"><a href="${safeBaseUrl}tin-tuc.html" class="s1-btn">Xem thêm tin tức</a></div>
                                 </div>
                                 <div class="gr-proj-right">
                                     <h2 class="s-tit" style="margin-bottom: 20px;">Sản phẩm dự án</h2>
                                     <div class="gr-proj-prod-grid">${projHTML || '<p style="color:#888;">Đang cập nhật dự án.</p>'}</div>
-                                    <div class="s1-btn-wrap" style="margin-top: 15px;"><a href="#" class="s1-btn">Xem thêm sản phẩm</a></div>
+                                    <div class="s1-btn-wrap" style="margin-top: 15px;"><a href="#" class="s1-btn" onclick="document.querySelector('.g282-drop-item[data-cat=\\'du-an\\']').click(); window.scrollTo(0,0); return false;">Xem thêm sản phẩm</a></div>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +371,7 @@
                     });
 
                     grid.innerHTML = results.length > 0 
-                        ? results.map(p => createCardHTML(p)).join('') 
+                        ? results.map(p => createCardHTML(p, safeBaseUrl)).join('') 
                         : "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
                     
                     grid.classList.remove("loading"); loader.classList.remove("show");
