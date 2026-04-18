@@ -59,6 +59,8 @@
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('cat-main');
             const cat = window.GREENIA_CURRENT_CATEGORY;
+            
+            // Lấy Base URL một cách an toàn
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
             if (!cat) {
@@ -75,7 +77,8 @@
             `;
 
             try {
-                const res = await fetch('../../assets/data/posts.json');
+                // 🔥 Đã sửa thành đường dẫn tuyệt đối an toàn
+                const res = await fetch(safeBaseUrl + 'assets/data/posts.json');
                 const posts = await res.json();
                 const filteredPosts = posts.filter(p => p.cat === cat.name);
 
@@ -90,9 +93,10 @@
                         const excerpt = tempDiv.textContent.substring(0, 120) + '...';
                         const pSlug = post.slug || createSafeSlug(post.title);
 
+                        // 🔥 Đã sửa link bài viết để nối tiếp thư mục /tin-tuc/
                         htmlStr += `
-                            <a href="${safeBaseUrl}${cat.slug}/${pSlug}/" class="blog-card">
-                                <div class="bc-thumb"><img src="${window.resolveImg(thumbSrc)}"></div>
+                            <a href="${safeBaseUrl}tin-tuc/${cat.slug}/${pSlug}/" class="blog-card">
+                                <div class="bc-thumb"><img src="${window.resolveImg ? window.resolveImg(thumbSrc) : thumbSrc}"></div>
                                 <div class="bc-body">
                                     <h3 class="bc-title">${post.title}</h3>
                                     <div class="bc-excerpt">${excerpt}</div>
