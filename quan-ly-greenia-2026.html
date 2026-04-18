@@ -107,7 +107,6 @@
         .btn-action.del-btn:hover { background: #ff4757; color: #fff; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
 
-        /* Style riêng cho box chọn danh mục để sửa */
         .select-edit-box { background: rgba(197,160,89,0.1); border: 1px dashed var(--gold); border-radius: 8px; padding: 15px; margin-bottom: 25px; }
         .select-edit-box select { background: #000; border-color: var(--gold); color: var(--gold); font-weight: bold; }
     </style>
@@ -149,7 +148,6 @@
                         <option value="">-- Click để chọn danh mục --</option>
                     </select>
                 </div>
-
                 <div class="form-grid">
                     <div class="form-group"><label>Mã Danh Mục:</label><input type="text" id="c-id" disabled value="..."></div>
                     <div class="form-group"><label>Thuộc phân hệ:</label>
@@ -274,23 +272,17 @@
                     <div class="form-group"><label>Giá tham chiếu:</label><input type="text" id="pj-price" placeholder="VD: Từ 3 tỷ/căn"></div>
                     
                     <div class="form-group full">
-                        <label>1. Ảnh Bìa Dự Án (Hiển thị ở Carousel):</label>
+                        <label>Ảnh Bìa Dự Án (Sẽ hiển thị ở mục Dự án nổi bật):</label>
                         <div class="upload-area" onclick="document.getElementById('pj-main-img-file').click()"><i class="fas fa-cloud-upload-alt fa-2x"></i><input type="file" id="pj-main-img-file" hidden onchange="handleSingleUpload(this, 'pj-main-preview', 'projMain')"></div>
                         <div id="pj-main-preview" class="preview-grid"></div>
-                    </div>
-                    
-                    <div class="form-group full" style="color: #000;">
-                        <label style="color:#fff;">Nội dung giới thiệu dự án (Landing Page):</label>
-                        <textarea id="pj-content" name="pj-content"></textarea>
                     </div>
                 </div>
 
                 <div class="seo-box">
-                    <div class="form-group"><label>SEO Title:</label><input type="text" id="pj-seo-title"></div>
-                    <div class="form-group"><label>SEO Description:</label><textarea id="pj-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'pj-desc-count', 155)"></textarea><div class="char-count" id="pj-desc-count">0/155</div></div>
-                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="pj-seo-key"></div>
+                    <div class="form-group"><label>SEO Title (Tùy chọn):</label><input type="text" id="pj-seo-title"></div>
+                    <div class="form-group"><label>SEO Description (Tùy chọn):</label><textarea id="pj-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'pj-desc-count', 155)"></textarea><div class="char-count" id="pj-desc-count">0/155</div></div>
                 </div>
-                <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> XUẤT BẢN DỰ ÁN</button>
+                <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN</button>
             </div>
 
         </div>
@@ -328,7 +320,6 @@
 
     CKEDITOR.replace('p-content', { height: 350, versionCheck: false });
     CKEDITOR.replace('n-content', { height: 350, versionCheck: false });
-    CKEDITOR.replace('pj-content', { height: 350, versionCheck: false });
 
     function checkLogin() {
         const pwd = document.getElementById('sys-password').value;
@@ -401,7 +392,6 @@
         document.getElementById('pj-id').value = Math.max(...currentData.projects.map(x => x.id || 0), 0) + 1;
         document.getElementById('c-id').value = Math.max(...currentData.categories.map(x => x.id || 0), 0) + 1;
         
-        // Bơm danh mục vào Dropdown tìm kiếm
         const catSelect = document.getElementById('c-existing');
         if(catSelect) {
             catSelect.innerHTML = '<option value="">-- Tạo danh mục mới (Click Hủy Sửa) --</option>' + 
@@ -508,7 +498,6 @@
             document.getElementById('pj-title').value = item.title || "";
             document.getElementById('pj-loc').value = item.loc || "";
             document.getElementById('pj-price').value = item.price || "";
-            CKEDITOR.instances['pj-content'].setData(item.content || "");
             document.getElementById('pj-seo-title').value = item.seoTitle || "";
             document.getElementById('pj-seo-desc').value = item.seoDesc || "";
             document.getElementById('pj-seo-key').value = item.seoKeywords || "";
@@ -534,7 +523,7 @@
 
             const btn = document.getElementById('btn-submit-cat');
             btn.innerHTML = '<i class="fas fa-save"></i> LƯU DANH MỤC'; btn.classList.add('update-mode');
-            document.getElementById('btn-delete-cat').style.display = "block"; // Hiện nút xóa
+            document.getElementById('btn-delete-cat').style.display = "block"; 
             
             checkLength(document.getElementById('c-title'), 'c-title-count', 60);
             checkLength(document.getElementById('c-seo-desc'), 'c-desc-count', 155);
@@ -545,19 +534,18 @@
         editMode = { active: false, type: null, id: null };
         document.getElementById('btn-cancel-edit').style.display = "none";
         document.getElementById('btn-delete-cat').style.display = "none";
-        document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content):not(#pj-content)').forEach(el => el.value = '');
-        document.getElementById('c-existing').value = ""; // Clear select danh mục
+        document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content)').forEach(el => el.value = '');
+        document.getElementById('c-existing').value = ""; 
         
         CKEDITOR.instances['p-content'].setData("");
         CKEDITOR.instances['n-content'].setData("");
-        CKEDITOR.instances['pj-content'].setData("");
         document.querySelectorAll('.preview-grid').forEach(el => el.innerHTML = '');
         uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" };
         resetFormCalculations();
         
         document.getElementById('btn-submit-prod').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; document.getElementById('btn-submit-prod').classList.remove('update-mode');
         document.getElementById('btn-submit-news').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; document.getElementById('btn-submit-news').classList.remove('update-mode');
-        document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
+        document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
         document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-rocket"></i> LƯU CẤU HÌNH DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode');
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
     }
@@ -660,9 +648,6 @@
             titleVal = document.getElementById('pj-title').value;
             if(!titleVal) { alert("Tên Dự án là bắt buộc!"); return; }
             slugVal = slugify(titleVal);
-            contentVal = CKEDITOR.instances['pj-content'].getData();
-            rawDesc = document.getElementById('pj-seo-desc').value;
-            autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
 
             newData = {
                 id: parseInt(document.getElementById('pj-id').value), 
@@ -672,10 +657,9 @@
                 loc: document.getElementById('pj-loc').value,
                 price: document.getElementById('pj-price').value,
                 img: uploadedFiles.projMain, 
-                content: contentVal,
                 link: `${GITHUB_PAGES_DOMAIN}/du-an/${slugVal}/`, 
                 seoTitle: document.getElementById('pj-seo-title').value || titleVal, 
-                seoDesc: rawDesc || autoDesc, 
+                seoDesc: document.getElementById('pj-seo-desc').value || `Dự án ${titleVal}`, 
                 seoKeywords: document.getElementById('pj-seo-key').value || `dự án ${titleVal}, bất động sản`
             };
         } else if (type === 'cat') {
@@ -721,6 +705,17 @@
             });
 
             if(pushRes.ok) {
+                // --- TẠO SẴN THƯ MỤC DỰ ÁN RỖNG CHO BẠN TỰ UPLOAD CODE ---
+                if (type === 'proj' && !editMode.active) {
+                    try {
+                        const defaultHtml = `<!DOCTYPE html>\n<html lang="vi">\n<head>\n<meta charset="UTF-8">\n<title>${newData.title}</title>\n</head>\n<body>\n<h1>Dự án ${newData.title}</h1>\n<p>Thư mục đã sẵn sàng. Vui lòng Upload các file thiết kế tay của bạn (index.html, vi-tri.html...) đè lên file này.</p>\n</body>\n</html>`;
+                        await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/du-an/${newData.slug}/index.html`, {
+                            method: "PUT", headers: { "Authorization": `token ${token}` },
+                            body: JSON.stringify({ message: `Khởi tạo thư mục dự án: ${newData.slug}`, content: btoa(unescape(encodeURIComponent(defaultHtml))) })
+                        });
+                    } catch(err) { console.log("Lỗi tạo thư mục dự án", err); }
+                }
+
                 alert(`Lưu thành công! Hệ thống đang tự động đồng bộ.`);
                 if (type === 'prod') currentData.products = updatedFullData; 
                 else if (type === 'news') currentData.posts = updatedFullData;
