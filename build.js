@@ -8,11 +8,13 @@ const DOMAIN = 'https://mrliga1.github.io/greenia-homes';
 
 const postsPath = path.join(__dirname, 'assets', 'data', 'posts.json');
 const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
-const projPath = path.join(__dirname, 'assets', 'data', 'projects.json'); // Bổ sung đọc file dự án từ Admin
+const projPath = path.join(__dirname, 'assets', 'data', 'projects.json');
+const catPath = path.join(__dirname, 'assets', 'data', 'categories.json'); // Bổ sung đọc file Danh mục SEO
 
 let posts = fs.existsSync(postsPath) ? JSON.parse(fs.readFileSync(postsPath, 'utf8')) : [];
 let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 'utf8')) : [];
 let projects = fs.existsSync(projPath) ? JSON.parse(fs.readFileSync(projPath, 'utf8')) : [];
+let categoriesSEO = fs.existsSync(catPath) ? JSON.parse(fs.readFileSync(catPath, 'utf8')) : [];
 
 // Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
@@ -40,17 +42,42 @@ let sitemapUrls = [
     `${DOMAIN}/san-pham.html`
 ];
 
-// Thêm toàn bộ Dự án vào Sitemap (Dữ liệu lấy từ Admin)
 projects.forEach(p => {
     const slug = p.slug || makeSafeSlug(p.title);
     sitemapUrls.push(`${DOMAIN}/du-an/${slug}/`);
 });
 
+// Hàm hỗ trợ chèn thẻ Meta SEO vào <head>
+function injectSeoTags(htmlContent, seoData, canonicalUrl) {
+    const metaTags = `
+    <link rel="canonical" href="${canonicalUrl}" />
+    <meta name="description" content="${seoData.seoDesc || seoData.desc || ''}" />
+    <meta name="keywords" content="${seoData.seoKeywords || ''}" />
+    <meta property="og:title" content="${seoData.seoTitle || seoData.title || ''}" />
+    <meta property="og:description" content="${seoData.seoDesc || seoData.desc || ''}" />
+    <meta property="og:url" content="${canonicalUrl}" />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "${seoData.seoTitle || seoData.title || ''}",
+      "description": "${seoData.seoDesc || seoData.desc || ''}",
+      "url": "${canonicalUrl}"
+    }
+    </script>
+    `;
+    return htmlContent
+        .replace(/<title>.*?<\/title>/, `<title>${seoData.seoTitle || seoData.title} | Greenia Homes</title>`)
+        .replace('</head>', `${metaTags}\n</head>`);
+}
+
+
 // ==========================================
 // BƯỚC 1: XUẤT BẢN CÁC TRANG DANH MỤC (CATEGORY PAGES)
 // ==========================================
 
-// 1.1 Quét và tạo Danh mục Tin tức (Gom vào /tin-tuc/)
+// 1.1 Quét và tạo Danh mục Tin tức
 let newsCategories = [];
 posts.forEach(p => {
     if (p.cat && !newsCategories.find(c => c.name === p.cat)) {
@@ -66,15 +93,19 @@ if (catNewsTemplate) {
         const pageUrl = `${DOMAIN}/tin-tuc/${cat.slug}/`;
         sitemapUrls.push(pageUrl);
 
-        let html = catNewsTemplate
-            .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Tin Tức | Greenia Homes</title>`)
-            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`);
+        // Lấy thông tin cấu hình SEO từ Admin (nếu có)
+        const seoInfo = categoriesSEO.find(c => c.slug === cat.slug) || { title: cat.name };
+        
+        let html = catNewsTemplate.replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify({...cat, ...seoInfo})};`);
+        
+        // Bơm thẻ SEO vào trang Danh Mục Tin Tức
+        html = injectSeoTags(html, seoInfo, pageUrl);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
 }
 
-// 1.2 Quét và tạo Danh mục Sản phẩm (Gom vào /san-pham/)
+// 1.2 Quét và tạo Danh mục Sản phẩm
 let prodCategories = [];
 products.forEach(p => {
     if (p.cat && !prodCategories.find(c => c.name === p.cat)) {
@@ -93,9 +124,13 @@ if (catProdTemplate) {
         const pageUrl = `${DOMAIN}/san-pham/${cat.slug}/`;
         sitemapUrls.push(pageUrl);
 
-        let html = catProdTemplate
-            .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Sản Phẩm | Greenia Homes</title>`)
-            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`);
+        // Lấy thông tin cấu hình SEO từ Admin (nếu có)
+        const seoInfo = categoriesSEO.find(c => c.slug === cat.slug) || { title: cat.name };
+
+        let html = catProdTemplate.replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify({...cat, ...seoInfo})};`);
+        
+        // Bơm thẻ SEO vào trang Danh Mục Sản Phẩm
+        html = injectSeoTags(html, seoInfo, pageUrl);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
@@ -116,6 +151,18 @@ if (blogTemplate) {
         sitemapUrls.push(pageUrl);
 
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
+        const seoDesc = post.seoDesc || post.title;
+        const seoKeys = post.seoKeywords || "";
+        
+        const metaTags = `
+        <meta name="description" content="${seoDesc}" />
+        <meta name="keywords" content="${seoKeys}" />
+        <meta property="og:title" content="${post.seoTitle || post.title}" />
+        <meta property="og:description" content="${seoDesc}" />
+        <meta property="og:image" content="${post.thumb ? (post.thumb.startsWith('http') ? post.thumb : `${DOMAIN}/${post.thumb}`) : ''}" />
+        <meta property="og:url" content="${pageUrl}" />
+        <meta property="og:type" content="article" />`;
+
         const schemaObj = {
             "@context": "https://schema.org",
             "@type": "Article",
@@ -127,11 +174,11 @@ if (blogTemplate) {
         const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n</script>`;
 
         let html = blogTemplate
-            .replace(/<title>.*?<\/title>/, `<title>${post.seoTitle || post.title}</title>`)
+            .replace(/<title>.*?<\/title>/, `<title>${post.seoTitle || post.title} | Greenia Homes</title>`)
             .replace(/window\.GREENIA_CURRENT_POST\s*=\s*null;?/g, `window.GREENIA_CURRENT_POST = ${JSON.stringify(post)};`)
             .replace(/\.\.\/\.\.\//g, '../../../'); 
         
-        html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
+        html = html.replace('</head>', `    ${canonicalTag}\n    ${metaTags}\n    ${schemaTag}\n</head>`);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
@@ -152,12 +199,24 @@ if (prodTemplate) {
         sitemapUrls.push(pageUrl);
 
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
+        const seoDesc = prod.seoDesc || prod.title;
+        const seoKeys = prod.seoKeywords || "";
+        
+        const metaTags = `
+        <meta name="description" content="${seoDesc}" />
+        <meta name="keywords" content="${seoKeys}" />
+        <meta property="og:title" content="${prod.seoTitle || prod.title}" />
+        <meta property="og:description" content="${seoDesc}" />
+        <meta property="og:image" content="${prod.img ? (prod.img.startsWith('http') ? prod.img : `${DOMAIN}/${prod.img}`) : ''}" />
+        <meta property="og:url" content="${pageUrl}" />
+        <meta property="og:type" content="product" />`;
+
         const schemaObj = {
             "@context": "https://schema.org/",
             "@type": "Product",
             "name": prod.seoTitle || prod.title,
             "image": prod.img ? (prod.img.startsWith('http') ? prod.img : `${DOMAIN}/${prod.img}`) : "",
-            "description": prod.seoDesc || prod.title,
+            "description": seoDesc,
             "offers": {
                 "@type": "Offer",
                 "url": pageUrl,
@@ -169,11 +228,11 @@ if (prodTemplate) {
         const schemaTag = `<script type="application/ld+json">\n${JSON.stringify(schemaObj, null, 2)}\n</script>`;
 
         let html = prodTemplate
-            .replace(/<title>.*?<\/title>/, `<title>${prod.seoTitle || prod.title}</title>`)
+            .replace(/<title>.*?<\/title>/, `<title>${prod.seoTitle || prod.title} | Greenia Homes</title>`)
             .replace(/window\.GREENIA_CURRENT_PRODUCT\s*=\s*null;?/g, `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)};`)
             .replace(/\.\.\/\.\.\//g, '../../../'); 
 
-        html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
+        html = html.replace('</head>', `    ${canonicalTag}\n    ${metaTags}\n    ${schemaTag}\n</head>`);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
@@ -189,4 +248,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu. Sitemap đã cập nhật toàn bộ Dự án.');
+console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu. Hỗ trợ SEO cho tất cả Danh mục, Bài viết và Sản phẩm.');
