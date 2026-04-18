@@ -11,5 +11,18 @@
     "seoTitle": "Vinhomes Cần Giờ",
     "seoDesc": "ki&ecirc;m tra trang dự &aacute;n&nbsp;\n...",
     "seoKeywords": "dự án Vinhomes Cần Giờ, bất động sản"
+  },
+  {
+    "id": 2,
+    "title": "vinhomes",
+    "slug": "vinhomes",
+    "status": "Đang mở bán",
+    "loc": "quận 9",
+    "price": "Cập nhật",
+    "img": "https://i.ibb.co/bjTJN31W/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg",
+    "link": "https://mrliga1.github.io/greenia-homes/du-an/vinhomes/",
+    "seoTitle": "vinhomes",
+    "seoDesc": "Dự án vinhomes",
+    "seoKeywords": "dự án vinhomes, bất động sản"
   }
 ]
