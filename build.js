@@ -52,7 +52,6 @@ posts.forEach(p => {
 
 if (catNewsTemplate) {
     newsCategories.forEach(cat => {
-        // Gom vào folder cha "tin-tuc"
         const folder = path.join(__dirname, 'tin-tuc', cat.slug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
@@ -62,7 +61,6 @@ if (catNewsTemplate) {
         let html = catNewsTemplate
             .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Tin Tức | Greenia Homes</title>`)
             .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`);
-            // Khuôn đúc danh-muc.html mặc định dùng ../../ nên giữ nguyên, vì giờ nó nằm ở /tin-tuc/cat-slug/index.html (sâu 2 cấp)
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
@@ -81,7 +79,6 @@ products.forEach(p => {
 
 if (catProdTemplate) {
     prodCategories.forEach(cat => {
-        // Gom vào folder cha "san-pham"
         const folder = path.join(__dirname, 'san-pham', cat.slug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
@@ -104,7 +101,6 @@ if (blogTemplate) {
         const catSlug = makeSafeSlug(post.cat || 'tin-tuc');
         const postSlug = post.slug || makeSafeSlug(post.title);
         
-        // Cấu trúc: /tin-tuc/danh-muc/bai-viet/
         const folder = path.join(__dirname, 'tin-tuc', catSlug, postSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
@@ -125,7 +121,7 @@ if (blogTemplate) {
         let html = blogTemplate
             .replace(/<title>.*?<\/title>/, `<title>${post.seoTitle || post.title}</title>`)
             .replace(/window\.GREENIA_CURRENT_POST\s*=\s*null;?/g, `window.GREENIA_CURRENT_POST = ${JSON.stringify(post)};`)
-            .replace(/\.\.\/\.\.\//g, '../../../'); // Quan trọng: Đẩy sâu thành 3 cấp để CSS/JS không bị lỗi
+            .replace(/\.\.\/\.\.\//g, '../../../'); 
         
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
@@ -141,7 +137,6 @@ if (prodTemplate) {
         const catSlug = makeSafeSlug(prod.cat || 'san-pham');
         const prodSlug = prod.slug || makeSafeSlug(prod.title);
         
-        // Cấu trúc: /san-pham/danh-muc/san-pham/
         const folder = path.join(__dirname, 'san-pham', catSlug, prodSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
@@ -168,7 +163,7 @@ if (prodTemplate) {
         let html = prodTemplate
             .replace(/<title>.*?<\/title>/, `<title>${prod.seoTitle || prod.title}</title>`)
             .replace(/window\.GREENIA_CURRENT_PRODUCT\s*=\s*null;?/g, `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)};`)
-            .replace(/\.\.\/\.\.\//g, '../../../'); // Quan trọng: Đẩy sâu thành 3 cấp để CSS/JS không bị lỗi
+            .replace(/\.\.\/\.\.\//g, '../../../'); 
 
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
@@ -177,7 +172,44 @@ if (prodTemplate) {
 }
 
 // ==========================================
-// BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
+// BƯỚC 4: TỰ ĐỘNG QUÉT VÀ CẬP NHẬT DANH SÁCH DỰ ÁN
+// ==========================================
+const projectsDir = path.join(__dirname, 'du-an');
+let scrapedProjects = [];
+
+if (fs.existsSync(projectsDir)) {
+    // Đọc tất cả các thư mục con trong /du-an/
+    const projectFolders = fs.readdirSync(projectsDir).filter(f => fs.statSync(path.join(projectsDir, f)).isDirectory());
+
+    projectFolders.forEach(folderName => {
+        const infoPath = path.join(projectsDir, folderName, 'info.json');
+        
+        // Nếu dự án có file info.json, bốc thông tin và tạo link
+        if (fs.existsSync(infoPath)) {
+            try {
+                let projData = JSON.parse(fs.readFileSync(infoPath, 'utf8'));
+                projData.link = `/greenia-homes/du-an/${folderName}/`; // Tự động chèn link
+                scrapedProjects.push(projData);
+                
+                // Thêm vào sitemap
+                sitemapUrls.push(`${DOMAIN}/du-an/${folderName}/`);
+            } catch(e) {
+                console.log(`Lỗi đọc file info.json tại dự án: ${folderName}`);
+            }
+        }
+    });
+    
+    // Ghi toàn bộ dữ liệu quét được ra file projects.json để web đọc
+    const outputProjectsPath = path.join(__dirname, 'assets', 'data', 'projects.json');
+    if (!fs.existsSync(path.join(__dirname, 'assets', 'data'))) {
+        fs.mkdirSync(path.join(__dirname, 'assets', 'data'), { recursive: true });
+    }
+    fs.writeFileSync(outputProjectsPath, JSON.stringify(scrapedProjects, null, 2));
+    console.log(`✅ Đã quét và cập nhật ${scrapedProjects.length} dự án độc lập.`);
+}
+
+// ==========================================
+// BƯỚC 5: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
 // ==========================================
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
