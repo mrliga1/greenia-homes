@@ -281,6 +281,7 @@
                 <div class="seo-box">
                     <div class="form-group"><label>SEO Title (Tùy chọn):</label><input type="text" id="pj-seo-title"></div>
                     <div class="form-group"><label>SEO Description (Tùy chọn):</label><textarea id="pj-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'pj-desc-count', 155)"></textarea><div class="char-count" id="pj-desc-count">0/155</div></div>
+                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="pj-seo-key" placeholder="VD: dự án vinhomes, vinhomes cần giờ..."></div>
                 </div>
                 <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN</button>
             </div>
@@ -303,7 +304,7 @@
 
 <script>
     /* =================================================================
-       KHU VỰC CÀI ĐẶT BẢO MẬT & API
+       KHU VỰC CÀI ĐẶT BẢO MẬT & API (ĐIỀN TOKEN CỦA BÁC VÀO ĐÂY)
     ================================================================= */
     const SECRET_PASSWORD = "10091995Tt!"; 
     const PART_1 = "ghp_klr40QV55Zb8ta3"; 
@@ -705,7 +706,6 @@
             });
 
             if(pushRes.ok) {
-                // --- TẠO SẴN THƯ MỤC DỰ ÁN RỖNG CHO BẠN TỰ UPLOAD CODE ---
                 if (type === 'proj' && !editMode.active) {
                     try {
                         const defaultHtml = `<!DOCTYPE html>\n<html lang="vi">\n<head>\n<meta charset="UTF-8">\n<title>${newData.title}</title>\n</head>\n<body>\n<h1>Dự án ${newData.title}</h1>\n<p>Thư mục đã sẵn sàng. Vui lòng Upload các file thiết kế tay của bạn (index.html, vi-tri.html...) đè lên file này.</p>\n</body>\n</html>`;
