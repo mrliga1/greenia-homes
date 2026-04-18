@@ -107,37 +107,38 @@
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
             // CƠ CHẾ CHUYỂN HƯỚNG THÔNG MINH
             if (!post) {
-                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
                 window.location.replace(safeBaseUrl + 'tin-tuc.html');
                 return;
             }
 
             try {
+                // Dùng đường dẫn tuyệt đối với safeBaseUrl để tránh lỗi phân cấp sâu
                 const [postRes, prodRes] = await Promise.all([
-                    fetch('../../../assets/data/posts.json'),
-                    fetch('../../../assets/data/products.json')
+                    fetch(safeBaseUrl + 'assets/data/posts.json'),
+                    fetch(safeBaseUrl + 'assets/data/products.json')
                 ]);
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
-                // 1. Sidebar - Tin tức khác (Cập nhật link)
+                // 1. Sidebar - Tin tức khác (Cấu trúc Silo: /tin-tuc/danh-muc/bai-viet/)
                 let relatedNewsHTML = '';
                 posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
                     const relatedCatSlug = createSafeSlug(p.cat);
                     const relatedPostSlug = p.slug || createSafeSlug(p.title);
-                    relatedNewsHTML += `<a href="../../../${relatedCatSlug}/${relatedPostSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px;"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
+                    relatedNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${relatedCatSlug}/${relatedPostSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px;"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
-                // 2. Sidebar - Sản phẩm nổi bật (Cập nhật link)
+                // 2. Sidebar - Sản phẩm nổi bật (Cấu trúc Silo: /san-pham/danh-muc/san-pham/)
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
                     const pCatSlug = createSafeSlug(p.cat || 'san-pham');
                     const pSlug = p.slug || createSafeSlug(p.title);
                     sidebarProdHTML += `
-                        <a href="../../../${pCatSlug}/${pSlug}/" class="gr-prod-card">
+                        <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="gr-prod-card">
                             <div class="gr-prod-thumb"><img src="${window.resolveImg(p.img)}"></div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
@@ -146,7 +147,7 @@
                         </a>`;
                 });
 
-                // 3. Rổ hàng theo dự án (Cập nhật link)
+                // 3. Rổ hàng theo dự án (Cấu trúc Silo: /san-pham/danh-muc/san-pham/)
                 const projectProds = prods.filter(p => p.projectCode === post.slug);
                 let roHangHTML = projectProds.length > 0 ? `
                     <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333;">
@@ -156,7 +157,7 @@
                                 const pCatSlug = createSafeSlug(p.cat || 'san-pham');
                                 const pSlug = p.slug || createSafeSlug(p.title);
                                 return `
-                                <a href="../../../${pCatSlug}/${pSlug}/" class="s2-card">
+                                <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="s2-card">
                                     <div class="s2-thumb-box"><img src="${window.resolveImg(p.img)}"></div>
                                     <div class="s2-body">
                                         <h3 class="s2-tit">${p.title}</h3>
@@ -170,15 +171,13 @@
                 // 🔥 Tạo slug danh mục cho Breadcrumb
                 const catSlug = createSafeSlug(post.cat);
                 
-                // 🔥 SỬ DỤNG BASE_URL ĐỂ ĐẢM BẢO LINK LUÔN ĐÚNG TRÊN MỌI MÔI TRƯỜNG
-                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
-
                 // Bơm HTML
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
                             <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">/</span>
-                            <a href="${safeBaseUrl}${catSlug}/">${post.cat}</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}tin-tuc.html">Tin tức</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/">${post.cat}</a> <span class="sep">/</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>

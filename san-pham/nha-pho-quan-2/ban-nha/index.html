@@ -8,7 +8,9 @@
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../../../assets/css/style.css">
+    
     <style>
         body { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; margin: 0; padding: 0; }
         .ct-container { max-width: 1200px; margin: 40px auto; padding: 0 15px; padding-bottom: 60px; }
@@ -84,9 +86,11 @@
             const container = document.getElementById('product-container');
             const prod = window.GREENIA_CURRENT_PRODUCT;
             
+            // Lấy Base URL một cách an toàn
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+            
             // CƠ CHẾ CHUYỂN HƯỚNG THÔNG MINH
             if (!prod) { 
-                const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
                 window.location.replace(safeBaseUrl + 'san-pham.html'); 
                 return; 
             }
@@ -99,8 +103,14 @@
             // 🔥 Tự động tạo slug để trỏ về đúng thư mục danh mục
             const catSlug = createSafeSlug(prod.cat || 'san-pham');
 
+            // Bơm HTML chuẩn Silo
             container.innerHTML = `
-                <div class="ct-breadcrumb"><a href="../../../index.html">Trang chủ</a> / <a href="../../../san-pham.html">Sản phẩm</a> / <a href="../../../${catSlug}/">${prod.cat}</a></div>
+                <div class="ct-breadcrumb">
+                    <a href="${safeBaseUrl}">Trang chủ</a> / 
+                    <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> / 
+                    <a href="${safeBaseUrl}san-pham/${catSlug}/">${prod.cat}</a> / 
+                    <span style="color:#fff;">${prod.title}</span>
+                </div>
                 <div class="ct-title-box"><h1 class="ct-title">${prod.title}</h1><div class="ct-loc"><i class="fas fa-map-marker-alt"></i> ${prod.loc}</div></div>
                 <div class="ct-main-split">
                     <div class="ct-gallery-col">
