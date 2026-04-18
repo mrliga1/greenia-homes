@@ -131,7 +131,7 @@
                     <div class="s1-btn-wrap"><a href="/greenia-homes/san-pham.html" class="s1-btn">Xem tất cả sản phẩm</a></div>
                 </div>
             </div>
-
+            
             <div class="s-head"><h3 class="s-tit">Bất động sản dành cho bạn</h3></div>
             <div class="s3-grid" id="foryou-grid"></div>
 
@@ -172,6 +172,31 @@
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
+        // ==========================================
+        // CẤU HÌNH CÁC PAGE DỰ ÁN ĐỘC LẬP TẠI ĐÂY
+        // ==========================================
+        const independentProjects = [
+            {
+                title: "Vinhomes Grand Park",
+                status: "Đang mở bán",
+                img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", // Bạn thay link ảnh thực tế vào đây
+                link: safeBaseUrl + "du-an/vinhomes-grand-park/" // Link trỏ vào page độc lập của bạn
+            },
+            {
+                title: "Aqua City Đồng Nai",
+                status: "Đang bàn giao",
+                img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+                link: safeBaseUrl + "du-an/aqua-city/"
+            },
+            {
+                title: "The Global City",
+                status: "Sắp mở bán",
+                img: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800",
+                link: safeBaseUrl + "du-an/the-global-city/"
+            }
+            // Bạn có thể copy paste để thêm dự án thoải mái
+        ];
+
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
@@ -188,7 +213,6 @@
             return { img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
         }
 
-        // HÀM TẠO CARD SẢN PHẨM 
         function createProdCardHTML(p, isList = false) {
             const catSlug = createSafeSlug(p.cat || 'san-pham');
             const pSlug = p.slug || createSafeSlug(p.title);
@@ -211,27 +235,6 @@
             }
         }
 
-        // 🔥 HÀM TẠO CARD DỰ ÁN NỔI BẬT (TRỎ THẲNG VỀ /du-an/ten-du-an/)
-        function createProjectCarouselCardHTML(p) {
-            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content;
-            const firstImg = tempDiv.querySelector('img');
-            const img = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; 
-            const imgSrc = window.resolveImg ? window.resolveImg(img) : img;
-            
-            const pSlug = p.slug || createSafeSlug(p.title);
-            const link = `${safeBaseUrl}du-an/${pSlug}/`; // Đã sửa trỏ thẳng vào /du-an/
-
-            return `<a href="${link}" class="s2-card">
-                        <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}"></div>
-                        <div class="s2-body">
-                            <h3 class="gr-tit">${p.title}</h3>
-                            <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
-                                <i class="far fa-clock" style="margin-right:5px; color:#c5a059;"></i> ${p.date}
-                            </div>
-                        </div>
-                    </a>`;
-        }
-
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
@@ -241,41 +244,41 @@
                 allPosts = await postRes.json();
                 allProducts = await prodRes.json();
 
-                // 1. TẠO TABS ĐỘNG
+                // TẠO TABS ĐỘNG
                 const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
                 const tabsHtml = categories.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // 2. KHỞI TẠO TOP GRID & 70/30
+                // KHỞI TẠO TOP GRID & 70/30
                 mixedPostsPool = [...allPosts];
                 switchTab('Tất cả', document.querySelector('.s1-tab'));
                 
-                // Sidebar Phải (List Prod)
+                // Sidebar Phải
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
-                // ==========================================
-                // 3. RENDER CÁC KHỐI GRID & CAROUSEL BÊN DƯỚI
-                // ==========================================
-                
-                // Dành cho bạn (Random 10 sản phẩm)
+                // KHỐI CAROUSEL DƯỚI
                 const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
                 document.getElementById('foryou-grid').innerHTML = forYouProds.map(p => createProdCardHTML(p)).join('');
 
-                // Tin bán
                 const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
                 document.getElementById('sale-scroll').innerHTML = saleProds.map(p => createProdCardHTML(p)).join('');
 
-                // Tin thuê 
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
 
-                // 🔥 DỰ ÁN NỔI BẬT (LỌC TỪ BÀI VIẾT THUỘC DANH MỤC DU-AN)
-                const projectPosts = allPosts.filter(p => {
-                    const slug = createSafeSlug(p.cat);
-                    return slug === 'du-an' || slug === 'tin-du-an';
-                }).slice(0, 10);
-                document.getElementById('feat-scroll').innerHTML = projectPosts.map(p => createProjectCarouselCardHTML(p)).join('');
+                // 🔥 VẼ CAROUSEL PAGE DỰ ÁN ĐỘC LẬP TỪ MẢNG CẤU HÌNH
+                document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
+                    return `<a href="${p.link}" class="s2-card">
+                                <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${p.img}"></div>
+                                <div class="s2-body">
+                                    <h3 class="gr-tit">${p.title}</h3>
+                                    <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
+                                        <i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status}
+                                    </div>
+                                </div>
+                            </a>`;
+                }).join('');
 
             } catch(e) {
                 document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang cập nhật dữ liệu.</div>";
@@ -283,7 +286,6 @@
             }
         });
 
-        // LOGIC TAB & HERO
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
