@@ -8,15 +8,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <style>
-        /* ÉP BUỘC MỌI PHẦN TỬ KHÔNG ĐƯỢC PHÌNH TO QUÁ KÍCH THƯỚC KHUNG */
         *, *::before, *::after { box-sizing: border-box; }
 
         :root { --gold: #c5a059; --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --text: #b0b8c4; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow: hidden; }
         
-        /* ---------------------------------------------
-           MÀN HÌNH KHÓA (LOGIN SCREEN)
-        --------------------------------------------- */
         #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
         .login-box { background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--gold); box-shadow: 0 10px 40px rgba(197, 160, 89, 0.1); width: 350px; text-align: center; max-width: 90%; }
         .login-box h2 { color: var(--gold); margin-top: 0; letter-spacing: 2px; }
@@ -26,9 +22,6 @@
         .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197,160,89,0.4); }
         #login-error { color: #ff4d4f; font-size: 13px; margin-bottom: 15px; display: none; }
        
-        /* ==============================================================
-           TỐI ƯU GIAO DIỆN ADMIN CHO ĐIỆN THOẠI (KHÓA KHUNG TUYỆT ĐỐI)
-        ============================================================== */
         @media (max-width: 900px) {
             body { padding: 10px; overflow-x: hidden !important; }
             #admin-dashboard { height: auto !important; overflow: visible !important; padding: 0; overflow-x: hidden !important; }
@@ -39,28 +32,19 @@
             
             .form-grid { display: flex; flex-direction: column; gap: 15px; }
             .form-group { margin-bottom: 0; width: 100%; }
-            .setup-row { flex-direction: column; gap: 10px; }
             
             .tabs { display: flex; flex-wrap: wrap; gap: 5px; }
-            .tab-btn { flex: 1 1 48%; padding: 12px 5px; font-size: 11px; text-align: center; }
+            .tab-btn { flex: 1 1 22%; padding: 10px 5px; font-size: 11px; text-align: center; }
             .btn-push { font-size: 14px; padding: 12px; }
             .login-box { padding: 25px 20px; }
             
-            /* Ép thẻ input và textarea phải vừa khít */
             input, select, textarea { max-width: 100%; width: 100%; }
-            
-            /* Trói chặt CKEditor - Chống tràn ngang */
             .cke_chrome, .cke_inner, .cke_contents, .cke_top, .cke_bottom { max-width: 100% !important; width: 100% !important; }
-            
             .preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
         }
        
-        /* Ép ẩn mọi thông báo rác từ CKEditor */
         .cke_notifications_area { display: none !important; }
        
-        /* ---------------------------------------------
-           GIAO DIỆN ADMIN CHÍNH (ẨN MẶC ĐỊNH)
-        --------------------------------------------- */
         #admin-dashboard { display: none; padding: 20px; overflow-y: auto; height: 100vh; }
        
         .layout-wrapper { display: flex; gap: 30px; max-width: 1450px; margin: 0 auto; align-items: flex-start; }
@@ -69,10 +53,11 @@
         h1 { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 22px; text-transform: uppercase; margin-top: 0;}
        
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
-        .tab-btn { padding: 12px 25px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; transition: 0.3s;}
+        .tab-btn { padding: 12px 20px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
         .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
         .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
         .btn-cancel-edit { display: none; margin-left: auto; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
         .form-section { display: none; animation: fadeIn 0.3s; }
         .form-section.active { display: block; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -83,6 +68,7 @@
         input:focus { outline: none; border-color: var(--gold); }
         input:disabled { opacity: 0.5; cursor: not-allowed; background: #000; }
         textarea.seo-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
+        
         .seo-box { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; position: relative;}
         .seo-box::before { content: 'Tùy chỉnh SEO (Google)'; position: absolute; top: -12px; left: 20px; background: var(--card); padding: 0 10px; color: var(--gold); font-size: 12px; font-weight: bold; }
         .char-count { font-size: 11px; color: #888; float: right; margin-top: 5px; }
@@ -112,6 +98,7 @@
         .link-item.editing { border-color: #00b894; background: rgba(0, 184, 148, 0.1); }
         .link-tit { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-decoration: none;}
         .link-cat { font-size: 10px; color: var(--gold); background: rgba(197,160,89,0.1); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; font-weight: bold;}
+        .link-cat.is-category { background: rgba(0, 184, 148, 0.15); color: #00b894; border: 1px solid #00b894; }
        
         .media-item { display: flex; gap: 10px; align-items: center; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;}
         .media-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
@@ -150,7 +137,42 @@
             <div class="tabs" style="margin-top: 20px;">
                 <button class="tab-btn active" id="tab-prod-btn" onclick="switchTab('prod')"><i class="fas fa-building"></i> SẢN PHẨM</button>
                 <button class="tab-btn" id="tab-news-btn" onclick="switchTab('news')"><i class="fas fa-edit"></i> TIN TỨC</button>
+                <button class="tab-btn" id="tab-proj-btn" onclick="switchTab('proj')"><i class="fas fa-project-diagram"></i> DỰ ÁN</button>
+                <button class="tab-btn" id="tab-cat-btn" onclick="switchTab('cat')"><i class="fas fa-folder-open"></i> DANH MỤC</button>
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
+            </div>
+
+            <div id="section-cat" class="form-section">
+                <div class="form-grid">
+                    <div class="form-group"><label>Mã Danh Mục:</label><input type="text" id="c-id" disabled value="..."></div>
+                    <div class="form-group"><label>Thuộc phân hệ:</label>
+                        <select id="c-type">
+                            <option value="news">Tin Tức</option>
+                            <option value="prod">Sản Phẩm</option>
+                            <option value="proj">Dự Án</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Tên Danh Mục:</label>
+                        <input type="text" id="c-title" oninput="document.getElementById('c-slug').value = slugify(this.value); checkLength(this, 'c-title-count', 60);" placeholder="VD: Tin dự án">
+                        <div class="char-count" id="c-title-count">0/60</div>
+                    </div>
+                    <div class="form-group full">
+                        <label>Đường dẫn tĩnh (Slug):</label>
+                        <input type="text" id="c-slug" placeholder="VD: tin-du-an">
+                    </div>
+                    <div class="form-group full">
+                        <label>Mô tả ngắn danh mục:</label>
+                        <textarea id="c-desc" rows="3" style="width:100%; padding:12px; background:#1a1f2b; border:1px solid var(--border); color:#fff; border-radius:5px;" placeholder="Hiển thị dưới tiêu đề danh mục trên web"></textarea>
+                    </div>
+                </div>
+
+                <div class="seo-box">
+                    <div class="form-group"><label>SEO Title:</label><input type="text" id="c-seo-title" placeholder="Tiêu đề chuẩn SEO cho danh mục"></div>
+                    <div class="form-group"><label>SEO Description:</label><textarea id="c-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'c-desc-count', 155)"></textarea><div class="char-count" id="c-desc-count">0/155</div></div>
+                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="c-seo-key"></div>
+                </div>
+                <button id="btn-submit-cat" class="btn-push" onclick="pushData('cat')"><i class="fas fa-rocket"></i> LƯU CẤU HÌNH DANH MỤC</button>
             </div>
 
             <div id="section-prod" class="form-section active">
@@ -176,7 +198,7 @@
                     </div>
                     <div class="form-group full">
                         <label>2. Album Ảnh (Auto Cloud):</label>
-                        <div class="upload-area" onclick="document.getElementById('p-gallery-files').click()"><i class="fas fa-images fa-2x"></i><input type="file" id="p-gallery-files" hidden multiple onchange="handleMultiUpload(this, 'p-gallery-preview')"></div>
+                        <div class="upload-area" onclick="document.getElementById('p-gallery-files').click()"><i class="fas fa-images fa-2x"></i><input type="file" id="p-gallery-files" hidden multiple onchange="handleMultiUpload(this, 'p-gallery-preview', 'gallery')"></div>
                         <div id="p-gallery-preview" class="preview-grid"></div>
                     </div>
                     <div class="form-group full" style="color: #000;">
@@ -222,6 +244,45 @@
                 </div>
                 <button id="btn-submit-news" class="btn-push" onclick="pushData('news')"><i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC</button>
             </div>
+
+            <div id="section-proj" class="form-section">
+                <div class="form-grid">
+                    <div class="form-group"><label>Mã Dự Án (Tự động):</label><input type="text" id="pj-id" disabled value="..."></div>
+                    <div class="form-group"><label>Tình trạng dự án:</label>
+                        <select id="pj-status">
+                            <option value="Đang mở bán">Đang mở bán</option>
+                            <option value="Sắp ra mắt">Sắp ra mắt</option>
+                            <option value="Đã bàn giao">Đã bàn giao</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Tên Dự Án:</label>
+                        <input type="text" id="pj-title" oninput="checkLength(this, 'pj-title-count', 65)" placeholder="VD: Vinhomes Grand Park">
+                        <div class="char-count" id="pj-title-count">0/65</div>
+                    </div>
+                    <div class="form-group"><label>Khu vực / Tỉnh thành:</label><input type="text" id="pj-loc" placeholder="VD: Quận 9, TP.HCM"></div>
+                    <div class="form-group"><label>Giá tham chiếu:</label><input type="text" id="pj-price" placeholder="VD: Từ 3 tỷ/căn"></div>
+                    
+                    <div class="form-group full">
+                        <label>1. Ảnh Bìa Dự Án (Hiển thị ở Carousel):</label>
+                        <div class="upload-area" onclick="document.getElementById('pj-main-img-file').click()"><i class="fas fa-cloud-upload-alt fa-2x"></i><input type="file" id="pj-main-img-file" hidden onchange="handleSingleUpload(this, 'pj-main-preview', 'projMain')"></div>
+                        <div id="pj-main-preview" class="preview-grid"></div>
+                    </div>
+                    
+                    <div class="form-group full" style="color: #000;">
+                        <label style="color:#fff;">Nội dung giới thiệu dự án (Landing Page):</label>
+                        <textarea id="pj-content" name="pj-content"></textarea>
+                    </div>
+                </div>
+
+                <div class="seo-box">
+                    <div class="form-group"><label>SEO Title:</label><input type="text" id="pj-seo-title"></div>
+                    <div class="form-group"><label>SEO Description:</label><textarea id="pj-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'pj-desc-count', 155)"></textarea><div class="char-count" id="pj-desc-count">0/155</div></div>
+                    <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="pj-seo-key"></div>
+                </div>
+                <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> XUẤT BẢN DỰ ÁN</button>
+            </div>
+
         </div>
 
         <div class="col-right">
@@ -240,49 +301,43 @@
 
 <script>
     /* =================================================================
-       KHU VỰC CÀI ĐẶT BẢO MẬT & API (ĐIỀN THÔNG TIN CỦA BẠN VÀO ĐÂY)
+       KHU VỰC CÀI ĐẶT BẢO MẬT & API
     ================================================================= */
-    const SECRET_PASSWORD = "10091995Tt!"; // Đổi mật khẩu của bạn ở đây
-    
-    // Lưu ý: Cắt đôi chuỗi GitHub Token để lách Bot quét của GitHub
-    const PART_1 = "ghp_klr40QV55Zb8ta3"; 
-    const PART_2 = "FWZgFjmkFbZgHmR3AuosC";
+    const SECRET_PASSWORD = "10091995Tt!"; 
+    const PART_1 = ""; 
+    const PART_2 = "";
     const AUTO_GH_TOKEN = PART_1 + PART_2; 
-    
-    const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
+    const AUTO_IMGBB_KEY = ""; 
     /* ================================================================= */
 
     const CONFIG = { owner: "mrliga1", repo: "greenia-homes" };
-    let currentData = { posts: [], products: [] };
-    let uploadedFiles = { main: "", gallery: [], newsThumb: "" };
+    let currentData = { posts: [], products: [], projects: [], categories: [] };
+    let uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" };
     let editMode = { active: false, type: null, id: null };
     const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
 
     CKEDITOR.replace('p-content', { height: 350, versionCheck: false });
     CKEDITOR.replace('n-content', { height: 350, versionCheck: false });
+    CKEDITOR.replace('pj-content', { height: 350, versionCheck: false });
 
-    // --- HỆ THỐNG ĐĂNG NHẬP & AUTO SYNC ---
     function checkLogin() {
         const pwd = document.getElementById('sys-password').value;
         const err = document.getElementById('login-error');
         
         if (pwd === SECRET_PASSWORD) {
             document.getElementById('login-screen').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Mở khóa cuộn trang
+            document.body.style.overflow = 'auto';
             document.getElementById('admin-dashboard').style.display = 'block';
             
-            // Bơm Token vào ngầm
             document.getElementById('ghToken').value = AUTO_GH_TOKEN;
             document.getElementById('imgbbKey').value = AUTO_IMGBB_KEY;
             
-            // Tự động tải dữ liệu
             loadOldData();
         } else {
             err.style.display = 'block';
         }
     }
 
-    // --- CÁC HÀM XỬ LÝ LÕI ---
     function getAbsoluteImageUrl(imgRaw) {
         if (!imgRaw) return '';
         if (imgRaw.startsWith('http') || imgRaw.startsWith('data:')) return imgRaw;
@@ -309,13 +364,17 @@
         const headers = token ? { "Authorization": `token ${token}` } : {};
         
         try {
-            const [pRes, nRes] = await Promise.all([
+            const [pRes, nRes, projRes, catRes] = await Promise.all([
                 fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/products.json?t=${Date.now()}`, { headers }),
-                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/posts.json?t=${Date.now()}`, { headers })
+                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/posts.json?t=${Date.now()}`, { headers }),
+                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/projects.json?t=${Date.now()}`, { headers }),
+                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/categories.json?t=${Date.now()}`, { headers })
             ]);
             
             if(pRes.ok) currentData.products = JSON.parse(decodeURIComponent(escape(atob((await pRes.json()).content)))); else currentData.products = [];
             if(nRes.ok) currentData.posts = JSON.parse(decodeURIComponent(escape(atob((await nRes.json()).content)))); else currentData.posts = [];
+            if(projRes.ok) currentData.projects = JSON.parse(decodeURIComponent(escape(atob((await projRes.json()).content)))); else currentData.projects = [];
+            if(catRes.ok) currentData.categories = JSON.parse(decodeURIComponent(escape(atob((await catRes.json()).content)))); else currentData.categories = [];
 
             resetFormCalculations(); buildLinkLibrary();
             status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ thành công';
@@ -329,7 +388,14 @@
     function resetFormCalculations() {
         document.getElementById('p-id').value = Math.max(...currentData.products.map(x => x.id || 0), 0) + 1;
         document.getElementById('n-id').value = Math.max(...currentData.posts.map(x => x.id || 0), 0) + 1;
-        populateCats('p-cats', currentData.products.map(x => x.cat)); populateCats('n-cats', currentData.posts.map(x => x.cat));
+        document.getElementById('pj-id').value = Math.max(...currentData.projects.map(x => x.id || 0), 0) + 1;
+        document.getElementById('c-id').value = Math.max(...currentData.categories.map(x => x.id || 0), 0) + 1;
+        
+        // Cập nhật lại dropdown danh mục cho form Sản phẩm và Tin tức
+        const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat));
+        const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title).concat(currentData.posts.map(x => x.cat));
+        populateCats('p-cats', prodCats); 
+        populateCats('n-cats', newsCats);
     }
 
     function populateCats(id, cats) {
@@ -356,8 +422,12 @@
     }
 
     function triggerEdit(id, type) {
-        const isProd = type === 'prod';
-        const item = isProd ? currentData.products.find(p => p.id === id) : currentData.posts.find(p => p.id === id);
+        let item;
+        if (type === 'prod') item = currentData.products.find(p => p.id === id);
+        else if (type === 'news') item = currentData.posts.find(p => p.id === id);
+        else if (type === 'proj') item = currentData.projects.find(p => p.id === id);
+        else if (type === 'cat') item = currentData.categories.find(p => p.id === id);
+        
         if(!item) return;
 
         editMode = { active: true, type: type, id: id };
@@ -368,7 +438,7 @@
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
         document.getElementById(`link-item-${type}-${id}`).classList.add('editing');
 
-        if(isProd) {
+        if(type === 'prod') {
             document.getElementById('p-id').value = item.id;
             document.getElementById('p-type').value = item.type || "Bán";
             document.getElementById('p-title').value = item.title || "";
@@ -390,7 +460,10 @@
 
             const btn = document.getElementById('btn-submit-prod');
             btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
-        } else {
+            checkLength(document.getElementById('p-title'), 'p-title-count', 65);
+            checkLength(document.getElementById('p-seo-desc'), 'p-desc-count', 155);
+            
+        } else if (type === 'news') {
             document.getElementById('n-id').value = item.id;
             document.getElementById('n-date').value = item.date || new Date().toLocaleDateString('vi-VN');
             document.getElementById('n-title').value = item.title || "";
@@ -406,23 +479,60 @@
 
             const btn = document.getElementById('btn-submit-news');
             btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
+            checkLength(document.getElementById('n-title'), 'n-title-count', 65);
+            checkLength(document.getElementById('n-seo-desc'), 'n-desc-count', 155);
+            
+        } else if (type === 'proj') {
+            document.getElementById('pj-id').value = item.id;
+            document.getElementById('pj-status').value = item.status || "Đang mở bán";
+            document.getElementById('pj-title').value = item.title || "";
+            document.getElementById('pj-loc').value = item.loc || "";
+            document.getElementById('pj-price').value = item.price || "";
+            CKEDITOR.instances['pj-content'].setData(item.content || "");
+            document.getElementById('pj-seo-title').value = item.seoTitle || "";
+            document.getElementById('pj-seo-desc').value = item.seoDesc || "";
+            document.getElementById('pj-seo-key').value = item.seoKeywords || "";
+
+            uploadedFiles.projMain = item.img || "";
+            document.getElementById('pj-main-preview').innerHTML = item.img ? `<img src="${getAbsoluteImageUrl(item.img)}" class="preview-item">` : '';
+
+            const btn = document.getElementById('btn-submit-proj');
+            btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
+            checkLength(document.getElementById('pj-title'), 'pj-title-count', 65);
+            checkLength(document.getElementById('pj-seo-desc'), 'pj-desc-count', 155);
+            
+        } else if (type === 'cat') {
+            document.getElementById('c-id').value = item.id;
+            document.getElementById('c-type').value = item.type || "news";
+            document.getElementById('c-title').value = item.title || "";
+            document.getElementById('c-slug').value = item.slug || "";
+            document.getElementById('c-desc').value = item.desc || "";
+            document.getElementById('c-seo-title').value = item.seoTitle || "";
+            document.getElementById('c-seo-desc').value = item.seoDesc || "";
+            document.getElementById('c-seo-key').value = item.seoKeywords || "";
+
+            const btn = document.getElementById('btn-submit-cat');
+            btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT DANH MỤC'; btn.classList.add('update-mode');
+            checkLength(document.getElementById('c-title'), 'c-title-count', 60);
+            checkLength(document.getElementById('c-seo-desc'), 'c-desc-count', 155);
         }
-        checkLength(document.getElementById(isProd ? 'p-title' : 'n-title'), isProd ? 'p-title-count' : 'n-title-count', 65);
-        checkLength(document.getElementById(isProd ? 'p-seo-desc' : 'n-seo-desc'), isProd ? 'p-desc-count' : 'n-desc-count', 155);
     }
 
     function cancelEdit() {
         editMode = { active: false, type: null, id: null };
         document.getElementById('btn-cancel-edit').style.display = "none";
-        document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content)').forEach(el => el.value = '');
+        document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content):not(#pj-content)').forEach(el => el.value = '');
         CKEDITOR.instances['p-content'].setData("");
         CKEDITOR.instances['n-content'].setData("");
+        CKEDITOR.instances['pj-content'].setData("");
         document.querySelectorAll('.preview-grid').forEach(el => el.innerHTML = '');
-        uploadedFiles = { main: "", gallery: [], newsThumb: "" };
+        uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" };
         resetFormCalculations();
         
-        const btnP = document.getElementById('btn-submit-prod'); btnP.innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; btnP.classList.remove('update-mode');
-        const btnN = document.getElementById('btn-submit-news'); btnN.innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; btnN.classList.remove('update-mode');
+        document.getElementById('btn-submit-prod').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; document.getElementById('btn-submit-prod').classList.remove('update-mode');
+        document.getElementById('btn-submit-news').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; document.getElementById('btn-submit-news').classList.remove('update-mode');
+        document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
+        document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-rocket"></i> LƯU CẤU HÌNH DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode');
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
     }
 
@@ -482,30 +592,90 @@
 
     async function pushData(type) {
         const token = document.getElementById('ghToken').value;
-        const isProd = type === 'prod';
-        const fileToUpdate = isProd ? 'assets/data/products.json' : 'assets/data/posts.json';
-        
-        const titleVal = document.getElementById(isProd ? 'p-title' : 'n-title').value;
-        if(!titleVal) { alert("Tiêu đề là bắt buộc!"); return; }
-        const slugVal = slugify(titleVal);
-        
-        const contentVal = CKEDITOR.instances[isProd ? 'p-content' : 'n-content'].getData();
-        const rawDesc = document.getElementById(isProd ? 'p-seo-desc' : 'n-seo-desc').value;
-        const autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
-
-        const newData = isProd ? {
-            id: parseInt(document.getElementById('p-id').value), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal,
-            cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
-            price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, bed: document.getElementById('p-bed').value || "",
-            img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
-            seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
-        } : {
-            id: parseInt(document.getElementById('n-id').value), title: titleVal, slug: slugVal, cat: document.getElementById('n-cat').value, date: document.getElementById('n-date').value,
-            author: document.getElementById('n-author').value, thumb: uploadedFiles.newsThumb, content: contentVal,
-            seoTitle: document.getElementById('n-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('n-seo-key').value || `${document.getElementById('n-cat').value}, tin tức`
+        const fileMap = {
+            'prod': 'assets/data/products.json',
+            'news': 'assets/data/posts.json',
+            'proj': 'assets/data/projects.json',
+            'cat': 'assets/data/categories.json'
         };
+        const fileToUpdate = fileMap[type];
+        
+        let titleVal, slugVal, contentVal, rawDesc, autoDesc, newData;
 
-        let updatedFullData = isProd ? [...currentData.products] : [...currentData.posts];
+        if (type === 'prod') {
+            titleVal = document.getElementById('p-title').value;
+            if(!titleVal) { alert("Tiêu đề Sản phẩm là bắt buộc!"); return; }
+            slugVal = slugify(titleVal);
+            contentVal = CKEDITOR.instances['p-content'].getData();
+            rawDesc = document.getElementById('p-seo-desc').value;
+            autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+
+            newData = {
+                id: parseInt(document.getElementById('p-id').value), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal,
+                cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
+                price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, bed: document.getElementById('p-bed').value || "",
+                img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
+                seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
+            };
+        } else if (type === 'news') {
+            titleVal = document.getElementById('n-title').value;
+            if(!titleVal) { alert("Tiêu đề Tin tức là bắt buộc!"); return; }
+            slugVal = slugify(titleVal);
+            contentVal = CKEDITOR.instances['n-content'].getData();
+            rawDesc = document.getElementById('n-seo-desc').value;
+            autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+
+            newData = {
+                id: parseInt(document.getElementById('n-id').value), title: titleVal, slug: slugVal, cat: document.getElementById('n-cat').value, date: document.getElementById('n-date').value,
+                author: document.getElementById('n-author').value, thumb: uploadedFiles.newsThumb, content: contentVal,
+                seoTitle: document.getElementById('n-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('n-seo-key').value || `${document.getElementById('n-cat').value}, tin tức`
+            };
+        } else if (type === 'proj') {
+            titleVal = document.getElementById('pj-title').value;
+            if(!titleVal) { alert("Tên Dự án là bắt buộc!"); return; }
+            slugVal = slugify(titleVal);
+            contentVal = CKEDITOR.instances['pj-content'].getData();
+            rawDesc = document.getElementById('pj-seo-desc').value;
+            autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+
+            newData = {
+                id: parseInt(document.getElementById('pj-id').value), 
+                title: titleVal, 
+                slug: slugVal, 
+                status: document.getElementById('pj-status').value, 
+                loc: document.getElementById('pj-loc').value,
+                price: document.getElementById('pj-price').value,
+                img: uploadedFiles.projMain, 
+                content: contentVal,
+                link: `${GITHUB_PAGES_DOMAIN}/du-an/${slugVal}/`, 
+                seoTitle: document.getElementById('pj-seo-title').value || titleVal, 
+                seoDesc: rawDesc || autoDesc, 
+                seoKeywords: document.getElementById('pj-seo-key').value || `dự án ${titleVal}, bất động sản`
+            };
+        } else if (type === 'cat') {
+            titleVal = document.getElementById('c-title').value;
+            if(!titleVal) { alert("Tên Danh mục là bắt buộc!"); return; }
+            slugVal = document.getElementById('c-slug').value || slugify(titleVal);
+            rawDesc = document.getElementById('c-seo-desc').value;
+
+            newData = {
+                id: parseInt(document.getElementById('c-id').value),
+                type: document.getElementById('c-type').value,
+                title: titleVal,
+                slug: slugVal,
+                desc: document.getElementById('c-desc').value,
+                seoTitle: document.getElementById('c-seo-title').value || titleVal,
+                seoDesc: rawDesc || document.getElementById('c-desc').value,
+                seoKeywords: document.getElementById('c-seo-key').value || `${titleVal}, bất động sản`
+            };
+        }
+
+        let updatedFullData;
+        if (type === 'prod') updatedFullData = [...currentData.products];
+        else if (type === 'news') updatedFullData = [...currentData.posts];
+        else if (type === 'proj') updatedFullData = [...currentData.projects];
+        else if (type === 'cat') updatedFullData = [...currentData.categories];
+
         if (editMode.active && editMode.type === type) {
             const idx = updatedFullData.findIndex(item => item.id === editMode.id);
             if (idx !== -1) updatedFullData[idx] = newData;
@@ -515,18 +685,22 @@
             const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
             let sha = ""; if(shaRes.ok) sha = (await shaRes.json()).sha;
             
-            const btn = document.getElementById(isProd ? 'btn-submit-prod' : 'btn-submit-news');
+            const btn = document.getElementById(`btn-submit-${type}`);
             const originalBtnText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU...';
 
             const pushRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, {
                 method: "PUT", headers: { "Authorization": `token ${token}` },
-                body: JSON.stringify({ message: `CMS Auto: ${editMode.active ? 'Sửa' : 'Thêm'} [${newData.id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedFullData, null, 2)))), sha: sha })
+                body: JSON.stringify({ message: `CMS Auto: ${editMode.active ? 'Sửa' : 'Thêm'} [ID: ${newData.id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedFullData, null, 2)))), sha: sha })
             });
 
             if(pushRes.ok) {
-                alert(`Lưu thành công! Hệ thống đang tự động xây dựng trang.`);
-                if (isProd) currentData.products = updatedFullData; else currentData.posts = updatedFullData;
+                alert(`Lưu thành công! Hệ thống đang tự động đồng bộ.`);
+                if (type === 'prod') currentData.products = updatedFullData; 
+                else if (type === 'news') currentData.posts = updatedFullData;
+                else if (type === 'proj') currentData.projects = updatedFullData;
+                else if (type === 'cat') currentData.categories = updatedFullData;
+                
                 cancelEdit(); buildLinkLibrary(); 
             } else { throw new Error(); }
         } catch(e) { alert("Lỗi xuất bản! Hãy kiểm tra lại Github Token."); }
@@ -535,9 +709,14 @@
     async function deleteItem(id, type) {
         if(!confirm(`⚠️ XÓA VĨNH VIỄN?`)) return;
         const token = document.getElementById('ghToken').value;
-        const isProd = type === 'prod';
-        const fileToUpdate = isProd ? 'assets/data/products.json' : 'assets/data/posts.json';
-        let updatedData = isProd ? currentData.products.filter(p => p.id !== id) : currentData.posts.filter(p => p.id !== id);
+        const fileMap = { 'prod': 'assets/data/products.json', 'news': 'assets/data/posts.json', 'proj': 'assets/data/projects.json', 'cat': 'assets/data/categories.json' };
+        const fileToUpdate = fileMap[type];
+        
+        let updatedData;
+        if (type === 'prod') updatedData = currentData.products.filter(p => p.id !== id);
+        else if (type === 'news') updatedData = currentData.posts.filter(p => p.id !== id);
+        else if (type === 'proj') updatedData = currentData.projects.filter(p => p.id !== id);
+        else if (type === 'cat') updatedData = currentData.categories.filter(p => p.id !== id);
 
         try {
             const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
@@ -549,7 +728,11 @@
             });
 
             if(pushRes.ok) {
-                if (isProd) currentData.products = updatedData; else currentData.posts = updatedData;
+                if (type === 'prod') currentData.products = updatedData; 
+                else if (type === 'news') currentData.posts = updatedData;
+                else if (type === 'proj') currentData.projects = updatedData;
+                else if (type === 'cat') currentData.categories = updatedData;
+                
                 if(editMode.id === id) cancelEdit(); buildLinkLibrary(); 
             } else alert("Lỗi máy chủ khi xóa!");
         } catch(e) { alert("Lỗi kết nối!"); }
@@ -559,18 +742,30 @@
         const container = document.getElementById('list-links');
         let html = '';
         const allItems = [
-            ...currentData.posts.map(p => ({...p, folder: 'blog', label: 'Tin tức', typeKey: 'news'})), 
-            ...currentData.products.map(p => ({...p, folder: 'san-pham', label: 'Sản phẩm', typeKey: 'prod'}))
+            ...currentData.categories.map(c => ({...c, folder: c.type === 'news' ? 'tin-tuc' : (c.type === 'prod' ? 'san-pham' : 'du-an'), label: 'DM ' + (c.type==='news'?'Tin tức':(c.type==='prod'?'Sản phẩm':'Dự án')), typeKey: 'cat'})),
+            ...currentData.posts.map(p => ({...p, folder: 'tin-tuc', label: 'Tin tức', typeKey: 'news'})), 
+            ...currentData.products.map(p => ({...p, folder: 'san-pham', label: 'Sản phẩm', typeKey: 'prod'})),
+            ...currentData.projects.map(p => ({...p, folder: 'du-an', label: 'Dự án', typeKey: 'proj'}))
         ].sort((a,b) => b.id - a.id);
 
         allItems.forEach(item => {
-            const itemSlug = item.slug || slugify(item.title); 
-            const fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${itemSlug}/`;
+            let fullUrl;
+            if (item.typeKey === 'proj') {
+                fullUrl = item.link || `${GITHUB_PAGES_DOMAIN}/du-an/${item.slug}/`;
+            } else if (item.typeKey === 'cat') {
+                fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${item.slug}/`;
+            } else {
+                const itemSlug = item.slug || slugify(item.title); 
+                const catSlug = item.cat ? slugify(item.cat) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
+                fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${catSlug}/${itemSlug}/`;
+            }
+            
             const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+            const isCatClass = item.typeKey === 'cat' ? 'is-category' : '';
             
             html += `
-                <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(item.cat || '').toLowerCase()}">
-                    <div><span class="link-cat">${item.label} | ${item.cat || 'Chưa phân loại'}</span></div>
+                <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(item.cat || item.label || '').toLowerCase()}">
+                    <div><span class="link-cat ${isCatClass}">${item.label} | ${item.cat || item.status || 'Mục SEO'}</span></div>
                     <a href="${fullUrl}" target="_blank" class="link-tit">${item.title}</a>
                     <div class="btn-group">
                         <button class="btn-action" onclick="copyToClip('${fullUrl}')"><i class="fas fa-link"></i> Link</button>
