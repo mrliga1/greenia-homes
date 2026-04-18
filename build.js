@@ -42,7 +42,7 @@ let sitemapUrls = [
 // BƯỚC 1: XUẤT BẢN CÁC TRANG DANH MỤC (CATEGORY PAGES)
 // ==========================================
 
-// 1.1 Quét và tạo Danh mục Tin tức
+// 1.1 Quét và tạo Danh mục Tin tức (Gom vào /tin-tuc/)
 let newsCategories = [];
 posts.forEach(p => {
     if (p.cat && !newsCategories.find(c => c.name === p.cat)) {
@@ -52,22 +52,23 @@ posts.forEach(p => {
 
 if (catNewsTemplate) {
     newsCategories.forEach(cat => {
-        const folder = path.join(__dirname, cat.slug);
+        // Gom vào folder cha "tin-tuc"
+        const folder = path.join(__dirname, 'tin-tuc', cat.slug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        const pageUrl = `${DOMAIN}/${cat.slug}/`;
+        const pageUrl = `${DOMAIN}/tin-tuc/${cat.slug}/`;
         sitemapUrls.push(pageUrl);
 
         let html = catNewsTemplate
             .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Tin Tức | Greenia Homes</title>`)
-            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`)
-            .replace(/\.\.\/\.\.\//g, '../'); // Sửa link cho danh mục (sâu 1 cấp)
+            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`);
+            // Khuôn đúc danh-muc.html mặc định dùng ../../ nên giữ nguyên, vì giờ nó nằm ở /tin-tuc/cat-slug/index.html (sâu 2 cấp)
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
 }
 
-// 1.2 Quét và tạo Danh mục Sản phẩm
+// 1.2 Quét và tạo Danh mục Sản phẩm (Gom vào /san-pham/)
 let prodCategories = [];
 products.forEach(p => {
     if (p.cat && !prodCategories.find(c => c.name === p.cat)) {
@@ -80,38 +81,34 @@ products.forEach(p => {
 
 if (catProdTemplate) {
     prodCategories.forEach(cat => {
-        const folder = path.join(__dirname, cat.slug);
+        // Gom vào folder cha "san-pham"
+        const folder = path.join(__dirname, 'san-pham', cat.slug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        const pageUrl = `${DOMAIN}/${cat.slug}/`;
+        const pageUrl = `${DOMAIN}/san-pham/${cat.slug}/`;
         sitemapUrls.push(pageUrl);
 
         let html = catProdTemplate
             .replace(/<title>.*?<\/title>/, `<title>${cat.name} - Sản Phẩm | Greenia Homes</title>`)
-            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`)
-            .replace(/\.\.\/\.\.\//g, '../');
+            .replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify(cat)};`);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
 }
 
 // ==========================================
-// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (PHÂN CẤP THỰC TẾ)
+// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (Gom vào /tin-tuc/)
 // ==========================================
 if (blogTemplate) {
     posts.forEach(post => {
         const catSlug = makeSafeSlug(post.cat || 'tin-tuc');
         const postSlug = post.slug || makeSafeSlug(post.title);
         
-        // Tạo folder cha (Danh mục)
-        const catFolder = path.join(__dirname, catSlug);
-        if (!fs.existsSync(catFolder)) fs.mkdirSync(catFolder, { recursive: true });
+        // Cấu trúc: /tin-tuc/danh-muc/bai-viet/
+        const folder = path.join(__dirname, 'tin-tuc', catSlug, postSlug);
+        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        // Tạo folder con (Bài viết) nằm TRONG folder cha
-        const postFolder = path.join(catFolder, postSlug);
-        if (!fs.existsSync(postFolder)) fs.mkdirSync(postFolder, { recursive: true });
-
-        const pageUrl = `${DOMAIN}/${catSlug}/${postSlug}/`;
+        const pageUrl = `${DOMAIN}/tin-tuc/${catSlug}/${postSlug}/`;
         sitemapUrls.push(pageUrl);
 
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
@@ -127,31 +124,28 @@ if (blogTemplate) {
 
         let html = blogTemplate
             .replace(/<title>.*?<\/title>/, `<title>${post.seoTitle || post.title}</title>`)
-            .replace(/window\.GREENIA_CURRENT_POST\s*=\s*null;?/g, `window.GREENIA_CURRENT_POST = ${JSON.stringify(post)};`);
+            .replace(/window\.GREENIA_CURRENT_POST\s*=\s*null;?/g, `window.GREENIA_CURRENT_POST = ${JSON.stringify(post)};`)
+            .replace(/\.\.\/\.\.\//g, '../../../'); // Quan trọng: Đẩy sâu thành 3 cấp để CSS/JS không bị lỗi
         
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
-        fs.writeFileSync(path.join(postFolder, 'index.html'), html);
+        fs.writeFileSync(path.join(folder, 'index.html'), html);
     });
 }
 
 // ==========================================
-// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (PHÂN CẤP THỰC TẾ)
+// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (Gom vào /san-pham/)
 // ==========================================
 if (prodTemplate) {
     products.forEach(prod => {
         const catSlug = makeSafeSlug(prod.cat || 'san-pham');
         const prodSlug = prod.slug || makeSafeSlug(prod.title);
         
-        // Tạo folder cha (Danh mục)
-        const catFolder = path.join(__dirname, catSlug);
-        if (!fs.existsSync(catFolder)) fs.mkdirSync(catFolder, { recursive: true });
-
-        // Tạo folder con (Sản phẩm)
-        const folder = path.join(catFolder, prodSlug);
+        // Cấu trúc: /san-pham/danh-muc/san-pham/
+        const folder = path.join(__dirname, 'san-pham', catSlug, prodSlug);
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
 
-        const pageUrl = `${DOMAIN}/${catSlug}/${prodSlug}/`;
+        const pageUrl = `${DOMAIN}/san-pham/${catSlug}/${prodSlug}/`;
         sitemapUrls.push(pageUrl);
 
         const canonicalTag = `<link rel="canonical" href="${pageUrl}" />`;
@@ -173,7 +167,8 @@ if (prodTemplate) {
 
         let html = prodTemplate
             .replace(/<title>.*?<\/title>/, `<title>${prod.seoTitle || prod.title}</title>`)
-            .replace(/window\.GREENIA_CURRENT_PRODUCT\s*=\s*null;?/g, `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)};`);
+            .replace(/window\.GREENIA_CURRENT_PRODUCT\s*=\s*null;?/g, `window.GREENIA_CURRENT_PRODUCT = ${JSON.stringify(prod)};`)
+            .replace(/\.\.\/\.\.\//g, '../../../'); // Quan trọng: Đẩy sâu thành 3 cấp để CSS/JS không bị lỗi
 
         html = html.replace('</head>', `    ${canonicalTag}\n    ${schemaTag}\n</head>`);
 
@@ -191,4 +186,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Đã tạo cấu trúc thư mục phân cấp /danh-muc/bai-viet/ chuẩn SEO.');
+console.log('✅ Build hoàn tất! Đã quy hoạch Cấu trúc Silo: Gom toàn bộ vào /tin-tuc/ và /san-pham/.');
