@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
-        /* GIỮ NGUYÊN 100% CSS TỪ BẢN PHP CỦA BẠN */
         #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
         #gr-v53 * { box-sizing: border-box; } #gr-v53 a { text-decoration: none; color: inherit; transition: 0.3s; } #gr-v53 img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .gr-con { max-width: 1250px; width: 100%; margin: 0 auto; padding: 40px 15px; }
         
+        /* TABS */
         .s1-head-row { border-bottom: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: flex-end; }
         .s1-tabs-wrap { display: flex; gap: 25px; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 5px;} .s1-tabs-wrap::-webkit-scrollbar { display: none; }
         .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 10px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; }
@@ -23,6 +23,7 @@
         .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
         .gr-cat-h1 { font-size: 26px; font-weight: 700; color: var(--gold); margin: 0 0 8px 0; line-height: 1.3; text-transform: uppercase;}
         
+        /* GRID 3 CỘT (HERO + HOVER LIST + RELATED) */
         .s1-grid-body { display: grid; grid-template-columns: 40% 30% 25%; gap: 2.5%; margin-bottom: 40px; align-items: start; }
         .s1-col-1 { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
         .s1-hero-img-box { height: 260px; overflow: hidden; position: relative; } .s1-hero-img { transition: 0.5s; } .s1-col-1:hover .s1-hero-img { transform: scale(1.05); }
@@ -37,19 +38,15 @@
         
         .s1-col-3 { display: flex; flex-direction: column; }
         .s1-col3-title { font-size: 16px; font-weight: 700; color: var(--gold); margin: 0 0 15px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); width: fit-content; text-transform: uppercase;}
-        .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
-        .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .gr-prod-card:hover .gr-tit { color: var(--gold) !important; }
         .gr-img-col3 { width: 80px !important; height: 55px !important; min-width: 80px !important; border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
         
-        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; margin-top: 50px; }
-        .s-tit { font-size: 20px; font-weight: 700; color: var(--white); text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
-        
-        .gr-sec2 { display: flex; gap: 30px; align-items: flex-start; }
+        /* 70/30 CÓ THỂ BẠN QUAN TÂM */
+        .gr-sec2 { display: flex; gap: 30px; align-items: flex-start; margin-bottom: 40px;}
         .gr-sec2-left-wrap { width: calc(70% - 15px); display: flex; flex-direction: column; }
         .gr-sec2-right-wrap { width: calc(30% - 15px); display: flex; flex-direction: column; }
         .gr-sec2-left { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-content: start; }
         
+        /* LIST BÀI VIẾT DỌC */
         .gr-list-post { display: flex; gap: 12px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); transition: 0.3s; align-items: center; }
         .gr-list-thumb { width: 90px; height: 65px; border-radius: 4px; overflow: hidden; flex-shrink: 0; border: 1px solid var(--border); position: relative;}
         .gr-list-thumb img { transition: 0.5s; width: 100%; height: 100%; object-fit: cover; } .gr-list-post:hover .gr-list-thumb img { transform: scale(1.1); }
@@ -58,26 +55,52 @@
         .gr-list-post:hover .gr-list-tit { color: var(--gold) !important; }
         .gr-list-date { font-size: 11px; color: var(--gold); margin-top: auto; }
         
+        /* LIST SẢN PHẨM SIDEBAR & RELATED */
         .gr-sec2-right { display: flex; flex-direction: column; gap: 15px; }
-        .gr-list-prod { display: flex; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
+        .gr-prod-card, .gr-list-prod { display: flex; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
         .gr-list-prod:last-child { border-bottom: none; padding-bottom: 0; }
         .gr-lprod-thumb { width: 100px; height: 75px; flex-shrink: 0; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); position: relative; }
         .gr-lprod-thumb img { transition: 0.5s; width: 100%; height: 100%; object-fit: cover; } .gr-list-prod:hover .gr-lprod-thumb img { transform: scale(1.1); }
-        .gr-lprod-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .gr-lprod-tit { font-size: 13px !important; font-weight: 600 !important; color: #fff; height: 38px !important; line-height: 1.4 !important; margin-bottom: 6px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; text-overflow: ellipsis !important; transition: 0.3s; }
-        .gr-list-prod:hover .gr-lprod-tit { color: var(--gold) !important; }
+        .gr-lprod-info, .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .gr-lprod-tit, .gr-tit { font-size: 13px !important; font-weight: 600 !important; color: #fff; line-height: 1.4 !important; margin-bottom: 6px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; text-overflow: ellipsis !important; transition: 0.3s; }
+        .gr-list-prod:hover .gr-lprod-tit, .gr-prod-card:hover .gr-tit { color: var(--gold) !important; }
         .gr-lprod-loc { font-size: 11px; color: #999; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; } .gr-lprod-loc i { color: var(--gold); font-size: 10px; }
-        .gr-lprod-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; flex-wrap: wrap; } .gr-lprod-hl { color: var(--gold); font-weight: 700; font-size: 12px; }
+        .gr-lprod-meta, .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; flex-wrap: wrap; } .gr-lprod-hl, .gr-hl { color: var(--gold); font-weight: 700; font-size: 12px; }
+
+        /* KHỐI GRID & CAROUSEL DƯỚI CÙNG */
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; margin-top: 50px; }
+        .s-tit { font-size: 20px; font-weight: 700; color: var(--white); text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
+        .s3-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .gr-carousel-wrapper { position: relative; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+        .gr-carousel::-webkit-scrollbar { display: none; }
+        .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); scroll-snap-align: start; }
         
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 8px; font-size: 10px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; }
+        .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--border); background: rgba(14, 18, 27, 0.8); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+        .gr-prev { left: -15px; } .gr-next { right: -15px; }
+        
+        /* CARD SẢN PHẨM KHỐI DƯỚI */
+        .s2-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; position: relative; height: 100%; }
+        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .s2-thumb-box { height: 180px; position: relative; overflow: hidden; }
+        .s2-thumb-box img { transition: 0.5s; width: 100%; height: 100%; object-fit: cover;} .s2-card:hover .s2-thumb-box img { transform: scale(1.1); }
+        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .s2-card .gr-tit { height: 42px !important; margin-bottom: 10px; }
+        .s2-body .gr-meta { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; }
+        
+        /* TAGS */
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; text-transform: uppercase;}
         .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
 
         .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
         .s1-btn { display: inline-block; font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; padding: 10px 30px; border: 1px solid var(--gold); border-radius: 3px; transition: 0.3s; text-decoration: none; cursor: pointer; background: transparent; }
         .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: var(--gold); }
 
-        @media (max-width: 900px) { .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } .gr-sec2 { flex-direction: column; gap: 30px; } .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } }
-        @media (max-width: 768px) { .gr-sec2-left { grid-template-columns: 1fr; } }
+        @media (max-width: 1200px) { .s3-grid { grid-template-columns: repeat(4, 1fr); } .gr-carousel .s2-card { flex: 0 0 calc(25% - 15px); max-width: calc(25% - 15px); } }
+        @media (max-width: 900px) { .gr-con { padding: 20px 15px; } .s1-grid-body { display: flex; flex-direction: column; height: auto; gap: 30px; } .gr-sec2 { flex-direction: column; gap: 30px; } .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } .s3-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .gr-sec2-left { grid-template-columns: 1fr; } .s3-grid { grid-template-columns: repeat(2, 1fr); } .gr-carousel .s2-card { flex: 0 0 calc(50% - 10px); max-width: calc(50% - 10px); } .gr-nav-btn { display: none; } }
+        @media (max-width: 480px) { .s3-grid { grid-template-columns: 1fr; } .gr-carousel .s2-card { flex: 0 0 100%; max-width: 100%; } }
     </style>
 </head>
 <body>
@@ -99,11 +122,8 @@
             </div>
 
             <div class="s1-grid-body" id="top-grid-container" style="opacity: 0; transition: 0.5s;">
-                
                 <div class="s1-col-1" id="hero-col"></div>
-
                 <div class="s1-col-2" id="hover-list-col"></div>
-
                 <div class="s1-col-3">
                     <h3 class="s1-col3-title">Tin nổi bật</h3>
                     <div id="related-col"></div>
@@ -118,12 +138,36 @@
                         <button class="s1-btn" onclick="loadMorePosts()">Xem thêm bài viết</button>
                     </div>
                 </div>
-
                 <div class="gr-sec2-right-wrap">
                     <div class="gr-sec2-right" id="sidebar-products-grid"></div>
                     <div class="s1-btn-wrap"><a href="/greenia-homes/san-pham.html" class="s1-btn">Xem tất cả sản phẩm</a></div>
                 </div>
             </div>
+
+            <div class="s-head"><h3 class="s-tit">Bất động sản dành cho bạn</h3></div>
+            <div class="s3-grid" id="foryou-grid"></div>
+
+            <div class="s-head"><h3 class="s-tit">Tin nhà đất bán mới nhất</h3></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('sale-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="sale-scroll" class="gr-carousel"></div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('sale-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <div class="s-head"><h3 class="s-tit">Tin nhà đất cho thuê mới nhất</h3></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('rent-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="rent-scroll" class="gr-carousel"></div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('rent-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
+            <div class="s-head"><h3 class="s-tit">Dự án nổi bật</h3></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('feat-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="feat-scroll" class="gr-carousel"></div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('feat-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+
         </div>
     </div>
 
@@ -134,10 +178,9 @@
         let allPosts = [];
         let allProducts = [];
         let currentTabPosts = [];
-        
         let loadedCount = 0;
         const postsPerPage = 10;
-        let mixedPostsPool = []; // Dùng cho phần "Có thể bạn quan tâm"
+        let mixedPostsPool = [];
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
@@ -159,6 +202,48 @@
             return { img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
         }
 
+        // HÀM TẠO CARD SẢN PHẨM DÙNG CHUNG (TỪ san-pham.html)
+        function createProdCardHTML(p, isList = false) {
+            const catSlug = createSafeSlug(p.cat || 'san-pham');
+            const pSlug = p.slug || createSafeSlug(p.title);
+            const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+            const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+            const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+
+            if(isList) {
+                // Card dạng list (Cột phải 70/30)
+                return `<a href="${link}" class="gr-list-prod">
+                            <div class="gr-lprod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}">
+                            </div>
+                            <div class="gr-lprod-info">
+                                <h4 class="gr-lprod-tit">${p.title}</h4>
+                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-lprod-meta"><span class="gr-lprod-hl">${p.price}</span></div>
+                            </div>
+                        </a>`;
+            } else {
+                // Card dạng lưới (Grid/Carousel dưới cùng)
+                const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+                return `<a href="${link}" class="s2-card">
+                            <div class="s2-thumb-box">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}">
+                            </div>
+                            <div class="s2-body">
+                                <h3 class="gr-tit">${p.title}</h3>
+                                <div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-meta">
+                                    <span class="gr-hl">${p.price}</span>
+                                    <div style="display:flex; gap:10px;">
+                                        <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>${bedHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>`;
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
@@ -168,19 +253,41 @@
                 allPosts = await postRes.json();
                 allProducts = await prodRes.json();
 
-                // 1. TẠO TABS ĐỘNG DỰA TRÊN CATEGORY CÓ TRONG JSON
+                // 1. TẠO TABS ĐỘNG
                 const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
                 const tabsHtml = categories.map((cat, idx) => 
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${cat}', this)">${cat}</div>`
                 ).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // 2. KHỞI TẠO DỮ LIỆU BAN ĐẦU
-                mixedPostsPool = [...allPosts]; // Copy để làm Grid dưới
+                // 2. KHỞI TẠO TOP GRID & 70/30
+                mixedPostsPool = [...allPosts];
                 switchTab('Tất cả', document.querySelector('.s1-tab'));
+                
+                // Sidebar Phải (List Prod)
+                const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
+                document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
-                // 3. RENDER SIDEBAR SẢN PHẨM PHẢI
-                renderSidebarProducts();
+                // ==========================================
+                // 3. RENDER CÁC KHỐI GRID & CAROUSEL BÊN DƯỚI
+                // ==========================================
+                // Dành cho bạn (Random 10)
+                const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
+                document.getElementById('foryou-grid').innerHTML = forYouProds.map(p => createProdCardHTML(p)).join('');
+
+                // Tin bán (Filter Type: Bán)
+                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
+                document.getElementById('sale-scroll').innerHTML = saleProds.map(p => createProdCardHTML(p)).join('');
+
+                // Tin thuê (Filter Type: Thuê)
+                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
+                document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
+
+                // Dự án (Lọc các sản phẩm có projectCode hoặc danh mục chứa chữ "Dự án")
+                const featProds = allProducts.filter(p => (p.cat && p.cat.toLowerCase().includes('dự án')) || p.projectCode).slice(0, 10);
+                // Nếu chưa có dự án nào, lấy random đỡ để tránh trống trải
+                const finalFeatProds = featProds.length > 0 ? featProds : [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
+                document.getElementById('feat-scroll').innerHTML = finalFeatProds.map(p => createProdCardHTML(p)).join('');
 
             } catch(e) {
                 document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang cập nhật dữ liệu. Vui lòng quay lại sau.</div>";
@@ -188,23 +295,18 @@
             }
         });
 
-        // ==========================================
         // LOGIC CHUYỂN TAB (TOP GRID)
-        // ==========================================
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
 
             document.getElementById('dyn-cat-title').innerText = catName === 'Tất cả' ? 'Tin Tức Bất Động Sản' : catName;
-
             currentTabPosts = catName === 'Tất cả' ? [...allPosts] : allPosts.filter(p => p.cat === catName);
             
             if(currentTabPosts.length === 0) return;
 
-            // Render Hero (Bài 0)
             renderHero(currentTabPosts[0]);
 
-            // Render List Hover (Bài 1 - 6)
             const hoverPosts = currentTabPosts.slice(1, 7);
             const listHtml = hoverPosts.map((p, idx) => {
                 const pd = extractPostData(p);
@@ -216,7 +318,6 @@
             }).join('');
             document.getElementById('hover-list-col').innerHTML = listHtml;
 
-            // Render Related (Bài 7 - 11)
             const relatedPosts = currentTabPosts.slice(7, 12);
             const relHtml = relatedPosts.map(p => {
                 const pd = extractPostData(p);
@@ -232,7 +333,6 @@
 
             document.getElementById('top-grid-container').style.opacity = 1;
 
-            // Reset và Render 70/30 Grid bên dưới
             mixedPostsPool = [...currentTabPosts];
             loadedCount = 0;
             document.getElementById('main-post-grid').innerHTML = '';
@@ -240,9 +340,7 @@
             loadMorePosts();
         };
 
-        // ==========================================
-        // LOGIC HIỆU ỨNG HOVER HERO
-        // ==========================================
+        // HOVER HERO
         window.renderHero = function(p) {
             const pd = extractPostData(p);
             document.getElementById('hero-col').innerHTML = `
@@ -269,9 +367,7 @@
             el.classList.add('active');
         }
 
-        // ==========================================
-        // LOGIC "XEM THÊM" JS CẮT MẢNG (THAY CHO AJAX)
-        // ==========================================
+        // LOAD MORE POSTS
         window.loadMorePosts = function() {
             const grid = document.getElementById('main-post-grid');
             const wrap = document.getElementById('load-more-wrap');
@@ -299,36 +395,12 @@
             }
         }
 
-        // ==========================================
-        // LOGIC SẢN PHẨM SIDEBAR PHẢI
-        // ==========================================
-        window.renderSidebarProducts = function() {
-            const sidebar = document.getElementById('sidebar-products-grid');
-            const prods = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
-            
-            let html = '';
-            prods.forEach(p => {
-                const catSlug = createSafeSlug(p.cat || 'san-pham');
-                const pSlug = p.slug || createSafeSlug(p.title);
-                const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
-                const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
-
-                html += `<a href="${safeBaseUrl}san-pham/${catSlug}/${pSlug}/" class="gr-list-prod">
-                            <div class="gr-lprod-thumb">
-                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
-                                <img src="${window.resolveImg ? window.resolveImg(p.img) : p.img}">
-                            </div>
-                            <div class="gr-lprod-info">
-                                <h4 class="gr-lprod-tit">${p.title}</h4>
-                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-lprod-meta">
-                                    <span class="gr-lprod-hl">${p.price}</span>
-                                </div>
-                            </div>
-                        </a>`;
-            });
-            sidebar.innerHTML = html;
-        }
+        // SCROLL NGANG CHO CAROUSEL
+        window.grScrollHorizontal = function(id, dir) {
+            var el = document.getElementById(id); if(!el) return;
+            var item = el.querySelector(".s2-card"); if(!item) return;
+            var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
+        };
     </script>
 </body>
 </html>
