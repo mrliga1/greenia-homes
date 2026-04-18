@@ -175,27 +175,13 @@
         // ==========================================
         // CẤU HÌNH CÁC PAGE DỰ ÁN ĐỘC LẬP TẠI ĐÂY
         // ==========================================
-        const independentProjects = [
-            {
-                title: "Vinhomes Grand Park",
-                status: "Đang mở bán",
-                img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", // Bạn thay link ảnh thực tế vào đây
-                link: safeBaseUrl + "du-an/vinhomes-grand-park/" // Link trỏ vào page độc lập của bạn
-            },
-            {
-                title: "Aqua City Đồng Nai",
-                status: "Đang bàn giao",
-                img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-                link: safeBaseUrl + "du-an/aqua-city/"
-            },
-            {
-                title: "The Global City",
-                status: "Sắp mở bán",
-                img: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800",
-                link: safeBaseUrl + "du-an/the-global-city/"
-            }
-            // Bạn có thể copy paste để thêm dự án thoải mái
-        ];
+            let independentProjects = [];
+        try {
+            const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
+            independentProjects = await projRes.json();
+        } catch(e) {
+            console.log("Chưa có dự án nào được quét");
+        }
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
