@@ -8,9 +8,11 @@ const DOMAIN = 'https://mrliga1.github.io/greenia-homes';
 
 const postsPath = path.join(__dirname, 'assets', 'data', 'posts.json');
 const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
+const projPath = path.join(__dirname, 'assets', 'data', 'projects.json'); // Bổ sung đọc file dự án từ Admin
 
 let posts = fs.existsSync(postsPath) ? JSON.parse(fs.readFileSync(postsPath, 'utf8')) : [];
 let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 'utf8')) : [];
+let projects = fs.existsSync(projPath) ? JSON.parse(fs.readFileSync(projPath, 'utf8')) : [];
 
 // Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
@@ -37,6 +39,12 @@ let sitemapUrls = [
     `${DOMAIN}/tin-tuc.html`,
     `${DOMAIN}/san-pham.html`
 ];
+
+// Thêm toàn bộ Dự án vào Sitemap (Dữ liệu lấy từ Admin)
+projects.forEach(p => {
+    const slug = p.slug || makeSafeSlug(p.title);
+    sitemapUrls.push(`${DOMAIN}/du-an/${slug}/`);
+});
 
 // ==========================================
 // BƯỚC 1: XUẤT BẢN CÁC TRANG DANH MỤC (CATEGORY PAGES)
@@ -172,44 +180,7 @@ if (prodTemplate) {
 }
 
 // ==========================================
-// BƯỚC 4: TỰ ĐỘNG QUÉT VÀ CẬP NHẬT DANH SÁCH DỰ ÁN
-// ==========================================
-const projectsDir = path.join(__dirname, 'du-an');
-let scrapedProjects = [];
-
-if (fs.existsSync(projectsDir)) {
-    // Đọc tất cả các thư mục con trong /du-an/
-    const projectFolders = fs.readdirSync(projectsDir).filter(f => fs.statSync(path.join(projectsDir, f)).isDirectory());
-
-    projectFolders.forEach(folderName => {
-        const infoPath = path.join(projectsDir, folderName, 'info.json');
-        
-        // Nếu dự án có file info.json, bốc thông tin và tạo link
-        if (fs.existsSync(infoPath)) {
-            try {
-                let projData = JSON.parse(fs.readFileSync(infoPath, 'utf8'));
-                projData.link = `/greenia-homes/du-an/${folderName}/`; // Tự động chèn link
-                scrapedProjects.push(projData);
-                
-                // Thêm vào sitemap
-                sitemapUrls.push(`${DOMAIN}/du-an/${folderName}/`);
-            } catch(e) {
-                console.log(`Lỗi đọc file info.json tại dự án: ${folderName}`);
-            }
-        }
-    });
-    
-    // Ghi toàn bộ dữ liệu quét được ra file projects.json để web đọc
-    const outputProjectsPath = path.join(__dirname, 'assets', 'data', 'projects.json');
-    if (!fs.existsSync(path.join(__dirname, 'assets', 'data'))) {
-        fs.mkdirSync(path.join(__dirname, 'assets', 'data'), { recursive: true });
-    }
-    fs.writeFileSync(outputProjectsPath, JSON.stringify(scrapedProjects, null, 2));
-    console.log(`✅ Đã quét và cập nhật ${scrapedProjects.length} dự án độc lập.`);
-}
-
-// ==========================================
-// BƯỚC 5: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
+// BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
 // ==========================================
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -218,4 +189,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Đã quy hoạch Cấu trúc Silo: Gom toàn bộ vào /tin-tuc/ và /san-pham/.');
+console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu. Sitemap đã cập nhật toàn bộ Dự án.');
