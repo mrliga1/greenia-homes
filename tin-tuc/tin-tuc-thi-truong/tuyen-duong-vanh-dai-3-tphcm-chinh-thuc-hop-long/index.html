@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* FIX LỖI VIỀN TRẮNG */
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
         #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
@@ -23,18 +22,18 @@
 
         /* HEADER & BREADCRUMBS */
         .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
-        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; text-transform: none; }
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; }
         .gr-breadcrumbs a:hover { color: var(--gold); } 
-        .gr-breadcrumbs span.sep { color: var(--gold); font-size: 12px; }
+        .gr-breadcrumbs span.sep { color: var(--gold); font-size: 10px; }
         .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .gr-sp-title { font-size: 28px !important; font-weight: 600; color: #c5a059; line-height: 1.3; margin: 0 0 15px; }
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* MAIN LAYOUT */
-        .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px;}
+        /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
+        .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
         .gr-sp-main { width: 75%; } 
-        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; display: flex; flex-direction: column; gap: 30px; }
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
@@ -87,7 +86,7 @@
         .s2-card:hover .s2-tit { color: var(--gold); }
 
         /* SIDEBAR CATEGORIES */
-        .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 30px; }
+        .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
         .gr-cat-h { background: #1a1f2e; padding: 10px; font-weight: 700; font-size: 13px; color: #fff; text-align: center; border-bottom: 1px solid var(--gold); text-transform: uppercase; }
         .gr-cat-l { padding: 0; max-height: 400px; overflow-y: auto; }
         .gr-cat-l a { display: flex; justify-content: space-between; padding: 10px 12px; color: #b0b8c4; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
@@ -160,7 +159,7 @@
         .rev-content { flex-grow: 1; } .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; } .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
         .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
         
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; text-align: center; border-radius: 8px; margin-bottom: 30px;}
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; text-align: center; border-radius: 8px; margin-bottom: 0;}
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
         .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; line-height: 1.4; }
@@ -245,22 +244,32 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
-                // 1. Sidebar - Danh mục Sản Phẩm (KHÔI PHỤC)
-                const catCounts = {};
+                // 1. Sidebar - Danh mục Sản Phẩm (CHỈNH CHUẨN THỨ TỰ)
+                let countBan = 0, countThue = 0;
+                let otherCats = {};
                 prods.forEach(p => {
-                    const cName = p.cat || 'Khác';
-                    catCounts[cName] = (catCounts[cName] || 0) + 1;
+                    if(p.type === 'Bán') countBan++;
+                    else if(p.type === 'Thuê') countThue++;
+                    
+                    if(p.cat) {
+                        let c = p.cat.trim();
+                        if(c !== '') otherCats[c] = (otherCats[c] || 0) + 1;
+                    }
                 });
+
+                let catLines = [];
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/ban/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
+                
+                Object.keys(otherCats).forEach(c => {
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${otherCats[c]})</span></a>`);
+                });
+
                 let catWidgetHTML = `
                 <div class="gr-cat-widget">
                     <div class="gr-cat-h">DANH MỤC SẢN PHẨM</div>
                     <div class="gr-cat-l">
-                        ${Object.keys(catCounts).map(cat => {
-                            return `<a href="${safeBaseUrl}san-pham/${createSafeSlug(cat)}/">
-                                        <span>${cat}</span>
-                                        <span class="gr-cat-count">(${catCounts[cat]})</span>
-                                    </a>`;
-                        }).join('')}
+                        ${catLines.join('')}
                     </div>
                 </div>`;
 
@@ -272,7 +281,7 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                     latestNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
-                // 3. Sidebar - Sản phẩm nổi bật (ĐÃ KHÔI PHỤC DIỆN TÍCH VÀ PHÒNG NGỦ)
+                // 3. Sidebar - Sản phẩm nổi bật (ĐẦY ĐỦ THÔNG TIN)
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
                     const pCatSlug = createSafeSlug(p.cat || 'san-pham');
@@ -364,8 +373,9 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
-                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">/</span>
-                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/">${post.cat}</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
+                            <a href="${safeBaseUrl}tin-tuc.html">Tin tức</a> <span class="sep">&gt;</span>
+                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/">${post.cat}</a> <span class="sep">&gt;</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
@@ -439,8 +449,6 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                         </div>
 
                         <div class="gr-sp-sidebar">
-                            ${catWidgetHTML}
-
                             <section id="vhgp-final-v15-vertical">
                                 <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
                                 <div class="v15-ver-rating-box"><span style="font-size:12px;">★★★★★</span><span style="font-size:11px;color:#aaa;">(5.0/5)</span></div>
@@ -454,8 +462,10 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                                 <div id="v15-ver-success" class="success-overlay"><div style="color:#2ecc71; font-weight:bold; font-size:14px; margin-bottom:5px;">✔ THÀNH CÔNG!</div><div style="font-size:11px; color:#ccc;">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
                             </section>
 
+                            ${catWidgetHTML}
+
                             <div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarProdHTML}</div></div>
-                            <div style="margin-top:30px;"><div class="gr-w-title">Tin mới nhất</div>${latestNewsHTML}</div>
+                            <div><div class="gr-w-title">Tin mới nhất</div>${latestNewsHTML}</div>
                         </div>
                     </div>
                     ${carouselHTML}
