@@ -10,14 +10,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../../../../assets/css/style.css">
+    <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
+        /* FIX LỖI VIỀN TRẮNG */
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
+
+        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
         #gr-single-post * { box-sizing: border-box; } 
         #gr-single-post a { text-decoration: none; color: inherit; transition: 0.3s; }
         .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; }
 
+        /* HEADER & BREADCRUMBS */
         .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
         .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; text-transform: none; }
         .gr-breadcrumbs a:hover { color: var(--gold); } 
@@ -27,40 +31,51 @@
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
+        /* MAIN LAYOUT */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px;}
         .gr-sp-main { width: 75%; } 
         .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; display: flex; flex-direction: column; gap: 30px; }
 
+        /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
         .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
         .gr-toc-tit { font-weight: 600; color: var(--gold); font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .gr-toc-icon { color: var(--gold); transition: transform 0.3s; font-size: 12px; }
+        .gr-toc-icon.rotate { transform: rotate(180deg); }
         .gr-toc-list { display: block; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
         .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); } 
         .gr-toc-link { color: #ccc; font-size: 14px; display: block; transition: 0.2s; } 
         .gr-toc-link:hover { color: var(--gold); transform: translateX(5px); }
 
+        /* CONTENT FORMATTING */
         .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; }
         .gr-entry-content p a, .gr-entry-content li a { color: #e67e22 !important; font-weight: 600; text-decoration: none; transition: 0.3s; border-bottom: 1px solid rgba(230, 126, 34, 0.3); }
         .gr-entry-content p a:hover, .gr-entry-content li a:hover { color: var(--gold) !important; border-bottom: 1px solid var(--gold); }
         .gr-entry-content strong, .gr-entry-content b { color: var(--gold); font-weight: 700; }
         .gr-entry-content h1, .gr-entry-content h2, .gr-entry-content h3 { margin: 30px 0 15px; line-height: 1.5; text-align: left; }
-        .gr-entry-content h1, .gr-entry-content h2 { color: var(--gold); font-size: 22px; font-weight: 600; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; }
+        .gr-entry-content h1, .gr-entry-content h2 { color: var(--gold); font-size: 22px; font-weight: 600; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; scroll-margin-top: 100px;}
         .gr-entry-content h3 { color: #d4b886 !important; font-size: 20px; font-weight: 500; margin-top: 35px; }
         .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
         .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
-        .gr-entry-content figcaption, .gr-entry-content .wp-caption-text { text-align: center; font-size: 13px; font-style: italic; color: #94a3b8; margin-bottom: 25px; line-height: 1.5; }
-        .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; } 
+        .gr-entry-content figcaption, .gr-entry-content .wp-caption-text { text-align: center; font-size: 13px; font-style: italic; color: #94a3b8; margin-top: -10px; margin-bottom: 25px; line-height: 1.5; }
+        .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
+        .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0; } 
+        .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
         .gr-entry-content blockquote { background: rgba(197, 160, 89, 0.1); border-left: 3px solid var(--gold); padding: 20px; font-style: italic; color: #fff; margin: 30px 0; }
+        .gr-entry-content blockquote p { text-indent: 0; }
 
+        /* BOTTOM CTA & SHARE */
         .gr-bottom-bar { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-        .gr-bot-cta a { color: var(--gold); font-weight: 700; font-size: 14px; }
+        .gr-bot-cta { color: #888; font-size: 13px; } .gr-bot-cta a { color: var(--gold); font-weight: 700; text-decoration: none; font-size: 14px; }
         .gr-share-group { display: flex; gap: 10px; align-items: center; }
+        .gr-share-lbl { font-size: 13px; font-weight: 600; color: #fff; margin-right: 5px; }
         .gr-s-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; background: rgba(255,255,255,0.1); }
-        .gr-s-btn.fb:hover { background: #3b5998; } .gr-s-btn.zalo:hover { background: #0068ff; } .gr-s-btn img { width: 20px; height: 20px; }
+        .gr-s-btn.fb:hover { background: #3b5998; } .gr-s-btn.zalo:hover { background: #0068ff; } .gr-s-btn img { width: 20px; height: 20px; object-fit: contain; }
 
+        /* WIDGETS CHUNG */
         .gr-w-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); display: inline-block; text-transform: uppercase; }
-        
-        /* Rổ hàng & BĐS Nổi Bật Sidebar */
+
+        /* RỔ HÀNG GRID */
         .gr-ro-hang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
         .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
         .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
@@ -68,54 +83,96 @@
         .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .s2-card:hover .s2-thumb-box img { transform: scale(1.05); }
         .s2-body { padding: 12px; flex: 1; }
-        .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; margin-bottom: 5px; }
+        .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
+        .s2-card:hover .s2-tit { color: var(--gold); }
 
-        .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: flex-start; }
-        .gr-prod-thumb { width: 100px; height: 80px; flex-shrink: 0; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-        .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; }
-        
+        /* SIDEBAR CATEGORIES */
+        .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; margin-bottom: 30px; }
+        .gr-cat-h { background: #1a1f2e; padding: 10px; font-weight: 700; font-size: 13px; color: #fff; text-align: center; border-bottom: 1px solid var(--gold); text-transform: uppercase; }
+        .gr-cat-l { padding: 0; max-height: 400px; overflow-y: auto; }
+        .gr-cat-l a { display: flex; justify-content: space-between; padding: 10px 12px; color: #b0b8c4; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .gr-cat-l a:hover { color: var(--gold); background: rgba(197, 160, 89, 0.1); }
+        .gr-cat-count { color: #666; font-size: 10px; }
+
+        /* SIDEBAR PRODUCTS */
+        .gr-prod-list { display: flex; flex-direction: column; gap: 0; }
+        .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none !important; align-items: flex-start; }
+        .gr-prod-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .gr-prod-thumb { width: 100px; height: 80px; flex-shrink: 0; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
+        .gr-prod-card:hover .gr-prod-thumb img { transform: scale(1.1); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 6px; font-size: 9px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; line-height: 1; }
+        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
+        .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
+        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
+        .gr-loc-mini { font-size: 11px; color: #999; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; } .gr-loc-mini i { color: var(--gold); font-size: 10px; }
+        .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
+        .gr-hl { color: var(--gold); font-weight: 700; } .gr-sep { color: #444; font-size: 10px; } .gr-txt { color: #ccc; } 
+
+        /* CAROUSEL */
         .gr-related-section { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; }
+        .s-tit { font-size: 20px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
-        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scrollbar-width: none;}
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
-        .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
-        .gr-news-card-v:hover { border-color: var(--gold); }
-        .gr-nc-thumb { height: 160px; overflow: hidden; }
-        .gr-nc-thumb img { width: 100%; height: 100%; object-fit: cover; } 
+        .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; text-decoration: none !important; }
+        .gr-news-card-v:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .gr-nc-thumb { height: 160px; overflow: hidden; position: relative; }
+        .gr-nc-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; } .gr-news-card-v:hover .gr-nc-thumb img { transform: scale(1.1); }
         .gr-nc-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .gr-nc-tit { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 10px; }
-        .gr-nc-desc { font-size: 12px; color: #888; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .gr-nc-tit { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-news-card-v:hover .gr-nc-tit { color: var(--gold); }
+        .gr-nc-desc { font-size: 12px; color: #888; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
         .gr-nc-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
-        
-        /* Đăng ký Tư vấn & Bình luận */
-        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-glass: rgba(255, 255, 255, 0.02); }
-        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 20px; color: #fff; font-size: 14px; margin-top: 40px;}
+        .gr-nc-date { color: #666; }
+        .gr-nc-more { color: var(--gold); font-weight: 700; transition: 0.3s; } .gr-news-card-v:hover .gr-nc-more { text-decoration: underline; }
+        .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--border); background: rgba(14, 18, 27, 0.8); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+        .gr-prev { left: -15px; } .gr-next { right: -15px; }
+
+        /* REVIEWS VÀ FORM CTA CSS */
+        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-glass: rgba(255, 255, 255, 0.02); --v15-bg: #0b0f19; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); }
+        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px;}
         .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; }
-        .rev-title h2 { font-size: 20px; margin: 0; color: #fff; }
-        .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); }
-        .rs-meta { text-align: right; } .rs-stars { color: var(--rev-gold); font-size: 12px; } .rs-count { font-size: 10px; color: #666; }
-        .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
+        .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
+        .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
+        .rs-meta { text-align: right; } .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; } .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
+        .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
+        .rev-intro strong { color: #fff; font-weight: 600; } .rev-intro span { color: var(--rev-gold); }
+        .rev-layout { display: flex; flex-direction: column; gap: 40px; }
         .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 15px; border-radius: 4px; }
         .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; }
-        .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; }
+        .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
+        .rate-input input { display: none; } .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
+        .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
+        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; }
+        .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; background: rgba(197, 160, 89, 0.05); }
         .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
-        .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .rev-btn:hover { background: rgba(197, 160, 89, 0.1); border-color: #c5a059; }
-        .rev-list { display: flex; flex-direction: column; gap: 20px; margin-top: 20px;}
+        .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .rev-btn:hover { background: rgba(197, 160, 89, 0.1); color: #fff; border-color: #c5a059; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
+        .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 800px; overflow-y: auto; padding-right: 5px; }
+        .rev-list::-webkit-scrollbar { width: 3px; } .rev-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .rev-item { position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
+        .rev-main-content { display: flex; gap: 15px; background: var(--rev-bg); padding-bottom: 10px; }
+        .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); font-size: 16px; }
+        .rev-content { flex-grow: 1; } .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; } .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
+        .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
         
         #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; text-align: center; border-radius: 8px; margin-bottom: 30px;}
-        .v15-ver-title { font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
-        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; }
-        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; margin-bottom: 10px; outline: none; }
-        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; border-radius: 50px; cursor: pointer; transition: 0.3s; }
-        .v15-ver-btn:hover { background: #d4af37; color: #000; }
-        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; }
+        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; line-height: 1.4; }
+        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; margin-bottom: 10px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .v15-ver-input:focus { border-color: var(--gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 12px; }
+        .v15-ver-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; width: 100%; }
 
         @media (max-width: 900px) {
             .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; } .gr-sp-sidebar { position: static; }
+            .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
             .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
             .rev-row-inputs { grid-template-columns: 1fr; } .rev-btn { width: 100%; }
         }
@@ -161,7 +218,7 @@
 
     <div id="site-footer"></div>
     
-    <script src="../../../../assets/js/ui.js"></script>
+    <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
         window.GREENIA_CURRENT_POST = {"id":10,"title":"kiểm tra đăng bài viết","slug":"kiem-tra-dang-bai-viet","cat":"tin dự án","date":"15/4/2026","author":"Ban Biên Tập","thumb":"","content":"<p>kiểm tra nội dung</p>\n","seoTitle":"kiểm tra đăng bài viết","seoDesc":"kiểm tra nội dung\n...","seoKeywords":"tin dự án, tin tức"};
@@ -186,6 +243,26 @@
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
+                // 1. Sidebar - Danh mục Sản Phẩm (KHÔI PHỤC)
+                const catCounts = {};
+                prods.forEach(p => {
+                    const cName = p.cat || 'Khác';
+                    catCounts[cName] = (catCounts[cName] || 0) + 1;
+                });
+                let catWidgetHTML = `
+                <div class="gr-cat-widget">
+                    <div class="gr-cat-h">DANH MỤC SẢN PHẨM</div>
+                    <div class="gr-cat-l">
+                        ${Object.keys(catCounts).map(cat => {
+                            return `<a href="${safeBaseUrl}san-pham/${createSafeSlug(cat)}/">
+                                        <span>${cat}</span>
+                                        <span class="gr-cat-count">(${catCounts[cat]})</span>
+                                    </a>`;
+                        }).join('')}
+                    </div>
+                </div>`;
+
+                // 2. Sidebar - Tin mới nhất
                 let latestNewsHTML = '';
                 posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
                     const pCat = createSafeSlug(p.cat);
@@ -193,21 +270,35 @@
                     latestNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
+                // 3. Sidebar - Sản phẩm nổi bật (ĐÃ KHÔI PHỤC DIỆN TÍCH VÀ PHÒNG NGỦ)
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
                     const pCatSlug = createSafeSlug(p.cat || 'san-pham');
                     const pSlug = p.slug || createSafeSlug(p.title);
                     const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                    
+                    let tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+                    let tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+
                     sidebarProdHTML += `
                         <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="gr-prod-card">
-                            <div class="gr-prod-thumb"><img src="${imgUrl}"></div>
+                            <div class="gr-prod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagName}</span>
+                                <img src="${imgUrl}">
+                            </div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
-                                <div style="color:#c5a059; font-weight:bold; font-size:12px;">${p.price}</div>
+                                ${p.loc ? `<div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc.substring(0, 30)}...</div>` : ''}
+                                <div class="gr-meta-mini">
+                                    <span class="gr-hl">${p.price || 'Liên hệ'}</span>
+                                    ${p.area ? `<span class="gr-sep">|</span> <span class="gr-txt">${p.area} m²</span>` : ''}
+                                    ${p.bed ? `<span class="gr-sep">|</span> <span class="gr-txt">${p.bed} PN</span>` : ''}
+                                </div>
                             </div>
                         </a>`;
                 });
 
+                // 4. Rổ hàng Dự án
                 const projectProds = prods.filter(p => p.projectCode && p.projectCode.toLowerCase() === createSafeSlug(post.title));
                 let roHangHTML = '';
                 if(projectProds.length > 0) {
@@ -232,6 +323,7 @@
                         </div>`;
                 }
 
+                // 5. Carousel Cuối trang
                 const relatedPosts = posts.filter(p => p.cat === post.cat && p.id != post.id);
                 let carouselHTML = '';
                 if(relatedPosts.length > 0) {
@@ -239,6 +331,7 @@
                     <div class="gr-related-section">
                         <h3 class="gr-w-title" style="margin-bottom:20px;">Bài viết liên quan</h3>
                         <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal(-1)"><i class="fas fa-chevron-left"></i></button>
                             <div id="gr-news-scroll" class="gr-carousel">
                                 ${relatedPosts.map(p => {
                                     const pCat = createSafeSlug(p.cat);
@@ -251,11 +344,12 @@
                                         <div class="gr-nc-body">
                                             <h4 class="gr-nc-tit">${p.title}</h4>
                                             <div class="gr-nc-desc">${excerpt}</div>
-                                            <div class="gr-nc-footer"><div class="gr-nc-date"><i class="far fa-clock"></i> ${p.date}</div></div>
+                                            <div class="gr-nc-footer"><div class="gr-nc-date"><i class="far fa-clock"></i> ${p.date}</div><div class="gr-nc-more">Xem chi tiết <i class="fas fa-arrow-right" style="font-size:10px;"></i></div></div>
                                         </div>
                                     </a>`;
                                 }).join('')}
                             </div>
+                            <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal(1)"><i class="fas fa-chevron-right"></i></button>
                         </div>
                     </div>`;
                 }
@@ -264,6 +358,7 @@
                 const shareLink = encodeURIComponent(window.location.href);
                 const zaloIcon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
 
+                // BƠM TOÀN BỘ GIAO DIỆN VÀO TRANG TĨNH
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
@@ -282,8 +377,8 @@
                         <div class="gr-sp-main">
                             
                             <div class="gr-toc-wrap" id="gr-toc-wrapper">
-                                <div class="gr-toc-header" onclick="document.getElementById('gr-toc-list').style.display = document.getElementById('gr-toc-list').style.display==='none'?'block':'none';">
-                                    <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span><i class="fas fa-chevron-down gr-toc-icon"></i>
+                                <div class="gr-toc-header" onclick="document.getElementById('gr-toc-list').style.display = document.getElementById('gr-toc-list').style.display==='none'?'block':'none'; document.getElementById('gr-toc-icon').classList.toggle('rotate');">
+                                    <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span><i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i>
                                 </div>
                                 <ul class="gr-toc-list" id="gr-toc-list"></ul>
                             </div>
@@ -318,9 +413,16 @@
                                         <div class="rev-form-box">
                                             <span style="font-size: 10px; color: #888;">Đánh giá để tham gia thảo luận</span>
                                             <form id="mainForm" style="margin-top:10px;">
+                                                <div class="rate-input">
+                                                    <input type="radio" id="c-st5" name="rate" value="5" required checked/><label for="c-st5">★</label>
+                                                    <input type="radio" id="c-st4" name="rate" value="4" /><label for="c-st4">★</label>
+                                                    <input type="radio" id="c-st3" name="rate" value="3" /><label for="c-st3">★</label>
+                                                    <input type="radio" id="c-st2" name="rate" value="2" /><label for="c-st2">★</label>
+                                                    <input type="radio" id="c-st1" name="rate" value="1" /><label for="c-st1">★</label>
+                                                </div>
                                                 <div class="rev-row-inputs">
                                                     <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
-                                                    <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required>
+                                                    <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
                                                     <input type="email" id="c-email" class="rev-input" placeholder="Email (Tuỳ chọn)">
                                                 </div>
                                                 <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
@@ -335,17 +437,19 @@
                         </div>
 
                         <div class="gr-sp-sidebar">
+                            ${catWidgetHTML}
+
                             <section id="vhgp-final-v15-vertical">
                                 <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
                                 <div class="v15-ver-rating-box"><span style="font-size:12px;">★★★★★</span><span style="font-size:11px;color:#aaa;">(5.0/5)</span></div>
                                 <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
                                 <form id="leadFormV15Ver" style="display:flex; flex-direction:column;">
                                     <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
-                                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số ĐT *" required>
+                                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số ĐT *" required pattern="[0-9]{10}">
                                     <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (VD: Căn 2PN)" required>
                                     <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
                                 </form>
-                                <div id="v15-ver-success" class="success-overlay"><div style="color:#2ecc71; font-weight:bold;">✔ THÀNH CÔNG!</div><div style="font-size:11px; color:#ccc;">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
+                                <div id="v15-ver-success" class="success-overlay"><div style="color:#2ecc71; font-weight:bold; font-size:14px; margin-bottom:5px;">✔ THÀNH CÔNG!</div><div style="font-size:11px; color:#ccc;">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
                             </section>
 
                             <div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarProdHTML}</div></div>
@@ -358,9 +462,9 @@
                 setTimeout(() => {
                     initTOC();
                     initReviewsAndCTA();
-                }, 300);
+                }, 500);
 
-            } catch (e) { console.error("Lỗi:", e); }
+            } catch (e) { console.error("Lỗi khởi tạo:", e); }
         });
 
         function initTOC() {
@@ -387,6 +491,7 @@
             const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
             const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
             
+            // Xử lý Gửi Form Đăng ký (CTA)
             document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-v15-ver-submit');
@@ -404,6 +509,7 @@
                 }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
             });
 
+            // Lấy dữ liệu Review
             fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
                 const container = document.getElementById('rev-list-container');
                 const pageReviews = data.filter(item => item.pageId === PAGE_ID);
@@ -412,17 +518,19 @@
                 document.getElementById('total-reviews').innerText = pageReviews.length + " ĐÁNH GIÁ";
                 container.innerHTML = pageReviews.map(p => `
                     <div class="rev-item">
-                        <div class="rev-main-content" style="display:flex; gap:15px; margin-bottom:15px;">
-                            <div style="width:40px;height:40px;border-radius:50%;background:#151a25;color:#c5a059;display:flex;align-items:center;justify-content:center;border:1px solid #c5a059;font-weight:bold;">${p.name.charAt(0).toUpperCase()}</div>
+                        <div class="rev-main-content" style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:#151a25;color:#c5a059;display:flex;align-items:center;justify-content:center;border:1px solid rgba(197, 160, 89, 0.3);font-weight:bold;flex-shrink:0;">${p.name.charAt(0).toUpperCase()}</div>
                             <div style="width:100%;">
-                                <div style="display:flex;justify-content:space-between;"><span style="font-weight:bold;color:#fff;font-size:13px;">${p.name}</span><span style="color:#666;font-size:11px;">${p.date}</span></div>
-                                <p style="color:#ccc; font-size:13px; line-height:1.6; margin-top:5px; margin-bottom:0;">${p.comment}</p>
+                                <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-weight:500;color:#fff;font-size:12px;">${p.name}</span><span style="color:#666;font-size:11px;">${p.date}</span></div>
+                                <span style="font-size:11px;color:#c5a059;display:block;margin-bottom:6px;letter-spacing:1px;">${"★".repeat(p.rating)}${"☆".repeat(5-p.rating)}</span>
+                                <p style="color:#ccc; font-size:14px; line-height:1.6; margin:0;">${p.comment}</p>
                             </div>
                         </div>
                     </div>
                 `).join('');
             }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
 
+            // Gửi Review
             document.getElementById('mainForm').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('c-btn-submit');
@@ -432,7 +540,7 @@
                 fd.append("phone", document.getElementById('c-phone').value);
                 fd.append("email", document.getElementById('c-email').value);
                 fd.append("comment", document.getElementById('c-comment').value);
-                fd.append("rating", 5);
+                fd.append("rating", document.querySelector('input[name="rate"]:checked').value);
                 fd.append("pageId", PAGE_ID);
                 fetch(API_REVIEWS, { method: 'POST', body: fd }).then(() => {
                     alert("Cảm ơn bạn đã đánh giá!");
@@ -440,6 +548,12 @@
                     btn.innerText = "Gửi Đánh Giá"; btn.disabled = false;
                 });
             });
+        }
+
+        // JS Cho Carousel Tin Tức
+        window.grScrollHorizontal = function(dir) {
+            const el = document.getElementById('gr-news-scroll');
+            if(el) { const item = el.querySelector('.gr-news-card-v'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } }
         }
     </script>
 </body>
