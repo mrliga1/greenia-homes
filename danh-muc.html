@@ -167,9 +167,10 @@
         // Lệnh này để con Bot Build.js tìm và nhét thông số danh mục vào
         window.GREENIA_CURRENT_CATEGORY = null; 
 
-        // KHO KHAI BÁO BIẾN
+        // KHO KHAI BÁO BIẾN ĐÃ ĐƯỢC TỐI ƯU CÔ LẬP
         let allPosts = [];
         let allProducts = [];
+        let postsInThisCat = []; // Cô lập dữ liệu: Chỉ chứa bài của đúng danh mục này
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
@@ -216,10 +217,8 @@
             }
         }
 
-        // TẢI DỮ LIỆU KHI TRANG SẴN SÀNG
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // Fetch bằng đường dẫn tuyệt đối
                 const [postRes, prodRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/posts.json'),
                     fetch(safeBaseUrl + 'assets/data/products.json')
@@ -230,9 +229,9 @@
                 try {
                     const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
                     if (projRes.ok) { independentProjects = await projRes.json(); }
-                } catch(e) { console.log("File projects.json chưa có dữ liệu."); }
+                } catch(e) {}
 
-                // 1. GẮN THÔNG TIN DANH MỤC HIỆN TẠI (Được Bot đẩy vào)
+                // 1. GẮN THÔNG TIN DANH MỤC HIỆN TẠI VÀO TIÊU ĐỀ
                 const currentCatName = window.GREENIA_CURRENT_CATEGORY ? window.GREENIA_CURRENT_CATEGORY.name : 'Tin Tức';
                 
                 if(window.GREENIA_CURRENT_CATEGORY) {
@@ -240,48 +239,20 @@
                     document.querySelector('.gr-cat-desc').innerText = window.GREENIA_CURRENT_CATEGORY.desc || `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
                 }
 
-                // 2. TẠO TABS LÀ CÁC THẺ LINK (A) CHUẨN SEO
-                const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
-                const tabsHtml = categories.map((cat) => {
-                    const isActive = (cat === currentCatName);
-                    // Tab "Tất cả" trỏ về tin-tuc.html, các tab khác trỏ về URL thư mục con
-                    const catLink = cat === 'Tất cả' ? `${safeBaseUrl}tin-tuc.html` : `${safeBaseUrl}tin-tuc/${createSafeSlug(cat)}/`;
-                    return `<a href="${catLink}" class="s1-tab ${isActive ? 'active' : ''}">${cat}</a>`;
-                }).join('');
+                // 2. CÔ LẬP BÀI VIẾT: Chỉ lấy bài viết thuộc về danh mục này
+                postsInThisCat = window.GREENIA_CURRENT_CATEGORY ? allPosts.filter(p => p.cat === currentCatName) : [...allPosts];
+
+                // 3. TẠO TABS THÔNG MINH: Chỉ hiển thị "Tất cả" & Các Danh Mục Con (Nếu có)
+                const subCategories = []; // Mảng rỗng chờ nâng cấp Admin trong tương lai
+                const tabs = ['Tất cả', ...subCategories];
+
+                const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // 3. LỌC BÀI VIẾT CHỈ THUỘC VỀ DANH MỤC NÀY
-                currentTabPosts = window.GREENIA_CURRENT_CATEGORY ? allPosts.filter(p => p.cat === currentCatName) : [...allPosts];
-                
-                // HIỂN THỊ KHỐI TRÊN CÙNG
-                if(currentTabPosts.length > 0) {
-                    renderHero(currentTabPosts[0]);
-                    
-                    const hoverPosts = currentTabPosts.slice(1, 7);
-                    document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
-                        const pd = extractPostData(p);
-                        return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" onmouseenter="updateHero('${pd.link}', '${pd.img}', \`${pd.title}\`, \`${pd.excerpt}\`, '${pd.date}', this)" onclick="window.location.href='${pd.link}'">${pd.title}</div>`;
-                    }).join('');
-                    
-                    const relatedPosts = currentTabPosts.slice(7, 12);
-                    document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
-                        const pd = extractPostData(p);
-                        return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center;"><div class="gr-img-col3"><img src="${pd.img}"></div><div class="gr-prod-info"><h4 class="gr-tit">${pd.title}</h4><div class="gr-meta" style="color: #888; font-size: 11px; border-top: none; padding-top: 0;"><i class="far fa-clock"></i> ${pd.date}</div></div></a>`;
-                    }).join('') || '<div style="color:#888; font-size:12px;">Đang cập nhật thêm bài viết...</div>';
-                    
-                    document.getElementById('top-grid-container').style.opacity = 1;
-                } else {
-                    document.getElementById('top-grid-container').innerHTML = "<div style='color:#888; padding:50px; text-align:center;'>Chưa có bài viết nào trong danh mục này.</div>";
-                    document.getElementById('top-grid-container').style.opacity = 1;
-                }
+                // 4. KÍCH HOẠT TAB MẶC ĐỊNH
+                switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
-                // KHỞI TẠO GRID MAIN (Load More)
-                mixedPostsPool = [...currentTabPosts];
-                document.getElementById('main-post-grid').innerHTML = '';
-                document.getElementById('load-more-wrap').style.display = 'block';
-                loadMorePosts();
-                
-                // CAROUSEL CÁC THỨ (Giữ nguyên như trang tổng)
+                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI (Giữ nguyên)
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -317,7 +288,52 @@
             }
         });
 
-        // CÁC HÀM XỬ LÝ SỰ KIỆN GIAO DIỆN
+        // HÀM LỌC NỘI BỘ TRONG DANH MỤC
+        window.switchSubTab = function(subCatName, btnEl) {
+            document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
+            if(btnEl) btnEl.classList.add('active');
+            
+            // Tìm trong mảng đã được cô lập (postsInThisCat)
+            currentTabPosts = subCatName === 'Tất cả' ? [...postsInThisCat] : postsInThisCat.filter(p => p.subCat === subCatName);
+            
+            if(currentTabPosts.length === 0) {
+                document.getElementById('top-grid-container').style.opacity = 1;
+                document.getElementById('top-grid-container').innerHTML = "<div style='grid-column: 1/-1; color:#888; padding:50px; text-align:center;'>Chưa có bài viết nào trong mục này.</div>";
+                document.getElementById('main-post-grid').innerHTML = '';
+                document.getElementById('load-more-wrap').style.display = 'none';
+                return;
+            }
+
+            // Gắn lại khung nếu có dữ liệu
+            document.getElementById('top-grid-container').innerHTML = `
+                <div class="s1-col-1" id="hero-col"></div>
+                <div class="s1-col-2" id="hover-list-col"></div>
+                <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>
+            `;
+
+            renderHero(currentTabPosts[0]);
+            
+            const hoverPosts = currentTabPosts.slice(1, 7);
+            document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
+                const pd = extractPostData(p);
+                return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" onmouseenter="updateHero('${pd.link}', '${pd.img}', \`${pd.title}\`, \`${pd.excerpt}\`, '${pd.date}', this)" onclick="window.location.href='${pd.link}'">${pd.title}</div>`;
+            }).join('');
+            
+            const relatedPosts = currentTabPosts.slice(7, 12);
+            document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
+                const pd = extractPostData(p);
+                return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center;"><div class="gr-img-col3"><img src="${pd.img}"></div><div class="gr-prod-info"><h4 class="gr-tit">${pd.title}</h4><div class="gr-meta" style="color: #888; font-size: 11px; border-top: none; padding-top: 0;"><i class="far fa-clock"></i> ${pd.date}</div></div></a>`;
+            }).join('') || '<div style="color:#888; font-size:12px;">Đang cập nhật...</div>';
+            
+            document.getElementById('top-grid-container').style.opacity = 1;
+            
+            mixedPostsPool = [...currentTabPosts]; 
+            loadedCount = 0;
+            document.getElementById('main-post-grid').innerHTML = ''; 
+            document.getElementById('load-more-wrap').style.display = 'block';
+            loadMorePosts();
+        };
+
         window.renderHero = function(p) {
             const pd = extractPostData(p);
             document.getElementById('hero-col').innerHTML = `<div class="s1-hero-img-box"><a href="${pd.link}" id="hero-link"><img src="${pd.img}" id="hero-img" class="s1-hero-img"></a></div><div class="s1-hero-body"><a href="${pd.link}"><h3 class="s1-hero-tit" id="hero-tit">${pd.title}</h3></a><div class="s1-hero-desc" id="hero-desc">${pd.excerpt}</div><div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${pd.date}</div></div>`;
