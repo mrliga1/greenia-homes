@@ -10,13 +10,11 @@
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* TỔNG HỢP CSS TỪ BẢN PHP - KHÔNG THIẾU 1 CHỮ */
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
+        /* PHÁ VỠ PHONG TỎA OVERFLOW ĐỂ STICKY HOẠT ĐỘNG */
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important; }
         #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; overflow: visible !important;}
         #lux-uni-catalog * { box-sizing: border-box; }
         .luc-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; overflow: visible !important;}
-        .luc-clearfix { clear: both; display: block; width: 100%; height: 1px; }
-        .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
         .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; font-family: 'Be Vietnam Pro', sans-serif; }
         .gr-breadcrumbs a { text-decoration: none; color: inherit; transition: 0.3s; }
@@ -24,14 +22,16 @@
         .gr-breadcrumbs span.sep { color: #c5a059; font-size: 10px; }
         .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 20px; padding-top: 0px; }
+        .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 20px; padding-top: 0px; overflow: visible !important;}
         .v261-c1 { width:60%; background:#0b1120; border-radius:10px; overflow:hidden; border:1px solid rgba(197,160,89,0.2); display:flex; flex-direction:column; }
         
-        /* CỘT CỐ ĐỊNH STICKY */
-        .v261-c2 { width:25%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; } 
-        .v261-c3 { width:15%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; }
+        /* CỘT CỐ ĐỊNH STICKY VỚI CUỘN NỘI BỘ */
+        .v261-c2 { width:25%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content !important; max-height: calc(100vh - 100px); overflow-y: auto; padding-right: 5px; } 
+        .v261-c3 { width:15%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content !important; max-height: calc(100vh - 100px); overflow-y: auto; padding-right: 5px; }
+        .v261-c2::-webkit-scrollbar, .v261-c3::-webkit-scrollbar { width: 4px; }
+        .v261-c2::-webkit-scrollbar-thumb, .v261-c3::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.5); border-radius: 4px; }
         
-        .v261-box { background:#0b1120; border:1px solid #c5a059; border-radius:10px; padding:20px; text-align:center; height:100%; display:flex; flex-direction:column; justify-content:center; }
+        .v261-box { background:#0b1120; border:1px solid #c5a059; border-radius:10px; padding:20px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
         .v261-logo { width:60px; margin:0 auto 10px; display:block; }
         .v261-box h4 { color:#c5a059; font-size:15px; font-weight:700; margin:0 0 15px; text-transform:none; }
         .v261-box ul { padding: 0; margin: 0; list-style: none; }
@@ -206,7 +206,9 @@
     <script>
         window.GREENIA_CURRENT_PRODUCT = {"id":41,"type":"Bán","title":"kiểm tra sản phẩm","slug":"kiem-tra-san-pham","cat":"căn hộ ","projectCode":"an phú new city","loc":"vũng tàu","price":"10 tỷ","area":"150","bed":"","img":"","gallery":[],"content":"<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/blog/tuyen-duong-vanh-dai-3-tphcm-chinh-thuc-hop-long/\" class=\"gr-related-link\" target=\"_blank\">Tuyến đường Vành Đai 3 TP.HCM chính thức hợp long</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/biet-thu-ven-song-the-global-city/\" class=\"gr-related-link\" target=\"_blank\">Biệt thự ven sông The Global City</a></div>\n","seoTitle":"kiểm tra sản phẩm","seoDesc":"👉 Tuyến đường Vành Đai 3 TP.HCM chính thức hợp long\n👉 Biệt thự ven sông The Global City\n...","seoKeywords":"căn hộ , bất động sản"};
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
-        const u_logo = '/greenia-homes/assets/images/logo.png'; // Đổi lại logo của bác nếu cần
+        
+        // CHỈNH SỬA LẠI ĐƯỜNG DẪN LOGO CHO CHUẨN
+        const u_logo = 'http://localhost:10004/wp-content/uploads/2025/12/cropped-Gemini_Generated_Image_px9jf4px9jf4px9j-removebg-preview.png'; 
         const zalo_img = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
         const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
         
@@ -278,12 +280,12 @@
                 });
 
                 let catLines = [];
-                catLines.push(`<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4);"><span>Tất cả danh mục</span></a>`);
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/ban/" style="padding-left: 20px;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`);
-                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`);
+                catLines.push(`<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); justify-content: flex-start;"><span>Tất cả danh mục</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/ban/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>Bất động sản bán</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`);
                 
                 Object.keys(otherCats).forEach(c => {
-                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/" style="padding-left: 20px;"><span>${c}</span><span style="color:#666; font-size:11px;">(${otherCats[c]})</span></a>`);
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>${c}</span><span style="color:#666; font-size:11px;">(${otherCats[c]})</span></a>`);
                 });
 
                 // 3. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC
@@ -311,7 +313,7 @@
                 const catSlug = createSafeSlug(prod.cat);
                 const shareLink = encodeURIComponent(window.location.href);
 
-                // BƠM TOÀN BỘ VÀO GIAO DIỆN
+                // KHỐI GIAO DIỆN TỔNG
                 container.innerHTML = `
                     <div class="gr-breadcrumbs">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
@@ -408,6 +410,25 @@
                     </div>
 
                     ${relatedHTML}
+                    
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Bất động sản bán</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="sale-scroll" class="gr-carousel">
+                            ${allProducts.filter(p => p.type === 'Bán').slice(0, 10).map(p => renderCardHTML(p)).join('')}
+                        </div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Bất động sản cho thuê</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="rent-scroll" class="gr-carousel">
+                            ${allProducts.filter(p => p.type === 'Thuê').slice(0, 10).map(p => renderCardHTML(p)).join('')}
+                        </div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+
                 `;
 
                 // KÍCH HOẠT GALLERY LOGIC JS
