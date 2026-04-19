@@ -131,50 +131,67 @@
         .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
         .gr-prev { left: -15px; } .gr-next { right: -15px; }
 
-        /* REVIEWS VÀ FORM CTA CSS */
-        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-glass: rgba(255, 255, 255, 0.02); --v15-bg: #0b0f19; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); }
-        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px;}
+        /* REVIEWS VÀ FORM CTA CSS CHUẨN XÁC TỪ PHP */
+        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-text: #d1d5db; --rev-glass: rgba(255, 255, 255, 0.02); }
+        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 0px 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px; }
+        .rev-container { width: 100%; margin: 0 auto; }
         .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; }
         .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
+        .rev-stats { display: flex; align-items: center; gap: 15px; }
         .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
-        .rs-meta { text-align: right; } .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; } .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
+        .rs-meta { text-align: right; } 
+        .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; }
+        .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
         .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
         .rev-intro strong { color: #fff; font-weight: 600; } .rev-intro span { color: var(--rev-gold); }
+        
         .rev-layout { display: flex; flex-direction: column; gap: 40px; }
-        .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 15px; border-radius: 4px; }
+        .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 10px; border-radius: 4px; }
         .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-lbl { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 10px; display: block; }
         .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
-        .rate-input input { display: none; } .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
+        .rate-input input { display: none; } 
+        .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
         .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
-        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; }
+        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; !important }
         .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; background: rgba(197, 160, 89, 0.05); }
         .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
         .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .rev-btn:hover { background: rgba(197, 160, 89, 0.1); color: #fff; border-color: #c5a059; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
+        .rev-btn:hover { background: rgba(197, 160, 89, 0.1) !important; color: #fff !important; border-color: #c5a059 !important; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
+        
         .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 800px; overflow-y: auto; padding-right: 5px; }
         .rev-list::-webkit-scrollbar { width: 3px; } .rev-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        .rev-item { position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
-        .rev-main-content { display: flex; gap: 15px; background: var(--rev-bg); padding-bottom: 10px; }
-        .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); font-size: 16px; }
-        .rev-content { flex-grow: 1; } .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; } .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
+        .rev-item { position: relative; animation: fadeIn 0.6s ease; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
+        .rev-item:last-child { border-bottom: none; }
+        .rev-main-content { display: flex; gap: 15px; z-index: 2; position: relative; background: var(--rev-bg); padding-bottom: 10px; }
+        .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); font-size: 16px; }
+        .rev-content { flex-grow: 1; }
+        .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
+        .rev-stars-small { font-size: 11px; color: var(--rev-gold); display: block; margin-bottom: 6px; letter-spacing: 1px; }
         .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
-        
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; text-align: center; border-radius: 8px; margin-bottom: 0;}
-        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; }
+
+        :root { --v15-bg: #0b0f19; --v15-gold: #c5a059; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); --v15-border: rgba(255,255,255,0.2); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--v15-gold); padding: 25px 15px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; margin-bottom: 30px; }
+        .v15-ver-container { max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--v15-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
-        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; line-height: 1.4; }
-        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; margin-bottom: 10px; outline: none; transition: 0.3s; box-sizing: border-box; }
-        .v15-ver-input:focus { border-color: var(--gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; border-radius: 50px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 12px; }
-        .v15-ver-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
-        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; width: 100%; }
+        .v15-ver-stars { font-size: 12px; letter-spacing: 1px; } .v15-ver-count { font-size: 11px; color: #aaa; font-weight: 400; }
+        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; max-width: 100%; line-height: 1.4; }
+        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 10px; justify-content: center; align-items: center; }
+        .v15-ver-input { width: 100%; background: var(--v15-input); border: 1px solid var(--v15-border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .v15-ver-input:focus { border-color: var(--v15-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 10px 15px; margin-top: 5px; background: transparent; color: var(--v15-gold); border: 1px solid var(--v15-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 12px; }
+        .v15-ver-btn:hover { background: var(--v15-gold-hover); color: #000; border-color: var(--v15-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; animation: fadeIn 0.5s ease forwards; width: 100%; }
 
         @media (max-width: 900px) {
             .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; } .gr-sp-sidebar { position: static; }
             .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
             .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
-            .rev-row-inputs { grid-template-columns: 1fr; } .rev-btn { width: 100%; }
+            .rev-row-inputs { grid-template-columns: 1fr; gap: 10px; } .rev-btn { width: 100%; }
         }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
     </style>
     <link rel="canonical" href="https://mrliga1.github.io/greenia-homes/tin-tuc/tin-tuc-thi-truong/bbbbbb/" />
     
@@ -222,7 +239,7 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        window.GREENIA_CURRENT_POST = {"id":12,"title":"bbbbbb","slug":"bbbbbb","cat":"Tin tức thị trường","date":"20/4/2026","author":"Thuận Nguyễn","thumb":"","content":"<p>kiểm tra giao diện mơi</p>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/du-an/vinhomes/\" class=\"gr-related-link\" target=\"_blank\">vinhomes</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/du-an/vinhomes/\" class=\"gr-related-link\" target=\"_blank\">vinhomes</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/ban-nha-pho-quan-2/\" class=\"gr-related-link\" target=\"_blank\">bán nhà phố quận 2</a></div>","seoTitle":"bbbbbbbbbbbbbb","seoDesc":"kiểm tra giao diện mơi\n👉 vinhomes\n👉 vinhomes...","seoKeywords":"Tin tức thị trường, tin tức"};
+        window.GREENIA_CURRENT_POST = {"id":12,"title":"bbbbbb","slug":"bbbbbb","cat":"Tin tức thị trường","date":"20/4/2026","author":"Thuận Nguyễn","thumb":"","content":"<p>kiểm tra giao diện mơi</p>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/du-an/vinhomes/\" class=\"gr-related-link\" target=\"_blank\">vinhomes</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/du-an/vinhomes/\" class=\"gr-related-link\" target=\"_blank\">vinhomes</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/ban-nha-pho-quan-2/\" class=\"gr-related-link\" target=\"_blank\">bán nhà phố quận 2</a><<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/tin-tuc/tin-tuc-thi-truong/bbbbbb/\" class=\"gr-related-link\" target=\"_blank\">bbbbbb</a></div>/div>","seoTitle":"bbbbbbbbbbbbbb","seoDesc":"kiểm tra giao diện mơi\n👉 vinhomes\n👉 vinhomes...","seoKeywords":"Tin tức thị trường, tin tức"};
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -244,7 +261,7 @@
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
-                // 1. Sidebar - Danh mục Sản Phẩm (CHỈNH CHUẨN THỨ TỰ)
+                // 1. Sidebar - Danh mục Sản Phẩm
                 let countBan = 0, countThue = 0;
                 let otherCats = {};
                 prods.forEach(p => {
@@ -281,7 +298,7 @@
                     latestNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
-                // 3. Sidebar - Sản phẩm nổi bật (ĐẦY ĐỦ THÔNG TIN)
+                // 3. Sidebar - Sản phẩm nổi bật
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
                     const pCatSlug = createSafeSlug(p.cat || 'san-pham');
@@ -423,8 +440,8 @@
                                     <div class="rev-intro">🔒 Thông tin cá nhân của bạn được <strong>cam kết bảo mật tuyệt đối</strong>.</div>
                                     <div class="rev-layout">
                                         <div class="rev-form-box">
-                                            <span style="font-size: 10px; color: #888;">Đánh giá để tham gia thảo luận</span>
-                                            <form id="mainForm" style="margin-top:10px;">
+                                            <span class="form-lbl">Đánh giá để tham gia thảo luận</span>
+                                            <form id="mainForm">
                                                 <div class="rate-input">
                                                     <input type="radio" id="c-st5" name="rate" value="5" required checked/><label for="c-st5">★</label>
                                                     <input type="radio" id="c-st4" name="rate" value="4" /><label for="c-st4">★</label>
@@ -435,7 +452,7 @@
                                                 <div class="rev-row-inputs">
                                                     <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
                                                     <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                                                    <input type="email" id="c-email" class="rev-input" placeholder="Email (Tuỳ chọn)">
+                                                    <input type="email" id="c-email" class="rev-input" placeholder="Email (Để nhận thông báo)" required>
                                                 </div>
                                                 <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
                                                 <button type="submit" id="c-btn-submit" class="rev-btn">Gửi Đánh Giá</button>
@@ -450,16 +467,19 @@
 
                         <div class="gr-sp-sidebar">
                             <section id="vhgp-final-v15-vertical">
-                                <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
-                                <div class="v15-ver-rating-box"><span style="font-size:12px;">★★★★★</span><span style="font-size:11px;color:#aaa;">(5.0/5)</span></div>
-                                <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
-                                <form id="leadFormV15Ver" style="display:flex; flex-direction:column;">
-                                    <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
-                                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số ĐT *" required pattern="[0-9]{10}">
-                                    <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (VD: Căn 2PN)" required>
-                                    <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
-                                </form>
-                                <div id="v15-ver-success" class="success-overlay"><div style="color:#2ecc71; font-weight:bold; font-size:14px; margin-bottom:5px;">✔ THÀNH CÔNG!</div><div style="font-size:11px; color:#ccc;">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
+                                <div class="v15-ver-container">
+                                    <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                                    <div class="v15-ver-rating-box"><span class="v15-ver-stars">★★★★★</span><span class="v15-ver-count">(5.0/5)</span></div>
+                                    <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
+                                    <form id="leadFormV15Ver" class="v15-ver-form">
+                                        <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                                        <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                        <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email" required>
+                                        <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                                        <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
+                                    </form>
+                                    <div id="v15-ver-success" class="success-overlay"><div class="success-title">✔ THÀNH CÔNG!</div><div class="success-text">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
+                                </div>
                             </section>
 
                             ${catWidgetHTML}
@@ -503,7 +523,6 @@
             const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
             const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
             
-            // Xử lý Gửi Form Đăng ký (CTA)
             document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-v15-ver-submit');
@@ -512,6 +531,7 @@
                 fd.append("project", window.GREENIA_CURRENT_POST.title);
                 fd.append("name", document.getElementById('v15-ver-name').value);
                 fd.append("phone", document.getElementById('v15-ver-phone').value);
+                fd.append("email", document.getElementById('v15-ver-email').value);
                 fd.append("demand", document.getElementById('v15-ver-demand').value);
                 fd.append("url", window.location.href);
                 
@@ -521,7 +541,6 @@
                 }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
             });
 
-            // Lấy dữ liệu Review
             fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
                 const container = document.getElementById('rev-list-container');
                 const pageReviews = data.filter(item => item.pageId === PAGE_ID);
@@ -542,7 +561,6 @@
                 `).join('');
             }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
 
-            // Gửi Review
             document.getElementById('mainForm').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('c-btn-submit');
@@ -562,7 +580,6 @@
             });
         }
 
-        // JS Cho Carousel Tin Tức
         window.grScrollHorizontal = function(dir) {
             const el = document.getElementById('gr-news-scroll');
             if(el) { const item = el.querySelector('.gr-news-card-v'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } }
