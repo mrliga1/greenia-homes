@@ -11,22 +11,26 @@ const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
 const projPath = path.join(__dirname, 'assets', 'data', 'projects.json');
 const catPath = path.join(__dirname, 'assets', 'data', 'categories.json');
 
-// Hàm đọc data an toàn (Áo giáp chống sập Bot)
+// Hàm đọc data an toàn (Áo giáp chống sập Bot Level 2)
 function safeReadJSON(filePath) {
     if (fs.existsSync(filePath)) {
         try {
             const data = fs.readFileSync(filePath, 'utf8');
             if (!data || data.trim() === '') return [];
-            return JSON.parse(data);
+            
+            const parsed = JSON.parse(data);
+            // Nếu là mảng, trả về mảng. Nếu là 1 cục Object, bọc nó vào mảng. Còn lại trả về rỗng.
+            if (Array.isArray(parsed)) return parsed;
+            if (typeof parsed === 'object' && parsed !== null) return [parsed];
+            return [];
         } catch (e) {
-            console.error(`⚠️ Bỏ qua lỗi đọc file ${filePath}:`, e.message);
+            console.error(`⚠️ Bỏ qua lỗi định dạng JSON tại file ${filePath}:`, e.message);
             return [];
         }
     }
     return [];
 }
 
-// Đọc dữ liệu an toàn
 let posts = safeReadJSON(postsPath);
 let products = safeReadJSON(prodsPath);
 let projects = safeReadJSON(projPath);
@@ -58,9 +62,12 @@ let sitemapUrls = [
     `${DOMAIN}/san-pham.html`
 ];
 
+// Thêm Dự án vào Sitemap chỉ khi có tên hợp lệ
 projects.forEach(p => {
-    const slug = p.slug || makeSafeSlug(p.title);
-    sitemapUrls.push(`${DOMAIN}/du-an/${slug}/`);
+    if (p.title) {
+        const slug = p.slug || makeSafeSlug(p.title);
+        sitemapUrls.push(`${DOMAIN}/du-an/${slug}/`);
+    }
 });
 
 // Hàm hỗ trợ chèn thẻ Meta SEO vào <head>
@@ -112,8 +119,6 @@ if (catNewsTemplate) {
         const seoInfo = categoriesSEO.find(c => c.slug === cat.slug) || { title: cat.name };
         
         let html = catNewsTemplate.replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify({...cat, ...seoInfo})};`);
-        
-        // Bơm thẻ SEO vào trang Danh Mục Tin Tức
         html = injectSeoTags(html, seoInfo, pageUrl);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
@@ -143,8 +148,6 @@ if (catProdTemplate) {
         const seoInfo = categoriesSEO.find(c => c.slug === cat.slug) || { title: cat.name };
 
         let html = catProdTemplate.replace(/window\.GREENIA_CURRENT_CATEGORY\s*=\s*null;?/g, `window.GREENIA_CURRENT_CATEGORY = ${JSON.stringify({...cat, ...seoInfo})};`);
-        
-        // Bơm thẻ SEO vào trang Danh Mục Sản Phẩm
         html = injectSeoTags(html, seoInfo, pageUrl);
 
         fs.writeFileSync(path.join(folder, 'index.html'), html);
@@ -152,10 +155,12 @@ if (catProdTemplate) {
 }
 
 // ==========================================
-// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC (Gom vào /tin-tuc/)
+// BƯỚC 2: XỬ LÝ TRANG CHI TIẾT TIN TỨC
 // ==========================================
 if (blogTemplate) {
     posts.forEach(post => {
+        if (!post.title) return; // Chống tạo thư mục rỗng
+
         const catSlug = makeSafeSlug(post.cat || 'tin-tuc');
         const postSlug = post.slug || makeSafeSlug(post.title);
         
@@ -200,10 +205,12 @@ if (blogTemplate) {
 }
 
 // ==========================================
-// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (Gom vào /san-pham/)
+// BƯỚC 3: XỬ LÝ TRANG CHI TIẾT SẢN PHẨM
 // ==========================================
 if (prodTemplate) {
     products.forEach(prod => {
+        if (!prod.title) return; // Chống tạo thư mục rỗng
+
         const catSlug = makeSafeSlug(prod.cat || 'san-pham');
         const prodSlug = prod.slug || makeSafeSlug(prod.title);
         
@@ -254,7 +261,7 @@ if (prodTemplate) {
 }
 
 // ==========================================
-// BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML CHUẨN GOOGLE
+// BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML
 // ==========================================
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -263,4 +270,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu.');
+console.log('✅ Build hoàn tất! Lõi hệ thống SEO và Chống Crash đã được tối ưu.');
