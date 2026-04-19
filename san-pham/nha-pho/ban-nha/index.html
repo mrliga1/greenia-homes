@@ -80,8 +80,8 @@
         
         .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 30px; padding-top: 0px; }
         .v261-c1 { width:60%; background:#0b1120; border-radius:10px; overflow:hidden; border:1px solid rgba(197,160,89,0.2); display:flex; flex-direction:column; }
-        .v261-c2 { width:25%; position: -webkit-sticky !important; position: sticky !important; top: 130px !important; z-index: 10; height: max-content; } 
-        .v261-c3 { width:15%; position: -webkit-sticky !important; position: sticky !important; top: 130px !important; z-index: 10; height: max-content; }
+        .v261-c2 { width:25%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; } 
+        .v261-c3 { width:15%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; }
         
         .v261-box { background:#0b1120; border:1px solid #c5a059; border-radius:10px; padding:20px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
         .v261-logo { width:60px; margin:0 auto 10px; display:block; }
@@ -326,11 +326,36 @@
                     else mapHTML = `<iframe width="100%" height="450" frameborder="0" style="border:0" src="${mapStr}"></iframe>`;
                 }
 
-                // CAROUSELS
+                // KHAI BÁO CÁC CAROUSEL PHỤ
                 const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
                 const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 
+                // Khai báo biến saleHTML, rentHTML rõ ràng
+                let saleHTML = '';
+                if (saleProds.length > 0) {
+                    saleHTML = `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="sale-scroll" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/ban/" class="s1-btn">Xem thêm</a></div>`;
+                }
+
+                let rentHTML = '';
+                if (rentProds.length > 0) {
+                    rentHTML = `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="rent-scroll" class="gr-carousel">${rentProds.map(p => renderCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem thêm</a></div>`;
+                }
+
                 let projHTML = '';
                 if (independentProjects && independentProjects.length > 0) {
                     projHTML = `
@@ -529,7 +554,7 @@
                     let matchKeyword = true;
                     if(filterState.keyword !== '') {
                         const kw = filterState.keyword.toLowerCase();
-                        matchKeyword = (p.title && p.title.toLowerCase().includes(kw)) || (p.loc && p.loc.toLowerCase().includes(kw)) || (p.cat && p.cat.toLowerCase().includes(kw));
+                        matchKeyword = (p.title && String(p.title).toLowerCase().includes(kw)) || (p.loc && String(p.loc).toLowerCase().includes(kw)) || (p.cat && String(p.cat).toLowerCase().includes(kw));
                     }
                     return matchType && matchCat && matchKeyword;
                 });
