@@ -13,13 +13,12 @@
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* PHÁ VỠ PHONG TỎA OVERFLOW ĐỂ STICKY HOẠT ĐỘNG */
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; overflow-x: clip !important; }
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
-        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px; overflow: visible !important;}
+        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
         #gr-single-post * { box-sizing: border-box; } 
         #gr-single-post a { text-decoration: none; color: inherit; transition: 0.3s; }
-        .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; overflow: visible !important; }
+        .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; }
 
         /* HEADER & BREADCRUMBS */
         .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
@@ -31,29 +30,11 @@
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* MAIN LAYOUT CÓ STICKY BỌC THÉP */
-        .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; overflow: visible !important; }
-        .gr-sp-main { width: 75%; overflow: visible !important;} 
-        
-        /* SIDEBAR CUỘN ĐỘC LẬP - SIÊU STICKY */
-        .gr-sp-sidebar { 
-            width: 25%; 
-            position: -webkit-sticky !important; 
-            position: sticky !important; 
-            top: 90px !important; 
-            align-self: flex-start; 
-            height: max-content !important; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-            z-index: 10;
-            max-height: calc(100vh - 100px); /* Bắt buộc để cuộn nội bộ */
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        /* Custom thanh cuộn cho Sidebar */
-        .gr-sp-sidebar::-webkit-scrollbar { width: 4px; }
-        .gr-sp-sidebar::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.5); border-radius: 4px; }
+        /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
+        .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
+        .gr-sp-main { width: 75%; } 
+        /* ĐÃ KHÔI PHỤC THUỘC TÍNH HEIGHT: FIT-CONTENT ĐỂ STICKY HOẠT ĐỘNG */
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
@@ -541,7 +522,7 @@
             const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
             const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
             
-            // Xử lý lấy số lượng Đánh Giá cho Form CTA (ĐÃ ĐƯỢC KHÔI PHỤC VÀ ĐẢM BẢO HOẠT ĐỘNG)
+            // Xử lý lấy số lượng Đánh Giá cho Form CTA
             let currentCountVer = 186; // Mặc định nếu API lỗi
             fetch(API_LEAD + "?action=count")
                 .then(res => res.json())
@@ -557,7 +538,7 @@
                     if(countEl) countEl.innerText = `(5.0/5 - 186 đánh giá)`;
                 });
 
-            // Xử lý Gửi Form Đăng ký CTA
+            // Xử lý Gửi Form Đăng ký (CTA) có thêm Tracking Facebook/Google
             document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-v15-ver-submit');
@@ -576,6 +557,7 @@
                     document.getElementById('v15-ver-success').style.display = 'block';
                     currentCountVer++;
                     document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    // Bắn mã theo dõi quảng cáo nếu có cài mã trong web
                     if(typeof fbq === 'function') fbq('track', 'Lead'); 
                     if(typeof gtag === 'function') gtag('event', 'conversion', {'send_to': ''});
                 }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
