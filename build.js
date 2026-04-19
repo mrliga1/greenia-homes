@@ -9,12 +9,28 @@ const DOMAIN = 'https://mrliga1.github.io/greenia-homes';
 const postsPath = path.join(__dirname, 'assets', 'data', 'posts.json');
 const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
 const projPath = path.join(__dirname, 'assets', 'data', 'projects.json');
-const catPath = path.join(__dirname, 'assets', 'data', 'categories.json'); // Bổ sung đọc file Danh mục SEO
+const catPath = path.join(__dirname, 'assets', 'data', 'categories.json');
 
-let posts = fs.existsSync(postsPath) ? JSON.parse(fs.readFileSync(postsPath, 'utf8')) : [];
-let products = fs.existsSync(prodsPath) ? JSON.parse(fs.readFileSync(prodsPath, 'utf8')) : [];
-let projects = fs.existsSync(projPath) ? JSON.parse(fs.readFileSync(projPath, 'utf8')) : [];
-let categoriesSEO = fs.existsSync(catPath) ? JSON.parse(fs.readFileSync(catPath, 'utf8')) : [];
+// Hàm đọc data an toàn (Áo giáp chống sập Bot)
+function safeReadJSON(filePath) {
+    if (fs.existsSync(filePath)) {
+        try {
+            const data = fs.readFileSync(filePath, 'utf8');
+            if (!data || data.trim() === '') return [];
+            return JSON.parse(data);
+        } catch (e) {
+            console.error(`⚠️ Bỏ qua lỗi đọc file ${filePath}:`, e.message);
+            return [];
+        }
+    }
+    return [];
+}
+
+// Đọc dữ liệu an toàn
+let posts = safeReadJSON(postsPath);
+let products = safeReadJSON(prodsPath);
+let projects = safeReadJSON(projPath);
+let categoriesSEO = safeReadJSON(catPath);
 
 // Đọc 4 khuôn đúc (Templates)
 const blogTemplate = fs.existsSync('blog.html') ? fs.readFileSync('blog.html', 'utf8') : '';
@@ -71,7 +87,6 @@ function injectSeoTags(htmlContent, seoData, canonicalUrl) {
         .replace(/<title>.*?<\/title>/, `<title>${seoData.seoTitle || seoData.title} | Greenia Homes</title>`)
         .replace('</head>', `${metaTags}\n</head>`);
 }
-
 
 // ==========================================
 // BƯỚC 1: XUẤT BẢN CÁC TRANG DANH MỤC (CATEGORY PAGES)
@@ -248,4 +263,4 @@ ${sitemapUrls.map(url => `  <url>\n    <loc>${url}</loc>\n    <lastmod>${new Dat
 
 fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml);
 
-console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu. Hỗ trợ SEO cho tất cả Danh mục, Bài viết và Sản phẩm.');
+console.log('✅ Build hoàn tất! Cấu trúc Silo đã được tối ưu.');
