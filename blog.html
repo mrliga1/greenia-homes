@@ -1,207 +1,68 @@
-<?php
-/* ==========================================================================
-   V324: SINGLE POST FINAL (SAFE CONTENT + REVIEW SCHEMA + UI OPTIMIZED)
-   Shortcode: [greenia_single_post_layout]
-   ========================================================================== */
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài viết | Greenia Homes</title>
 
-/* 1. HELPERS */
-if (!function_exists('lux_get_info_v261')) {
-    function lux_get_info_v261($pid, $field) {
-        if (function_exists('get_field')) { $val = get_field($field, $pid); if ($val) return $val; }
-        return get_post_meta($pid, $field, true);
-    }
-}
-if (!function_exists('lux_get_loc_v261')) {
-    function lux_get_loc_v261($pid) {
-        if (function_exists('get_field')) { $val = get_field('vị_tri', $pid); if ($val) return (is_array($val) && isset($val['address'])) ? $val['address'] : $val; }
-        return get_post_meta($pid, 'vị_tri', true) ?: '';
-    }
-}
-
-/* 2. MAIN LAYOUT FUNCTION */
-function greenia_single_post_layout_func() {
-    
-    // Kiểm tra an toàn
-    if (!is_singular('post')) { return ''; }
-    
-    // --- CHẶN LOOP VÔ HẠN AN TOÀN ---
-    static $is_rendering = false;
-    if ($is_rendering) return ''; 
-    $is_rendering = true; 
-    // ------------------------
-
-    global $post;
-    if (!$post) { $is_rendering = false; return ''; }
-    
-    $current_id = get_the_ID(); 
-    $current_link = get_permalink(); 
-
-    // Sidebar Data
-    $prod_sidebar = new WP_Query(array('post_type'=>'san-pham', 'posts_per_page'=>6, 'orderby'=>'date', 'order'=>'DESC'));
-    $categories = get_terms(array('taxonomy' => 'danh-muc-san-pham', 'hide_empty' => true, 'parent' => 0));
-
-    // Related Data
-    $cats = get_the_category($current_id);
-    $cat_ids = array();
-    $cat_link = '#'; $cat_name = 'Tin tức';
-    if($cats) { 
-        foreach($cats as $c) { $cat_ids[] = $c->term_id; } 
-        $cat_name = $cats[0]->name;
-        $cat_link = get_category_link($cats[0]->term_id);
-    }
-
-    // Truy vấn Bài viết liên quan (Tin mới nhất & Carousel)
-    $args_rel = array(
-        'post_type' => 'post',
-        'posts_per_page' => 8,
-        'category__in' => $cat_ids,
-        'post__not_in' => array($current_id), 
-        'orderby' => 'date',
-        'order' => 'DESC'
-    );
-    $news_related = new WP_Query($args_rel);
-
-    // Truy vấn Rổ hàng (Sản phẩm dự án) cho khuôn blog.html
-    $args_rohang = array(
-        'post_type' => 'san-pham',
-        'posts_per_page' => 3,
-        'orderby' => 'rand' // Lấy ngẫu nhiên 3 sản phẩm để lấp đầy giao diện
-    );
-    $rohang_query = new WP_Query($args_rohang);
-
-    $uid = rand(1000,9999); 
-    $zalo_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
-
-    ob_start();
-    ?>
-     
+    <link rel="shortcut icon" href="/greenia-homes/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../../assets/css/style.css">
 
     <style>
-        /* Tích hợp chuẩn xác CSS của khuôn blog.html mới nhất */
-        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px; }
+        /* TỔNG HỢP TOÀN BỘ CSS TỪ PHP SANG HTML TĨNH */
+        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
         #gr-single-post * { box-sizing: border-box; } 
         #gr-single-post a { text-decoration: none; color: inherit; transition: 0.3s; }
         .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; }
 
-        /* HEADER */
+        /* HEADER & BREADCRUMBS */
         .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
-        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; text-transform: none; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
-        .gr-breadcrumbs a { color: #aaa; transition: 0.3s; } .gr-breadcrumbs a:hover { color: var(--gold); }
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; text-transform: none; }
+        .gr-breadcrumbs a:hover { color: var(--gold); } 
         .gr-breadcrumbs span.sep { color: var(--gold); font-size: 12px; }
         .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
         .gr-sp-title { font-size: 28px !important; font-weight: 600; color: #c5a059; line-height: 1.3; margin: 0 0 15px; }
-        
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* LAYOUT */
+        /* MAIN LAYOUT */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px;}
         .gr-sp-main { width: 75%; } 
-        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
-        .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: 0.3s; }
-        .gr-toc-header:hover { background: rgba(197, 160, 89, 0.15); }
+        .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
         .gr-toc-tit { font-weight: 600; color: var(--gold); font-size: 14px; display: flex; align-items: center; gap: 8px; }
         .gr-toc-icon { color: var(--gold); transition: transform 0.3s; font-size: 12px; }
         .gr-toc-icon.rotate { transform: rotate(180deg); }
-        .gr-toc-list { display: none; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
-        .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); }
-        .gr-toc-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .gr-toc-link { color: #ccc; font-size: 14px; transition: 0.2s; display: block; }
+        .gr-toc-list { display: block; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
+        .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); } 
+        .gr-toc-link { color: #ccc; font-size: 14px; display: block; transition: 0.2s; } 
         .gr-toc-link:hover { color: var(--gold); transform: translateX(5px); }
 
-        /* ============================== */
-        /* NỘI DUNG CHÍNH (CONTENT)       */
-        /* ============================== */
-        .gr-sp-thumb { width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; border: 1px solid var(--border); }
-        
-        /* BỎ JUSTIFY, SỬ DỤNG LEFT VÀ TĂNG KHOẢNG CÁCH DÒNG CHO DỄ ĐỌC */
-        .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; letter-spacing: 0.2px; }
-        
-        /* 1. MÀU TEXT LINK (ĐÃ ĐỔI SANG MÀU CAM LUXURY) */
-        .gr-entry-content p a, 
-        .gr-entry-content li a { 
-            color: #e67e22 !important; /* Màu cam trầm sang trọng */
-            font-weight: 600; 
-            text-decoration: none; 
-            transition: 0.3s; 
-            border-bottom: 1px solid rgba(230, 126, 34, 0.3); /* Viền gạch chân cam nhạt */
-        }
-        
-        /* HIỆU ỨNG KHI RÊ CHUỘT VÀO LINK */
-        .gr-entry-content p a:hover, 
-        .gr-entry-content li a:hover { 
-            color: var(--gold) !important; /* Rê chuột vào sẽ sáng lên màu vàng đồng */
-            border-bottom: 1px solid var(--gold); 
-        }
-        
-        /* TỪ KHÓA IN ĐẬM TRONG BÀI (ĐÃ ĐỔI SANG VÀNG) */
-        .gr-entry-content strong,
-        .gr-entry-content b {
-            color: var(--gold); /* Đổi từ màu trắng sang Vàng đồng đồng bộ giao diện */
-            font-weight: 700; /* Tăng độ đậm để nổi bật hẳn lên */
-        }
-        /* ============================== */
-
-        /* 2. ĐIỀU CHỈNH MÀU VÀ KÍCH THƯỚC CÁC THẺ HEADING (H1, H2, H3) */
+        /* CONTENT FORMATTING */
+        .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; }
+        .gr-entry-content p a, .gr-entry-content li a { color: #e67e22 !important; font-weight: 600; text-decoration: none; transition: 0.3s; border-bottom: 1px solid rgba(230, 126, 34, 0.3); }
+        .gr-entry-content p a:hover, .gr-entry-content li a:hover { color: var(--gold) !important; border-bottom: 1px solid var(--gold); }
+        .gr-entry-content strong, .gr-entry-content b { color: var(--gold); font-weight: 700; }
         .gr-entry-content h1, .gr-entry-content h2, .gr-entry-content h3 { margin: 30px 0 15px; line-height: 1.5; text-align: left; }
-        
-        /* H1 & H2: Màu Vàng Đồng (Chính) */
-        .gr-entry-content h1, 
-        .gr-entry-content h2 { 
-            color: var(--gold); 
-            font-size: 22px; 
-            font-weight: 600; 
-            margin-top: 40px; 
-            margin-bottom: 15px;
-            border-left: 4px solid var(--gold);
-            padding-left: 10px;
-            scroll-margin-top: 100px; 
-        }
-        
-        /* H3: Thêm màu riêng (Vàng Cam Sáng) để khác biệt với H2 */
-        .gr-entry-content h3 { 
-            color: #d4b886 !important; /* <--- BẠN CÓ THỂ ĐỔI MÃ MÀU Ở ĐÂY */
-            font-size: 20px; 
-            font-weight: 500; 
-            margin-top: 35px; 
-        } 
-        
-        /* ĐOẠN VĂN: BỎ THỤT LỀ, TĂNG KHOẢNG CÁCH DƯỚI */
+        .gr-entry-content h1, .gr-entry-content h2 { color: var(--gold); font-size: 22px; font-weight: 600; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; scroll-margin-top: 100px;}
+        .gr-entry-content h3 { color: #d4b886 !important; font-size: 20px; font-weight: 500; margin-top: 35px; }
         .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
-        
-        /* Hình ảnh */
-        .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; border: 1px solid var(--border); display: block; }
-        
-        /* Chú thích hình ảnh */
-        .gr-entry-content figcaption, 
-        .gr-entry-content .wp-caption-text { 
-            text-align: center; 
-            font-size: 13px; 
-            font-style: italic; 
-            color: #94a3b8; 
-            margin-top: -10px; 
-            margin-bottom: 25px; 
-            line-height: 1.5;
-        }
-        
-        /* Danh sách (Xem thêm) */
+        .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
+        .gr-entry-content figcaption, .gr-entry-content .wp-caption-text { text-align: center; font-size: 13px; font-style: italic; color: #94a3b8; margin-top: -10px; margin-bottom: 25px; line-height: 1.5; }
         .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
         .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0; } 
         .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
-        
-        /* Trích dẫn */
         .gr-entry-content blockquote { background: rgba(197, 160, 89, 0.1); border-left: 3px solid var(--gold); padding: 20px; font-style: italic; color: #fff; margin: 30px 0; }
-        .gr-entry-content blockquote p { text-indent: 0; } /* Bỏ thụt lề trong trích dẫn */
+        .gr-entry-content blockquote p { text-indent: 0; }
 
-        /* ============================== */
-        /* BOTTOM BAR & WIDGETS           */
-        /* ============================== */
+        /* BOTTOM CTA & SHARE */
         .gr-bottom-bar { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .gr-bot-cta { color: #888; font-size: 13px; } .gr-bot-cta a { color: var(--gold); font-weight: 700; text-decoration: none; font-size: 14px; }
         .gr-share-group { display: flex; gap: 10px; align-items: center; }
@@ -209,7 +70,10 @@ function greenia_single_post_layout_func() {
         .gr-s-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; background: rgba(255,255,255,0.1); }
         .gr-s-btn.fb:hover { background: #3b5998; } .gr-s-btn.zalo:hover { background: #0068ff; } .gr-s-btn img { width: 20px; height: 20px; object-fit: contain; }
 
-        /* RỔ HÀNG TỪ BLOG.HTML */
+        /* WIDGETS CHUNG */
+        .gr-w-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); display: inline-block; text-transform: uppercase; }
+
+        /* RỔ HÀNG GRID */
         .gr-ro-hang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
         .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
         .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
@@ -220,15 +84,7 @@ function greenia_single_post_layout_func() {
         .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
         .s2-card:hover .s2-tit { color: var(--gold); }
 
-        /* SIDEBAR */
-        .gr-w-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); display: inline-block; text-transform: uppercase; }
-        .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
-        .gr-cat-h { background: #1a1f2e; padding: 10px; font-weight: 700; font-size: 13px; color: #fff; text-align: center; border-bottom: 1px solid var(--gold); text-transform: uppercase; }
-        .gr-cat-l { padding: 0; max-height: 400px; overflow-y: auto; }
-        .gr-cat-l a { display: flex; justify-content: space-between; padding: 10px 12px; color: #b0b8c4; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .gr-cat-l a:hover { color: var(--gold); background: rgba(197, 160, 89, 0.1); }
-        .gr-cat-count { color: #666; font-size: 10px; }
-
+        /* SIDEBAR PRODUCTS */
         .gr-prod-list { display: flex; flex-direction: column; gap: 0; }
         .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none !important; align-items: flex-start; }
         .gr-prod-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -236,9 +92,9 @@ function greenia_single_post_layout_func() {
         .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
         .gr-prod-card:hover .gr-prod-thumb img { transform: scale(1.1); }
         .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 6px; font-size: 9px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; line-height: 1; }
-        .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
+        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
         .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
-        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 5px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: 0.3s;}
+        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
         .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
         .gr-loc-mini { font-size: 11px; color: #999; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; } .gr-loc-mini i { color: var(--gold); font-size: 10px; }
         .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
@@ -249,7 +105,7 @@ function greenia_single_post_layout_func() {
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; }
         .s-tit { font-size: 20px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
-        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
         .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; text-decoration: none !important; }
         .gr-news-card-v:hover { transform: translateY(-5px); border-color: var(--gold); }
@@ -266,6 +122,43 @@ function greenia_single_post_layout_func() {
         .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
         .gr-prev { left: -15px; } .gr-next { right: -15px; }
 
+        /* REVIEWS VÀ FORM CTA CSS */
+        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-glass: rgba(255, 255, 255, 0.02); --v15-bg: #0b0f19; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); }
+        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px;}
+        .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; }
+        .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
+        .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
+        .rs-meta { text-align: right; } .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; } .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
+        .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
+        .rev-intro strong { color: #fff; font-weight: 600; } .rev-intro span { color: var(--rev-gold); }
+        .rev-layout { display: flex; flex-direction: column; gap: 40px; }
+        .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 15px; border-radius: 4px; }
+        .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
+        .rate-input input { display: none; } .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
+        .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
+        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; }
+        .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; }
+        .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
+        .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .rev-btn:hover { background: rgba(197, 160, 89, 0.1); color: #fff; border-color: #c5a059; }
+        .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 800px; overflow-y: auto; padding-right: 5px; }
+        .rev-list::-webkit-scrollbar { width: 3px; } .rev-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .rev-item { position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
+        .rev-main-content { display: flex; gap: 15px; background: var(--rev-bg); padding-bottom: 10px; }
+        .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); }
+        .rev-content { flex-grow: 1; } .rev-top-row { display: flex; justify-content: space-between; } .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
+        .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
+        
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; text-align: center; border-radius: 8px; margin-bottom: 30px;}
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; }
+        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; }
+        .v15-ver-input { width: 100%; background: var(--v15-input); border: 1px solid var(--border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; margin-bottom: 10px; outline: none; }
+        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .v15-ver-btn:hover { background: var(--v15-gold-hover); color: #000; }
+        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; }
+
         @media (max-width: 900px) {
             .gr-sp-body { flex-direction: column; }
             .gr-sp-main, .gr-sp-sidebar { width: 100%; }
@@ -273,518 +166,329 @@ function greenia_single_post_layout_func() {
             .gr-news-card-v { flex: 0 0 240px; }
             .gr-nav-btn { display: none; }
             .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
+            .rev-row-inputs { grid-template-columns: 1fr; } .rev-btn { width: 100%; }
         }
     </style>
+</head>
+<body>
 
-    <div id="gr-single-post">
-        <div class="gr-con">
-             
-            <div class="gr-sp-header">
-                <div class="gr-breadcrumbs">
-                    <a href="<?php echo home_url(); ?>">Trang chủ</a> 
-                    <span class="sep">/</span>
-                    <a href="<?php echo esc_url($cat_link); ?>"><?php echo esc_html($cat_name); ?></a>
-                    <span class="sep">/</span>
-                    <span class="current"><?php echo wp_trim_words(get_the_title(), 8); ?></span>
-                </div>
-                <h1 class="gr-sp-title"><?php the_title(); ?></h1>
-                
-                <div class="gr-sp-meta">
-                    <span><i class="far fa-calendar-alt"></i> <?php echo get_the_date(); ?></span>
-                    <span><i class="far fa-user"></i> <?php the_author(); ?></span>
-                </div>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
+
+    <main id="gr-single-post">
+        <div class="gr-con" id="post-container">
+            <div style="text-align:center; padding: 100px 0; color: #c5a059;">
+                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+                <p>Đang tải nội dung...</p>
             </div>
-
-            <div class="gr-sp-body">
-                <div class="gr-sp-main">
-                     
-                    <div class="gr-toc-wrap" id="gr-toc-wrapper">
-                        <div class="gr-toc-header" onclick="grToggleTOC()">
-                            <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span>
-                            <i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i>
-                        </div>
-                        <ul class="gr-toc-list" id="gr-toc-list"></ul>
-                    </div>
-
-                    <div class="gr-entry-content" id="gr-content-body">
-                        <?php 
-                        $raw_content = get_post_field('post_content', $current_id);
-                        $clean_content = str_replace('[greenia_single_post_layout]', '', $raw_content);
-                        
-                        // BỘ LỌC CHỮA LỖI KÝ TỰ ĐẶC BIỆT: Dịch ngược toàn bộ mã HTML về ký tự chuẩn
-                        $clean_content = html_entity_decode($clean_content, ENT_QUOTES, 'UTF-8');
-                        
-                        // Bật lại bộ lọc the_content mặc định của WordPress
-                        echo apply_filters('the_content', $clean_content);
-                        ?>
-                    </div>
-
-                    <div class="gr-bottom-bar">
-                        <div class="gr-bot-cta">Quan tâm dự án? Gọi ngay: <a href="tel:0932966700">0932 966 700</a></div>
-                        <div class="gr-share-group">
-                            <span class="gr-share-lbl">Chia sẻ:</span>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($current_link); ?>" target="_blank" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://zalo.me/share/?url=<?php echo urlencode($current_link); ?>" target="_blank" class="gr-s-btn zalo"><img src="<?php echo esc_url($zalo_icon); ?>"></a>
-                        </div>
-                    </div>
-
-                    <?php if($rohang_query->have_posts()): ?>
-                    <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333; margin-bottom: 50px;">
-                        <h2 style="color:#c5a059; font-size: 22px; margin-bottom: 20px; font-weight: bold;">Sản phẩm nổi bật</h2>
-                        <div class="gr-ro-hang-grid">
-                            <?php while($rohang_query->have_posts()): $rohang_query->the_post(); 
-                                $r_pid = get_the_ID();
-                                $r_img = get_the_post_thumbnail_url($r_pid, 'medium') ?: '';
-                                $r_pr = lux_get_info_v261($r_pid, 'gia_ban') ?: 'Liên hệ';
-                            ?>
-                            <a href="<?php the_permalink(); ?>" class="s2-card">
-                                <div class="s2-thumb-box">
-                                    <?php if($r_img) echo '<img src="'.$r_img.'">'; else echo '<div style="background:#222;width:100%;height:100%"></div>'; ?>
-                                </div>
-                                <div class="s2-body">
-                                    <h3 class="s2-tit"><?php echo wp_trim_words(get_the_title(), 10); ?></h3>
-                                    <div style="color:#c5a059; font-weight:bold; font-size:14px;"><?php echo esc_html($r_pr); ?></div>
-                                </div>
-                            </a>
-                            <?php endwhile; wp_reset_postdata(); ?>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-
-                    <section id="vhgp-reviews-ip" class="rev-wrapper" style="border-radius: 8px; border: 1px solid var(--border);">
-                        <style>
-                            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap');
-                            :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-text: #d1d5db; --rev-glass: rgba(255, 255, 255, 0.02); }
-                            #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 0px 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; }
-                            .rev-container { width: 100%; margin: 0 auto; }
-                            .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; }
-                            .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
-                            .rev-stats { display: flex; align-items: center; gap: 15px; }
-                            .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
-                            .rs-meta { text-align: right; } 
-                            .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; }
-                            .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
-                            .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
-                            .rev-intro strong { color: #fff; font-weight: 600; } .rev-intro span { color: var(--rev-gold); }
-                            
-                            /* FORM TRÊN - LIST DƯỚI */
-                            .rev-layout { display: flex; flex-direction: column; gap: 40px; }
-                            .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 10px; border-radius: 4px; }
-                            
-                            /* DÒNG NGANG CHO INPUT */
-                            .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-                            .form-lbl { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 10px; display: block; }
-                            
-                            .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
-                            .rate-input input { display: none; } 
-                            .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
-                            .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
-                            
-                            .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; !important }
-                            .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; background: rgba(197, 160, 89, 0.05); }
-                            .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
-                            
-                            .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-                            .rev-btn:hover { background: rgba(197, 160, 89, 0.1) !important; color: #fff !important; border-color: #c5a059 !important; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
-                            
-                            .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 800px; overflow-y: auto; padding-right: 5px; }
-                            .rev-list::-webkit-scrollbar { width: 3px; } .rev-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-                            .rev-item { position: relative; animation: fadeIn 0.6s ease; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
-                            .rev-item:last-child { border-bottom: none; }
-                            .rev-main-content { display: flex; gap: 15px; z-index: 2; position: relative; background: var(--rev-bg); padding-bottom: 10px; }
-                            .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); font-size: 16px; }
-                            .rev-content { flex-grow: 1; }
-                            .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; }
-                            .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
-                            .rev-stars-small { font-size: 11px; color: var(--rev-gold); display: block; margin-bottom: 6px; letter-spacing: 1px; }
-                            .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
-                            .rev-actions { margin-top: 10px; display: flex; gap: 20px; align-items: center; }
-                            .btn-action { background: transparent !important; border: none; color: #888; font-size: 12px; cursor: pointer; padding: 0; transition: 0.2s; font-weight: 500; display: flex; align-items: center; gap: 5px; }
-                            .btn-action:hover { color: var(--rev-gold) !important; }
-                            .btn-action svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
-                            .btn-action.liked { color: var(--rev-gold) !important; font-weight: 600; }
-                            .btn-action.liked svg { fill: var(--rev-gold); stroke: var(--rev-gold); }
-                            .like-stat { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--rev-gold); cursor: default; }
-                            .like-stat svg { width: 14px; height: 14px; fill: var(--rev-gold); stroke: none; }
-                            .like-stat .count { font-weight: 600; }
-                            .btn-reply-text { font-size: 12px; color: #666; cursor: pointer; transition: 0.2s; background: transparent !important; border: none; padding: 0; }
-                            .btn-reply-text:hover { color: #fff !important; text-decoration: underline; }
-                            .replies-container { position: relative; margin-left: 20px; padding-left: 25px; display: flex; flex-direction: column; gap: 15px; margin-top: 5px; padding-top: 15px; }
-                            .replies-container::before { content: ''; position: absolute; top: 0; left: 0; bottom: 15px; width: 1px; background: rgba(255, 255, 255, 0.1); }
-                            .reply-item { position: relative; display: flex; gap: 15px; }
-                            .reply-item::before { content: ''; position: absolute; top: -8px; left: -25px; width: 25px; height: 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-left: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 10px; z-index: 1; }
-                            .reply-avatar { width: 32px; height: 32px; font-size: 11px; background: #0a0e17; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #888; border: 1px solid #333; flex-shrink: 0; z-index: 2; position: relative; }
-                            .reply-input-box { margin-left: 55px; display: none; margin-top: 15px; position: relative; }
-                            .reply-field { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; font-size: 13px; border-radius: 4px; }
-                            .reply-field:focus { border-color: var(--rev-gold); outline: none; }
-                            .btn-send-reply { background: #333; color: #fff; border: none; padding: 8px 15px; font-size: 11px; margin-top: 8px; cursor: pointer; border-radius: 2px; transition: 0.3s; text-transform: uppercase; font-weight: 600; }
-                            .btn-send-reply:hover { background: var(--rev-gold) !important; color: #000 !important; }
-                            @media (max-width: 768px) { .rev-row-inputs { grid-template-columns: 1fr; gap: 10px; } .rev-btn { width: 100%; } }
-                            @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
-                        </style>
-
-                        <div class="rev-container">
-                            <div class="rev-head">
-                                <div class="rev-title"><h2>Tham Gia Thảo Luận</h2></div>
-                                <div class="rev-stats">
-                                    <div class="rs-score" id="avg-score">0.0</div>
-                                    <div class="rs-meta">
-                                        <div class="rs-stars" id="avg-stars">☆☆☆☆☆</div>
-                                        <div class="rs-count" id="total-reviews">Đang tải...</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rev-intro">🔒 Thông tin cá nhân (Email, Số điện thoại) của bạn được <strong>cam kết bảo mật tuyệt đối</strong> và không hiển thị công khai. Chúng tôi trân trọng mọi ý kiến đóng góp từ <span>Cộng đồng cư dân</span>.</div>
-                            <div class="rev-layout">
-                                <div class="rev-form-box">
-                                    <span class="form-lbl">Đánh giá để tham gia thảo luận</span>
-                                    <form id="mainForm">
-                                        <div class="rate-input">
-                                            <input type="radio" id="c-st5" name="rate" value="5" required checked/><label for="c-st5">★</label>
-                                            <input type="radio" id="c-st4" name="rate" value="4" /><label for="c-st4">★</label>
-                                            <input type="radio" id="c-st3" name="rate" value="3" /><label for="c-st3">★</label>
-                                            <input type="radio" id="c-st2" name="rate" value="2" /><label for="c-st2">★</label>
-                                            <input type="radio" id="c-st1" name="rate" value="1" /><label for="c-st1">★</label>
-                                        </div>
-                                        <div class="rev-row-inputs">
-                                            <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
-                                            <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                                            <input type="email" id="c-email" class="rev-input" placeholder="Email (Để nhận thông báo)" required>
-                                        </div>
-                                        <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
-                                        <button type="submit" id="c-btn-submit" class="rev-btn">Gửi Đánh Giá</button>
-                                    </form>
-                                </div>
-                                <div class="rev-list" id="rev-list-container"><div style="font-size:12px; color:#666;">Đang kết nối dữ liệu...</div></div>
-                            </div>
-                        </div>
-
-                        <script>
-                            const API_URL = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
-                            const PAGE_ID = window.location.pathname;
-                            let allData = []; let globalData = [];
-                            let userHasReviewed = localStorage.getItem('vhgp_user_reviewed') === 'true';
-                            let likedComments = JSON.parse(localStorage.getItem('vhgp_liked_comments')) || [];
-                            let userName = localStorage.getItem('vhgp_user_name') || ""; let userEmail = localStorage.getItem('vhgp_user_email') || ""; let clientIP = "";
-                            
-                            const cachedStats = localStorage.getItem('vhgp_global_stats');
-                            if (cachedStats) { try { const stats = JSON.parse(cachedStats); renderStatsUI(stats.avg, stats.count); } catch(e) {} }
-
-                            fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => { clientIP = data.ip; }).catch(e => console.log("IP Error"));
-                            
-                            function renderStatsUI(avg, count) {
-                                if (count > 0) {
-                                    document.getElementById('avg-score').innerText = avg;
-                                    document.getElementById('total-reviews').innerText = count + " ĐÁNH GIÁ"; 
-                                    document.getElementById('avg-stars').innerText = "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg));
-                                } else {
-                                    document.getElementById('avg-score').innerText = "0.0";
-                                    document.getElementById('total-reviews').innerText = "0 ĐÁNH GIÁ";
-                                    document.getElementById('avg-stars').innerText = "☆☆☆☆☆";
-                                }
-                            }
-                            
-                            function updateStats(dataSource) {
-                                let parents = dataSource.filter(item => !item.replyto || item.replyto === "");
-                                let avg = "0.0"; let count = 0;
-                                if(parents.length > 0) {
-                                    let total = parents.reduce((sum, item) => sum + parseInt(item.rating || 5), 0);
-                                    avg = (total / parents.length).toFixed(1);
-                                    count = parents.length;
-                                }
-                                renderStatsUI(avg, count);
-                                localStorage.setItem('vhgp_global_stats', JSON.stringify({avg: avg, count: count}));
-                            }
-                            
-                            function loadData() {
-                                fetch(API_URL + "?action=get").then(res => res.json()).then(data => { 
-                                    globalData = data; 
-                                    updateStats(globalData); 
-                                    allData = data.filter(item => item.pageId === PAGE_ID);
-                                    renderApp();
-                                }).catch(err => {
-                                    if(!document.getElementById('rev-list-container').innerHTML.includes('reply-item')) {
-                                         document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa có đánh giá nào.</div>';
-                                    }
-                                });
-                            }
-                            
-                            function renderApp() {
-                                const container = document.getElementById('rev-list-container'); container.innerHTML = "";
-                                let parents = allData.filter(item => !item.replyto || item.replyto === "");
-                                const children = allData.filter(item => item.replyto && item.replyto !== "");
-                                parents.sort((a, b) => b.id - a.id);
-                                if(parents.length === 0) { container.innerHTML = '<div style="font-size:12px; color:#666;">Chưa có đánh giá cho bài viết này. Hãy là người đầu tiên!</div>'; return; }
-                                parents.forEach(p => {
-                                    const myChildren = children.filter(c => String(c.replyto) === String(p.id));
-                                    let stars = "★".repeat(p.rating) + "☆".repeat(5 - p.rating);
-                                    let isNew = p.isNew ? 'style="background: rgba(197, 160, 89, 0.05);"' : '';
-                                    let likes = p.likes || 0; let isLiked = likedComments.includes(String(p.id)); let likeClass = isLiked ? 'liked' : '';
-                                    const iconThumb = `<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>`;
-                                    const iconThumbFilled = `<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>`;
-                                    let likeBtnHtml = `<button class="btn-action ${likeClass}" onclick="handleLike('${p.id}')">${iconThumb} Thích</button>`;
-                                    let likeStatHtml = likes > 0 ? `<span class="like-stat" id="stat-${p.id}">${iconThumbFilled} <span class="count">${likes}</span></span>` : `<span class="like-stat" id="stat-${p.id}" style="display:none">${iconThumbFilled} <span class="count">0</span></span>`;
-                                    let replyBtnHtml = userHasReviewed ? `<button class="btn-reply-text" onclick="toggleReply('${p.id}')">Trả lời</button>` : `<button class="btn-reply-text" onclick="alert('Hãy để lại đánh giá của bạn trước khi thảo luận!')">Trả lời</button>`;
-                                    let html = `<div class="rev-item" ${isNew}><div class="rev-main-content"><div class="rev-avatar">${p.name.charAt(0).toUpperCase()}</div><div class="rev-content"><div class="rev-top-row"><span class="rev-name">${p.name}</span><span class="rev-date">${p.date}</span></div><span class="rev-stars-small">${stars}</span><p class="rev-text">${p.comment}</p><div class="rev-actions">${likeBtnHtml}${likeStatHtml}${replyBtnHtml}</div></div></div><div class="replies-container">${myChildren.map(c => { let childReplyBtn = userHasReviewed ? `<button class="btn-reply-text" style="font-size:11px;" onclick="toggleReply('${p.id}', '${c.name}')">Trả lời</button>` : ``; return `<div class="reply-item"><div class="reply-avatar">${c.name.charAt(0).toUpperCase()}</div><div class="rev-content"><div class="rev-top-row"><span class="rev-name" style="font-size:12px;">${c.name}</span><span class="rev-date">${c.date}</span></div><p class="rev-text" style="color:#aaa;">${c.comment}</p><div class="rev-actions" style="margin-top:2px;">${childReplyBtn}</div></div></div>`; }).join('')}</div><div class="reply-input-box" id="reply-box-${p.id}"><input type="text" id="reply-input-${p.id}" class="reply-field" placeholder="Nhập trả lời (Enter để gửi)..." onkeydown="handleReplyEnter(event, '${p.id}')"><button class="btn-send-reply" onclick="submitReply('${p.id}')">Gửi trả lời</button></div></div>`;
-                                    container.innerHTML += html;
-                                });
-                            }
-                            
-                            window.handleLike = function(commentId) {
-                                if (likedComments.includes(String(commentId))) { alert("Bạn đã thích bình luận này rồi!"); return; }
-                                const statSpan = document.getElementById(`stat-${commentId}`);
-                                if (statSpan) { const countEl = statSpan.querySelector('.count'); let currentCount = parseInt(countEl.innerText) || 0; countEl.innerText = currentCount + 1; statSpan.style.display = 'flex'; const btn = statSpan.previousElementSibling; if(btn && btn.classList.contains('btn-action')) { btn.classList.add('liked'); } }
-                                likedComments.push(String(commentId)); localStorage.setItem('vhgp_liked_comments', JSON.stringify(likedComments));
-                                let fd = new FormData(); fd.append("action", "like"); fd.append("id", commentId); fetch(API_URL, { method: 'POST', body: fd });
-                            }
-                            
-                            window.toggleReply = function(parentId, tagUser) { const box = document.getElementById(`reply-box-${parentId}`); const input = document.getElementById(`reply-input-${parentId}`); box.style.display = 'block'; if(tagUser) { input.value = `@${tagUser} `; } input.focus(); }
-                            document.getElementById('c-comment').addEventListener('keydown', function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('c-btn-submit').click(); } });
-                            function handleReplyEnter(e, parentId) { if (e.key === 'Enter') { e.preventDefault(); submitReply(parentId); } }
-                            
-                            function updateGoogleSchema(reviews) {
-                                const mainReviews = reviews.filter(r => !r.replyto || r.replyto === ""); if (!mainReviews || mainReviews.length === 0) return;
-                                let totalScore = 0; mainReviews.forEach(rv => totalScore += parseInt(rv.rating)); let avg = (totalScore / mainReviews.length).toFixed(1);
-                                const schemaData = { "@context": "https://schema.org/", "@type": "Product", "name": document.title, "description": "Đánh giá cộng đồng", "aggregateRating": { "@type": "AggregateRating", "ratingValue": avg, "bestRating": "5", "worstRating": "1", "ratingCount": mainReviews.length, "reviewCount": mainReviews.length }, "review": mainReviews.slice(0, 10).map(rv => ({ "@type": "Review", "reviewRating": { "@type": "Rating", "ratingValue": rv.rating, "bestRating": "5" }, "author": { "@type": "Person", "name": rv.name }, "datePublished": new Date().toISOString().split('T')[0], "reviewBody": rv.comment })) };
-                                let scriptEl = document.getElementById('json-ld-reviews'); if (!scriptEl) { scriptEl = document.createElement('script'); scriptEl.id = 'json-ld-reviews'; scriptEl.type = "application/ld+json"; document.head.appendChild(scriptEl); } scriptEl.text = JSON.stringify(schemaData);
-                            }
-                            
-                            document.getElementById('mainForm').addEventListener('submit', e => {
-                                e.preventDefault(); const name = document.getElementById('c-name').value; const phone = document.getElementById('c-phone').value; const email = document.getElementById('c-email').value; const rating = document.querySelector('input[name="rate"]:checked').value; const comment = document.getElementById('c-comment').value;
-                                localStorage.setItem('vhgp_user_reviewed', 'true'); localStorage.setItem('vhgp_user_name', name); localStorage.setItem('vhgp_user_email', email); userHasReviewed = true; userName = name; userEmail = email;
-                                const newItem = { id: new Date().getTime(), name: name, date: "Vừa xong", rating: rating, comment: comment, replyto: "", isNew: true, pageId: PAGE_ID, likes: 0 };
-                                allData.unshift(newItem); renderApp(); updateGoogleSchema(allData);
-                                globalData.unshift(newItem); updateStats(globalData); 
-                                document.getElementById('mainForm').reset();
-                                let fd = new FormData(); fd.append("name", name); fd.append("phone", phone); fd.append("email", email); fd.append("rating", rating); fd.append("comment", comment); fd.append("ip", clientIP); fd.append("pageId", PAGE_ID); fetch(API_URL, { method: 'POST', body: fd });
-                            });
-                            
-                            window.submitReply = function(parentId) {
-                                const input = document.getElementById(`reply-input-${parentId}`); const text = input.value; if(!text) return;
-                                const newReply = { id: new Date().getTime(), name: userName || "Khách", date: "Vừa xong", rating: 0, comment: text, replyto: parentId, pageId: PAGE_ID, likes: 0 };
-                                allData.push(newReply); renderApp(); globalData.push(newReply);
-                                input.value = ""; document.getElementById(`reply-box-${parentId}`).style.display = 'none';
-                                let fd = new FormData(); fd.append("name", userName); fd.append("phone", "REPLY"); fd.append("email", userEmail); fd.append("rating", 0); fd.append("comment", text); fd.append("replyTo", parentId); fd.append("ip", clientIP); fd.append("pageId", PAGE_ID); fetch(API_URL, { method: 'POST', body: fd });
-                            }
-                            
-                            loadData();
-                        </script>
-                    </section>
-                </div>
-
-                <div class="gr-sp-sidebar">
-                     
-                    <div>
-                        <section id="vhgp-final-v15-vertical" class="cta-wrapper" style="border-radius:8px;">
-                            <style>
-                                @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
-                                :root { --v15-bg: #0b0f19; --v15-gold: #c5a059; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); --v15-border: rgba(255,255,255,0.2); }
-                                #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--v15-gold); padding: 25px 15px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
-                                .v15-ver-container { max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-                                .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--v15-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-                                .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
-                                .v15-ver-stars { font-size: 12px; letter-spacing: 1px; } .v15-ver-count { font-size: 11px; color: #aaa; font-weight: 400; }
-                                .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; max-width: 100%; line-height: 1.4; }
-                                .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 10px; justify-content: center; align-items: center; }
-                                .v15-ver-input { width: 100%; background: var(--v15-input); border: 1px solid var(--v15-border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
-                                .v15-ver-input:focus { border-color: var(--v15-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-                                .v15-ver-btn { width: 100%; padding: 10px 15px; margin-top: 5px; background: transparent; color: var(--v15-gold); border: 1px solid var(--v15-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 12px; }
-                                .v15-ver-btn:hover { background: var(--v15-gold-hover); color: #000; border-color: var(--v15-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
-                                .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; animation: fadeIn 0.5s ease forwards; width: 100%; }
-                                .success-title { color: #2ecc71; font-size: 14px; font-weight: 700; margin-bottom: 5px; } .success-text { color: #ddd; font-size: 11px; }
-                                @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-                            </style>
-                            <div class="v15-ver-container">
-                                <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
-                                <div class="v15-ver-rating-box" id="rating-container-v15-ver"><span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span><span class="v15-ver-count" id="count-v15-ver">(Checking...)</span></div>
-                                <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi <strong id="prj-name-v15-ver" style="color:#fff">...</strong> qua Zalo/Email.</p>
-                                <form id="leadFormV15Ver" class="v15-ver-form">
-                                    <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
-                                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                                    <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email" required>
-                                    <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
-                                    <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
-                                </form>
-                                <div id="v15-ver-success" class="success-overlay"><div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div><div class="success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách.</div></div>
-                            </div>
-                            <script>
-                                const API_LEAD_V15_VER = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
-                                const PROJECT_NAME_V15_VER = "Dự án"; const GOOGLE_ADS_ID_V15_VER = ""; const FB_EVENT_V15_VER = "Lead"; 
-                                document.getElementById('prj-name-v15-ver').innerText = PROJECT_NAME_V15_VER;
-                                let currentCountVer = 0; let clientIPV15Ver = "";
-                                fetch('https://api.ipify.org?format=json').then(res=>res.json()).then(data=>{clientIPV15Ver=data.ip});
-                                fetch(API_LEAD_V15_VER + "?action=count").then(res => res.json()).then(data => { if(data.count !== undefined) { currentCountVer = parseInt(data.count); if(currentCountVer < 5) currentCountVer = 186; document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`; } }).catch(err => { currentCountVer = 186; document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`; });
-                                document.getElementById('leadFormV15Ver').addEventListener('submit', e => { e.preventDefault(); const btn = document.getElementById('btn-v15-ver-submit'); const form = document.getElementById('leadFormV15Ver'); const successBox = document.getElementById('v15-ver-success'); const originalText = btn.innerText; btn.innerText = "ĐANG GỬI..."; btn.style.color = "#fff"; btn.disabled = true; let fd = new FormData(); fd.append("project", PROJECT_NAME_V15_VER); fd.append("name", document.getElementById('v15-ver-name').value); fd.append("phone", document.getElementById('v15-ver-phone').value); fd.append("email", document.getElementById('v15-ver-email').value); fd.append("demand", document.getElementById('v15-ver-demand').value); fd.append("url", window.location.href); fd.append("ip", clientIPV15Ver); fd.append("rating", 5); fetch(API_LEAD_V15_VER, { method: 'POST', body: fd }).then(res => { form.style.display = 'none'; successBox.style.display = 'block'; currentCountVer++; document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`; if(typeof fbq === 'function') fbq('track', FB_EVENT_V15_VER); if(typeof gtag === 'function' && GOOGLE_ADS_ID_V15_VER !== "") gtag('event', 'conversion', {'send_to': GOOGLE_ADS_ID_V15_VER}); }).catch(err => { alert("Lỗi kết nối."); btn.innerText = originalText; btn.style.color = "var(--v15-gold)"; btn.disabled = false; }); });
-                            </script>
-                        </section>
-                    </div>
-
-                    <div class="gr-cat-widget">
-                        <div class="gr-cat-h">DANH MỤC SẢN PHẨM</div>
-                        <div class="gr-cat-l">
-                            <?php if($categories && !is_wp_error($categories)): foreach($categories as $c): ?>
-                            <a href="<?php echo get_term_link($c); ?>">
-                                <span><?php echo esc_html($c->name); ?></span>
-                                <span class="gr-cat-count">(<?php echo intval($c->count); ?>)</span>
-                            </a>
-                            <?php endforeach; endif; ?>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="gr-w-title">BĐS Nổi bật</div>
-                        <div class="gr-prod-list">
-                            <?php while($prod_sidebar->have_posts()): $prod_sidebar->the_post(); 
-                                $pid = get_the_ID();
-                                $img = get_the_post_thumbnail_url($pid, 'thumbnail');
-                                $tit = wp_trim_words(get_the_title(), 10);
-                                $pr = lux_get_info_v261($pid, 'gia_ban') ?: 'Liên hệ';
-                                $sz = lux_get_info_v261($pid, 'diện_tich') ?: '--';
-                                $bed = lux_get_info_v261($pid, 'phong_ngu') ?: '--';
-                                $loc_final = lux_get_loc_v261($pid); 
-                                
-                                $terms = get_the_terms($pid, 'danh-muc-san-pham'); $tag_name='Đang bán'; $tag_class='tag-ban';
-                                if($terms && !is_wp_error($terms)){ foreach($terms as $t){ if(strpos($t->slug,'thue')!==false){ $tag_name='Cho thuê'; $tag_class='tag-thue'; break; }}}
-                            ?>
-                            <a href="<?php the_permalink(); ?>" class="gr-prod-card">
-                                <div class="gr-prod-thumb">
-                                    <span class="gr-tag-abs <?php echo $tag_class; ?>"><?php echo $tag_name; ?></span>
-                                    <?php if($img) echo '<img src="'.$img.'">'; else echo '<div style="background:#222;width:100%;height:100%"></div>'; ?>
-                                </div>
-                                <div class="gr-prod-info">
-                                    <h4 class="gr-tit-mini"><?php echo $tit; ?></h4>
-                                    <?php if($loc_final): ?>
-                                    <div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> <?php echo wp_trim_words($loc_final, 5); ?></div>
-                                    <?php endif; ?>
-                                    <div class="gr-meta-mini">
-                                        <span class="gr-hl"><?php echo esc_html($pr); ?></span>
-                                        <?php if($sz!='--'): ?><span class="gr-sep">|</span> <span class="gr-txt"><?php echo esc_html($sz); ?> m²</span><?php endif; ?>
-                                        <?php if($bed!='--'): ?><span class="gr-sep">|</span> <span class="gr-txt"><?php echo esc_html($bed); ?> PN</span><?php endif; ?>
-                                    </div>
-                                </div>
-                            </a>
-                            <?php endwhile; wp_reset_postdata(); ?>
-                        </div>
-                    </div>
-
-                    <div style="margin-top:30px;">
-                        <div class="gr-w-title">Tin mới nhất</div>
-                        <?php 
-                        if($news_related->have_posts()):
-                            while($news_related->have_posts()): $news_related->the_post();
-                        ?>
-                            <a href="<?php the_permalink(); ?>" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition: 0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'">
-                                <i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> <?php echo wp_trim_words(get_the_title(), 12); ?>
-                            </a>
-                        <?php 
-                            endwhile; 
-                            $news_related->rewind_posts(); // Tua lại vòng lặp để Lát nữa dùng tiếp cho Carousel bên dưới
-                        endif; 
-                        ?>
-                    </div>
-
-                </div>
-            </div> <?php if($news_related->have_posts()): ?>
-            <div class="gr-related-section">
-                <div class="s-head"><h3 class="s-tit">Bài viết liên quan</h3></div>
-                <div class="gr-carousel-wrapper" onmouseenter="grPauseNews<?php echo $uid; ?>()" onmouseleave="grPlayNews<?php echo $uid; ?>()">
-                    <button class="gr-nav-btn gr-prev" onclick="grScrollNews<?php echo $uid; ?>(-1)"><i class="fas fa-chevron-left"></i></button>
-                    <div id="gr-news-scroll-<?php echo $uid; ?>" class="gr-carousel">
-                        <?php while($news_related->have_posts()): $news_related->the_post(); ?>
-                        <a href="<?php the_permalink(); ?>" class="gr-news-card-v">
-                            <div class="gr-nc-thumb">
-                                <?php if(has_post_thumbnail()){ the_post_thumbnail('medium'); } else { echo '<div style="background:#222;height:100%"></div>'; } ?>
-                            </div>
-                            <div class="gr-nc-body">
-                                <h4 class="gr-nc-tit"><?php echo wp_trim_words(get_the_title(), 12); ?></h4>
-                                <div class="gr-nc-desc"><?php echo wp_trim_words(get_the_excerpt(), 20); ?></div>
-                                
-                                <div class="gr-nc-footer">
-                                    <div class="gr-nc-date"><i class="far fa-clock"></i> <?php echo get_the_date(); ?></div>
-                                    <div class="gr-nc-more">Xem chi tiết <i class="fas fa-arrow-right" style="font-size:10px;"></i></div>
-                                </div>
-                            </div>
-                        </a>
-                        <?php endwhile; wp_reset_postdata(); ?>
-                    </div>
-                    <button class="gr-nav-btn gr-next" onclick="grScrollNews<?php echo $uid; ?>(1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            <?php endif; ?>
-
         </div>
     </main>
 
+    <div id="site-footer"></div>
+    
+    <script src="../../../assets/js/ui.js"></script>
+
     <script>
-        // JS CHO MENU ĐỘNG (TOC)
-        function grToggleTOC() {
-            var body = document.getElementById('gr-toc-list');
-            var icon = document.getElementById('gr-toc-icon');
-            if(body.style.display === 'none' || body.style.display === '') {
-                body.style.display = 'block';
-                icon.classList.add('rotate');
-            } else {
-                body.style.display = 'none';
-                icon.classList.remove('rotate');
-            }
+        // Ổ khóa nhận dữ liệu từ Bot SSG
+        window.GREENIA_CURRENT_POST = null;
+
+        // Hàm tạo URL tĩnh
+        function createSafeSlug(title) {
+            if(!title) return 'tin-tuc';
+            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        // TỰ ĐỘNG TẠO MENU TỪ THẺ H2
-        document.addEventListener('DOMContentLoaded', function() {
-            var content = document.getElementById('gr-content-body');
-            var tocList = document.getElementById('gr-toc-list');
-            var tocWrapper = document.getElementById('gr-toc-wrapper');
-            
-            if(content && tocList) {
-                var headings = content.querySelectorAll('h2');
-                if(headings.length > 0) {
-                    tocWrapper.style.display = 'block'; // Hiện khung menu nếu có H2
-                    headings.forEach(function(h2, index) {
-                        // Thêm ID cho H2 để link tới
-                        var id = 'toc-' + index;
-                        h2.id = id;
-                        
-                        // Tạo Link trong Menu
-                        var li = document.createElement('li');
-                        li.className = 'gr-toc-item';
-                        var a = document.createElement('a');
-                        a.href = '#' + id;
-                        a.className = 'gr-toc-link';
-                        a.innerText = (index + 1) + '. ' + h2.innerText;
-                        
-                        // Scroll mượt khi click
-                        a.onclick = function(e) {
-                            e.preventDefault();
-                            document.getElementById(id).scrollIntoView({behavior: 'smooth'});
-                        };
+        // TẢI DỮ LIỆU ĐỘNG TỪ BROWSER
+        document.addEventListener("DOMContentLoaded", async function() {
+            const container = document.getElementById('post-container');
+            const post = window.GREENIA_CURRENT_POST; 
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-                        li.appendChild(a);
+            if (!post) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
+
+            try {
+                // Fetch toàn bộ Database
+                const [postRes, prodRes] = await Promise.all([
+                    fetch(safeBaseUrl + 'assets/data/posts.json'),
+                    fetch(safeBaseUrl + 'assets/data/products.json')
+                ]);
+                const posts = await postRes.json();
+                const prods = await prodRes.json();
+
+                // 1. Sidebar - Tin mới nhất (Thay thế WP_Query)
+                let latestNewsHTML = '';
+                posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
+                    const pCat = createSafeSlug(p.cat);
+                    const pSlug = p.slug || createSafeSlug(p.title);
+                    latestNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
+                });
+
+                // 2. Sidebar - Sản phẩm nổi bật (Random 5)
+                let sidebarProdHTML = '';
+                [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
+                    const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                    const pSlug = p.slug || createSafeSlug(p.title);
+                    const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                    sidebarProdHTML += `
+                        <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb"><img src="${imgUrl}"></div>
+                            <div class="gr-prod-info">
+                                <h4 class="gr-tit-mini">${p.title}</h4>
+                                <div style="color:#c5a059; font-weight:bold; font-size:12px;">${p.price}</div>
+                            </div>
+                        </a>`;
+                });
+
+                // 3. Rổ hàng (Lọc sản phẩm có mã dự án trùng với bài viết)
+                const projectProds = prods.filter(p => p.projectCode && p.projectCode.toLowerCase() === createSafeSlug(post.title));
+                let roHangHTML = '';
+                if(projectProds.length > 0) {
+                    roHangHTML = `
+                        <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333; margin-bottom: 50px;">
+                            <h2 style="color:#c5a059; font-size: 22px; margin-bottom: 20px; font-weight: bold;">Sản phẩm nổi bật</h2>
+                            <div class="gr-ro-hang-grid">
+                                ${projectProds.slice(0, 3).map(p => {
+                                    const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                                    const pSlug = p.slug || createSafeSlug(p.title);
+                                    const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                                    return `
+                                    <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="s2-card">
+                                        <div class="s2-thumb-box"><img src="${imgUrl}"></div>
+                                        <div class="s2-body">
+                                            <h3 class="s2-tit">${p.title}</h3>
+                                            <div style="color:#c5a059; font-weight:bold; font-size:14px;">${p.price}</div>
+                                        </div>
+                                    </a>`;
+                                }).join('')}
+                            </div>
+                        </div>`;
+                }
+
+                // 4. Carousel Cuối trang (Bài viết cùng chuyên mục)
+                const relatedPosts = posts.filter(p => p.cat === post.cat && p.id != post.id);
+                let carouselHTML = '';
+                if(relatedPosts.length > 0) {
+                    carouselHTML = `
+                    <div class="gr-related-section">
+                        <div class="s-head"><h3 class="s-tit">Bài viết liên quan</h3></div>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal(-1)"><i class="fas fa-chevron-left"></i></button>
+                            <div id="gr-news-scroll" class="gr-carousel">
+                                ${relatedPosts.map(p => {
+                                    const pCat = createSafeSlug(p.cat);
+                                    const pSlug = p.slug || createSafeSlug(p.title);
+                                    const thumbUrl = window.resolveImg ? window.resolveImg(p.thumb) : p.thumb;
+                                    const excerpt = p.content.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...';
+                                    return `
+                                    <a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" class="gr-news-card-v">
+                                        <div class="gr-nc-thumb"><img src="${thumbUrl}"></div>
+                                        <div class="gr-nc-body">
+                                            <h4 class="gr-nc-tit">${p.title}</h4>
+                                            <div class="gr-nc-desc">${excerpt}</div>
+                                            <div class="gr-nc-footer"><div class="gr-nc-date"><i class="far fa-clock"></i> ${p.date}</div><div class="gr-nc-more">Xem chi tiết <i class="fas fa-arrow-right"></i></div></div>
+                                        </div>
+                                    </a>`;
+                                }).join('')}
+                            </div>
+                            <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal(1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>`;
+                }
+
+                const catSlug = createSafeSlug(post.cat);
+                const shareLink = encodeURIComponent(window.location.href);
+                const zaloIcon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
+
+                // BƠM TOÀN BỘ GIAO DIỆN VÀO TRANG TĨNH
+                container.innerHTML = `
+                    <div class="gr-sp-header">
+                        <div class="gr-breadcrumbs">
+                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">/</span>
+                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/">${post.cat}</a> <span class="sep">/</span>
+                            <span class="current">${post.title}</span>
+                        </div>
+                        <h1 class="gr-sp-title">${post.title}</h1>
+                        <div class="gr-sp-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author || 'Ban Biên Tập'}</span>
+                        </div>
+                    </div>
+
+                    <div class="gr-sp-body">
+                        <div class="gr-sp-main">
+                            
+                            <div class="gr-toc-wrap" id="gr-toc-wrapper">
+                                <div class="gr-toc-header" onclick="document.getElementById('gr-toc-list').style.display = document.getElementById('gr-toc-list').style.display==='none'?'block':'none';">
+                                    <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span><i class="fas fa-chevron-down gr-toc-icon"></i>
+                                </div>
+                                <ul class="gr-toc-list" id="gr-toc-list"></ul>
+                            </div>
+
+                            <div class="gr-entry-content" id="gr-content-body">${post.content}</div>
+
+                            <div class="gr-bottom-bar">
+                                <div class="gr-bot-cta">Quan tâm dự án? Gọi ngay: <a href="tel:0932966700">0932 966 700</a></div>
+                                <div class="gr-share-group">
+                                    <span class="gr-share-lbl">Chia sẻ:</span>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${shareLink}" target="_blank" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="gr-s-btn zalo"><img src="${zaloIcon}"></a>
+                                </div>
+                            </div>
+
+                            ${roHangHTML}
+
+                            <section id="vhgp-reviews-ip" style="border-radius: 8px; border: 1px solid var(--border);">
+                                <div class="rev-container">
+                                    <div class="rev-head">
+                                        <div class="rev-title"><h2>Tham Gia Thảo Luận</h2></div>
+                                        <div class="rev-stats">
+                                            <div class="rs-score" id="avg-score">5.0</div>
+                                            <div class="rs-meta">
+                                                <div class="rs-stars" id="avg-stars">★★★★★</div>
+                                                <div class="rs-count" id="total-reviews">0 ĐÁNH GIÁ</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rev-intro">🔒 Thông tin cá nhân của bạn được <strong>cam kết bảo mật tuyệt đối</strong>.</div>
+                                    <div class="rev-layout">
+                                        <div class="rev-form-box">
+                                            <span style="font-size: 10px; color: #888;">Đánh giá để tham gia thảo luận</span>
+                                            <form id="mainForm" style="margin-top:10px;">
+                                                <div class="rev-row-inputs">
+                                                    <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
+                                                    <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required>
+                                                    <input type="email" id="c-email" class="rev-input" placeholder="Email (Tuỳ chọn)">
+                                                </div>
+                                                <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
+                                                <button type="submit" id="c-btn-submit" class="rev-btn">Gửi Đánh Giá</button>
+                                            </form>
+                                        </div>
+                                        <div class="rev-list" id="rev-list-container"><div style="font-size:12px; color:#666;">Đang kết nối dữ liệu...</div></div>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+
+                        <div class="gr-sp-sidebar">
+                            <section id="vhgp-final-v15-vertical">
+                                <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                                <div class="v15-ver-rating-box"><span style="font-size:12px;">★★★★★</span><span style="font-size:11px;color:#aaa;">(5.0/5)</span></div>
+                                <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
+                                <form id="leadFormV15Ver" style="display:flex; flex-direction:column;">
+                                    <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số ĐT *" required>
+                                    <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (VD: Căn 2PN)" required>
+                                    <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
+                                </form>
+                                <div id="v15-ver-success" class="success-overlay"><div style="color:#2ecc71; font-weight:bold;">✔ THÀNH CÔNG!</div><div style="font-size:11px; color:#ccc;">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
+                            </section>
+
+                            <div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarProdHTML}</div></div>
+                            <div style="margin-top:30px;"><div class="gr-w-title">Tin mới nhất</div>${latestNewsHTML}</div>
+                        </div>
+                    </div>
+                    ${carouselHTML}
+                `;
+
+                // 5. KHỞI CHẠY TẤT CẢ CÁC TÍNH NĂNG (SCRIPT)
+                setTimeout(() => {
+                    initTOC();
+                    initReviewsAndCTA();
+                }, 500);
+
+            } catch (e) { console.error("Lỗi khởi tạo:", e); }
+        });
+
+        // Hàm tạo Mục lục
+        function initTOC() {
+            const content = document.getElementById('gr-content-body');
+            const tocList = document.getElementById('gr-toc-list');
+            const tocWrapper = document.getElementById('gr-toc-wrapper');
+            if(content && tocList) {
+                const headings = content.querySelectorAll('h2');
+                if(headings.length > 0) {
+                    tocWrapper.style.display = 'block';
+                    headings.forEach((h2, index) => {
+                        const id = 'toc-' + index; h2.id = id;
+                        const li = document.createElement('li'); li.className = 'gr-toc-item';
+                        li.innerHTML = `<a href="#${id}" class="gr-toc-link">${index + 1}. ${h2.innerText}</a>`;
+                        li.querySelector('a').onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({behavior: 'smooth'}); };
                         tocList.appendChild(li);
                     });
                 }
             }
-        });
-
-        // JS CHO CAROUSEL TIN TỨC
-        var grNewsTimer<?php echo $uid; ?>;
-        function grScrollNews<?php echo $uid; ?>(dir) {
-            var el = document.getElementById('gr-news-scroll-<?php echo $uid; ?>');
-            if(!el) return;
-            var item = el.querySelector('.gr-news-card-v');
-            if(!item) return;
-            var w = item.offsetWidth + 20; 
-            var maxScroll = el.scrollWidth - el.clientWidth; 
-            if (dir === 1 && el.scrollLeft >= maxScroll - 5) { el.scrollTo({left: 0, behavior: 'smooth'}); }
-            else if (dir === -1 && el.scrollLeft <= 5) { el.scrollTo({left: maxScroll, behavior: 'smooth'}); }
-            else { el.scrollBy({left: w * dir, behavior: 'smooth'}); }
         }
-        function grPlayNews<?php echo $uid; ?>() { clearInterval(grNewsTimer<?php echo $uid; ?>); grNewsTimer<?php echo $uid; ?> = setInterval(function() { grScrollNews<?php echo $uid; ?>(1); }, 4000); }
-        function grPauseNews<?php echo $uid; ?>() { clearInterval(grNewsTimer<?php echo $uid; ?>); }
-        document.addEventListener('DOMContentLoaded', grPlayNews<?php echo $uid; ?>);
-    </script>
 
-    <?php
-    $is_rendering = false; 
-    return ob_get_clean();
-}
-add_shortcode('greenia_single_post_layout', 'greenia_single_post_layout_func');
+        // Khởi tạo Review và Form Liên hệ (Giao tiếp Google Sheet)
+        function initReviewsAndCTA() {
+            const PAGE_ID = window.location.pathname;
+            const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
+            const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
+            
+            // Xử lý Gửi Form Đăng ký (CTA)
+            document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-v15-ver-submit');
+                btn.innerText = "ĐANG GỬI..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("project", window.GREENIA_CURRENT_POST.title);
+                fd.append("name", document.getElementById('v15-ver-name').value);
+                fd.append("phone", document.getElementById('v15-ver-phone').value);
+                fd.append("demand", document.getElementById('v15-ver-demand').value);
+                fd.append("url", window.location.href);
+                
+                fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
+                    document.getElementById('leadFormV15Ver').style.display = 'none';
+                    document.getElementById('v15-ver-success').style.display = 'block';
+                }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
+            });
+
+            // Lấy dữ liệu Review
+            fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
+                const container = document.getElementById('rev-list-container');
+                const pageReviews = data.filter(item => item.pageId === PAGE_ID);
+                if(pageReviews.length === 0) { container.innerHTML = '<div style="font-size:12px; color:#666;">Chưa có thảo luận nào. Hãy là người đầu tiên!</div>'; return; }
+                
+                document.getElementById('total-reviews').innerText = pageReviews.length + " ĐÁNH GIÁ";
+                container.innerHTML = pageReviews.map(p => `
+                    <div class="rev-item">
+                        <div class="rev-main-content">
+                            <div class="rev-avatar" style="width:40px;height:40px;border-radius:50%;background:#151a25;color:#c5a059;display:flex;align-items:center;justify-content:center;border:1px solid #c5a059;">${p.name.charAt(0).toUpperCase()}</div>
+                            <div class="rev-content" style="margin-left:15px; width:100%;">
+                                <div style="display:flex;justify-content:space-between;"><span style="font-weight:bold;color:#fff;">${p.name}</span><span style="color:#666;font-size:11px;">${p.date}</span></div>
+                                <p style="color:#ccc; font-size:13px; line-height:1.6; margin-top:5px;">${p.comment}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
+
+            // Gửi Review
+            document.getElementById('mainForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('c-btn-submit');
+                btn.innerText = "Đang gửi..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("name", document.getElementById('c-name').value);
+                fd.append("phone", document.getElementById('c-phone').value);
+                fd.append("email", document.getElementById('c-email').value);
+                fd.append("comment", document.getElementById('c-comment').value);
+                fd.append("rating", 5);
+                fd.append("pageId", PAGE_ID);
+                fetch(API_REVIEWS, { method: 'POST', body: fd }).then(() => {
+                    alert("Cảm ơn bạn đã đánh giá!");
+                    document.getElementById('mainForm').reset();
+                    btn.innerText = "Gửi Đánh Giá"; btn.disabled = false;
+                });
+            });
+        }
+
+        // JS Cho Carousel Tin Tức
+        window.grScrollHorizontal = function(dir) {
+            const el = document.getElementById('gr-news-scroll');
+            if(el) { const w = el.querySelector('.gr-news-card-v').offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); }
+        }
+    </script>
+</body>
+</html>
