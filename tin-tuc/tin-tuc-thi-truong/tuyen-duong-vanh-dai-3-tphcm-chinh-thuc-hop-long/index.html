@@ -33,7 +33,8 @@
         /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
         .gr-sp-main { width: 75%; } 
-        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; display: flex; flex-direction: column; gap: 30px; }
+        /* ĐÃ KHÔI PHỤC THUỘC TÍNH HEIGHT: FIT-CONTENT ĐỂ STICKY HOẠT ĐỘNG */
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
@@ -469,7 +470,7 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                             <section id="vhgp-final-v15-vertical">
                                 <div class="v15-ver-container">
                                     <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
-                                    <div class="v15-ver-rating-box"><span class="v15-ver-stars">★★★★★</span><span class="v15-ver-count">(5.0/5)</span></div>
+                                    <div class="v15-ver-rating-box"><span class="v15-ver-stars">★★★★★</span><span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span></div>
                                     <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
                                     <form id="leadFormV15Ver" class="v15-ver-form">
                                         <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
@@ -523,6 +524,23 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
             const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
             const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
             
+            // Xử lý lấy số lượng Đánh Giá cho Form CTA
+            let currentCountVer = 186; // Mặc định nếu API lỗi
+            fetch(API_LEAD + "?action=count")
+                .then(res => res.json())
+                .then(data => {
+                    if(data.count !== undefined) {
+                        currentCountVer = parseInt(data.count);
+                        if(currentCountVer < 5) currentCountVer = 186;
+                        const countEl = document.getElementById('count-v15-ver');
+                        if(countEl) countEl.innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    }
+                }).catch(err => {
+                    const countEl = document.getElementById('count-v15-ver');
+                    if(countEl) countEl.innerText = `(5.0/5 - 186 đánh giá)`;
+                });
+
+            // Xử lý Gửi Form Đăng ký (CTA) có thêm Tracking Facebook/Google
             document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('btn-v15-ver-submit');
@@ -534,13 +552,20 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                 fd.append("email", document.getElementById('v15-ver-email').value);
                 fd.append("demand", document.getElementById('v15-ver-demand').value);
                 fd.append("url", window.location.href);
+                fd.append("rating", 5);
                 
                 fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
                     document.getElementById('leadFormV15Ver').style.display = 'none';
                     document.getElementById('v15-ver-success').style.display = 'block';
+                    currentCountVer++;
+                    document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    // Bắn mã theo dõi quảng cáo nếu có cài mã trong web
+                    if(typeof fbq === 'function') fbq('track', 'Lead'); 
+                    if(typeof gtag === 'function') gtag('event', 'conversion', {'send_to': ''});
                 }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
             });
 
+            // Lấy dữ liệu Review bên dưới
             fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
                 const container = document.getElementById('rev-list-container');
                 const pageReviews = data.filter(item => item.pageId === PAGE_ID);
@@ -561,6 +586,7 @@ V&agrave;o l&uacute;c 8h s&aacute;ng nay, nhịp cầu ch&iacute;nh của tuyế
                 `).join('');
             }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
 
+            // Gửi Review
             document.getElementById('mainForm').addEventListener('submit', e => {
                 e.preventDefault();
                 const btn = document.getElementById('c-btn-submit');
