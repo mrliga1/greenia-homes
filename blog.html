@@ -50,6 +50,7 @@ function greenia_single_post_layout_func() {
         $cat_link = get_category_link($cats[0]->term_id);
     }
 
+    // Truy vấn Bài viết liên quan (Tin mới nhất & Carousel)
     $args_rel = array(
         'post_type' => 'post',
         'posts_per_page' => 8,
@@ -59,6 +60,15 @@ function greenia_single_post_layout_func() {
         'order' => 'DESC'
     );
     $news_related = new WP_Query($args_rel);
+
+    // Truy vấn Rổ hàng (Sản phẩm dự án) cho khuôn blog.html
+    $args_rohang = array(
+        'post_type' => 'san-pham',
+        'posts_per_page' => 3,
+        'orderby' => 'rand' // Lấy ngẫu nhiên 3 sản phẩm để lấp đầy giao diện
+    );
+    $rohang_query = new WP_Query($args_rohang);
+
     $uid = rand(1000,9999); 
     $zalo_icon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
 
@@ -69,55 +79,129 @@ function greenia_single_post_layout_func() {
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
+        /* Tích hợp chuẩn xác CSS của khuôn blog.html mới nhất */
+        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px; }
         #gr-single-post * { box-sizing: border-box; } 
         #gr-single-post a { text-decoration: none; color: inherit; transition: 0.3s; }
         .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; }
 
-        /* HEADER & BREADCRUMBS */
+        /* HEADER */
         .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
-        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
-        .gr-breadcrumbs a:hover { color: var(--gold); } 
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; text-transform: none; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+        .gr-breadcrumbs a { color: #aaa; transition: 0.3s; } .gr-breadcrumbs a:hover { color: var(--gold); }
         .gr-breadcrumbs span.sep { color: var(--gold); font-size: 12px; }
         .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
         .gr-sp-title { font-size: 28px !important; font-weight: 600; color: #c5a059; line-height: 1.3; margin: 0 0 15px; }
+        
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* MAIN LAYOUT */
+        /* LAYOUT */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px;}
         .gr-sp-main { width: 75%; } 
-        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; display: flex; flex-direction: column; gap: 30px; }
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
         .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
-        .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: 0.3s; }
+        .gr-toc-header:hover { background: rgba(197, 160, 89, 0.15); }
         .gr-toc-tit { font-weight: 600; color: var(--gold); font-size: 14px; display: flex; align-items: center; gap: 8px; }
-        .gr-toc-list { display: block; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
-        .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); } 
-        .gr-toc-link { color: #ccc; font-size: 14px; display: block; transition: 0.2s; } 
+        .gr-toc-icon { color: var(--gold); transition: transform 0.3s; font-size: 12px; }
+        .gr-toc-icon.rotate { transform: rotate(180deg); }
+        .gr-toc-list { display: none; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
+        .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+        .gr-toc-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .gr-toc-link { color: #ccc; font-size: 14px; transition: 0.2s; display: block; }
         .gr-toc-link:hover { color: var(--gold); transform: translateX(5px); }
 
-        /* CONTENT FORMATTING */
-        .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; }
-        .gr-entry-content p a, .gr-entry-content li a { color: #e67e22 !important; font-weight: 600; text-decoration: none; transition: 0.3s; border-bottom: 1px solid rgba(230, 126, 34, 0.3); }
-        .gr-entry-content p a:hover, .gr-entry-content li a:hover { color: var(--gold) !important; border-bottom: 1px solid var(--gold); }
-        .gr-entry-content strong, .gr-entry-content b { color: var(--gold); font-weight: 700; }
+        /* ============================== */
+        /* NỘI DUNG CHÍNH (CONTENT)       */
+        /* ============================== */
+        .gr-sp-thumb { width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; border: 1px solid var(--border); }
         
+        /* BỎ JUSTIFY, SỬ DỤNG LEFT VÀ TĂNG KHOẢNG CÁCH DÒNG CHO DỄ ĐỌC */
+        .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; letter-spacing: 0.2px; }
+        
+        /* 1. MÀU TEXT LINK (ĐÃ ĐỔI SANG MÀU CAM LUXURY) */
+        .gr-entry-content p a, 
+        .gr-entry-content li a { 
+            color: #e67e22 !important; /* Màu cam trầm sang trọng */
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: 0.3s; 
+            border-bottom: 1px solid rgba(230, 126, 34, 0.3); /* Viền gạch chân cam nhạt */
+        }
+        
+        /* HIỆU ỨNG KHI RÊ CHUỘT VÀO LINK */
+        .gr-entry-content p a:hover, 
+        .gr-entry-content li a:hover { 
+            color: var(--gold) !important; /* Rê chuột vào sẽ sáng lên màu vàng đồng */
+            border-bottom: 1px solid var(--gold); 
+        }
+        
+        /* TỪ KHÓA IN ĐẬM TRONG BÀI (ĐÃ ĐỔI SANG VÀNG) */
+        .gr-entry-content strong,
+        .gr-entry-content b {
+            color: var(--gold); /* Đổi từ màu trắng sang Vàng đồng đồng bộ giao diện */
+            font-weight: 700; /* Tăng độ đậm để nổi bật hẳn lên */
+        }
+        /* ============================== */
+
+        /* 2. ĐIỀU CHỈNH MÀU VÀ KÍCH THƯỚC CÁC THẺ HEADING (H1, H2, H3) */
         .gr-entry-content h1, .gr-entry-content h2, .gr-entry-content h3 { margin: 30px 0 15px; line-height: 1.5; text-align: left; }
-        .gr-entry-content h1, .gr-entry-content h2 { color: var(--gold); font-size: 22px; font-weight: 600; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; scroll-margin-top: 100px;}
-        .gr-entry-content h3 { color: #d4b886 !important; font-size: 20px; font-weight: 500; margin-top: 35px; }
         
+        /* H1 & H2: Màu Vàng Đồng (Chính) */
+        .gr-entry-content h1, 
+        .gr-entry-content h2 { 
+            color: var(--gold); 
+            font-size: 22px; 
+            font-weight: 600; 
+            margin-top: 40px; 
+            margin-bottom: 15px;
+            border-left: 4px solid var(--gold);
+            padding-left: 10px;
+            scroll-margin-top: 100px; 
+        }
+        
+        /* H3: Thêm màu riêng (Vàng Cam Sáng) để khác biệt với H2 */
+        .gr-entry-content h3 { 
+            color: #d4b886 !important; /* <--- BẠN CÓ THỂ ĐỔI MÃ MÀU Ở ĐÂY */
+            font-size: 20px; 
+            font-weight: 500; 
+            margin-top: 35px; 
+        } 
+        
+        /* ĐOẠN VĂN: BỎ THỤT LỀ, TĂNG KHOẢNG CÁCH DƯỚI */
         .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
-        .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
-        .gr-entry-content figcaption, .gr-entry-content .wp-caption-text { text-align: center; font-size: 13px; font-style: italic; color: #94a3b8; margin-top: -10px; margin-bottom: 25px; line-height: 1.5; }
+        
+        /* Hình ảnh */
+        .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; border: 1px solid var(--border); display: block; }
+        
+        /* Chú thích hình ảnh */
+        .gr-entry-content figcaption, 
+        .gr-entry-content .wp-caption-text { 
+            text-align: center; 
+            font-size: 13px; 
+            font-style: italic; 
+            color: #94a3b8; 
+            margin-top: -10px; 
+            margin-bottom: 25px; 
+            line-height: 1.5;
+        }
+        
+        /* Danh sách (Xem thêm) */
         .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
         .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0; } 
         .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
+        
+        /* Trích dẫn */
         .gr-entry-content blockquote { background: rgba(197, 160, 89, 0.1); border-left: 3px solid var(--gold); padding: 20px; font-style: italic; color: #fff; margin: 30px 0; }
-        .gr-entry-content blockquote p { text-indent: 0; }
+        .gr-entry-content blockquote p { text-indent: 0; } /* Bỏ thụt lề trong trích dẫn */
 
-        /* BOTTOM CTA & SHARE */
+        /* ============================== */
+        /* BOTTOM BAR & WIDGETS           */
+        /* ============================== */
         .gr-bottom-bar { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
         .gr-bot-cta { color: #888; font-size: 13px; } .gr-bot-cta a { color: var(--gold); font-weight: 700; text-decoration: none; font-size: 14px; }
         .gr-share-group { display: flex; gap: 10px; align-items: center; }
@@ -125,9 +209,19 @@ function greenia_single_post_layout_func() {
         .gr-s-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; background: rgba(255,255,255,0.1); }
         .gr-s-btn.fb:hover { background: #3b5998; } .gr-s-btn.zalo:hover { background: #0068ff; } .gr-s-btn img { width: 20px; height: 20px; object-fit: contain; }
 
-        /* SIDEBAR WIDGETS */
+        /* RỔ HÀNG TỪ BLOG.HTML */
+        .gr-ro-hang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
+        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .s2-thumb-box { height: 160px; overflow: hidden; }
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.05); }
+        .s2-body { padding: 12px; flex: 1; }
+        .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
+        .s2-card:hover .s2-tit { color: var(--gold); }
+
+        /* SIDEBAR */
         .gr-w-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); display: inline-block; text-transform: uppercase; }
-        
         .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
         .gr-cat-h { background: #1a1f2e; padding: 10px; font-weight: 700; font-size: 13px; color: #fff; text-align: center; border-bottom: 1px solid var(--gold); text-transform: uppercase; }
         .gr-cat-l { padding: 0; max-height: 400px; overflow-y: auto; }
@@ -142,9 +236,9 @@ function greenia_single_post_layout_func() {
         .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
         .gr-prod-card:hover .gr-prod-thumb img { transform: scale(1.1); }
         .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 6px; font-size: 9px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; line-height: 1; }
-        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
+        .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
         .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
-        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 5px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: 0.3s;}
         .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
         .gr-loc-mini { font-size: 11px; color: #999; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; } .gr-loc-mini i { color: var(--gold); font-size: 10px; }
         .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
@@ -178,11 +272,12 @@ function greenia_single_post_layout_func() {
             .gr-sp-sidebar { position: static; }
             .gr-news-card-v { flex: 0 0 240px; }
             .gr-nav-btn { display: none; }
+            .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 
-    <main id="gr-single-post">
-        <div class="gr-con" id="post-container">
+    <div id="gr-single-post">
+        <div class="gr-con">
              
             <div class="gr-sp-header">
                 <div class="gr-breadcrumbs">
@@ -232,6 +327,29 @@ function greenia_single_post_layout_func() {
                             <a href="https://zalo.me/share/?url=<?php echo urlencode($current_link); ?>" target="_blank" class="gr-s-btn zalo"><img src="<?php echo esc_url($zalo_icon); ?>"></a>
                         </div>
                     </div>
+
+                    <?php if($rohang_query->have_posts()): ?>
+                    <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333; margin-bottom: 50px;">
+                        <h2 style="color:#c5a059; font-size: 22px; margin-bottom: 20px; font-weight: bold;">Sản phẩm nổi bật</h2>
+                        <div class="gr-ro-hang-grid">
+                            <?php while($rohang_query->have_posts()): $rohang_query->the_post(); 
+                                $r_pid = get_the_ID();
+                                $r_img = get_the_post_thumbnail_url($r_pid, 'medium') ?: '';
+                                $r_pr = lux_get_info_v261($r_pid, 'gia_ban') ?: 'Liên hệ';
+                            ?>
+                            <a href="<?php the_permalink(); ?>" class="s2-card">
+                                <div class="s2-thumb-box">
+                                    <?php if($r_img) echo '<img src="'.$r_img.'">'; else echo '<div style="background:#222;width:100%;height:100%"></div>'; ?>
+                                </div>
+                                <div class="s2-body">
+                                    <h3 class="s2-tit"><?php echo wp_trim_words(get_the_title(), 10); ?></h3>
+                                    <div style="color:#c5a059; font-weight:bold; font-size:14px;"><?php echo esc_html($r_pr); ?></div>
+                                </div>
+                            </a>
+                            <?php endwhile; wp_reset_postdata(); ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
 
                     <section id="vhgp-reviews-ip" class="rev-wrapper" style="border-radius: 8px; border: 1px solid var(--border);">
                         <style>
@@ -514,7 +632,7 @@ function greenia_single_post_layout_func() {
                     </div>
 
                     <div>
-                        <div class="gr-w-title">Sản phẩm nổi bật</div>
+                        <div class="gr-w-title">BĐS Nổi bật</div>
                         <div class="gr-prod-list">
                             <?php while($prod_sidebar->have_posts()): $prod_sidebar->the_post(); 
                                 $pid = get_the_ID();
@@ -549,10 +667,24 @@ function greenia_single_post_layout_func() {
                         </div>
                     </div>
 
-                </div>
-            </div>
+                    <div style="margin-top:30px;">
+                        <div class="gr-w-title">Tin mới nhất</div>
+                        <?php 
+                        if($news_related->have_posts()):
+                            while($news_related->have_posts()): $news_related->the_post();
+                        ?>
+                            <a href="<?php the_permalink(); ?>" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition: 0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'">
+                                <i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> <?php echo wp_trim_words(get_the_title(), 12); ?>
+                            </a>
+                        <?php 
+                            endwhile; 
+                            $news_related->rewind_posts(); // Tua lại vòng lặp để Lát nữa dùng tiếp cho Carousel bên dưới
+                        endif; 
+                        ?>
+                    </div>
 
-            <?php if($news_related->have_posts()): ?>
+                </div>
+            </div> <?php if($news_related->have_posts()): ?>
             <div class="gr-related-section">
                 <div class="s-head"><h3 class="s-tit">Bài viết liên quan</h3></div>
                 <div class="gr-carousel-wrapper" onmouseenter="grPauseNews<?php echo $uid; ?>()" onmouseleave="grPlayNews<?php echo $uid; ?>()">
