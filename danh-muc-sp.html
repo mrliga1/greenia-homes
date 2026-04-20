@@ -12,108 +12,112 @@
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
 
-        #g282-wrapper { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; }
-        #g282-wrapper * { box-sizing: border-box; }
-        .g282-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; }
-        .g282-clearfix { clear: both; display: block; width: 100%; height: 1px; }
-        .g282-spacer { height: 40px; width: 100%; display: block; margin-top: 20px; }
+        /* ĐẨY KHỐI NỘI DUNG XUỐNG ĐỂ KHÔNG BỊ MENU CHE KHI MỚI LOAD TRANG */
+        #lux-uni-catalog { 
+            background-color: #05080f; 
+            color: #b0b8c4; 
+            padding: 30px 0 30px 0; /* Đã đẩy xuống 90px */
+            width: 100%; 
+            box-sizing: border-box;
+        }
+        #lux-uni-catalog * { box-sizing: border-box; }
+        .luc-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; }
         
-        .g282-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0; z-index: 900; background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
-        
-        .g282-nav-bar { display: flex; justify-content: space-between; align-items: center; }
-        .g282-nav-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .g282-nav-right { display: flex; align-items: center; }
-        .g282-nav-item { cursor: pointer; padding: 5px 15px; border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 13px; font-weight: 500; border-radius: 20px; transition: 0.3s; background: transparent; text-decoration: none; display: inline-block;}
-        .g282-nav-item:hover, .g282-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
-        
-        .g282-search-wrap { position: relative; width: 220px; }
-        .g282-search-wrap input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; font-size: 12px; height: 34px; }
-        .g282-search-wrap button { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; background: transparent; border: none; padding: 5px 10px; cursor: pointer; outline: none;}
-        
-        .g282-nav-group { position: relative; display: inline-block; }
-        .g282-dd-trigger i { margin-left: 5px; font-size: 11px; }
-        
-        .g282-dropdown { position: absolute !important; top: 100% !important; left: 0 !important; min-width: 220px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 9999999 !important; margin-top: 10px !important; }
-        .g282-nav-group.active-drop .g282-dropdown { display: block; animation: g282FadeIn 0.3s; }
-        .g282-drop-item { padding: 10px 15px; color: #b0b8c4; font-size: 13px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; text-decoration: none; display: flex; justify-content: space-between; align-items: center;}
-        .g282-drop-item:hover, .g282-drop-item.selected { background: rgba(197, 160, 89, 0.1); color: #c5a059; font-weight: 700;}
-        @keyframes g282FadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .g282-cat-info-box { padding: 20px 0 15px 0; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); margin-bottom: 25px; margin-top: 15px;}
-        .g282-cat-desc { font-size: 14px; color: #b0b8c4; line-height: 1.6; }
-        .g282-cat-desc p { margin-bottom: 0px; }
+        /* THANH TAB CỐ ĐỊNH CÓ BIẾN THỂ (SMART STICKY) */
+        .luc-sticky-wrapper { 
+            position: -webkit-sticky; 
+            position: sticky; 
+            top: 30px; /* Mặc định cách menu 70px */
+            z-index: 900; 
+            background-color: #05080f; 
+            padding: 10px 0; 
+            margin-bottom: 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1); 
+            transition: top 0.3s ease-in-out, background 0.3s; /* Hiệu ứng mượt khi nhảy lên top 0 */
+        }
 
-        .g282-status-area { padding: 15px 0; color: #fff; font-size: 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
+        /* LỚP BỔ TRỢ KHI CUỘN CHUỘT: ÉP TAB LÊN ĐỈNH ĐẦU */
+        .luc-sticky-wrapper.is-stuck {
+            top: 0 !important;
+            background-color: rgba(5, 8, 15, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
+        .luc-nav-left-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .luc-nav-right-group { display: flex; align-items: center; }
         
-        .g282-grid-wrapper { position: relative; min-height: 200px; }
-        .g282-loader { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); color: #c5a059; font-size: 30px; display: none; }
-        .g282-loader.show { display: block; }
-        .g282-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; } .g282-grid.loading { opacity: 0.3; }
-        .g282-load-wrap { text-align: center; margin-top: 30px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 20px; }
-        .g282-load-btn, .s1-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 10px 30px; font-weight: 700; font-family: 'Be Vietnam Pro', sans-serif; cursor: pointer; transition: 0.3s; display: inline-block; font-size: 13px; text-transform: uppercase; border-radius: 4px; text-decoration: none;}
-        .g282-load-btn:hover, .s1-btn:hover { background: rgba(197, 160, 89, 0.15); }
+        .luc-nav-item { cursor: pointer; padding: 5px 15px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 13px; font-weight: 500; border-radius: 20px; transition: 0.3s; background: transparent; text-decoration: none; display: inline-block;}
+        .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
         
-        .gr-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
-        .gr-card:hover { border-color: #c5a059; transform: translateY(-5px); }
-        .gr-thumb-box { height: 200px; position: relative; overflow: hidden; }
-        .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
-        .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
-        .gr-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; color: #000; z-index: 5; border-bottom-right-radius: 6px; }
+        #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 34px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 13px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 5px 10px; }
+        
+        .luc-nav-group { position: relative; display: inline-block; }
+        .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
+        
+        .luc-dropdown { position: absolute !important; top: 100% !important; left: 0 !important; min-width: 220px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 9999999 !important; margin-top: 10px !important; }
+        .luc-nav-group.active-drop .luc-dropdown { display: block; animation: luxFadeIn 0.3s; }
+        .luc-drop-item { padding: 10px 15px; color: #b0b8c4; font-size: 13px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; text-decoration: none; display: flex; justify-content: space-between; align-items: center;}
+        .luc-drop-item:hover, .luc-drop-item.selected { background: rgba(197, 160, 89, 0.1); color: #c5a059; font-weight: 700;}
+        @keyframes luxFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .luc-notification-area { min-height: 0px; margin-bottom: 25px; transition: all 0.3s; margin-top: 20px; padding-top: 0; }
+        .luc-status-bar { padding: 15px 0; margin-top: 15px; color: #fff; font-size: 14px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
+        .luc-clear-search { cursor: pointer; color: #ff6b6b; font-size: 12px; text-decoration: underline; margin-left: 5px; }
+        .luc-count-badge { display: inline-block; background: #c5a059; color: #000; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 800; }
+        
+        .luc-grid-wrapper { position: relative; min-height: 200px; }
+        .luc-loader { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); color: #c5a059; font-size: 30px; display: none; }
+        .luc-loader.show { display: block; }
+        .luc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .luc-grid.loading { opacity: 0.3; }
+        
+        .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
+        .s2-card:hover { border-color: #c5a059; transform: translateY(-5px); }
+        .s2-thumb-box { height: 200px; position: relative; overflow: hidden; }
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.1); }
+        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-tag-abs { position: absolute; top: 0 !important; left: 0 !important; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; color: #000; z-index: 5; border-bottom-right-radius: 6px; border-top-left-radius: 0; }
         .tag-ban { background: #ff4d4f; color: #fff; } .tag-thue { background: #00b894; color: #fff; }
-        .gr-tit { font-size: 14px !important; font-weight: 600; color: #fff; height: 40px; line-height: 1.4 !important; margin-bottom: 8px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; transition: 0.3s;}
-        .gr-card:hover .gr-tit { color: #c5a059; }
-        .gr-loc { font-size: 11px; color: #999; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;}
+        .gr-tit { font-size: 14px !important; font-weight: 600; color: #fff; height: 40px; line-height: 1.4 !important; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
+        .s2-card:hover .gr-tit { color: #c5a059; }
+        .gr-loc { font-size: 11px; color: #999; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
         .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; justify-content: space-between; margin-top: auto; }
         .gr-hl { color: #c5a059; font-weight: 700; font-size: 15px; }
-        .gr-no-img { width: 100%; height: 100%; background: #222; }
-
+        
+        .luc-load-wrap, .s2-footer { text-align: center; margin-top: 20px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 20px; margin-bottom: 20px;}
+        .luc-load-btn, .s1-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 10px 30px; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 13px; text-transform: uppercase; border-radius: 4px;}
+        .luc-load-btn:hover, .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: #c5a059; }
+        
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
+        .gr-carousel::-webkit-scrollbar { display: none; }
+        .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 20px; margin-top: 40px; }
         .s-tit { font-size: 22px !important; font-weight: 500; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
-        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
-        .gr-carousel::-webkit-scrollbar { display: none; }
-        .gr-carousel .s2-card, .gr-carousel .gr-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
-        .s2-footer { text-align: center; margin-top: 20px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 20px; margin-bottom: 40px;}
-        .gr-ad-slot { margin: 30px 0; text-align: center; }
-        
         .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(35, 45, 69, 1); background: rgba(14, 18, 27, 0.8); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
         .gr-nav-btn:hover { background: #c5a059; color: #000; border-color: #c5a059; }
         .gr-prev { left: -20px; } .gr-next { right: -20px; }
-        
-        .gr-proj-section { margin-bottom: 60px; }
-        .gr-proj-body { display: flex; gap: 30px; }
-        .gr-proj-left { width: 50%; padding-right: 15px; border-right: 1px dashed rgba(35,45,69,1); }
-        .gr-proj-right { width: 50%; padding-left: 15px; display: flex; flex-direction: column; }
-        .gr-proj-prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .gr-news-card { display: flex; gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(35, 45, 69, 1); text-decoration: none;}
-        .gr-news-card:last-child { border-bottom: none; }
-        .gr-news-thumb { width: 140px; height: 90px; border-radius: 4px; overflow: hidden; flex-shrink: 0; }
-        .gr-news-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;} .gr-news-card:hover .gr-news-thumb img { transform: scale(1.1); }
-        .gr-news-info { flex: 1; display: flex; flex-direction: column; }
-        .gr-news-tit { font-size: 13px !important; font-weight: 500 !important; color: #e2e8f0; margin: 0 0 5px; line-height: 1.4; transition: 0.3s; }
-        .gr-news-card:hover .gr-news-tit { color: #c5a059; }
-        .gr-news-desc { font-size: 12px; color: #888; margin-bottom: 5px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .gr-news-date { font-size: 11px; color: #c5a059; margin-top: auto; display: flex; align-items: center; gap: 5px;}
-        
-        @media (max-width: 1024px) { .g282-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 767px) { 
-            .g282-grid { grid-template-columns: 1fr; } 
-            .g282-nav-bar { flex-direction: column; align-items: flex-start; gap: 0px; } 
-            .g282-nav-left { width: 100%; overflow-x: auto; padding: 0; gap: 8px; flex-wrap: nowrap; white-space: nowrap; scrollbar-width: none; position: relative;} 
-            .g282-nav-left::-webkit-scrollbar { display: none; } 
-            .g282-nav-right { width: 100%; padding: 0; margin-top: 10px; } 
-            #g282-search-form { width: 100%; } 
-            
-            .gr-carousel { gap: 15px; } 
-            .gr-carousel .s2-card, .gr-carousel .gr-card { flex: 0 0 100% !important; max-width: 100% !important; } 
-            
-            .gr-nav-btn { display: none !important; } 
-            .gr-proj-body { flex-direction: column; } .gr-proj-left, .gr-proj-right { width: 100%; border: none; padding: 0; } 
-            .gr-proj-prod-grid { grid-template-columns: 1fr; } .gr-news-thumb { width: 110px; height: 75px; } 
-            
-            .g282-nav-group { position: static; }
-            .g282-dropdown { position: fixed !important; top: auto !important; left: 15px !important; right: 15px !important; width: auto !important; margin-top: 5px !important; z-index: 9999999 !important;}
+        .gr-ad-slot { margin: 30px 0; text-align: center; }
+
+        @media (max-width: 1024px) { .luc-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 767px) {
+            #luc-uni-catalog { padding-top: 130px; } /* Mobile menu cao hơn */
+            #luc-seo-title { font-size: 20px !important; }
+            .luc-grid { grid-template-columns: 1fr !important; }
+            .luc-nav-bar { gap: 0px; flex-direction: column; align-items: flex-start; }
+            .luc-nav-left-group { width: 100%; overflow-x: auto; padding: 0; gap: 8px; flex-wrap: nowrap; white-space: nowrap; scrollbar-width: none; position: relative;}
+            .luc-nav-left-group::-webkit-scrollbar { display: none; }
+            .luc-nav-group { position: static; }
+            .luc-dropdown { position: fixed !important; top: auto !important; left: 15px !important; right: 15px !important; width: auto !important; margin-top: 5px !important; z-index: 9999999 !important;}
+            .luc-nav-right-group { width: 100%; padding: 0; margin-top: 10px; }
+            #luc-search-form { width: 100%; }
+            .gr-carousel { gap: 15px; } .gr-carousel .s2-card { flex: 0 0 100%; max-width: 100%; } 
+            .gr-nav-btn { display: none !important; }
         }
     </style>
 </head>
@@ -122,76 +126,56 @@
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
 
-    <div id="g282-wrapper">
-        <div class="g282-inner">
-            
-            <div class="g282-sticky-wrapper">
-                <div class="g282-nav-bar">
-                    <div class="g282-nav-left" id="g282-tabs">
-                        <a href="/greenia-homes/san-pham.html" class="g282-nav-item active" id="tab-all">Tất cả</a>
-                        <a href="/greenia-homes/san-pham/chuyen-nhuong/" class="g282-nav-item" id="tab-ban">Bán</a>
-                        <a href="/greenia-homes/san-pham/cho-thue/" class="g282-nav-item" id="tab-thue">Cho thuê</a>
+    <div id="lux-uni-catalog">
+        <div class="luc-inner">
+            <div class="luc-sticky-wrapper" id="luc-filter-bar">
+                <div class="luc-nav-bar">
+                    <div class="luc-nav-left-group" id="luc-tabs-container">
+                        <a href="/greenia-homes/san-pham.html" class="luc-nav-item active" data-type="all" id="tab-all">Tất cả</a>
+                        <a href="/greenia-homes/san-pham/chuyen-nhuong/" class="luc-nav-item" data-type="Bán" id="tab-ban">Bán</a>
+                        <a href="/greenia-homes/san-pham/cho-thue/" class="luc-nav-item" data-type="Thuê" id="tab-thue">Cho thuê</a>
                         
-                        <div class="g282-nav-group" id="g282-dd">
-                            <div class="g282-nav-item g282-dd-trigger"><span id="g282-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
-                            <div class="g282-dropdown">
-                                <div class="g282-drop-scroll" style="max-height: 400px; overflow-y: auto;" id="dyn-cat-list">
-                                    <div class="g282-drop-item selected" data-cat="" data-name="Tất cả danh mục">Tất cả danh mục</div>
-                                </div>
+                        <div class="luc-nav-group" id="luc-cat-dropdown-group">
+                            <div class="luc-nav-item luc-dd-trigger"><span id="luc-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="luc-dropdown">
+                                <div class="luc-drop-scroll" style="max-height: 400px; overflow-y: auto;" id="dyn-cat-list"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="g282-nav-right">
-                        <form id="g282-search-form" class="g282-search-wrap" onsubmit="return false;">
-                            <input type="text" id="g282-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
-                            <button type="submit" id="g282-search-btn"><i class="fas fa-search"></i></button>
+                    <div class="luc-nav-right-group">
+                        <form id="luc-search-form" class="luc-input-wrap" onsubmit="return false;">
+                            <input type="text" id="luc-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
+                            <button type="submit" id="luc-search-btn"><i class="fas fa-search"></i></button>
                         </form>
                     </div>
                 </div>
             </div>
+            
+            <div class="luc-notification-area"><div id="luc-search-status" class="luc-status-bar" style="display:none;"></div></div>
+            <div id="luc-grid-anchor"></div>
 
-            <div id="g282-anchor" style="height: 1px; visibility: hidden; margin-top: -1px;"></div>
-
-            <div class="g282-cat-info-box" id="g282-cat-info-box" style="display:none;">
-                <h1 class="g282-cat-title" id="g282-dyn-title" style="font-family: 'Manrope', sans-serif !important; text-transform: none !important; font-size: clamp(24px, 5vw, 32px) !important; color: #c5a059 !important; margin: 0 0 10px 0 !important; font-weight: 500 !important; letter-spacing: 0 !important; line-height: 1.4 !important;">Tất cả Sản phẩm</h1>
-                <div class="g282-cat-desc" id="g282-dyn-desc"></div>
+            <div id="luc-seo-header" style="text-align: left; margin-bottom: 30px; padding: 0 15px 5px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); display: none;">
+                <h1 id="luc-seo-title" style="color: #c5a059; font-size: clamp(24px, 5vw, 32px); font-weight: 500; margin: 0 0 10px 0; line-height: 1.4; text-transform: none !important;"></h1>
+                <div id="luc-seo-desc" style="color: #b0b8c4; font-size: 14px; line-height: 1.6; max-width: 100%; margin: 0;"></div>
             </div>
             
-            <div class="g282-status-area" id="g282-status" style="display:none;"></div>
-
-            <div id="g282-grid-main" style="display:block; margin-top: 10px;">
-                <div class="g282-grid-wrapper">
-                    <div class="g282-loader"><i class="fas fa-circle-notch fa-spin"></i></div>
-                    <div class="g282-grid s2-grid" id="g282-grid-result"></div>
-                </div>
-                <div class="g282-load-wrap"><button id="g282-load-btn" class="g282-load-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>
+            <div id="luc-grid-main-container">
+                <div class="luc-grid-wrapper"><div class="luc-loader"><i class="fas fa-circle-notch fa-spin"></i></div><div class="luc-grid s2-grid" id="luc-grid-result"></div></div>
+                <div class="luc-load-wrap"><button id="luc-load-more-btn" class="luc-load-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>
             </div>
-
-            <div class="g282-clearfix"></div><div class="g282-spacer"></div><div class="gr-ad-slot"></div>
+            
+            <div class="luc-clearfix"></div><div class="luc-spacer"></div>
+            <div class="gr-ad-slot"></div>
 
             <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
-            <div class="gr-carousel-wrapper" id="for-you-wrap">
-                <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'for-you-scroll')"><i class="fas fa-chevron-left"></i></button>
-                <div id="for-you-scroll" class="gr-carousel"></div>
-                <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'for-you-scroll')"><i class="fas fa-chevron-right"></i></button>
+            <div class="luc-grid-wrapper">
+                <div id="foryou-grid-v67" class="luc-grid s2-grid"></div>
             </div>
-            <div class="s2-footer"><button type="button" id="g282-history-more" class="s1-btn" style="display:none;">Xem thêm <i class="fas fa-chevron-down"></i></button></div>
+            <div class="s2-footer" id="foryou-load-wrap-v67" style="display:none;">
+                <button type="button" id="foryou-load-btn-v67" class="s1-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button>
+            </div>
+
             <div class="gr-ad-slot"></div>
-            
-            <div class="gr-proj-section" id="dyn-proj-section" style="display:none;">
-                <div class="gr-proj-body">
-                    <div class="gr-proj-left">
-                        <h2 class="s-tit">Tin tức dự án</h2>
-                        <div class="gr-news-list" id="dyn-proj-news"></div>
-                        <div class="s1-btn-wrap" style="text-align:left;"><a href="/greenia-homes/tin-tuc/du-an/" class="s1-btn">Xem thêm tin tức</a></div>
-                    </div>
-                    <div class="gr-proj-right">
-                        <h2 class="s-tit">Sản phẩm dự án</h2>
-                        <div class="gr-proj-prod-grid" id="dyn-proj-prods"></div>
-                        <div class="s1-btn-wrap"><a href="/greenia-homes/san-pham/du-an/" class="s1-btn">Xem thêm sản phẩm</a></div>
-                    </div>
-                </div>
-            </div>
 
             <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
             <div class="gr-carousel-wrapper">
@@ -210,10 +194,10 @@
             <div class="s2-footer"><a href="/greenia-homes/san-pham/cho-thue/" class="s1-btn">Xem thêm BĐS Cho thuê</a></div>
 
             <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Dự án nổi bật</h2></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'feat-scroll')"><i class="fas fa-chevron-left"></i></button>
-                <div id="feat-scroll" class="gr-carousel"></div>
-                <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
+            <div class="gr-carousel-wrapper" onmouseenter="grPause()" onmouseleave="grPlay()">
+                <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'gr-proj-scroll')"><i class="fas fa-chevron-left"></i></button>
+                <div id="gr-proj-scroll" class="gr-carousel"></div>
+                <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'gr-proj-scroll')"><i class="fas fa-chevron-right"></i></button>
             </div>
             <div class="s2-footer"><a href="/greenia-homes/du-an/" class="s1-btn">Xem thêm Dự án</a></div>
 
@@ -224,24 +208,26 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        const defaultSeoTitle = "Greenia Homes - Mua bán, cho thuê Nhà phố, Biệt thự, Căn hộ giá tốt";
+        const defaultSeoDesc = "Cập nhật các sản phẩm bán, cho thuê giá tốt được phân phối tại Greenia Homes. Các sản phẩm: Nhà phố, căn hộ, biệt thự riêng lẻ và các khu đô thị tại Tp HCM và khu vực lân cận.";
+        
         let allProducts = [];
-        let allPosts = [];
-        let independentProjects = [];
         let allCategories = [];
+        let independentProjects = [];
         let filteredData = [];
         const itemsPerPage = 10;
         let currentPage = 1;
-        
         let filterState = { type: '', cat: '', keyword: '' };
-
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        let smartRecommended = [];
+        let forYouPage = 1;
+        const forYouItemsPerPage = 10;
 
         function createSafeSlug(title) {
-            if(!title) return 'tin-tuc';
+            if(!title) return 'san-pham';
             return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        // HÀM DỊCH TÊN DANH MỤC THÀNH CHỮ ĐẸP
         function beautifyCatName(slug) {
             if (!slug) return '';
             const words = String(slug).split('-');
@@ -252,315 +238,159 @@
         function isCatMatch(pData, targetCat) {
             if (!targetCat || targetCat === '') return true;
             const targetSlug = createSafeSlug(targetCat);
-            
-            if ((targetSlug === 'ban' || targetSlug === 'chuyen-nhuong' || targetSlug === 'dang-ban') && pData.type === 'Bán') return true;
-            if ((targetSlug === 'cho-thue' || targetSlug === 'thue') && pData.type === 'Thuê') return true;
-
-            let catsArray = [];
-            if (Array.isArray(pData.cat)) catsArray = pData.cat;
-            else if (typeof pData.cat === 'string') catsArray = pData.cat.split(',');
-            else if (Array.isArray(pData.categories)) catsArray = pData.categories;
-            else if (typeof pData.categories === 'string') catsArray = pData.categories.split(',');
-
+            let catsArray = Array.isArray(pData.cat) ? pData.cat : (pData.cat ? String(pData.cat).split(',') : []);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
-        function renderCardHTML(p) {
+        function renderCardHTML(p, hideMeta = false) {
             const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const pTitle = p.title ? String(p.title) : 'Sản phẩm';
             const catSlug = createSafeSlug(pCat);
-            const pSlug = p.slug || createSafeSlug(pTitle);
+            const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-            
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
-            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
-            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+            const metaHtml = hideMeta ? '' : `<div class="gr-meta"><span class="gr-hl">${p.price || 'Liên hệ'}</span><div style="display:flex; gap:10px;"><span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area || '--'} m²</span><span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed || '--'} PN</span></div></div>`;
+            return `<a href="${link}" class="s2-card"><div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagName}</span><img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div><div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3>${locHtml}${metaHtml}</div></a>`;
+        }
 
-            return `
-            <a href="${link}" class="s2-card">
-                <div class="s2-thumb-box">
-                    <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                    <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
-                </div>
-                <div class="s2-body">
-                    <h3 class="gr-tit s2-tit">${pTitle}</h3>
-                    ${locHtml}
-                    <div class="gr-meta">
-                        <span class="gr-hl">${p.price || 'Liên hệ'}</span>
-                        <div style="display:flex; gap:10px;">${areaHtml}${bedHtml}</div>
-                    </div>
-                </div>
-            </a>`;
+        // --- CẬP NHẬT SEO ---
+        function updateSeoUI(targetCatSlug, targetType) {
+            let displayTitle = defaultSeoTitle;
+            let displayDesc = defaultSeoDesc;
+            let searchSlug = targetCatSlug;
+            if (targetCatSlug === '') {
+                if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
+                else if (targetType === 'Thuê') searchSlug = 'cho-thue';
+            }
+            if (searchSlug !== '') {
+                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === searchSlug);
+                if (matchedCat) {
+                    displayTitle = matchedCat.seoTitle || matchedCat.name || beautifyCatName(searchSlug);
+                    displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
+                } else { displayTitle = beautifyCatName(searchSlug); displayDesc = ""; }
+            }
+            const titleEl = document.getElementById('luc-seo-title');
+            const descEl = document.getElementById('luc-seo-desc');
+            const boxEl = document.getElementById('luc-seo-header');
+            if(titleEl) titleEl.innerText = displayTitle;
+            if(descEl) { descEl.innerHTML = displayDesc; descEl.style.display = displayDesc ? 'block' : 'none'; }
+            if(boxEl) boxEl.style.display = 'block';
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
+            // --- CẢM BIẾN CUỘN CHUỘT (SMART STICKY) ---
+            const filterBar = document.getElementById('luc-filter-bar');
+            window.addEventListener('scroll', () => {
+                // Nếu cuộn qua 100px (thường là qua hết menu chính), đẩy tab lên top 0
+                if (window.scrollY > 100) {
+                    filterBar.classList.add('is-stuck');
+                } else {
+                    filterBar.classList.remove('is-stuck');
+                }
+            });
+
             try {
-                // TẢI DỮ LIỆU ĐẢO NGƯỢC (BÀI MỚI LÊN ĐẦU)
-                const [postRes, prodRes, catRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null),
+                const [prodRes, catRes, projRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
+                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null),
+                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null)
                 ]);
-                
-                if(postRes && postRes.ok) { let p = await postRes.json(); allPosts = Array.isArray(p) ? p.reverse() : []; }
                 if(prodRes && prodRes.ok) { const prodsData = await prodRes.json(); allProducts = Array.isArray(prodsData) ? prodsData.reverse() : []; }
                 if(catRes && catRes.ok) { allCategories = await catRes.json(); }
+                if(projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
 
-                try {
-                    const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
-                    if (projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
-                } catch(e) {}
+                updateSeoUI('', ''); // Mặc định load "Tất cả"
 
-                // XÁC ĐỊNH CATEGORY HIỆN TẠI TỪ URL
-                const currCat = window.GREENIA_CURRENT_CATEGORY;
-                let activeCatSlug = '';
-                let displayTitle = "Tất cả Sản phẩm";
-                let displayDesc = "";
-
-                if (currCat && currCat.slug && currCat.slug !== 'tat-ca-san-pham') {
-                    activeCatSlug = currCat.slug;
-                    displayTitle = currCat.seoTitle || currCat.name || currCat.slug;
-                    displayDesc = currCat.seoDesc || currCat.desc || "";
-
-                    if (currCat.slug === 'ban') { filterState.type = 'Bán'; document.getElementById('tab-all').classList.remove('active'); document.getElementById('tab-ban').classList.add('active'); activeCatSlug = 'ban';}
-                    else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; document.getElementById('tab-all').classList.remove('active'); document.getElementById('tab-thue').classList.add('active'); activeCatSlug = 'cho-thue';}
-                    else { filterState.cat = currCat.name || currCat.slug; document.getElementById('tab-all').classList.remove('active');}
-                } else {
-                    const paths = window.location.pathname.split('/').filter(Boolean);
-                    const slug = paths[paths.length - 1];
-                    if (slug && slug !== 'san-pham' && slug !== 'tat-ca-san-pham' && slug.indexOf('.html') === -1) {
-                        activeCatSlug = createSafeSlug(slug);
-                        displayTitle = beautifyCatName(slug);
-
-                        if (slug === 'ban' || slug === 'chuyen-nhuong') { filterState.type = 'Bán'; document.getElementById('tab-all').classList.remove('active'); document.getElementById('tab-ban').classList.add('active'); }
-                        else if (slug === 'cho-thue') { filterState.type = 'Thuê'; document.getElementById('tab-all').classList.remove('active'); document.getElementById('tab-thue').classList.add('active'); }
-                        else { filterState.cat = activeCatSlug; document.getElementById('tab-all').classList.remove('active');}
-                    }
-                }
-
-                // CẬP NHẬT SEO TỪ CATEGORIES.JSON
-                if (activeCatSlug !== '' && allCategories && allCategories.length > 0) {
-                    const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
-                    if (matchedCat) {
-                        if (matchedCat.seoTitle) displayTitle = matchedCat.seoTitle;
-                        else if (matchedCat.name) displayTitle = matchedCat.name;
-
-                        if (matchedCat.seoDesc) displayDesc = matchedCat.seoDesc;
-                        else if (matchedCat.desc) displayDesc = matchedCat.desc;
-                    }
-                }
-
-                // UPDATE GIAO DIỆN TITLE & DESC
-                const titleEl = document.getElementById('g282-dyn-title');
-                const descEl = document.getElementById('g282-dyn-desc');
-                const boxEl = document.getElementById('g282-cat-info-box');
-
-                if(titleEl) {
-                    titleEl.innerText = displayTitle;
-                    titleEl.style.textTransform = "none";
-                }
-                if(descEl && displayDesc) {
-                    descEl.innerHTML = displayDesc;
-                    if(boxEl) boxEl.style.display = 'block';
-                } else if(boxEl && activeCatSlug !== '') {
-                    boxEl.style.display = 'block';
-                }
-
-                // BƯỚC QUAN TRỌNG: TẠO DROPDOWN CHỈ TỪ DANH MỤC THỰC TẾ TRONG CATEGORIES.JSON
-                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="g282-drop-item ${activeCatSlug === '' ? 'selected' : ''}" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                
+                const ddList = document.getElementById('dyn-cat-list');
+                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item selected"><span>Tất cả danh mục</span></a>`;
                 if (allCategories && allCategories.length > 0) {
                     allCategories.forEach(c => {
-                        let catNameOriginal = c.name || c.slug;
-                        let cleanCat = catNameOriginal.trim();
-                        let cleanSlug = createSafeSlug(cleanCat);
-                        
-                        if(cleanCat !== '' && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
-                            // Đếm số lượng sản phẩm
-                            let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
-                            
-                            // NẾU CÓ SẢN PHẨM HOẶC CÓ TRONG JSON THÌ MỚI HIỂN THỊ LÊN MENU
+                        let catSlug = createSafeSlug(c.slug || c.name);
+                        if(catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
+                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
                             if (count > 0 || c.showEmpty) {
-                                let isSelected = (activeCatSlug !== '' && createSafeSlug(cleanCat) === activeCatSlug) ? 'selected' : '';
-                                if (isSelected) {
-                                    const currentCatNameEl = document.getElementById('g282-current-cat-name');
-                                    if(currentCatNameEl) currentCatNameEl.innerText = beautifyCatName(cleanCat);
-                                }
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="g282-drop-item ${isSelected}" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none;"><span>${beautifyCatName(cleanCat)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                             }
                         }
-                    });
-                } else {
-                    // Fallback
-                    let otherCats = {};
-                    allProducts.forEach(p => {
-                        let catsArray = [];
-                        if (Array.isArray(p.cat)) catsArray = p.cat;
-                        else if (typeof p.cat === 'string') catsArray = p.cat.split(',');
-                        catsArray.forEach(c => {
-                            let cleanCat = c.trim();
-                            let cleanSlug = createSafeSlug(cleanCat);
-                            if(cleanCat !== '' && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
-                                otherCats[cleanCat] = (otherCats[cleanCat] || 0) + 1;
-                            }
-                        });
-                    });
-                    Object.keys(otherCats).forEach(c => {
-                        const isSelected = (activeCatSlug !== '' && createSafeSlug(c) === activeCatSlug) ? 'selected' : '';
-                        if (isSelected) {
-                            const currentCatNameEl = document.getElementById('g282-current-cat-name');
-                            if(currentCatNameEl) currentCatNameEl.innerText = beautifyCatName(c);
-                        }
-                        ddListHTML += `<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/" class="g282-drop-item ${isSelected}" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none;"><span>${beautifyCatName(c)}</span> <span style="color:#666; font-size:10px;">(${otherCats[c]})</span></a>`;
                     });
                 }
-                
-                document.getElementById('dyn-cat-list').innerHTML = ddListHTML;
+                ddList.innerHTML = ddListHTML;
 
-                // INIT TÌM KIẾM
                 runFilter();
                 
-                // LOGIC "BẤT ĐỘNG SẢN DÀNH CHO BẠN" (SMART TRACKING TỪ TRANG CHI TIẾT)
+                // DÀNH CHO BẠN
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
-                let smartRecommended = [];
-                
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
                         let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
-                    matchedByCat = matchedByCat.filter(p => !viewedHistory.ids.includes(p.id));
-                    matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
-                    smartRecommended = matchedByCat.slice(0, 10);
+                    smartRecommended = matchedByCat.sort(() => 0.5 - Math.random());
                 }
-                
-                if (smartRecommended.length < 10) {
-                    let fallbackProds = allProducts.filter(p => !smartRecommended.some(sp => sp.id === p.id) && !viewedHistory.ids.includes(p.id))
-                        .sort(() => 0.5 - Math.random())
-                        .slice(0, 10 - smartRecommended.length);
+                if (smartRecommended.length < 20) { 
+                    let fallbackProds = allProducts.filter(p => !smartRecommended.some(sp => sp.id === p.id)).sort(() => 0.5 - Math.random());
                     smartRecommended = [...smartRecommended, ...fallbackProds];
                 }
-                
-                document.getElementById('for-you-scroll').innerHTML = smartRecommended.map(p => renderCardHTML(p)).join('');
+                renderForYouGrid();
 
                 const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
                 document.getElementById('sale-scroll').innerHTML = saleProds.map(p => renderCardHTML(p)).join('');
-
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => renderCardHTML(p)).join('');
 
                 if (independentProjects.length > 0) {
-                    document.getElementById('feat-scroll').innerHTML = independentProjects.slice(0, 10).map(p => {
+                    document.getElementById('gr-proj-scroll').innerHTML = independentProjects.slice(0, 10).map(p => {
                         const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
-                        return `
-                        <a href="${p.link}" class="gr-card">
-                            <div class="gr-thumb-box"><span class="gr-tag-abs tag-ban">Dự án</span><img src="${imgUrl}"></div>
-                            <div class="gr-body"><h3 class="gr-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
-                        </a>`;
+                        return `<a href="${p.link}" class="s2-card"><div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div><div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div></a>`;
                     }).join('');
                 }
-
-                const projPosts = allPosts.filter(p => {
-                    let catsArray = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
-                    return catsArray.some(c => createSafeSlug(c).includes('du-an'));
-                }).slice(0,4);
-                
-                const projProds = allProducts.filter(p => {
-                    let catsArray = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
-                    return catsArray.some(c => createSafeSlug(c).includes('du-an'));
-                }).slice(0,4);
-                
-                if(projPosts.length > 0 || projProds.length > 0) {
-                    document.getElementById('dyn-proj-section').style.display = 'block';
-                    document.getElementById('dyn-proj-news').innerHTML = projPosts.map(p => {
-                        const pCat = createSafeSlug(p.cat); const pSlug = p.slug || createSafeSlug(p.title);
-                        const imgUrl = window.resolveImg ? window.resolveImg(p.thumb) : p.thumb;
-                        const excerpt = p.content.replace(/<[^>]*>?/gm, '').substring(0, 80) + '...';
-                        return `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" class="gr-news-card"><div class="gr-news-thumb"><img src="${imgUrl}"></div><div class="gr-news-info"><h3 class="gr-news-tit">${p.title}</h3><div class="gr-news-desc">${excerpt}</div><div class="gr-news-date"><i class="far fa-clock"></i> ${p.date}</div></div></a>`;
-                    }).join('');
-                    document.getElementById('dyn-proj-prods').innerHTML = projProds.map(p => renderCardHTML(p)).join('');
-                }
-
-            } catch (e) {
-                console.log(e);
-                document.getElementById('g282-grid-result').innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:50px; color:#ff4d4f;'>Không thể tải dữ liệu sản phẩm. Vui lòng F5 lại trang.</div>";
-                document.querySelector('.g282-loader').style.display = 'none';
-            }
+            } catch (e) { console.log(e); }
         });
 
         function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
-            
             filteredData = allProducts.filter(p => {
                 if(filterState.keyword !== '') {
                     const kw = filterState.keyword.toLowerCase();
-                    return (p.title && String(p.title).toLowerCase().includes(kw)) || 
-                           (p.loc && String(p.loc).toLowerCase().includes(kw)) || 
-                           (p.cat && String(p.cat).toLowerCase().includes(kw));
+                    return (p.title && String(p.title).toLowerCase().includes(kw)) || (p.loc && String(p.loc).toLowerCase().includes(kw));
                 }
-                
-                let matchType = true;
-                if (filterState.type === 'Bán') matchType = (p.type === 'Bán');
-                else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
-                
-                let matchCat = true;
-                if (filterState.cat !== '') matchCat = isCatMatch(p, filterState.cat);
-                
+                let matchType = filterState.type ? p.type === filterState.type : true;
+                let matchCat = filterState.cat ? isCatMatch(p, filterState.cat) : true;
                 return matchType && matchCat;
             });
-
-            const statusDiv = document.getElementById('g282-status');
-            if(filterState.keyword !== '') {
-                statusDiv.style.display = 'flex';
-                statusDiv.innerHTML = `Tìm thấy <strong>${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearSearch()'>Xóa</span>`;
-            } else { statusDiv.style.display = 'none'; }
-
+            const grid = document.getElementById('luc-grid-result');
             const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
-            const grid = document.getElementById('g282-grid-result');
-            
-            if(paginatedData.length > 0) {
-                grid.innerHTML = paginatedData.map(p => renderCardHTML(p)).join('');
-            } else {
-                grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
-            }
-
-            const loadBtnWrap = document.querySelector('.g282-load-wrap');
-            if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
-            else { loadBtnWrap.style.display = 'block'; document.getElementById('g282-load-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
+            if(paginatedData.length > 0) { grid.innerHTML = paginatedData.map(p => renderCardHTML(p)).join(''); }
+            else { grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm.</div>"; }
+            document.querySelector('.luc-load-wrap').style.display = paginatedData.length >= filteredData.length ? 'none' : 'block';
         }
 
-        document.getElementById('g282-search-form').addEventListener('submit', function(e) {
-            e.preventDefault(); const val = document.getElementById('g282-keyword').value.trim();
-            if(val !== '') { 
-                filterState.keyword = val; 
-                const infoBox = document.getElementById('g282-cat-info-box');
-                if(infoBox) infoBox.style.display = 'none';
-                runFilter(); 
-                window.scrollTo({ top: document.getElementById('g282-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
-            }
-        });
-
-        document.getElementById('g282-load-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
-
-        window.clearSearch = function() { 
-            filterState.keyword = ''; 
-            document.getElementById('g282-keyword').value = ''; 
-            const infoBox = document.getElementById('g282-cat-info-box');
-            if(infoBox && filterState.cat !== '') infoBox.style.display = 'block';
-            runFilter(); 
+        function renderForYouGrid() {
+            const grid = document.getElementById('foryou-grid-v67');
+            const paginated = smartRecommended.slice(0, forYouPage * forYouItemsPerPage);
+            if (paginated.length > 0) { grid.innerHTML = paginated.map(p => renderCardHTML(p, true)).join(''); document.getElementById('foryou-load-wrap-v67').style.display = paginated.length >= smartRecommended.length ? 'none' : 'block'; }
         }
 
-        const ddGroup = document.getElementById('g282-dd');
-        ddGroup.querySelector('.g282-dd-trigger').addEventListener('click', function(e) {
-            e.preventDefault(); e.stopPropagation(); ddGroup.classList.toggle('active-drop');
+        document.getElementById('luc-search-form').addEventListener('submit', function(e) {
+            e.preventDefault(); const val = document.getElementById('luc-keyword').value.trim();
+            if(val !== '') { filterState.keyword = val; document.getElementById('luc-seo-header').style.display = 'none'; runFilter(); }
         });
-        document.addEventListener('click', e => { if(!ddGroup.contains(e.target)) ddGroup.classList.remove('active-drop'); });
 
-        window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.s2-card') || el.querySelector('.gr-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
+        document.getElementById('luc-load-more-btn').addEventListener('click', function() { currentPage++; runFilter(true); });
+        document.getElementById('foryou-load-btn-v67').addEventListener('click', function() { forYouPage++; renderForYouGrid(); });
+
+        const ddGroup = document.getElementById('luc-cat-dropdown-group');
+        ddGroup.querySelector('.luc-dd-trigger').addEventListener('click', e => { e.stopPropagation(); ddGroup.classList.toggle('active-drop'); });
+        document.addEventListener('click', () => ddGroup.classList.remove('active-drop'));
+
+        var grScrollTimer;
+        window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.s2-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
+        window.grPlay = function() { grScrollTimer = setInterval(() => window.grScroll(1, 'gr-proj-scroll'), 4000); }
+        window.grPause = function() { clearInterval(grScrollTimer); }
+        grPlay();
     </script>
 </body>
 </html>
