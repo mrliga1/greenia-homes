@@ -76,5 +76,23 @@
     "seoTitle": "kiểm tra sản phẩm",
     "seoDesc": "👉 Tuyến đường Vành Đai 3 TP.HCM chính thức hợp long\n👉 Biệt thự ven sông The Global City\n...",
     "seoKeywords": "căn hộ , bất động sản"
+  },
+  {
+    "id": 42,
+    "type": "Bán",
+    "title": "Bán nhà phố, căn hộ, biệt thự",
+    "slug": "ban-nha-pho-can-ho-biet-thu",
+    "cat": "Chuyển Nhượng",
+    "projectCode": "",
+    "loc": "an phú",
+    "price": "100",
+    "area": "121",
+    "bed": "6",
+    "img": "",
+    "gallery": [],
+    "content": "<p>👉 <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/can-ho/kiem-tra-san-pham/\" target=\"_blank\">kiểm tra sản phẩm</a></p>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/can-ho/kiem-tra-san-pham/\" class=\"gr-related-link\" target=\"_blank\">kiểm tra sản phẩm</a></div>\n",
+    "seoTitle": "Bán nhà phố, căn hộ, biệt thự",
+    "seoDesc": "kiểm tra nội dung",
+    "seoKeywords": "Chuyển Nhượng, bất động sản"
   }
 ]
