@@ -241,7 +241,7 @@
             return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        // HÀM KIỂM TRA KHỚP DANH MỤC NGHIÊM NGẶT (FIX LỖI HIỆN TẤT CẢ SẢN PHẨM)
+        // HÀM KIỂM TRA KHỚP DANH MỤC NGHIÊM NGẶT
         function isCatMatch(pData, targetCat) {
             if (!targetCat || targetCat === '') return true;
             const targetSlug = createSafeSlug(targetCat);
@@ -289,7 +289,7 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // TẢI THÊM CATEGORIES.JSON ĐỂ LẤY DỮ LIỆU SEO
+                // TẢI DỮ LIỆU
                 const [postRes, prodRes, catRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null),
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
@@ -343,8 +343,8 @@
                     }
                 }
 
-                // KIỂM TRA LẠI DỮ LIỆU SEO TRONG FILE CATEGORIES.JSON
-                if (activeCatSlug !== '' && allCategories.length > 0) {
+                // CHÍNH XÁC: LẤY SEO TỪ CATEGORIES.JSON
+                if (activeCatSlug !== '' && allCategories && allCategories.length > 0) {
                     const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
                     if (matchedCat) {
                         if (matchedCat.seoTitle) displayTitle = matchedCat.seoTitle;
@@ -371,22 +371,38 @@
                     boxEl.style.display = 'block';
                 }
 
-                // TẠO DROPDOWN & TÍNH SỐ LƯỢNG
+                // BƯỚC QUAN TRỌNG: TẠO DROPDOWN CHỈ TỪ DANH MỤC THỰC TẾ (Không moi móc thẻ rác)
                 let otherCats = {};
-                allProducts.forEach(p => {
-                    let catsArray = [];
-                    if (Array.isArray(p.cat)) catsArray = p.cat;
-                    else if (typeof p.cat === 'string') catsArray = p.cat.split(',');
-                    else if (Array.isArray(p.categories)) catsArray = p.categories;
-                    else if (typeof p.categories === 'string') catsArray = p.categories.split(',');
-
-                    catsArray.forEach(c => {
-                        let cleanCat = c.trim();
-                        if(cleanCat !== '' && cleanCat.toLowerCase() !== 'bán' && cleanCat.toLowerCase() !== 'cho thuê') {
-                            otherCats[cleanCat] = (otherCats[cleanCat] || 0) + 1;
+                
+                // Thuật toán quét danh mục Ưu tiên File categories.json nếu có
+                if (allCategories && allCategories.length > 0) {
+                    allCategories.forEach(c => {
+                        let cleanCat = (c.name || c.slug).trim();
+                        if(cleanCat !== '' && cleanCat.toLowerCase() !== 'bán' && cleanCat.toLowerCase() !== 'cho thuê' && cleanCat.toLowerCase() !== 'chuyển nhượng') {
+                            // Đếm số lượng sản phẩm CÓ THỰC đang thuộc danh mục này
+                            let count = allProducts.filter(p => isCatMatch(p, cleanCat)).length;
+                            if (count > 0) {
+                                otherCats[cleanCat] = count;
+                            }
                         }
                     });
-                });
+                } else {
+                    // Nếu bot lỗi chưa tạo được categories.json thì mới dùng cách cũ
+                    allProducts.forEach(p => {
+                        let catsArray = [];
+                        if (Array.isArray(p.cat)) catsArray = p.cat;
+                        else if (typeof p.cat === 'string') catsArray = p.cat.split(',');
+                        else if (Array.isArray(p.categories)) catsArray = p.categories;
+                        else if (typeof p.categories === 'string') catsArray = p.categories.split(',');
+
+                        catsArray.forEach(c => {
+                            let cleanCat = c.trim();
+                            if(cleanCat !== '' && cleanCat.toLowerCase() !== 'bán' && cleanCat.toLowerCase() !== 'cho thuê' && cleanCat.toLowerCase() !== 'chuyển nhượng') {
+                                otherCats[cleanCat] = (otherCats[cleanCat] || 0) + 1;
+                            }
+                        });
+                    });
+                }
 
                 const ddList = document.getElementById('dyn-cat-list');
                 
@@ -454,6 +470,7 @@
             }
         });
 
+        // HÀM LỌC CHÍNH BỌC THÉP
         function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
             
@@ -471,12 +488,14 @@
                 return matchType && matchCat && matchKeyword;
             });
 
+            // Status Search
             const statusDiv = document.getElementById('g282-status');
             if(filterState.keyword !== '') {
                 statusDiv.style.display = 'flex';
                 statusDiv.innerHTML = `Tìm thấy <strong>${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearSearch()'>Xóa</span>`;
             } else { statusDiv.style.display = 'none'; }
 
+            // Lấy Page
             const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
             
             const grid = document.getElementById('g282-grid-result');
@@ -486,11 +505,13 @@
                 grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
             }
 
+            // Nút Load More
             const loadBtnWrap = document.querySelector('.g282-load-wrap');
             if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
             else { loadBtnWrap.style.display = 'block'; document.getElementById('g282-load-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
         }
 
+        // TƯƠNG TÁC TABS VÀ TÌM KIẾM
         document.querySelectorAll('.g282-nav-item:not(.g282-dd-trigger)').forEach(tab => {
             tab.addEventListener('click', function() {
                 document.querySelectorAll('.g282-nav-item').forEach(t => t.classList.remove('active')); this.classList.add('active');
@@ -527,6 +548,7 @@
             if(anchor && header) { const top = anchor.getBoundingClientRect().top + window.scrollY - header.offsetHeight - 40; window.scrollTo({top: top, behavior: 'smooth'}); }
         }
 
+        // Logic Dropdown Fixed (Tránh che khuất trên mobile)
         const ddGroup = document.getElementById('g282-dd');
         const dropdownMenu = ddGroup.querySelector('.g282-dropdown');
         
