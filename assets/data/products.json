@@ -1,25 +1,5 @@
 [
   {
-    "id": 10,
-    "type": "Bán",
-    "title": "bán nhà",
-    "slug": "ban-nha",
-    "cat": "Nhà Phố",
-    "projectCode": "the-global-city",
-    "loc": "an phú",
-    "price": "10 tỷ",
-    "area": "100 m2",
-    "bed": "",
-    "img": "https://mrliga1.github.io/greenia-homes/bai-viet/kiem-tra-dang-bai-viet/",
-    "gallery": [
-      "https://mrliga1.github.io/greenia-homes/bai-viet/kiem-tra-dang-bai-viet/"
-    ],
-    "content": "",
-    "seoTitle": "bán nhà",
-    "seoDesc": "...",
-    "seoKeywords": "nha-pho-quan-2, bất động sản"
-  },
-  {
     "id": 1,
     "type": "Bán",
     "title": "Biệt thự ven sông The Global City",
