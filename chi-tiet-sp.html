@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* TỔNG HỢP CSS TỪ BẢN PHP - KHÔNG THIẾU 1 CHỮ */
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
         #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; overflow: visible !important;}
         #lux-uni-catalog * { box-sizing: border-box; }
@@ -27,7 +26,6 @@
         .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 20px; padding-top: 0px; overflow: visible !important;}
         .v261-c1 { width:60%; background:#0b1120; border-radius:10px; overflow:hidden; border:1px solid rgba(197,160,89,0.2); display:flex; flex-direction:column; }
         
-        /* CỘT CỐ ĐỊNH STICKY */
         .v261-c2 { width:25%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; } 
         .v261-c3 { width:15%; position: -webkit-sticky !important; position: sticky !important; top: 90px !important; z-index: 10; height: max-content; }
         
@@ -97,7 +95,6 @@
         
         .v261-cat-info { margin-top:20px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1); color:#b0b8c4; font-size:13px; } .v261-cat-info a { color:#c5a059; font-weight:700; text-decoration:none; } .v261-cat-info span { margin-left:5px; color:#888; }
         
-        /* LIGHTBOX CSS */
         .v261-lb-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); backdrop-filter:blur(8px); z-index:99999; display:none; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s; }
         .v261-lb-content { position:relative; width:90%; height:90%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
         .v261-lb-close { position:absolute; top:20px; right:30px; font-size:40px; color:#fff; cursor:pointer; transition:0.3s; z-index:20; width:50px; height:50px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.1); }
@@ -111,7 +108,6 @@
         .v261-lb-nav:hover { background:rgba(197, 160, 89, 0.2); border-color:#c5a059; color:#c5a059; transform:translateY(-50%) scale(1.1); box-shadow:0 0 15px rgba(197, 160, 89, 0.3); }
         .v261-lb-nav.prev { left:30px; } .v261-lb-nav.next { right:30px; }
 
-        /* CAROUSELS CHUẨN */
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 15px; margin-top: 40px; }
         .s-tit { font-size: 20px !important; font-weight: 500; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
@@ -125,7 +121,7 @@
         .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
         .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
         .gr-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .gr-tag-abs { position: absolute; top: 0 !important; left: 0 !important; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; z-index: 5; border-bottom-right-radius: 6px; }
+        .gr-tag-abs { position: absolute; top: 0 !important; left: 0 !important; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; color: #000; z-index: 5; border-bottom-right-radius: 6px; }
         .tag-ban { background: #ff4d4f; color: #fff; } .tag-thue { background: #00b894; color: #fff; }
         .gr-tit { font-size: 13px !important; font-weight: 600; color: #fff; height: 38px; line-height: 1.4 !important; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .gr-card:hover .gr-tit { color: #c5a059; }
@@ -182,7 +178,6 @@
         window.GREENIA_CURRENT_PRODUCT = null;
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         
-        // CHỈNH SỬA LẠI ĐƯỜNG DẪN LOGO TỪ SITE CỦA BÁC
         const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo.png'; 
         const zalo_img = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
         const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
@@ -196,18 +191,29 @@
 
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
-            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+            return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+        
+        // HÀM DỊCH THUẬT: Xử lý tên danh mục hiển thị đẹp
+        function beautifyCatName(slug) {
+            if (!slug) return '';
+            const words = String(slug).split('-');
+            const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
+            return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
         function renderCardHTML(p) {
-            const catSlug = createSafeSlug(p.cat || 'san-pham');
-            const pSlug = p.slug || createSafeSlug(p.title);
+            const pCat = p.cat ? String(p.cat) : 'san-pham';
+            const pTitle = p.title ? String(p.title) : 'Sản phẩm';
+            const catSlug = createSafeSlug(pCat);
+            const pSlug = p.slug || createSafeSlug(pTitle);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
-            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
             
-            const locHtml = p.loc ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc.substring(0,40)}...</div>` : '';
+            const locStr = p.loc ? String(p.loc) : '';
+            const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
 
@@ -218,7 +224,7 @@
                     <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
                 <div class="gr-body">
-                    <h3 class="gr-tit">${p.title}</h3>
+                    <h3 class="gr-tit">${pTitle}</h3>
                     ${locHtml}
                     <div class="gr-meta">
                         <span class="gr-hl">${p.price || 'Liên hệ'}</span>
@@ -235,11 +241,11 @@
             if (!prod) { window.location.replace(safeBaseUrl + 'san-pham.html'); return; }
 
             try {
-                // THÊM .REVERSE() ĐỂ ĐẨY BÀI MỚI NHẤT LÊN ĐẦU
-                const [prodRes, projRes, postRes] = await Promise.all([
+                const [prodRes, projRes, postRes, catRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
                     fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null)
+                    fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null),
+                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
                 ]);
                 
                 if(prodRes && prodRes.ok) {
@@ -253,6 +259,11 @@
                 
                 const independentProjects = projRes && projRes.ok ? await projRes.json() : [];
                 if (Array.isArray(independentProjects)) independentProjects.reverse();
+                
+                let allCategories = [];
+                if(catRes && catRes.ok) {
+                    allCategories = await catRes.json();
+                }
 
                 // 1. TẠO MEDIA LIST (Gallery)
                 mediaList = [];
@@ -263,34 +274,90 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // 2. DANH MỤC Ở CỘT PHẢI
+                // 2. DANH MỤC Ở CỘT PHẢI & THUẬT TOÁN THÔNG MINH
                 let countBan = 0, countThue = 0;
                 let otherCats = {};
+                
+                // TRACKING THÔNG MINH BẰNG LOCALSTORAGE
+                let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
+                if (prod) {
+                    if (prod.id && !viewedHistory.ids.includes(prod.id)) {
+                        viewedHistory.ids.unshift(prod.id);
+                        if (viewedHistory.ids.length > 30) viewedHistory.ids.pop();
+                    }
+                    
+                    let prodCats = [];
+                    if (Array.isArray(prod.cat)) prodCats = prod.cat;
+                    else if (typeof prod.cat === 'string') prodCats = prod.cat.split(',');
+                    
+                    prodCats.forEach(c => {
+                        let cleanSlug = createSafeSlug(c);
+                        if (cleanSlug && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
+                            viewedHistory.cats = viewedHistory.cats.filter(existing => existing !== cleanSlug);
+                            viewedHistory.cats.unshift(cleanSlug);
+                        }
+                    });
+                    if (viewedHistory.cats.length > 5) viewedHistory.cats = viewedHistory.cats.slice(0, 5);
+                    
+                    localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
+                }
+
+                // CHỈ TẠO MENU TỪ CATEGORIES.JSON ĐỂ CHỐNG BÓNG MA
+                let catLines = [];
+                catLines.push(`<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`);
+                
                 allProducts.forEach(p => {
                     if(p.type === 'Bán') countBan++;
                     else if(p.type === 'Thuê') countThue++;
-                    if(p.cat) { let c = p.cat.trim(); if(c !== '') otherCats[c] = (otherCats[c] || 0) + 1; }
                 });
 
-                let catLines = [];
-                catLines.push(`<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); justify-content: flex-start;"><span>Tất cả danh mục</span></a>`);
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/ban/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>Bất động sản bán</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`);
-                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`);
                 
-                Object.keys(otherCats).forEach(c => {
-                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/" style="padding-left: 20px; padding-top: 8px; padding-bottom: 8px;"><span>${c}</span><span style="color:#666; font-size:11px;">(${otherCats[c]})</span></a>`);
-                });
+                if (allCategories && allCategories.length > 0) {
+                    allCategories.forEach(c => {
+                        let catSlug = createSafeSlug(c.slug || c.name);
+                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
+                            let count = allProducts.filter(p => {
+                                let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
+                                return pCats.some(pc => createSafeSlug(pc) === catSlug);
+                            }).length;
+                            
+                            if (count > 0) {
+                                catLines.push(`<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c.name || c.slug)}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`);
+                            }
+                        }
+                    });
+                }
 
-                // 3. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC
-                const relatedProds = allProducts.filter(p => p.cat === prod.cat && p.id != prod.id).slice(0, 10);
+                // 3. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC (THÔNG MINH)
+                let smartRecommended = [];
+                if (viewedHistory.cats.length > 0) {
+                    let matchedByCat = allProducts.filter(p => {
+                        if (p.id === prod.id) return false; 
+                        let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
+                        return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
+                    });
+                    matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
+                    smartRecommended = matchedByCat.slice(0, 10);
+                }
+                
+                if (smartRecommended.length < 10) {
+                    let fallbackProds = allProducts.filter(p => {
+                        if (p.id === prod.id) return false;
+                        return !smartRecommended.some(sp => sp.id === p.id);
+                    }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
+                    smartRecommended = [...smartRecommended, ...fallbackProds];
+                }
+
                 let relatedHTML = '';
-                if(relatedProds.length > 0) {
+                if(smartRecommended.length > 0) {
                     relatedHTML = `
                     <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
                     <div class="gr-carousel-wrapper">
                         <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'related-scroll')"><i class="fas fa-chevron-left"></i></button>
                         <div id="related-scroll" class="gr-carousel">
-                            ${relatedProds.map(p => renderCardHTML(p)).join('')}
+                            ${smartRecommended.map(p => renderCardHTML(p)).join('')}
                         </div>
                         <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'related-scroll')"><i class="fas fa-chevron-right"></i></button>
                     </div>`;
@@ -317,7 +384,7 @@
                         <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
                         <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/ban/" class="s1-btn">Xem thêm BĐS Bán</a></div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem thêm BĐS Bán</a></div>
                 ` : '';
 
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
@@ -356,7 +423,7 @@
                     <div class="gr-breadcrumbs">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
                         <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham/${catSlug}/">${prod.cat || 'Khác'}</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}san-pham/${catSlug}/">${beautifyCatName(prod.cat) || 'Khác'}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
 
