@@ -112,5 +112,23 @@
     "seoTitle": "qqqqqqqqq",
     "seoDesc": "sadfsfffffffffffffff",
     "seoKeywords": "Chuyển Nhượng, bất động sản"
+  },
+  {
+    "id": 44,
+    "type": "Thuê",
+    "title": "ttttttttttt",
+    "slug": "ttttttttttt",
+    "cat": "Cho Thuê",
+    "projectCode": "an phú new city",
+    "loc": "an phú",
+    "price": "20 tỷ",
+    "area": "1000",
+    "bed": "5",
+    "img": "",
+    "gallery": [],
+    "content": "<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/chuyen-nhuong/ban-nha-pho-can-ho-biet-thu/\" class=\"gr-related-link\" target=\"_blank\">Bán nhà phố, căn hộ, biệt thự</a></div>\n<div class=\"gr-related-item\"><span class=\"gr-hot-icon\">👉</span> <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/chuyen-nhuong/ban-nha-pho-can-ho-biet-thu/\" class=\"gr-related-link\" target=\"_blank\">Bán nhà phố, căn hộ, biệt thự</a></div>",
+    "seoTitle": "sdsdsd",
+    "seoDesc": "sfafsfs",
+    "seoKeywords": "sadsdfs"
   }
 ]
