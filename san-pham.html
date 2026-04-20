@@ -144,8 +144,7 @@
 
             <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
             <div class="luc-grid-wrapper">
-                <div id="foryou-grid-v67" class="luc-grid s2-grid">
-                    </div>
+                <div id="foryou-grid-v67" class="luc-grid s2-grid"></div>
             </div>
             <div class="s2-footer" id="foryou-load-wrap-v67" style="display:none;">
                 <button type="button" id="foryou-load-btn-v67" class="s1-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button>
@@ -186,9 +185,13 @@
     <script>
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         
+        // --- NỘI DUNG SEO MẶC ĐỊNH ---
+        const defaultSeoTitle = "Greenia Homes - Mua bán, cho thuê Nhà phố, Biệt thự, Căn hộ giá tốt";
+        const defaultSeoDesc = "Cập nhật các sản phẩm bán, cho thuê giá tốt được phân phối tại Greenia Homes. Các sản phẩm: Nhà phố, căn hộ, biệt thự riêng lẻ và các khu đô thị tại Tp HCM và khu vực lân cận.";
+        
         let allProducts = [];
-        let independentProjects = [];
         let allCategories = [];
+        let independentProjects = [];
         
         let filteredData = [];
         const itemsPerPage = 10;
@@ -259,29 +262,66 @@
             </a>`;
         }
 
+        // --- HÀM XỬ LÝ SEO ---
+        function updateSeoUI(targetCatSlug, targetType) {
+            let displayTitle = defaultSeoTitle;
+            let displayDesc = defaultSeoDesc;
+            let searchSlug = targetCatSlug;
+
+            if (targetCatSlug === '') {
+                if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
+                else if (targetType === 'Thuê') searchSlug = 'cho-thue';
+            }
+
+            if (searchSlug !== '') {
+                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === searchSlug);
+                if (!matchedCat && searchSlug === 'chuyen-nhuong') {
+                    matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === 'ban');
+                }
+
+                if (matchedCat) {
+                    displayTitle = matchedCat.seoTitle || matchedCat.name || beautifyCatName(searchSlug);
+                    displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
+                } else {
+                    displayTitle = beautifyCatName(searchSlug);
+                    displayDesc = "";
+                }
+            }
+
+            const titleEl = document.getElementById('luc-seo-title');
+            const descEl = document.getElementById('luc-seo-desc');
+            const boxEl = document.getElementById('luc-seo-header');
+
+            if(titleEl) titleEl.innerText = displayTitle;
+            if(descEl) {
+                if(displayDesc !== "") {
+                    descEl.innerHTML = displayDesc;
+                    descEl.style.display = 'block';
+                } else {
+                    descEl.style.display = 'none';
+                }
+            }
+            if(boxEl) boxEl.style.display = 'block';
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const [prodRes, projRes, catRes] = await Promise.all([
+                const [prodRes, catRes, projRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
+                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null),
+                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null)
                 ]);
                 
                 if(prodRes && prodRes.ok) { const prodsData = await prodRes.json(); allProducts = Array.isArray(prodsData) ? prodsData.reverse() : []; }
                 if(catRes && catRes.ok) { allCategories = await catRes.json(); }
-
-                try {
-                    if (projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
-                } catch(e) {}
+                if(projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
 
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
-                let displayTitle = "Tất cả Sản phẩm";
-                let displayDesc = "";
 
                 if (currCat && currCat.slug && currCat.slug !== 'tat-ca-san-pham') {
                     activeCatSlug = currCat.slug;
-                    if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'ban'; }
+                    if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'chuyen-nhuong'; } 
                     else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; activeCatSlug = 'cho-thue'; }
                     else { filterState.cat = currCat.slug; }
                 } else {
@@ -295,35 +335,15 @@
                     }
                 }
 
+                // UI TABS ACTIVE
                 document.querySelectorAll('.luc-nav-item').forEach(t => t.classList.remove('active'));
                 if (filterState.type === 'Bán') { document.getElementById('tab-ban').classList.add('active'); }
                 else if (filterState.type === 'Thuê') { document.getElementById('tab-thue').classList.add('active'); }
-                else if (filterState.cat !== '') { /* Active dropdown item handled below */ }
+                else if (filterState.cat !== '') { /* handled by dropdown */ }
                 else { document.getElementById('tab-all').classList.add('active'); }
 
-                if (activeCatSlug !== '' && allCategories && allCategories.length > 0) {
-                    const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug || createSafeSlug(c.slug || c.name) === filterState.cat);
-                    if (matchedCat) {
-                        displayTitle = matchedCat.seoTitle || matchedCat.name;
-                        displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
-                    } else {
-                        displayTitle = beautifyCatName(activeCatSlug);
-                    }
-                } else if (activeCatSlug !== '') {
-                    displayTitle = beautifyCatName(activeCatSlug);
-                }
-
-                const titleEl = document.getElementById('luc-seo-title');
-                const descEl = document.getElementById('luc-seo-desc');
-                const boxEl = document.getElementById('luc-seo-header');
-
-                if(titleEl) titleEl.innerText = displayTitle;
-                if(descEl && displayDesc) {
-                    descEl.innerHTML = displayDesc;
-                    if(boxEl) boxEl.style.display = 'block';
-                } else if(boxEl && activeCatSlug !== '') {
-                    boxEl.style.display = 'block';
-                }
+                // GỌI HÀM CẬP NHẬT SEO LẦN ĐẦU TIÊN
+                updateSeoUI(activeCatSlug, filterState.type);
 
                 const ddList = document.getElementById('dyn-cat-list');
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item ${activeCatSlug === '' ? 'selected' : ''}" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
@@ -352,7 +372,6 @@
                 runFilter();
                 
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
-                
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
                         let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
@@ -374,23 +393,10 @@
                 const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
                 document.getElementById('sale-scroll').innerHTML = saleProds.map(p => renderCardHTML(p)).join('');
                 
-                if(saleProds.length > 0) {
-                    const schemaItems = saleProds.map((p, index) => ({
-                        "@type": "ListItem",
-                        "position": index + 1,
-                        "url": `${safeBaseUrl}san-pham/${createSafeSlug(p.cat)}/${createSafeSlug(p.title)}/`,
-                        "name": p.title
-                    }));
-                    const schemaJSON = { "@context": "https://schema.org", "@type": "ItemList", "itemListElement": schemaItems };
-                    const script = document.createElement('script');
-                    script.type = 'application/ld+json';
-                    script.text = JSON.stringify(schemaJSON);
-                    document.head.appendChild(script);
-                }
-
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => renderCardHTML(p)).join('');
 
+                // RENDER CAROUSEL DỰ ÁN VỚI CLASS CHUẨN s2-card (FIX LỖI ẢNH KHỔNG LỒ)
                 if (independentProjects.length > 0) {
                     document.getElementById('gr-proj-scroll').innerHTML = independentProjects.slice(0, 10).map(p => {
                         const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
@@ -456,7 +462,7 @@
             const paginated = smartRecommended.slice(0, forYouPage * forYouItemsPerPage);
             
             if (paginated.length > 0) {
-                grid.innerHTML = paginated.map(p => renderCardHTML(p, true)).join('');
+                grid.innerHTML = paginated.map(p => renderCardHTML(p)).join('');
                 if (paginated.length >= smartRecommended.length) {
                     wrap.style.display = 'none';
                 } else {
@@ -471,18 +477,17 @@
             tab.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.querySelectorAll('.luc-nav-item').forEach(t => t.classList.remove('active')); this.classList.add('active');
+                
                 filterState.type = this.getAttribute('data-type') || '';
                 filterState.cat = ''; 
+                
                 document.querySelectorAll('.luc-drop-item').forEach(i => i.classList.remove('selected'));
                 document.getElementById('luc-current-cat-name').innerText = "Danh mục khác";
                 
-                const boxEl = document.getElementById('luc-seo-header');
-                const titleEl = document.getElementById('luc-seo-title');
-                if (filterState.type === 'Bán') { titleEl.innerText = "Chuyển Nhượng"; boxEl.style.display = 'block'; document.getElementById('luc-seo-desc').style.display = 'none';}
-                else if (filterState.type === 'Thuê') { titleEl.innerText = "Cho Thuê"; boxEl.style.display = 'block'; document.getElementById('luc-seo-desc').style.display = 'none';}
-                else { titleEl.innerText = "Tất cả Sản phẩm"; boxEl.style.display = 'block'; document.getElementById('luc-seo-desc').style.display = 'none';}
+                updateSeoUI('', filterState.type);
 
-                clearLucSearch(false); runFilter(); 
+                clearLucSearch(false); 
+                runFilter(); 
                 window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
             });
         });
@@ -503,15 +508,7 @@
                 document.getElementById('luc-current-cat-name').innerText = catName;
                 document.getElementById('luc-cat-dropdown-group').classList.remove('active-drop');
                 
-                const boxEl = document.getElementById('luc-seo-header');
-                const titleEl = document.getElementById('luc-seo-title');
-                if (filterState.cat !== '') {
-                    titleEl.innerText = catName;
-                    boxEl.style.display = 'block';
-                    document.getElementById('luc-seo-desc').style.display = 'none';
-                } else {
-                    titleEl.innerText = "Tất cả Sản phẩm";
-                }
+                updateSeoUI(filterState.cat, '');
 
                 runFilter(); 
                 window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
@@ -534,10 +531,7 @@
 
         window.clearLucSearch = function(doRun = true) { 
             filterState.keyword = ''; document.getElementById('luc-keyword').value = ''; 
-            if (filterState.cat === '' && filterState.type === '') {
-                 document.getElementById('luc-seo-title').innerText = "Tất cả Sản phẩm";
-                 document.getElementById('luc-seo-header').style.display = 'block';
-            } else { document.getElementById('luc-seo-header').style.display = 'block'; }
+            updateSeoUI(filterState.cat, filterState.type);
             if(doRun) runFilter(); 
         }
 
