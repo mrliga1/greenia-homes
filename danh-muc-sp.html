@@ -253,6 +253,9 @@
             if (!targetCat || targetCat === '') return true;
             const targetSlug = createSafeSlug(targetCat);
             
+            if ((targetSlug === 'ban' || targetSlug === 'chuyen-nhuong' || targetSlug === 'dang-ban') && pData.type === 'Bán') return true;
+            if ((targetSlug === 'cho-thue' || targetSlug === 'thue') && pData.type === 'Thuê') return true;
+
             let catsArray = [];
             if (Array.isArray(pData.cat)) catsArray = pData.cat;
             else if (typeof pData.cat === 'string') catsArray = pData.cat.split(',');
@@ -278,13 +281,13 @@
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
 
             return `
-            <a href="${link}" class="gr-card">
-                <div class="gr-thumb-box">
+            <a href="${link}" class="s2-card">
+                <div class="s2-thumb-box">
                     <span class="gr-tag-abs ${tagClass}">${tagName}</span>
                     <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
-                <div class="gr-body">
-                    <h3 class="gr-tit">${pTitle}</h3>
+                <div class="s2-body">
+                    <h3 class="gr-tit s2-tit">${pTitle}</h3>
                     ${locHtml}
                     <div class="gr-meta">
                         <span class="gr-hl">${p.price || 'Liên hệ'}</span>
@@ -296,30 +299,23 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
+                // TẢI DỮ LIỆU ĐẢO NGƯỢC (BÀI MỚI LÊN ĐẦU)
                 const [postRes, prodRes, catRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null),
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
                     fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
                 ]);
                 
-                // MỚI NHẤT LÊN ĐẦU: Đảo ngược mảng
-                if(postRes && postRes.ok) {
-                    let p = await postRes.json();
-                    allPosts = Array.isArray(p) ? p.reverse() : []; 
-                }
-                if(prodRes && prodRes.ok) {
-                    const prodsData = await prodRes.json();
-                    allProducts = Array.isArray(prodsData) ? prodsData.reverse() : [];
-                }
-                if(catRes && catRes.ok) {
-                    allCategories = await catRes.json();
-                }
+                if(postRes && postRes.ok) { let p = await postRes.json(); allPosts = Array.isArray(p) ? p.reverse() : []; }
+                if(prodRes && prodRes.ok) { const prodsData = await prodRes.json(); allProducts = Array.isArray(prodsData) ? prodsData.reverse() : []; }
+                if(catRes && catRes.ok) { allCategories = await catRes.json(); }
 
                 try {
                     const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
-                    if (projRes.ok) independentProjects = await projRes.json();
+                    if (projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
                 } catch(e) {}
 
+                // XÁC ĐỊNH CATEGORY HIỆN TẠI TỪ URL
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
                 let displayTitle = "Tất cả Sản phẩm";
@@ -346,6 +342,7 @@
                     }
                 }
 
+                // CẬP NHẬT SEO TỪ CATEGORIES.JSON
                 if (activeCatSlug !== '' && allCategories && allCategories.length > 0) {
                     const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
                     if (matchedCat) {
@@ -357,6 +354,7 @@
                     }
                 }
 
+                // UPDATE GIAO DIỆN TITLE & DESC
                 const titleEl = document.getElementById('g282-dyn-title');
                 const descEl = document.getElementById('g282-dyn-desc');
                 const boxEl = document.getElementById('g282-cat-info-box');
@@ -372,7 +370,7 @@
                     boxEl.style.display = 'block';
                 }
 
-                // DỌN SẠCH BÓNG MA BẰNG CÁCH CHỈ HIỂN THỊ DANH MỤC CÓ TỒN TẠI VÀ CÓ SẢN PHẨM
+                // BƯỚC QUAN TRỌNG: TẠO DROPDOWN CHỈ TỪ DANH MỤC THỰC TẾ TRONG CATEGORIES.JSON
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="g282-drop-item ${activeCatSlug === '' ? 'selected' : ''}" style="display:flex; justify-content:space-between; align-items:center; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
                 
                 if (allCategories && allCategories.length > 0) {
@@ -382,8 +380,11 @@
                         let cleanSlug = createSafeSlug(cleanCat);
                         
                         if(cleanCat !== '' && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
+                            // Đếm số lượng sản phẩm
                             let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
-                            if (count > 0) {
+                            
+                            // NẾU CÓ SẢN PHẨM HOẶC CÓ TRONG JSON THÌ MỚI HIỂN THỊ LÊN MENU
+                            if (count > 0 || c.showEmpty) {
                                 let isSelected = (activeCatSlug !== '' && createSafeSlug(cleanCat) === activeCatSlug) ? 'selected' : '';
                                 if (isSelected) {
                                     const currentCatNameEl = document.getElementById('g282-current-cat-name');
@@ -394,14 +395,12 @@
                         }
                     });
                 } else {
+                    // Fallback
                     let otherCats = {};
                     allProducts.forEach(p => {
                         let catsArray = [];
                         if (Array.isArray(p.cat)) catsArray = p.cat;
                         else if (typeof p.cat === 'string') catsArray = p.cat.split(',');
-                        else if (Array.isArray(p.categories)) catsArray = p.categories;
-                        else if (typeof p.categories === 'string') catsArray = p.categories.split(',');
-
                         catsArray.forEach(c => {
                             let cleanCat = c.trim();
                             let cleanSlug = createSafeSlug(cleanCat);
@@ -422,10 +421,31 @@
                 
                 document.getElementById('dyn-cat-list').innerHTML = ddListHTML;
 
+                // INIT TÌM KIẾM
                 runFilter();
                 
-                const rndProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
-                document.getElementById('for-you-scroll').innerHTML = rndProds.map(p => renderCardHTML(p)).join('');
+                // LOGIC "BẤT ĐỘNG SẢN DÀNH CHO BẠN" (SMART TRACKING TỪ TRANG CHI TIẾT)
+                let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
+                let smartRecommended = [];
+                
+                if (viewedHistory.cats.length > 0) {
+                    let matchedByCat = allProducts.filter(p => {
+                        let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
+                        return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
+                    });
+                    matchedByCat = matchedByCat.filter(p => !viewedHistory.ids.includes(p.id));
+                    matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
+                    smartRecommended = matchedByCat.slice(0, 10);
+                }
+                
+                if (smartRecommended.length < 10) {
+                    let fallbackProds = allProducts.filter(p => !smartRecommended.some(sp => sp.id === p.id) && !viewedHistory.ids.includes(p.id))
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, 10 - smartRecommended.length);
+                    smartRecommended = [...smartRecommended, ...fallbackProds];
+                }
+                
+                document.getElementById('for-you-scroll').innerHTML = smartRecommended.map(p => renderCardHTML(p)).join('');
 
                 const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
                 document.getElementById('sale-scroll').innerHTML = saleProds.map(p => renderCardHTML(p)).join('');
@@ -434,7 +454,7 @@
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => renderCardHTML(p)).join('');
 
                 if (independentProjects.length > 0) {
-                    document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
+                    document.getElementById('feat-scroll').innerHTML = independentProjects.slice(0, 10).map(p => {
                         const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
                         return `
                         <a href="${p.link}" class="gr-card">
@@ -484,13 +504,11 @@
                 }
                 
                 let matchType = true;
-                if (filterState.cat === 'chuyen-nhuong' || filterState.cat === 'ban' || filterState.type === 'Bán') matchType = (p.type === 'Bán');
-                else if (filterState.cat === 'cho-thue' || filterState.cat === 'thue' || filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
+                if (filterState.type === 'Bán') matchType = (p.type === 'Bán');
+                else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
                 
                 let matchCat = true;
-                if (filterState.cat !== '' && filterState.cat !== 'chuyen-nhuong' && filterState.cat !== 'ban' && filterState.cat !== 'cho-thue' && filterState.cat !== 'thue') {
-                    matchCat = isCatMatch(p, filterState.cat);
-                }
+                if (filterState.cat !== '') matchCat = isCatMatch(p, filterState.cat);
                 
                 return matchType && matchCat;
             });
