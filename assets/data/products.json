@@ -1,23 +1,5 @@
 [
   {
-    "id": 41,
-    "type": "Bán",
-    "title": "kiểm tra sản phẩm",
-    "slug": "kiem-tra-san-pham",
-    "cat": "căn hộ ",
-    "projectCode": "an phú new city",
-    "loc": "vũng tàu",
-    "price": "10 tỷ",
-    "area": "150",
-    "bed": "5",
-    "img": "",
-    "gallery": [],
-    "content": "<p>👉 <a href=\"https://mrliga1.github.io/greenia-homes/blog/tuyen-duong-vanh-dai-3-tphcm-chinh-thuc-hop-long/\" target=\"_blank\">Tuyến đường V&agrave;nh Đai 3 TP.HCM ch&iacute;nh thức hợp long</a></p>\n\n<p>👉 <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/biet-thu-ven-song-the-global-city/\" target=\"_blank\">Biệt thự ven s&ocirc;ng The Global City</a></p>\n\n<p>👉 <a href=\"https://mrliga1.github.io/greenia-homes/san-pham/can-ho/kiem-tra-san-pham/\" target=\"_blank\">kiểm tra sản phẩm</a></p>\n",
-    "seoTitle": "kiểm tra sản phẩm",
-    "seoDesc": "👉 Tuyến đường Vành Đai 3 TP.HCM chính thức hợp long\n👉 Biệt thự ven sông The Global City\n...",
-    "seoKeywords": "căn hộ , bất động sản"
-  },
-  {
     "id": 42,
     "type": "Bán",
     "title": "Bán nhà phố, căn hộ, biệt thự",
