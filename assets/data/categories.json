@@ -28,5 +28,15 @@
     "seoTitle": "sfsfs",
     "seoDesc": "afsf",
     "seoKeywords": "sfsfsf"
+  },
+  {
+    "id": 4,
+    "type": "prod",
+    "title": "Căn hộ",
+    "slug": "can-ho",
+    "desc": "sfsdfd",
+    "seoTitle": "sfsdf",
+    "seoDesc": "sfsfd",
+    "seoKeywords": "sffsf"
   }
 ]
