@@ -175,6 +175,7 @@
                 <div id="for-you-scroll" class="gr-carousel"></div>
                 <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'for-you-scroll')"><i class="fas fa-chevron-right"></i></button>
             </div>
+            <div class="s2-footer"><button type="button" id="g282-history-more" class="s1-btn" style="display:none;">Xem thêm <i class="fas fa-chevron-down"></i></button></div>
             <div class="gr-ad-slot"></div>
             
             <div class="gr-proj-section" id="dyn-proj-section" style="display:none;">
@@ -182,12 +183,12 @@
                     <div class="gr-proj-left">
                         <h2 class="s-tit">Tin tức dự án</h2>
                         <div class="gr-news-list" id="dyn-proj-news"></div>
-                        <div class="s1-btn-wrap" style="text-align:left; margin-top:20px;"><a href="/greenia-homes/tin-tuc/du-an/" class="s1-btn">Xem thêm tin tức</a></div>
+                        <div class="s1-btn-wrap" style="text-align:left;"><a href="/greenia-homes/tin-tuc/du-an/" class="s1-btn">Xem thêm tin tức</a></div>
                     </div>
                     <div class="gr-proj-right">
                         <h2 class="s-tit">Sản phẩm dự án</h2>
                         <div class="gr-proj-prod-grid" id="dyn-proj-prods"></div>
-                        <div class="s1-btn-wrap" style="margin-top:20px;"><a href="/greenia-homes/san-pham/du-an/" class="s1-btn">Xem thêm sản phẩm</a></div>
+                        <div class="s1-btn-wrap"><a href="/greenia-homes/san-pham/du-an/" class="s1-btn">Xem thêm sản phẩm</a></div>
                     </div>
                 </div>
             </div>
@@ -226,6 +227,7 @@
         let allProducts = [];
         let allPosts = [];
         let independentProjects = [];
+        let allCategories = [];
         let filteredData = [];
         const itemsPerPage = 10;
         let currentPage = 1;
@@ -234,7 +236,6 @@
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-        // HÀM CHUYỂN ĐỔI CHUỖI SANG SLUG ĐỂ SO SÁNH CHÍNH XÁC
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
@@ -288,10 +289,11 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // FETCH DATA
-                const [postRes, prodRes] = await Promise.all([
+                // TẢI THÊM CATEGORIES.JSON ĐỂ LẤY DỮ LIỆU SEO
+                const [postRes, prodRes, catRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/posts.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null)
+                    fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
+                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
                 ]);
                 
                 if(postRes && postRes.ok) allPosts = await postRes.json();
@@ -299,13 +301,16 @@
                     const prodsData = await prodRes.json();
                     allProducts = Array.isArray(prodsData) ? prodsData : [];
                 }
+                if(catRes && catRes.ok) {
+                    allCategories = await catRes.json();
+                }
 
                 try {
                     const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
                     if (projRes.ok) independentProjects = await projRes.json();
                 } catch(e) {}
 
-                // XÁC ĐỊNH CATEGORY HIỆN TẠI ĐỂ SET TIÊU ĐỀ VÀ BỘ LỌC
+                // XÁC ĐỊNH CATEGORY HIỆN TẠI
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
                 let displayTitle = "Tất cả Sản phẩm";
@@ -318,15 +323,13 @@
 
                     if (currCat.slug === 'ban') { filterState.type = 'Bán'; document.getElementById('tab-all').classList.remove('active'); document.querySelector('[data-type="Bán"]').classList.add('active'); }
                     else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; document.getElementById('tab-all').classList.remove('active'); document.querySelector('[data-type="Thuê"]').classList.add('active'); }
-                    else { filterState.cat = currCat.slug; document.getElementById('tab-all').classList.remove('active');}
+                    else { filterState.cat = currCat.name || currCat.slug; document.getElementById('tab-all').classList.remove('active');}
                 } else {
-                    // Fallback URL: Nhận diện danh mục nếu Bot không truyền biến xuống
                     const paths = window.location.pathname.split('/').filter(Boolean);
                     const slug = paths[paths.length - 1];
                     if (slug && slug !== 'san-pham' && slug !== 'tat-ca-san-pham' && slug.indexOf('.html') === -1) {
                         activeCatSlug = createSafeSlug(slug);
                         
-                        // FIX LỖI TIÊU ĐỀ ALL CAPS: Format thành chữ hoa đầu mỗi từ
                         const words = slug.split('-');
                         const mappedWords = words.map(w => {
                             const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
@@ -340,14 +343,26 @@
                     }
                 }
 
-                // Cập nhật Header SEO UI
+                // KIỂM TRA LẠI DỮ LIỆU SEO TRONG FILE CATEGORIES.JSON
+                if (activeCatSlug !== '' && allCategories.length > 0) {
+                    const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
+                    if (matchedCat) {
+                        if (matchedCat.seoTitle) displayTitle = matchedCat.seoTitle;
+                        else if (matchedCat.name) displayTitle = matchedCat.name;
+
+                        if (matchedCat.seoDesc) displayDesc = matchedCat.seoDesc;
+                        else if (matchedCat.desc) displayDesc = matchedCat.desc;
+                    }
+                }
+
+                // CẬP NHẬT HEADER SEO UI
                 const titleEl = document.getElementById('g282-dyn-title');
                 const descEl = document.getElementById('g282-dyn-desc');
                 const boxEl = document.getElementById('g282-cat-info-box');
 
                 if(titleEl) {
                     titleEl.innerText = displayTitle;
-                    titleEl.style.textTransform = "none"; // Ép bỏ in hoa toàn bộ của CSS
+                    titleEl.style.textTransform = "none";
                 }
                 if(descEl && displayDesc) {
                     descEl.innerHTML = displayDesc;
@@ -381,7 +396,6 @@
                 }
 
                 Object.keys(otherCats).forEach(c => {
-                    // Kiểm tra active (Highlight)
                     const isSelected = (activeCatSlug !== '' && createSafeSlug(c) === activeCatSlug) ? 'selected' : '';
                     if (isSelected) {
                         const currentCatNameEl = document.getElementById('g282-current-cat-name');
@@ -390,10 +404,8 @@
                     ddList.insertAdjacentHTML('beforeend', `<div class="g282-drop-item ${isSelected}" data-cat="${c}" data-name="${c}" style="display:flex; justify-content:space-between; align-items:center;"><span>${c}</span> <span style="color:#666; font-size:10px;">(${otherCats[c]})</span></div>`);
                 });
 
-                // INIT TÌM KIẾM & LỌC
                 runFilter();
                 
-                // RENDER CAROUSELS PHỤ TRỢ DƯỚI CÙNG
                 const rndProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
                 document.getElementById('for-you-scroll').innerHTML = rndProds.map(p => renderCardHTML(p)).join('');
 
@@ -403,7 +415,6 @@
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => renderCardHTML(p)).join('');
 
-                // DỰ ÁN CAROUSEL
                 if (independentProjects.length > 0) {
                     document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
                         const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
@@ -415,7 +426,6 @@
                     }).join('');
                 }
 
-                // DỰ ÁN SECTION
                 const projPosts = allPosts.filter(p => {
                     let catsArray = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
                     return catsArray.some(c => createSafeSlug(c).includes('du-an'));
@@ -444,7 +454,6 @@
             }
         });
 
-        // HÀM LỌC CHÍNH BỌC THÉP
         function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
             
@@ -462,14 +471,12 @@
                 return matchType && matchCat && matchKeyword;
             });
 
-            // Status Search
             const statusDiv = document.getElementById('g282-status');
             if(filterState.keyword !== '') {
                 statusDiv.style.display = 'flex';
                 statusDiv.innerHTML = `Tìm thấy <strong>${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearSearch()'>Xóa</span>`;
             } else { statusDiv.style.display = 'none'; }
 
-            // Lấy Page
             const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
             
             const grid = document.getElementById('g282-grid-result');
@@ -479,13 +486,11 @@
                 grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
             }
 
-            // Nút Load More
             const loadBtnWrap = document.querySelector('.g282-load-wrap');
             if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
             else { loadBtnWrap.style.display = 'block'; document.getElementById('g282-load-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
         }
 
-        // TƯƠNG TÁC TABS VÀ TÌM KIẾM
         document.querySelectorAll('.g282-nav-item:not(.g282-dd-trigger)').forEach(tab => {
             tab.addEventListener('click', function() {
                 document.querySelectorAll('.g282-nav-item').forEach(t => t.classList.remove('active')); this.classList.add('active');
@@ -501,7 +506,7 @@
                 const item = e.target.closest('.g282-drop-item');
                 document.querySelectorAll('.g282-drop-item').forEach(i => i.classList.remove('selected')); item.classList.add('selected');
                 document.querySelectorAll('.g282-nav-item').forEach(t => t.classList.remove('active')); document.getElementById('tab-all').classList.add('active');
-                filterState.cat = item.getAttribute('data-cat'); filterState.type = '';
+                filterState.cat = item.getAttribute('data-cat'); filterState.type = ''; filterState.keyword = ''; keywordInput.value = '';
                 document.getElementById('g282-current-cat-name').innerText = item.getAttribute('data-name');
                 document.getElementById('g282-dd').classList.remove('active-drop');
                 clearSearch(false); runFilter(); scrollToAnchor();
@@ -510,7 +515,7 @@
 
         document.getElementById('g282-search-form').addEventListener('submit', function(e) {
             e.preventDefault(); const val = document.getElementById('g282-keyword').value.trim();
-            if(val !== '') { filterState.keyword = val; filterState.cat = ''; filterState.type = ''; runFilter(); scrollToAnchor(); }
+            if(val !== '') { filterState.keyword = val; filterState.cat = ''; filterState.type = ''; tabs.forEach(t => t.classList.remove("active")); document.getElementById("tab-all").classList.add("active"); document.getElementById('g282-current-cat-name').innerText = "Danh mục khác"; runFilter(); window.scrollTo({ top: 0, behavior: 'smooth' });}
         });
 
         document.getElementById('g282-load-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
@@ -522,7 +527,6 @@
             if(anchor && header) { const top = anchor.getBoundingClientRect().top + window.scrollY - header.offsetHeight - 40; window.scrollTo({top: top, behavior: 'smooth'}); }
         }
 
-        // Logic Dropdown Fixed (Tránh che khuất trên mobile)
         const ddGroup = document.getElementById('g282-dd');
         const dropdownMenu = ddGroup.querySelector('.g282-dropdown');
         
