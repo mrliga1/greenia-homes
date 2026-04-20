@@ -106,5 +106,23 @@
     "seoTitle": "sfdfd",
     "seoDesc": "sfdsds",
     "seoKeywords": "ágg"
+  },
+  {
+    "id": 48,
+    "type": "Bán",
+    "title": "kiêm tra sản phẩm",
+    "slug": "kiem-tra-san-pham",
+    "cat": "Nhà Phố",
+    "projectCode": "ádfssssssss",
+    "loc": "aaaaa",
+    "price": "1 tỷ",
+    "area": "10",
+    "bed": "1",
+    "img": "",
+    "gallery": [],
+    "content": "",
+    "seoTitle": "sd",
+    "seoDesc": "sssssssssssss",
+    "seoKeywords": "sssssssssssssss"
   }
 ]
