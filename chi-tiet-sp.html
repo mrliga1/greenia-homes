@@ -307,8 +307,8 @@
                         if (matchedCat) catNameForReadmore = matchedCat.name || catNameForReadmore;
                     }
                     
-                    // Lọc những sản phẩm cùng danh mục và đếm (Loại trừ sản phẩm hiện tại)
-                    let relatedCount = allProducts.filter(p => isCatMatch(p, activeCatSlug) && p.id !== prod.id).length;
+                    // Lọc những sản phẩm cùng danh mục và đếm (Dùng title để tránh lỗi thiếu ID)
+                    let relatedCount = allProducts.filter(p => isCatMatch(p, activeCatSlug) && p.title !== prod.title).length;
                     
                     if (relatedCount > 0) {
                         readmoreCatHTML = `
@@ -324,10 +324,11 @@
                 let otherCats = {};
                 
                 // TRACKING THÔNG MINH BẰNG LOCALSTORAGE
+                let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
                 if (prod) {
-                    if (prod.id && !viewedHistory.ids.includes(prod.id)) {
-                        viewedHistory.ids.unshift(prod.id);
+                    if (prodIdForTracking && !viewedHistory.ids.includes(prodIdForTracking)) {
+                        viewedHistory.ids.unshift(prodIdForTracking);
                         if (viewedHistory.ids.length > 30) viewedHistory.ids.pop();
                     }
                     let prodCats = [];
@@ -371,7 +372,7 @@
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
-                        if (p.id === prod.id) return false; 
+                        if (p.title === prod.title) return false; 
                         let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
@@ -381,8 +382,8 @@
                 
                 if (smartRecommended.length < 10) {
                     let fallbackProds = allProducts.filter(p => {
-                        if (p.id === prod.id) return false;
-                        return !smartRecommended.some(sp => sp.id === p.id);
+                        if (p.title === prod.title) return false;
+                        return !smartRecommended.some(sp => sp.title === p.title);
                     }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
                     smartRecommended = [...smartRecommended, ...fallbackProds];
                 }
