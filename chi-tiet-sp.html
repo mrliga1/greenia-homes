@@ -11,23 +11,64 @@
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
-        #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; overflow: visible !important;}
+        
+        /* PADDING ĐỂ KHÔNG BỊ MENU CHE */
+        #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 90px 0 50px 0; width: 100%; box-sizing: border-box; overflow: visible !important;}
         #lux-uni-catalog * { box-sizing: border-box; }
         .luc-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; overflow: visible !important;}
         .luc-clearfix { clear: both; display: block; width: 100%; height: 1px; }
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
-        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; font-family: 'Be Vietnam Pro', sans-serif; }
+        /* TAB BAR CÓ TÍNH NĂNG SMART STICKY */
+        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 70px; z-index: 900; background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s, background 0.3s; }
+        .luc-sticky-wrapper.is-stuck { top: 0 !important; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
+        
+        .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
+        .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
+        .luc-nav-right-group { display: flex; align-items: center; }
+        
+        /* LỚP CSS DIỆT GẠCH CHÂN CỦA CÁC TAB VÀ ĐIỀU CHỈNH PADDING/FONT SIZE */
+        .luc-nav-item { cursor: pointer; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 20px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
+        .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
+        
+        #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 34px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 13px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 5px 10px; }
+        
+        .luc-nav-group { position: relative; display: inline-block; }
+        .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
+        .luc-dropdown { position: absolute !important; top: 100% !important; left: 0 !important; min-width: 180px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 1000; margin-top: 10px !important; }
+        .luc-nav-group.active-drop .luc-dropdown { display: block; animation: luxFadeIn 0.3s; }
+        .luc-drop-item { padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
+        .luc-drop-item:hover { background: rgba(197, 160, 89, 0.1); color: #c5a059; }
+        .luc-drop-item.selected { color: #c5a059; font-weight: 700; background: rgba(197, 160, 89, 0.1); }
+        @keyframes luxFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; font-family: 'Be Vietnam Pro', sans-serif; }
         .gr-breadcrumbs a { text-decoration: none; color: inherit; transition: 0.3s; }
         .gr-breadcrumbs a:hover { color: #c5a059; } 
         .gr-breadcrumbs span.sep { color: #c5a059; font-size: 10px; }
         .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+        .luc-notification-area { min-height: 0px; margin-bottom: 20px; transition: all 0.3s; margin-top: 10px; padding-top: 0; }
+        .luc-status-bar { padding: 15px 0; margin-top: 0px; color: #fff; font-size: 14px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
+        .luc-clear-search { cursor: pointer; color: #ff6b6b; font-size: 12px; text-decoration: underline; margin-left: 5px; }
+
+        .luc-grid-wrapper { position: relative; min-height: 200px; }
+        .luc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .luc-grid.loading { opacity: 0.3; }
+        .luc-loader { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); color: #c5a059; font-size: 30px; display: none; }
+        .luc-loader.show { display: block; }
+        
+        .luc-load-wrap, .s2-footer { text-align: center; margin-top: 20px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 15px; margin-bottom: 40px;}
+        .luc-load-btn, .s1-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 8px 25px; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 12px; text-transform: uppercase;}
+        .luc-load-btn:hover, .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: #c5a059; }
+
         .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 20px; padding-top: 0px; overflow: visible !important;}
         .v261-c1 { width:60%; background:#0b1120; border-radius:10px; overflow:hidden; border:1px solid rgba(197,160,89,0.2); display:flex; flex-direction:column; }
         
-        .v261-c2 { width:25%; position: -webkit-sticky; position: sticky; top: 90px; z-index: 10; height: max-content; } 
-        .v261-c3 { width:15%; position: -webkit-sticky; position: sticky; top: 90px; z-index: 10; height: max-content; }
+        .v261-c2 { width:25%; position: -webkit-sticky; position: sticky; top: 130px; z-index: 10; height: max-content; } 
+        .v261-c3 { width:15%; position: -webkit-sticky; position: sticky; top: 130px; z-index: 10; height: max-content; }
         
         .v261-box { background:#0b1120; border:1px solid #c5a059; border-radius:10px; padding:20px; text-align:center; height:100%; display:flex; flex-direction:column; justify-content:center; }
         .v261-logo { width:60px; margin:0 auto 10px; display:block; }
@@ -93,48 +134,12 @@
         .v261-desc-content img { max-width: 100%; height: auto; display: block; margin: 15px auto; border-radius: 8px;}
         .v261-map-box { width: 100%; min-height: 450px; background: #1a1f2e; position: relative; } .v261-map-box iframe { width:100% !important; height:100% !important; min-height:450px !important; border:0; display:block !important; }
         
-        /* CSS KHỐI XEM THÊM */
+        /* CSS CHO KHỐI XEM THÊM DANH MỤC TRONG BÀI VIẾT ĐÃ SỬA THEO YÊU CẦU */
         .v261-readmore-cat { margin-top: 30px; padding-top: 20px; border-top: 1px dashed rgba(197, 160, 89, 0.3); font-size: 14px; color: #b0b8c4; display: flex; align-items: center; flex-wrap: wrap; gap: 5px;}
         .v261-readmore-cat span { color: #888; margin-right: 5px; }
         .v261-readmore-cat a { color: #c5a059; font-weight: 700; text-decoration: none; transition: 0.3s; display: inline-flex; align-items: center;}
         .v261-readmore-cat a:hover { color: #fff; text-decoration: underline; }
         .v261-readmore-cat .cat-count { font-size: 13px; margin-left: 4px; font-weight: 500; color: #888; background: none; padding: 0;}
-
-        /* LỚP CSS DIỆT GẠCH CHÂN CỦA CÁC TAB <a> */
-        .luc-nav-item { cursor: pointer; padding: 5px 12px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 13px; font-weight: 500; transition: 0.3s; border-radius: 20px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
-        .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
-
-        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0px; z-index: 900; background-color: #05080f; padding: 10px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s; }
-        .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
-        .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
-        .luc-nav-right-group { display: flex; align-items: center; }
-
-        #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
-        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; }
-        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 13px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 5px 10px; }
-        
-        .luc-nav-group { position: relative; display: inline-block; }
-        .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
-        .luc-dropdown { position: absolute; top: 100%; left: 0; min-width: 180px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 1000; margin-top: 10px; }
-        .luc-nav-group.active-drop .luc-dropdown { display: block; animation: luxFadeIn 0.3s; }
-        .luc-drop-item { padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none; }
-        .luc-drop-item:hover { background: rgba(197, 160, 89, 0.1); color: #c5a059; }
-        .luc-drop-item.selected { color: #c5a059; font-weight: 700; background: rgba(197, 160, 89, 0.1); }
-        @keyframes luxFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .luc-notification-area { min-height: 0px; margin-bottom: 20px; transition: all 0.3s; margin-top: 10px; padding-top: 0; }
-        .luc-status-bar { padding: 15px 0; margin-top: 0px; color: #fff; font-size: 14px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex-wrap: wrap; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); }
-        .luc-clear-search { cursor: pointer; color: #ff6b6b; font-size: 12px; text-decoration: underline; margin-left: 5px; }
-
-        .luc-grid-wrapper { position: relative; min-height: 200px; }
-        .luc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        .luc-grid.loading { opacity: 0.3; }
-        .luc-loader { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); color: #c5a059; font-size: 30px; display: none; }
-        .luc-loader.show { display: block; }
-        
-        .luc-load-wrap, .s2-footer { text-align: center; margin-top: 20px; border-top: 1px dashed rgba(35,45,69,1); padding-top: 15px; margin-bottom: 40px;}
-        .luc-load-btn, .s1-btn { background: transparent; border: 1px solid #c5a059; color: #c5a059; padding: 8px 25px; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 12px; text-transform: uppercase;}
-        .luc-load-btn:hover, .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: #c5a059; }
 
         /* LIGHTBOX CSS */
         .v261-lb-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); backdrop-filter:blur(8px); z-index:99999; display:none; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s; }
@@ -150,23 +155,24 @@
         .v261-lb-nav:hover { background:rgba(197, 160, 89, 0.2); border-color:#c5a059; color:#c5a059; transform:translateY(-50%) scale(1.1); box-shadow:0 0 15px rgba(197, 160, 89, 0.3); }
         .v261-lb-nav.prev { left:30px; } .v261-lb-nav.next { right:30px; }
 
+        /* CAROUSELS CHUẨN */
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 15px; margin-top: 40px; }
         .s-tit { font-size: 20px !important; font-weight: 500; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
         .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 10px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
-        .gr-carousel .gr-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
+        .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
         
-        .gr-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
-        .gr-card:hover { border-color: #c5a059; transform: translateY(-5px); }
-        .gr-thumb-box { height: 200px; position: relative; overflow: hidden; }
-        .gr-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
-        .gr-card:hover .gr-thumb-box img { transform: scale(1.1); }
-        .gr-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .gr-tag-abs { position: absolute; top: 0 !important; left: 0 !important; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; color: #000; z-index: 5; border-bottom-right-radius: 6px; }
+        .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
+        .s2-card:hover { border-color: #c5a059; transform: translateY(-5px); }
+        .s2-thumb-box { height: 200px; position: relative; overflow: hidden; }
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block;}
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.1); }
+        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-tag-abs { position: absolute; top: 0 !important; left: 0 !important; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; background: #c5a059; z-index: 5; border-bottom-right-radius: 6px; border-top-left-radius: 0;}
         .tag-ban { background: #ff4d4f; color: #fff; } .tag-thue { background: #00b894; color: #fff; }
-        .gr-tit { font-size: 13px !important; font-weight: 600; color: #fff; height: 38px; line-height: 1.4 !important; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
-        .gr-card:hover .gr-tit { color: #c5a059; }
+        .gr-tit { font-size: 13px !important; font-weight: 600; color: #fff; height: 38px; line-height: 1.4 !important; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .s2-card:hover .gr-tit { color: #c5a059; }
         .gr-loc { font-size: 11px; color: #999; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; }
         .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; }
         .gr-hl { color: #c5a059; font-weight: 700; font-size: 14px; }
@@ -178,6 +184,7 @@
         @media (max-width: 1024px) { .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } }
         @media (max-width: 767px) { 
             .v261-intro { flex-direction: column; } 
+            /* GỠ STICKY TRÊN ĐIỆN THOẠI CHO CỘT TƯ VẤN & DANH MỤC */
             .v261-c1, .v261-c2, .v261-c3 { width: 100%; position: relative !important; top: 0 !important;} 
             .v261-specs { grid-template-columns: 1fr 1fr; } 
             .v261-lb-nav { width:40px; height:40px; font-size:16px; } .v261-lb-nav.prev { left:10px; } .v261-lb-nav.next { right:10px; } .v261-lb-close { right:10px; top:10px; } .v261-lb-body { padding:0; }
@@ -185,7 +192,7 @@
             .luc-nav-left-group { width: 100%; overflow-x: auto; flex-wrap: nowrap; } 
             .luc-nav-right-group { width: 100%; } 
             #luc-search-form { width: 100%; }
-            .gr-carousel .gr-card { flex: 0 0 100% !important; max-width: 100% !important; }
+            .gr-carousel .s2-card { flex: 0 0 100% !important; max-width: 100% !important; }
             .gr-nav-btn { display: none !important; }
         }
     </style>
@@ -222,7 +229,7 @@
         window.GREENIA_CURRENT_PRODUCT = null;
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         
-        const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo.png'; 
+        const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo-greenia-homes.png'; 
         const zalo_img = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
         const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
         
@@ -253,42 +260,31 @@
         function isCatMatch(pData, targetCat) {
             if (!targetCat || targetCat === '') return true;
             const targetSlug = createSafeSlug(targetCat);
-            
-            if ((targetSlug === 'ban' || targetSlug === 'chuyen-nhuong' || targetSlug === 'dang-ban') && pData.type === 'Bán') return true;
-            if ((targetSlug === 'cho-thue' || targetSlug === 'thue') && pData.type === 'Thuê') return true;
-
-            let catsArray = [];
-            if (Array.isArray(pData.cat)) catsArray = pData.cat;
-            else if (typeof pData.cat === 'string') catsArray = pData.cat.split(',');
-            else if (Array.isArray(pData.categories)) catsArray = pData.categories;
-            else if (typeof pData.categories === 'string') catsArray = pData.categories.split(',');
-
+            let catsArray = Array.isArray(pData.cat) ? pData.cat : (pData.cat ? String(pData.cat).split(',') : []);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
         function renderCardHTML(p) {
             const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const pTitle = p.title ? String(p.title) : 'Sản phẩm';
             const catSlug = createSafeSlug(pCat);
-            const pSlug = p.slug || createSafeSlug(pTitle);
+            const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-            
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
 
             return `
-            <a href="${link}" class="gr-card">
-                <div class="gr-thumb-box">
+            <a href="${link}" class="s2-card">
+                <div class="s2-thumb-box">
                     <span class="gr-tag-abs ${tagClass}">${tagName}</span>
                     <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
-                <div class="gr-body">
-                    <h3 class="gr-tit">${pTitle}</h3>
+                <div class="s2-body">
+                    <h3 class="gr-tit s2-tit">${p.title}</h3>
                     ${locHtml}
                     <div class="gr-meta">
                         <span class="gr-hl">${p.price || 'Liên hệ'}</span>
@@ -299,25 +295,33 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
+            const filterBar = document.getElementById('luc-filter-bar');
+            if(filterBar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) filterBar.classList.add('is-stuck');
+                    else filterBar.classList.remove('is-stuck');
+                });
+            }
+
             const container = document.getElementById('sp-container');
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
             if (!prod) { window.location.replace(safeBaseUrl + 'san-pham.html'); return; }
 
             try {
-                const [prodRes, catRes] = await Promise.all([
+                const [prodRes, catRes, projRes] = await Promise.all([
                     fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null)
+                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null),
+                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null)
                 ]);
                 
                 if(prodRes && prodRes.ok) {
                     const prodsData = await prodRes.json();
                     allProducts = Array.isArray(prodsData) ? prodsData.reverse() : [];
                 }
-                
-                if(catRes && catRes.ok) {
-                    allCategories = await catRes.json();
-                }
+                if(catRes && catRes.ok) { allCategories = await catRes.json(); }
+                let independentProjects = [];
+                if(projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
 
                 // 1. TẠO MEDIA LIST (Gallery)
                 mediaList = [];
@@ -328,7 +332,7 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI CHUẨN XÁC
+                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI
                 let activeCatSlug = '';
                 let breadcrumbCatName = 'Sản phẩm';
                 
@@ -346,7 +350,6 @@
                         breadcrumbCatName = beautifyCatName(activeCatSlug);
                     }
                 }
-                
                 if (!activeCatSlug) {
                     const paths = window.location.pathname.split('/').filter(Boolean);
                     if (paths.length >= 3 && paths[paths.length - 3] === 'san-pham') {
@@ -355,7 +358,7 @@
                     }
                 }
 
-                // KHỐI "XEM THÊM CÙNG DANH MỤC" ĐÃ SỬA CHUẨN FORM SỐ LƯỢNG
+                // TÍNH TOÁN KHỐI XEM THÊM (CHỐNG LỖI HIỂN THỊ 0)
                 let readmoreCatHTML = '';
                 if (activeCatSlug !== '') {
                     if (allCategories && allCategories.length > 0) {
@@ -364,7 +367,6 @@
                     }
                     
                     let currentProdSlug = prod.slug || createSafeSlug(prod.title);
-                    
                     let relatedCount = allProducts.filter(p => {
                         let loopProdSlug = p.slug || createSafeSlug(p.title);
                         return isCatMatch(p, activeCatSlug) && loopProdSlug !== currentProdSlug;
@@ -381,7 +383,6 @@
 
                 // 3. DANH MỤC Ở CỘT PHẢI
                 let countBan = 0, countThue = 0;
-                let otherCats = {};
                 
                 let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
@@ -426,11 +427,12 @@
                     });
                 }
 
-                // 4. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC (THÔNG MINH)
+                // 4. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
-                        if (p.title === prod.title) return false; 
+                        let pSlug = p.slug || createSafeSlug(p.title);
+                        if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false; 
                         let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
@@ -440,8 +442,9 @@
                 
                 if (smartRecommended.length < 10) {
                     let fallbackProds = allProducts.filter(p => {
-                        if (p.title === prod.title) return false;
-                        return !smartRecommended.some(sp => sp.title === p.title);
+                        let pSlug = p.slug || createSafeSlug(p.title);
+                        if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false;
+                        return !smartRecommended.some(sp => (sp.slug || createSafeSlug(sp.title)) === pSlug);
                     }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
                     smartRecommended = [...smartRecommended, ...fallbackProds];
                 }
@@ -469,7 +472,50 @@
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
-                // ================= BƠM TOÀN BỘ GIAO DIỆN VÀO =================
+                // ================= BƠM CAROUSEL MỚI NHẤT VÀ DỰ ÁN =================
+                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
+                let saleHTML = saleProds.length > 0 ? `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem thêm BĐS Bán</a></div>
+                ` : '';
+
+                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
+                let rentHTML = rentProds.length > 0 ? `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="rent-scroll-latest" class="gr-carousel">${rentProds.map(p => renderCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem thêm BĐS Cho thuê</a></div>
+                ` : '';
+
+                let projHTML = '';
+                if (independentProjects && independentProjects.length > 0) {
+                    projHTML = `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Dự án nổi bật</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'feat-scroll')"><i class="fas fa-chevron-left"></i></button>
+                        <div id="feat-scroll" class="gr-carousel">
+                            ${independentProjects.slice(0, 10).map(p => {
+                                const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                                return `<a href="${p.link}" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div>
+                                    <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
+                                </a>`;
+                            }).join('')}
+                        </div>
+                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
+                }
+
+                // ================= RÁP GIAO DIỆN =================
                 container.innerHTML = `
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
@@ -600,8 +646,12 @@
                     <div class="luc-clearfix"></div><div class="luc-spacer"></div>
 
                     ${relatedHTML}
+                    ${saleHTML}
+                    ${rentHTML}
+                    ${projHTML}
                 `;
 
+                // KÍCH HOẠT GALLERY LOGIC JS
                 setTimeout(initGallery, 300);
                 
                 // GÁN SỰ KIỆN TÌM KIẾM
@@ -803,7 +853,7 @@
         };
 
         // CAROUSEL VUỐT NGANG
-        window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.gr-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
+        window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.s2-card') || el.querySelector('.gr-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
 
     </script>
 </body>
