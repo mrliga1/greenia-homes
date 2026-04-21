@@ -20,11 +20,11 @@
         /* TABS */
         .s1-head-row { border-bottom: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: flex-end; }
         .s1-tabs-wrap { display: flex; gap: 25px; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 5px;} .s1-tabs-wrap::-webkit-scrollbar { display: none; }
-        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 10px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block;}
+        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block;}
         .s1-tab:hover { color: #c5a059; } .s1-tab.active { color: #c5a059 !important; border-bottom: 2px solid #c5a059 !important; }
         
-        .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); }
-        .gr-cat-h1 { font-size: 26px; font-weight: 700; color: var(--gold); margin: 0 0 8px 0; line-height: 1.3; text-transform: uppercase;}
+        .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 2px; border-bottom: 1px dashed var(--border); }
+        .gr-cat-h1 { font-size: 26px; font-weight: 700; color: var(--gold); margin: 0 0 8px 0; line-height: 1.3; }
         
         /* GRID 3 CỘT TOP */
         .s1-grid-body { display: grid; grid-template-columns: 40% 30% 25%; gap: 2.5%; margin-bottom: 40px; align-items: start; }
@@ -86,14 +86,27 @@
         .gr-hl { color: var(--gold); font-weight: 700; font-size: 14px; }
 
         /* TAGS */
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 10px; font-size: 10px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; text-transform: uppercase; background: var(--gold); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 2px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
         .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
 
         .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
         .s1-btn { display: inline-block; font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; padding: 10px 30px; border: 1px solid var(--gold); border-radius: 3px; transition: 0.3s; text-decoration: none; cursor: pointer; background: transparent; }
         .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: var(--gold); }
 
-        @media (max-width: 900px) { .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } .gr-sec2 { flex-direction: column; gap: 30px; } .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } .s3-grid { grid-template-columns: repeat(2, 1fr); } .gr-carousel .s2-card { flex: 0 0 calc(50% - 10px); max-width: calc(50% - 10px); } }
+        @media (max-width: 900px) { 
+            .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } 
+            .gr-sec2 { flex-direction: column; gap: 30px; } 
+            .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } 
+            
+            /* Ép về 1 cột cho phần "Bất động sản dành cho bạn" (s3-grid) */
+            .s3-grid { grid-template-columns: 1fr; } 
+            
+            /* Ép về 1 cột cho các thanh trượt (Carousel) - chiếm 85% để lộ mép thẻ sau */
+            .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
+
+            /* Ép list bài viết (70/30) về 1 cột trên Mobile để chữ to dễ đọc hơn */
+            .gr-sec2-left { grid-template-columns: 1fr; }
+        }
     </style>
 
     <link rel="canonical" href="https://mrliga1.github.io/greenia-homes/tin-tuc/tin-du-an/" />
@@ -223,20 +236,40 @@
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
+            // Bổ sung HTML cho Diện tích và Phòng ngủ (Có kiểm tra nếu trống thì ẩn đi)
+            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
+            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+
             if(isList) {
+                // Thẻ nhỏ ở Sidebar (Danh sách dọc)
                 return `<a href="${link}" class="gr-list-prod">
                             <div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
-                            <div class="gr-lprod-info"><h4 class="gr-lprod-tit">${p.title}</h4><div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div><div class="gr-lprod-meta"><span class="gr-lprod-hl">${p.price}</span></div></div>
+                            <div class="gr-lprod-info">
+                                <h4 class="gr-lprod-tit">${p.title}</h4>
+                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-lprod-meta">
+                                    <span class="gr-lprod-hl">${p.price}</span>
+                                </div>
+                            </div>
                         </a>`;
             } else {
-                const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+                // Thẻ lớn ở Carousel & Bất động sản dành cho bạn
                 return `<a href="${link}" class="s2-card">
                             <div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
-                            <div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div><div class="gr-meta"><span class="gr-hl">${p.price}</span><div style="display:flex; gap:10px;"><span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>${bedHtml}</div></div></div>
+                            <div class="s2-body">
+                                <h3 class="gr-tit">${p.title}</h3>
+                                <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-meta">
+                                    <span class="gr-hl">${p.price}</span>
+                                    <div style="display:flex; gap:10px;">
+                                        ${areaHtml}
+                                        ${bedHtml}
+                                    </div>
+                                </div>
+                            </div>
                         </a>`;
             }
         }
-
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
