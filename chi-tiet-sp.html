@@ -11,13 +11,15 @@
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
-        #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 0; width: 100%; box-sizing: border-box; padding-bottom: 50px; overflow: visible !important;}
+        
+        /* FIX LỖI BREADCRUMB BỊ CHE: THÊM PADDING TOP 90px */
+        #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 90px 0 50px 0; width: 100%; box-sizing: border-box; overflow: visible !important;}
         #lux-uni-catalog * { box-sizing: border-box; }
         .luc-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; overflow: visible !important;}
         .luc-clearfix { clear: both; display: block; width: 100%; height: 1px; }
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
-        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; font-family: 'Be Vietnam Pro', sans-serif; }
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; font-family: 'Be Vietnam Pro', sans-serif; }
         .gr-breadcrumbs a { text-decoration: none; color: inherit; transition: 0.3s; }
         .gr-breadcrumbs a:hover { color: #c5a059; } 
         .gr-breadcrumbs span.sep { color: #c5a059; font-size: 10px; }
@@ -26,8 +28,8 @@
         .v261-intro { display:flex; gap:20px; margin-bottom:40px; align-items:flex-start; margin-top: 20px; padding-top: 0px; overflow: visible !important;}
         .v261-c1 { width:60%; background:#0b1120; border-radius:10px; overflow:hidden; border:1px solid rgba(197,160,89,0.2); display:flex; flex-direction:column; }
         
-        .v261-c2 { width:25%; position: -webkit-sticky; position: sticky; top: 90px; z-index: 10; height: max-content; } 
-        .v261-c3 { width:15%; position: -webkit-sticky; position: sticky; top: 90px; z-index: 10; height: max-content; }
+        .v261-c2 { width:25%; position: -webkit-sticky; position: sticky; top: 110px; z-index: 10; height: max-content; } 
+        .v261-c3 { width:15%; position: -webkit-sticky; position: sticky; top: 110px; z-index: 10; height: max-content; }
         
         .v261-box { background:#0b1120; border:1px solid #c5a059; border-radius:10px; padding:20px; text-align:center; height:100%; display:flex; flex-direction:column; justify-content:center; }
         .v261-logo { width:60px; margin:0 auto 10px; display:block; }
@@ -145,6 +147,7 @@
 
         @media (max-width: 1024px) { .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } }
         @media (max-width: 767px) { 
+            #lux-uni-catalog { padding-top: 130px; }
             .v261-intro { flex-direction: column; } 
             /* GỠ STICKY TRÊN ĐIỆN THOẠI CHO CỘT TƯ VẤN & DANH MỤC */
             .v261-c1, .v261-c2, .v261-c3 { width: 100%; position: relative !important; top: 0 !important;} 
@@ -215,15 +218,7 @@
             if (!targetCat || targetCat === '') return true;
             const targetSlug = createSafeSlug(targetCat);
             
-            if ((targetSlug === 'ban' || targetSlug === 'chuyen-nhuong' || targetSlug === 'dang-ban') && pData.type === 'Bán') return true;
-            if ((targetSlug === 'cho-thue' || targetSlug === 'thue') && pData.type === 'Thuê') return true;
-
-            let catsArray = [];
-            if (Array.isArray(pData.cat)) catsArray = pData.cat;
-            else if (typeof pData.cat === 'string') catsArray = pData.cat.split(',');
-            else if (Array.isArray(pData.categories)) catsArray = pData.categories;
-            else if (typeof pData.categories === 'string') catsArray = pData.categories.split(',');
-
+            let catsArray = Array.isArray(pData.cat) ? pData.cat : (typeof pData.cat === 'string' ? pData.cat.split(',') : []);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
@@ -289,37 +284,54 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // XÁC ĐỊNH DANH MỤC HIỆN TẠI TỪ URL
+                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI (THUẬT TOÁN ĐÃ ĐƯỢC FIX ARRAY)
                 let activeCatSlug = '';
-                const paths = window.location.pathname.split('/').filter(Boolean);
-                if (paths.length >= 3 && paths[paths.length - 3] === 'san-pham') {
-                    activeCatSlug = createSafeSlug(paths[paths.length - 2]);
-                } else if (prod.cat) {
-                    activeCatSlug = createSafeSlug(prod.cat);
+                let breadcrumbCatName = 'Sản phẩm';
+                
+                if (prod.cat) {
+                    let pCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
+                    let validCat = pCats.find(c => {
+                        let s = createSafeSlug(c);
+                        return s && s !== 'ban' && s !== 'cho-thue' && s !== 'chuyen-nhuong' && s !== 'san-pham';
+                    });
+                    if (validCat) {
+                        activeCatSlug = createSafeSlug(validCat);
+                        breadcrumbCatName = beautifyCatName(activeCatSlug);
+                    } else if (pCats.length > 0) {
+                        activeCatSlug = createSafeSlug(pCats[0]);
+                        breadcrumbCatName = beautifyCatName(activeCatSlug);
+                    }
                 }
                 
-                // NẾU TÌM ĐƯỢC DANH MỤC, TÍNH TOÁN SỐ LƯỢNG ĐỂ IN KHỐI "XEM THÊM"
+                // Nếu vẫn không có, lấy từ URL
+                if (!activeCatSlug) {
+                    const paths = window.location.pathname.split('/').filter(Boolean);
+                    if (paths.length >= 3 && paths[paths.length - 3] === 'san-pham') {
+                        activeCatSlug = createSafeSlug(paths[paths.length - 2]);
+                        breadcrumbCatName = beautifyCatName(activeCatSlug);
+                    }
+                }
+
+                // TÍNH TOÁN "XEM THÊM DANH MỤC NÀY" (ĐÃ FIX LỖI SO SÁNH TITLE)
                 let readmoreCatHTML = '';
                 if (activeCatSlug !== '') {
-                    let catNameForReadmore = beautifyCatName(activeCatSlug);
                     if (allCategories && allCategories.length > 0) {
                         const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
-                        if (matchedCat) catNameForReadmore = matchedCat.name || catNameForReadmore;
+                        if (matchedCat) breadcrumbCatName = matchedCat.name || breadcrumbCatName;
                     }
                     
-                    // Lọc những sản phẩm cùng danh mục và đếm (Dùng title để tránh lỗi thiếu ID)
                     let relatedCount = allProducts.filter(p => isCatMatch(p, activeCatSlug) && p.title !== prod.title).length;
                     
                     if (relatedCount > 0) {
                         readmoreCatHTML = `
                         <div class="v261-readmore-cat">
                             <span>Xem thêm: </span>
-                            <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${catNameForReadmore} <span class="cat-count">${relatedCount} sản phẩm</span></a>
+                            <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName} <span class="cat-count">${relatedCount} sản phẩm</span></a>
                         </div>`;
                     }
                 }
 
-                // 2. DANH MỤC Ở CỘT PHẢI
+                // 3. DANH MỤC Ở CỘT PHẢI
                 let countBan = 0, countThue = 0;
                 let otherCats = {};
                 
@@ -331,10 +343,7 @@
                         viewedHistory.ids.unshift(prodIdForTracking);
                         if (viewedHistory.ids.length > 30) viewedHistory.ids.pop();
                     }
-                    let prodCats = [];
-                    if (Array.isArray(prod.cat)) prodCats = prod.cat;
-                    else if (typeof prod.cat === 'string') prodCats = prod.cat.split(',');
-                    
+                    let prodCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
                     prodCats.forEach(c => {
                         let cleanSlug = createSafeSlug(c);
                         if (cleanSlug && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
@@ -368,7 +377,7 @@
                     });
                 }
 
-                // 3. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC (THÔNG MINH)
+                // 4. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC (THÔNG MINH)
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
@@ -401,14 +410,13 @@
                     </div>`;
                 }
 
-                // 4. MAP
+                // 5. MAP
                 let mapHTML = '<div style="padding:20px;text-align:center;color:#888;">Đang cập nhật vị trí.</div>';
                 if(prod.map) {
                     if(prod.map.includes('<iframe')) mapHTML = prod.map;
                     else mapHTML = `<iframe width="100%" height="450" frameborder="0" style="border:0" src="${prod.map}"></iframe>`;
                 }
 
-                const catSlug = createSafeSlug(prod.cat);
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
@@ -417,7 +425,7 @@
                     <div class="gr-breadcrumbs">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
                         <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham/${catSlug}/">${beautifyCatName(prod.cat) || 'Khác'}</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
 
