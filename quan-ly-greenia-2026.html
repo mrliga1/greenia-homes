@@ -59,6 +59,7 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { margin-bottom: 15px; }
         .form-group.full { grid-column: 1 / -1; }
+        .form-group.third { grid-column: span 1; } /* Class cho các trường nhỏ */
         label { display: block; margin-bottom: 8px; color: #fff; font-weight: 600; font-size: 13px; text-transform: uppercase;}
         input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         input:focus { outline: none; border-color: var(--gold); }
@@ -96,12 +97,12 @@
         .link-cat { font-size: 10px; color: var(--gold); background: rgba(197,160,89,0.1); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; font-weight: bold;}
         .link-cat.is-category { background: rgba(0, 184, 148, 0.15); color: #00b894; border: 1px solid #00b894; }
        
-        .media-item { display: flex; gap: 10px; align-items: center; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;}
-        .media-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
-        .media-url { font-size: 11px; color: #aaa; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .media-item { display: flex; flex-direction: column; gap: 10px; padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;}
+        .media-thumb-large { width: 100%; height: 120px; object-fit: contain; border-radius: 4px; background: #000; border: 1px solid #333;}
+        .media-url { font-size: 11px; color: #aaa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 5px; background: #111; border-radius: 4px; }
 
         .btn-group { display: flex; gap: 5px; margin-top: 5px;}
-        .btn-action { flex: 1; background: #1a1f2b; color: #fff; border: 1px solid #444; padding: 8px 6px; font-size: 11px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold;}
+        .btn-action { flex: 1; background: #1a1f2b; color: #fff; border: 1px solid #444; padding: 8px 6px; font-size: 11px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-weight: bold; text-align: center;}
         .btn-action:hover { background: #fff; color: #000; border-color: #fff; }
         .btn-action.del-btn { flex: 0 0 35px; background: rgba(255, 71, 87, 0.1); border-color: #ff4757; color: #ff4757;}
         .btn-action.del-btn:hover { background: #ff4757; color: #fff; }
@@ -109,6 +110,10 @@
 
         .select-edit-box { background: rgba(197,160,89,0.1); border: 1px dashed var(--gold); border-radius: 8px; padding: 15px; margin-bottom: 25px; }
         .select-edit-box select { background: #000; border-color: var(--gold); color: var(--gold); font-weight: bold; }
+
+        .favicon-box { margin-top: 30px; padding: 20px; border: 1px dashed #444; border-radius: 8px; background: #111; text-align: center; }
+        .favicon-box h4 { margin-top: 0; color: #fff; font-size: 14px; }
+        .favicon-box p { font-size: 12px; color: #888; }
     </style>
 </head>
 <body>
@@ -192,14 +197,21 @@
                         <input type="text" id="p-title" oninput="checkLength(this, 'p-title-count', 65)" placeholder="VD: Biệt thự The Global City">
                         <div class="char-count" id="p-title-count">0/65</div>
                     </div>
-                    <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat"><datalist id="p-cats"></datalist></div>
-                    <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode"></div>
-                    <div class="form-group"><label>Vị trí:</label><input type="text" id="p-loc"></div>
-                    <div class="form-group"><label>Giá hiển thị:</label><input type="text" id="p-price"></div>
-                    <div class="form-group"><label>Diện tích (m2):</label><input type="text" id="p-area"></div>
-                    <div class="form-group"><label>Phòng Ngủ:</label><input type="number" id="p-bed"></div>
-
-                    <div class="form-group full">
+                    <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat" placeholder="Chọn hoặc nhập mới..."><datalist id="p-cats"></datalist></div>
+                    <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode" placeholder="VD: P123"></div>
+                    <div class="form-group full"><label>Vị trí:</label><input type="text" id="p-loc" placeholder="Nhập địa chỉ cụ thể"></div>
+                    
+                    <div class="form-group third"><label>Giá hiển thị:</label><input type="text" id="p-price" placeholder="VD: 5 Tỷ"></div>
+                    <div class="form-group third"><label>Diện tích (m2):</label><input type="text" id="p-area" placeholder="VD: 120"></div>
+                    <div class="form-group third"><label>Hướng nhà:</label><input type="text" id="p-dir" placeholder="VD: Đông Nam"></div>
+                    
+                    <div class="form-group third"><label>Số tầng:</label><input type="text" id="p-floor" placeholder="VD: 3"></div>
+                    <div class="form-group third"><label>Phòng Ngủ (PN):</label><input type="number" id="p-bed" placeholder="VD: 4"></div>
+                    <div class="form-group third"><label>Số WC:</label><input type="number" id="p-wc" placeholder="VD: 3"></div>
+                    
+                    <div class="form-group third"><label>Mặt tiền (m):</label><input type="text" id="p-front" placeholder="VD: 5"></div>
+                    <div class="form-group third"><label>Pháp lý:</label><input type="text" id="p-legal" placeholder="VD: Sổ hồng"></div>
+                    <div class="form-group third"></div> <div class="form-group full">
                         <label>1. Ảnh Bìa (Auto Cloud):</label>
                         <div class="upload-area" onclick="document.getElementById('p-main-img-file').click()"><i class="fas fa-cloud-upload-alt fa-2x"></i><input type="file" id="p-main-img-file" hidden onchange="handleSingleUpload(this, 'p-main-preview')"></div>
                         <div id="p-main-preview" class="preview-grid"></div>
@@ -210,7 +222,7 @@
                         <div id="p-gallery-preview" class="preview-grid"></div>
                     </div>
                     <div class="form-group full" style="color: #000;">
-                        <label style="color:#fff;">Nội dung chi tiết:</label>
+                        <label style="color:#fff;">Nội dung chi tiết (Copy mã ảnh từ cột phải và chọn nút "Nguồn" (Source) để dán vào):</label>
                         <textarea id="p-content" name="p-content"></textarea>
                     </div>
                 </div>
@@ -240,7 +252,7 @@
                         <div id="n-thumb-preview" class="preview-grid"></div>
                     </div>
                     <div class="form-group full" style="color: #000;">
-                        <label style="color:#fff;">Nội dung bài viết:</label>
+                        <label style="color:#fff;">Nội dung bài viết (Copy mã ảnh từ cột phải và chọn nút "Nguồn" (Source) để dán vào):</label>
                         <textarea id="n-content" name="n-content"></textarea>
                     </div>
                 </div>
@@ -286,6 +298,17 @@
                 <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN</button>
             </div>
 
+            <div class="favicon-box">
+                <h4><i class="fas fa-globe"></i> Đổi Icon Quả Địa Cầu (Favicon)</h4>
+                <p>Tải ảnh logo vuông (VD: 512x512px) để lấy mã nhúng vào thẻ <code>&lt;head&gt;</code>.</p>
+                <input type="file" id="favicon-upload" accept="image/png, image/jpeg, image/ico" style="display:none;" onchange="uploadFavicon(this)">
+                <button class="btn-action" style="padding: 10px 20px; font-size: 13px;" onclick="document.getElementById('favicon-upload').click()"><i class="fas fa-upload"></i> Tải ảnh lên</button>
+                <div id="favicon-result" style="margin-top: 15px; display: none;">
+                    <input type="text" id="favicon-code" readonly style="font-family: monospace; background: #000; font-size: 11px; text-align: left;">
+                    <button class="btn-action" style="margin-top: 5px; width: 100%;" onclick="copyFaviconCode()"><i class="fas fa-copy"></i> Copy Mã Favicon</button>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-right">
@@ -296,8 +319,12 @@
                 </div>
                 <input type="text" id="link-search" onkeyup="filterLinks()" placeholder="🔍 Tìm kiếm..." style="background: rgba(0,0,0,0.5); border-color: #444; padding: 10px; border-radius: 4px;">
             </div>
+            
             <div id="list-links" class="link-list-scroll active"><div style="text-align:center; padding:30px; color:#666;">Đang đồng bộ...</div></div>
-            <div id="list-media" class="link-list-scroll"><div id="media-placeholder" style="text-align:center; padding:30px; color:#666; font-size:12px;">Ảnh tải lên sẽ hiện ở đây.</div></div>
+            
+            <div id="list-media" class="link-list-scroll">
+                <div id="media-placeholder" style="text-align:center; padding:30px; color:#666; font-size:12px;">Ảnh tải lên sẽ tự động hiện ở đây.</div>
+                </div>
         </div>
     </div>
 </div>
@@ -319,8 +346,8 @@
     let editMode = { active: false, type: null, id: null };
     const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
 
-    CKEDITOR.replace('p-content', { height: 350, versionCheck: false });
-    CKEDITOR.replace('n-content', { height: 350, versionCheck: false });
+    CKEDITOR.replace('p-content', { height: 350, versionCheck: false, allowedContent: true });
+    CKEDITOR.replace('n-content', { height: 350, versionCheck: false, allowedContent: true });
 
     function checkLogin() {
         const pwd = document.getElementById('sys-password').value;
@@ -458,7 +485,15 @@
             document.getElementById('p-loc').value = item.loc || "";
             document.getElementById('p-price').value = item.price || "";
             document.getElementById('p-area').value = item.area || "";
+            
+            // CÁC TRƯỜNG THÔNG SỐ ĐÃ BỔ SUNG ĐỂ SỬA
+            document.getElementById('p-dir').value = item.dir || "";
+            document.getElementById('p-floor').value = item.floor || "";
             document.getElementById('p-bed').value = item.bed || "";
+            document.getElementById('p-wc').value = item.wc || "";
+            document.getElementById('p-front').value = item.front || "";
+            document.getElementById('p-legal').value = item.legal || "";
+            
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || "";
             document.getElementById('p-seo-desc').value = item.seoDesc || "";
@@ -547,10 +582,11 @@
         document.getElementById('btn-submit-prod').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; document.getElementById('btn-submit-prod').classList.remove('update-mode');
         document.getElementById('btn-submit-news').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; document.getElementById('btn-submit-news').classList.remove('update-mode');
         document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
-        document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-rocket"></i> LƯU CẤU HÌNH DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode');
+        document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-save"></i> LƯU DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode');
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
     }
 
+    // HÀM TẢI ẢNH LÊN CLOUD VÀ ĐẨY VÀO THƯ VIỆN BÊN PHẢI
     async function uploadToCloud(file) {
         const apiKey = document.getElementById('imgbbKey').value;
         if(!apiKey) { alert("Lỗi API Key ImgBB!"); return null; }
@@ -563,26 +599,38 @@
             const data = await res.json();
             if(data.success) {
                 const directUrl = data.data.url;
-                addToMediaLibrary(directUrl, file.name);
+                addToMediaLibrary(directUrl, file.name); // THÊM ẢNH VÀO CỘT PHẢI NGAY LẬP TỨC
                 return directUrl;
             } else { throw new Error(data.error.message); }
         } catch(e) { alert("Lỗi Cloud ImgBB!"); return null; }
     }
 
+    // HÀM RENDER ẢNH TẠI TAB ẢNH CLOUD
     function addToMediaLibrary(url, name) {
         document.getElementById('media-placeholder').style.display = 'none';
         const container = document.getElementById('list-media');
+        
+        // Sinh ra thẻ HTML chèn ảnh để copy
+        const imgHtmlCode = `<img src="${url}" alt="${name}" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`;
+        const encodedHtml = encodeURIComponent(imgHtmlCode);
+
         const item = document.createElement('div');
         item.className = 'media-item';
         item.innerHTML = `
-            <img src="${url}" class="media-thumb">
-            <div style="flex:1; overflow:hidden;">
-                <div style="font-size:11px; font-weight:bold; color:#fff; margin-bottom:3px;">${name.substring(0,20)}...</div>
-                <div class="media-url">${url}</div>
+            <img src="${url}" class="media-thumb-large">
+            <div class="media-url">${name}</div>
+            <div class="btn-group">
+                <button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-link"></i> Link</button>
+                <button class="btn-action" onclick="copyDecodedHTML('${encodedHtml}')" style="background:#00b894; border-color:#00b894;"><i class="fas fa-code"></i> Mã HTML</button>
             </div>
-            <button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-copy"></i> Copy</button>
         `;
         container.prepend(item);
+    }
+
+    function copyDecodedHTML(encodedStr) {
+        const htmlCode = decodeURIComponent(encodedStr);
+        navigator.clipboard.writeText(htmlCode);
+        alert("ĐÃ COPY MÃ HTML!\n\nHướng dẫn chèn ảnh vào bài viết:\n1. Sang khung Soạn thảo nội dung.\n2. Bấm vào nút 'Nguồn' (Source) trên thanh công cụ.\n3. Dán mã này vào vị trí bạn muốn hiển thị ảnh.");
     }
 
     async function handleSingleUpload(input, previewId, targetObj = 'main') {
@@ -603,6 +651,31 @@
             if(url) uploadedFiles.gallery.push(url); 
         }
         document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join('');
+    }
+
+    // TẢI FAVICON LÊN CLOUD VÀ LẤY MÃ
+    async function uploadFavicon(input) {
+        if(!input.files[0]) return;
+        const resDiv = document.getElementById('favicon-result');
+        const codeInput = document.getElementById('favicon-code');
+        
+        codeInput.value = "Đang tải lên mây...";
+        resDiv.style.display = 'block';
+
+        const url = await uploadToCloud(input.files[0]);
+        if(url) {
+            const faviconCode = `<link rel="icon" href="${url}" type="image/x-icon" />`;
+            codeInput.value = faviconCode;
+        } else {
+            resDiv.style.display = 'none';
+        }
+    }
+
+    function copyFaviconCode() {
+        const codeInput = document.getElementById('favicon-code');
+        codeInput.select();
+        document.execCommand("copy");
+        alert("Đã Copy mã Favicon.\nHãy dán dòng mã này vào bên dưới thẻ <head> của file HTML để đổi icon quả địa cầu nhé!");
     }
 
     async function pushData(type) {
@@ -628,7 +701,16 @@
             newData = {
                 id: parseInt(document.getElementById('p-id').value), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal,
                 cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
-                price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, bed: document.getElementById('p-bed').value || "",
+                price: document.getElementById('p-price').value, area: document.getElementById('p-area').value,
+                
+                // CÁC TRƯỜNG THÔNG SỐ ĐƯỢC BỔ SUNG ĐỂ XUẤT LÊN DATA
+                dir: document.getElementById('p-dir').value || "",
+                floor: document.getElementById('p-floor').value || "",
+                bed: document.getElementById('p-bed').value || "",
+                wc: document.getElementById('p-wc').value || "",
+                front: document.getElementById('p-front').value || "",
+                legal: document.getElementById('p-legal').value || "",
+
                 img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
                 seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
             };
@@ -790,7 +872,7 @@
                     <a href="${fullUrl}" target="_blank" class="link-tit">${item.title}</a>
                     <div class="btn-group">
                         <button class="btn-action" onclick="copyToClip('${fullUrl}')"><i class="fas fa-link"></i> Link</button>
-                        <button class="btn-action html-btn" onclick="copyEmbedCode('${fullUrl}', '${safeTitle}')"><i class="fas fa-code"></i> Mã</button>
+                        <button class="btn-action html-btn" onclick="copyEmbedCode('${fullUrl}', '${safeTitle}')"><i class="fas fa-code"></i> Gợi ý</button>
                         <button class="btn-action edit-btn" onclick="triggerEdit(${item.id}, '${item.typeKey}')"><i class="fas fa-edit"></i> Sửa</button>
                         <button class="btn-action del-btn" onclick="deleteItem(${item.id}, '${item.typeKey}')"><i class="fas fa-trash"></i></button>
                     </div>
@@ -814,11 +896,11 @@
             }
         });
     }
-    function copyToClip(text) { navigator.clipboard.writeText(text); alert("Đã Copy:\n" + text); }
+    function copyToClip(text) { navigator.clipboard.writeText(text); alert("Đã Copy URL:\n" + text); }
     function copyEmbedCode(url, title) {
         const code = `<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a href="${url}" class="gr-related-link" target="_blank">${title}</a></div>`;
         navigator.clipboard.writeText(code); 
-        alert("Đã copy MÃ CHÈN có Icon động!\n\nMẹo:\n1. Tự gõ dòng 'Tham khảo các bài viết liên quan:' trong khung soạn thảo.\n2. Bấm nút 'Nguồn' (Source) và dán (Ctrl+V) mã này xuống dưới.");
+        alert("Đã copy MÃ GỢI Ý BÀI VIẾT LIÊN QUAN!\n\nDán vào chế độ NGUỒN của Nội dung chi tiết.");
     }
     function slugify(text) {
         return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
