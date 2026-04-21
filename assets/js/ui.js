@@ -396,3 +396,62 @@ function setActiveMenu() {
         }
     });
 }
+
+// =========================================================
+// HỆ THỐNG TỰ ĐỘNG ĐIỀU CHỈNH HEADER & ACTIVE MENU
+// =========================================================
+document.addEventListener("DOMContentLoaded", function() {
+    // Dùng setInterval để "canh chừng" cho đến khi HTML của Header được nạp xong
+    let checkHeader = setInterval(function() {
+        const header = document.querySelector('.site-header');
+        const navLinks = document.querySelectorAll('.nav-list .nav-link');
+        
+        // Nếu đã tìm thấy Header và Menu thì bắt đầu xử lý
+        if (header && navLinks.length > 0) {
+            clearInterval(checkHeader); // Tắt radar canh chừng
+            
+            let currentUrl = window.location.href;
+            let pathName = window.location.pathname;
+
+            // Kiểm tra xem có phải đang ở Trang Chủ không
+            let isHome = currentUrl.endsWith('index.html') || pathName === '/' || pathName === '/greenia-homes/';
+
+            // ----------------------------------------------------
+            // 1. SỬA LỖI GIAO DIỆN HEADER (TRONG SUỐT vs NỀN ĐEN)
+            // ----------------------------------------------------
+            if (!isHome) {
+                // Ép Header ở các trang con phải có màu đen và viền vàng mờ dưới đáy
+                header.style.backgroundColor = '#05080f'; 
+                header.style.borderBottom = '1px solid rgba(197, 160, 89, 0.2)';
+            }
+
+            // ----------------------------------------------------
+            // 2. SỬA LỖI ACTIVE MENU (Kể cả khi đang ở trong trang chi tiết)
+            // ----------------------------------------------------
+            // Xóa sạch hiệu ứng active cũ đi
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            if (isHome) {
+                let home = document.querySelector('.nav-link[href="index.html"]');
+                if(home) home.classList.add('active');
+            } 
+            else if (currentUrl.includes('san-pham')) {
+                // Cứ đường link nào có chữ 'san-pham' là sáng nút Chuyển Nhượng
+                let sp = document.querySelector('.nav-link[href="san-pham.html"]');
+                if(sp) sp.classList.add('active');
+            } 
+            else if (currentUrl.includes('du-an')) {
+                let da = document.querySelector('.nav-link[href="du-an.html"]');
+                if(da) da.classList.add('active');
+            } 
+            else if (currentUrl.includes('tin-tuc')) {
+                let tt = document.querySelector('.nav-link[href="tin-tuc.html"]');
+                if(tt) tt.classList.add('active');
+            } 
+            else if (currentUrl.includes('lien-he')) {
+                let lh = document.querySelector('.nav-link[href="lien-he.html"]');
+                if(lh) lh.classList.add('active');
+            }
+        }
+    }, 100); // Radar quét 0.1 giây / lần
+});
