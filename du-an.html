@@ -7,7 +7,6 @@
     <title>Danh Sách Dự Án Bất Động Sản Đẳng Cấp | Greenia Homes</title>
 
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
-
     <meta name="description" content="Tổng hợp các dự án căn hộ, nhà phố, biệt thự cao cấp đang và sắp mở bán. Cập nhật thông tin, bảng giá, chính sách ưu đãi và tiến độ mới nhất từ Greenia Homes.">
     <meta name="keywords" content="dự án bất động sản, dự án căn hộ, dự án nhà phố, dự án vinhomes, greenia homes">
     
@@ -32,7 +31,7 @@
             --lx-dark: #05080f;
             --lx-card: #0e121b;
             --lx-border: rgba(197, 160, 89, 0.15);
-            --lx-line: rgba(255, 255, 255, 0.1);
+            --lx-line: rgba(255, 255, 255, 0.08); /* Kẻ vạch mờ tinh tế hơn */
             --lx-text: #b0b8c4;
             --lx-title: #ffffff;
             max-width: 1280px;
@@ -56,15 +55,15 @@
             margin-top: 15px; color: var(--lx-text); font-size: 15px; max-width: 600px; margin-left: auto; margin-right: auto;
         }
 
-        /* --- 3. GRID SYSTEM (4 CỘT) --- */
+        /* --- 3. GRID SYSTEM --- */
         .lux5-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 40px 20px;
+            gap: 35px 20px; /* Chỉnh gap hẹp lại chút cho gọn */
         }
         .lux5-grid.loading { opacity: 0.5; pointer-events: none; }
 
-        /* --- 4. CARD STYLE --- */
+        /* --- 4. CARD STYLE (ĐÃ TINH CHỈNH GỌN GÀNG HƠN) --- */
         .lux5-card {
             background-color: var(--lx-card);
             border: 1px solid var(--lx-border);
@@ -77,19 +76,19 @@
             text-decoration: none !important;
         }
         .lux5-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px); /* Nảy lên nhẹ nhàng hơn */
             border-color: var(--lx-gold);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
-        /* ĐÃ SỬA: BADGE TRẠNG THÁI DÍNH SÁT GÓC TRÁI TRÊN CÙNG */
+        /* BADGE TRẠNG THÁI */
         .lux5-status-badge {
             position: absolute; 
             top: 0; left: 0; z-index: 10;
             background: #ff9f43; color: #000; 
             font-size: 11px; font-weight: 800;
-            padding: 6px 15px; 
-            border-radius: 6px 0 8px 0; /* Bo góc khớp thẻ */
+            padding: 5px 12px; 
+            border-radius: 6px 0 8px 0; 
             box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -100,7 +99,7 @@
         /* --- 5. HÌNH ẢNH --- */
         .lux5-thumb {
             position: relative; width: 100%;
-            padding-top: 66.66%; /* Tỉ lệ 3:2 */
+            padding-top: 66.66%; 
             overflow: hidden;
             border-bottom: 1px solid var(--lx-border);
         }
@@ -108,16 +107,19 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; transition: transform 0.8s ease;
         }
-        .lux5-card:hover .lux5-thumb img { transform: scale(1.1); }
+        .lux5-card:hover .lux5-thumb img { transform: scale(1.08); }
 
-        /* --- 6. NỘI DUNG --- */
-        .lux5-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        /* --- 6. NỘI DUNG (ĐÃ CHỈNH LẠI PADDING VÀ SIZE CHỮ) --- */
+        .lux5-body { 
+            padding: 15px 18px; /* Ép mỏng thẻ lại cho tinh tế */
+            flex: 1; display: flex; flex-direction: column; 
+        }
         
         .lux5-card-title {
             font-family: 'Playfair Display', serif;
-            font-size: 18px !important;
+            font-size: 16px !important; /* Hạ size chữ xuống cho thanh thoát */
             color: var(--lx-gold) !important;
-            font-weight: 500; line-height: 1.4;
+            font-weight: 600; line-height: 1.4;
             margin: 0 0 10px 0; transition: color 0.3s ease;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
@@ -125,22 +127,32 @@
         a.lux5-card .lux5-card-title { color: var(--lx-gold) !important; }
         .lux5-card:hover .lux5-card-title { color: #ffffff !important; }
 
+        /* --- PHẦN VỊ TRÍ + ĐƯỜNG KẺ PHÂN CÁCH --- */
         .lux5-meta {
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-            font-size: 12px; color: #888; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            font-size: 12px; color: #888; 
+            margin-bottom: 12px; 
+            padding-bottom: 12px; /* Tạo khoảng trống để vẽ đường kẻ */
+            border-bottom: 1px solid var(--lx-line); /* Đường kẻ mờ dưới vị trí */
         }
-        .lux5-meta i { color: var(--lx-gold); margin-right: 4px; }
+        .lux5-meta i { color: var(--lx-gold); }
 
+        /* --- PHẦN GIÁ BÁN --- */
         .lux5-price {
             font-size: 15px; font-weight: 700; color: #fff;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .lux5-price span.label {
+            font-size: 12px; font-weight: 400; color: #888; /* Màu xám cho chữ "Giá bán:" */
         }
 
+        /* --- PHẦN MÔ TẢ NGẮN --- */
         .lux5-desc {
-            font-size: 13px; color: var(--lx-text); line-height: 1.6;
-            margin: auto 0 0 0; padding-top: 15px; 
+            font-size: 13px; color: var(--lx-text); line-height: 1.5;
+            margin: auto 0 0 0; padding-top: 12px; 
             border-top: 1px dashed var(--lx-line); 
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
         /* --- LOADER --- */
@@ -151,7 +163,7 @@
         .lux-load-wrap { text-align: center; margin-top: 50px; }
         .lux-load-btn { 
             background: transparent; border: 1px solid var(--lx-gold); color: var(--lx-gold); 
-            padding: 12px 35px; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 700; 
+            padding: 10px 30px; font-family: 'Be Vietnam Pro', sans-serif; font-weight: 600; 
             cursor: pointer; transition: 0.3s; text-transform: uppercase; border-radius: 4px; font-size: 13px;
         }
         .lux-load-btn:hover { background: rgba(197, 160, 89, 0.15); color: #fff; }
@@ -161,7 +173,7 @@
         @media (max-width: 900px) { .lux5-grid { grid-template-columns: repeat(2, 1fr); } }  
         @media (max-width: 600px) { 
             .lux5-grid { grid-template-columns: 1fr; padding: 0 10px; } 
-            #lux-project-archive { padding-top: 130px; } /* Mobile Menu cao hơn */
+            #lux-project-archive { padding-top: 130px; } 
             .lux5-title { font-size: 26px; }
         }              
     </style>
@@ -197,14 +209,14 @@
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         let allProjects = [];
         let currentPage = 1;
-        const itemsPerPage = 12; // 12 bài cho đẹp grid 4 cột như thiết kế PHP gốc
+        const itemsPerPage = 12; 
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const res = await fetch(safeBaseUrl + 'assets/data/projects.json');
                 if (res.ok) {
                     const data = await res.json();
-                    allProjects = Array.isArray(data) ? data.reverse() : []; // Xếp mới nhất lên đầu
+                    allProjects = Array.isArray(data) ? data.reverse() : []; 
                     document.getElementById('lux-loader').classList.remove('show');
                     renderProjects();
                 } else {
@@ -221,7 +233,7 @@
             if (!status) return '';
             if (status.toLowerCase().includes('sắp')) return 'status-sap-ra-mat';
             if (status.toLowerCase().includes('giao')) return 'status-da-ban-giao';
-            return ''; // Mặc định màu cam (Đang mở bán)
+            return ''; 
         }
 
         function renderProjects() {
@@ -235,8 +247,10 @@
                 paginated.forEach(p => {
                     const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
                     const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
+                    
                     const loc = p.loc ? `<div class="lux5-meta"><span><i class="fas fa-map-marker-alt"></i> ${p.loc}</span></div>` : '';
-                    const price = p.price ? `<div class="lux5-price">${p.price}</div>` : '';
+                    // Đã chèn thêm chữ Giá bán: màu xám trước dữ liệu giá
+                    const price = p.price ? `<div class="lux5-price"><span class="label">Giá bán:</span> ${p.price}</div>` : '';
                     const desc = p.seoDesc ? `<div class="lux5-desc">${p.seoDesc}</div>` : '';
                     const statusClass = getStatusClass(p.status);
                     
@@ -257,7 +271,6 @@
                 
                 grid.innerHTML = html;
                 
-                // Ẩn/hiện nút Load More
                 if (paginated.length >= allProjects.length) {
                     wrap.style.display = 'none';
                 } else {
@@ -276,7 +289,7 @@
             setTimeout(() => {
                 renderProjects();
                 this.innerHTML = originalText;
-            }, 300); // Giả lập độ trễ tải mạng cho mượt
+            }, 300);
         });
     </script>
 </body>
