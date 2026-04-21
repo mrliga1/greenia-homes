@@ -1,1 +1,275 @@
+<section id="vhgp-final-v15-vertical" class="luxury-contact-wrapper">
+    
+    <div class="luxury-bg-pattern"></div>
 
+    <style>
+        /* --- NHÚNG FONT CHỮ SANG TRỌNG --- */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+
+        /* --- CẤU HÌNH MÀU SẮC --- */
+        .luxury-contact-wrapper {
+            --g-gold: #c5a059; 
+            --g-gold-hover: #d4af37;
+            --g-navy: #05080f; 
+            --g-card: #0b1120;
+            --g-text: #94a3b8; 
+            --g-border: rgba(255, 255, 255, 0.08);
+            font-family: 'Manrope', sans-serif; box-sizing: border-box;
+            width: 100%; position: relative; padding: 70px 0;
+            background-color: var(--g-navy); 
+            overflow: hidden; z-index: 1; display: block; 
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        }
+        .luxury-contact-wrapper * { box-sizing: border-box; }
+
+        /* CONTAINER GRID */
+        .lux-contact-grid {
+            display: grid; grid-template-columns: 45% 55%; gap: 50px;
+            max-width: 1100px; margin: 0 auto; padding: 0 20px;
+            position: relative; z-index: 2; align-items: center;
+        }
+
+        /* --- CỘT TRÁI: THÔNG TIN TINH TẾ --- */
+        .lux-info-box h2 {
+            font-family: 'Playfair Display', serif; /* Đổi sang Playfair */
+            color: #fff; font-size: 34px; font-weight: 600; margin: 0 0 15px 0;
+            letter-spacing: 0.5px; line-height: 1.3;
+        }
+        .lux-info-desc {
+            color: var(--g-text); font-size: 14px; margin-bottom: 40px; line-height: 1.6; font-weight: 300;
+        }
+
+        .lux-info-item {
+            display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px;
+        }
+        .lux-icon-circle {
+            width: 40px; height: 40px; flex-shrink: 0;
+            background: rgba(197, 160, 89, 0.05); 
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--g-gold); font-size: 14px; transition: 0.3s;
+        }
+        .lux-info-item:hover .lux-icon-circle { background: var(--g-gold); color: #000; border-color: var(--g-gold); }
+
+        .lux-info-content h4 { color: #fff; margin: 0 0 4px; font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; letter-spacing: 0.5px;}
+        .lux-info-content p { color: var(--g-text); margin: 0; font-size: 13px; font-weight: 300;}
+        .lux-info-content a { color: var(--g-gold); text-decoration: none; transition: 0.3s; }
+        .lux-info-content a:hover { color: #fff; }
+
+        /* --- CỘT PHẢI: FORM GỌN GÀNG CHUYÊN NGHIỆP --- */
+        .lux-form-wrapper {
+            background: var(--g-card);
+            border: 1px solid var(--g-border);
+            padding: 40px; border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .v15-ver-title { 
+            font-family: 'Playfair Display', serif; /* Font Tiêu đề */
+            font-size: 26px; font-weight: 600; color: var(--g-gold); 
+            margin: 0 0 5px 0; text-align: left;
+        }
+        
+        .v15-ver-rating-box {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-bottom: 15px; color: var(--g-gold); 
+        }
+        .v15-ver-stars { font-size: 14px; letter-spacing: 2px; }
+        .v15-ver-count { font-size: 12px; color: #777; font-weight: 400; font-family: 'Manrope', sans-serif; }
+
+        .v15-ver-desc { font-size: 13px; color: var(--g-text); margin-bottom: 25px; line-height: 1.5; font-weight: 300; }
+        .v15-ver-desc strong { color: #fff; font-weight: 500; }
+
+        /* Form Layout */
+        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 15px; }
+        
+        /* Chỉnh 2 ô trên cùng nằm ngang cho gọn */
+        .v15-form-row { display: flex; gap: 15px; width: 100%; }
+        .v15-form-row input { flex: 1; }
+
+        .v15-ver-input { 
+            width: 100%; background: rgba(0,0,0,0.2); 
+            border: 1px solid var(--g-border); 
+            color: #fff; padding: 14px 18px; font-size: 13px; 
+            border-radius: 4px; outline: none; transition: 0.3s; 
+            font-family: 'Manrope', sans-serif; font-weight: 300;
+        }
+        .v15-ver-input::placeholder { color: #64748b; }
+        .v15-ver-input:focus { border-color: var(--g-gold); background: rgba(197, 160, 89, 0.02); }
+        
+        .v15-ver-btn { 
+            width: 100%; padding: 14px; margin-top: 10px;
+            background: var(--g-gold); color: #000; border: 1px solid var(--g-gold); 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            border-radius: 4px; cursor: pointer; transition: all 0.3s ease; font-family: 'Manrope', sans-serif; font-size: 13px;
+        }
+        .v15-ver-btn:hover { background: var(--g-gold-hover); border-color: var(--g-gold-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.2); }
+
+        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.05); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 4px; text-align: left; animation: fadeIn 0.5s ease forwards; }
+        .success-title { color: #2ecc71; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .success-text { color: #94a3b8; font-size: 12px; font-weight: 300; }
+
+        @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .lux-contact-grid { grid-template-columns: 1fr; gap: 40px; }
+            .v15-form-row { flex-direction: column; gap: 15px; }
+        }
+
+        /* Background Pattern Tinh tế */
+        .luxury-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; animation: bgFloat 60s linear infinite; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 22.485l.828.83-1.415 1.415-.828-.828-.828.828L-3.658 22.485l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828.828-.828 1.415 1.415-.828.828zM0 54.627l.828.83-1.415 1.415-.828-.828-.828.828L-3.658 54.627l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828.828-.828 1.415 1.415-.828.828zM54.627 60l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 60l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828z' fill='%23c5a059' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+        @keyframes bgFloat { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
+    </style>
+
+    <div class="lux-contact-grid">
+        
+        <div class="lux-info-box">
+            <h2>Kết Nối Cùng Chuyên Gia</h2>
+            <p class="lux-info-desc">
+                Nhận đặc quyền tư vấn trực tiếp và bộ tài liệu nội bộ dành riêng cho quỹ căn hộ/dự án hạng sang. Đội ngũ của Greenia Homes luôn sẵn sàng đồng hành cùng bạn 24/7.
+            </p>
+
+            <div class="lux-info-item">
+                <div class="lux-icon-circle"><i class="fas fa-phone-alt"></i></div>
+                <div class="lux-info-content">
+                    <h4>Hotline Chuyên Trách</h4>
+                    <p><a href="tel:0932966700">0932 966 700</a> (Zalo/Viber 24/7)</p>
+                </div>
+            </div>
+
+            <div class="lux-info-item">
+                <div class="lux-icon-circle"><i class="fas fa-envelope"></i></div>
+                <div class="lux-info-content">
+                    <h4>Email CSKH</h4>
+                    <p><a href="mailto:thuankdbds@gmail.com">thuankdbds@gmail.com</a></p>
+                </div>
+            </div>
+
+            <div class="lux-info-item">
+                <div class="lux-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="lux-info-content">
+                    <h4>Văn Phòng Trải Nghiệm</h4>
+                    <p>E32 An Phú New City, Phường An Phú, Tp Thủ Đức</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lux-form-wrapper">
+            <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+            <div class="v15-ver-rating-box" id="rating-container-v15-ver">
+                <span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span>
+                <span class="v15-ver-count" id="count-v15-ver">(Checking...)</span>
+            </div>
+            <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong id="prj-name-v15-ver">...</strong> qua Zalo/Email.</p>
+
+            <form id="leadFormV15Ver" class="v15-ver-form">
+                
+                <div class="v15-form-row">
+                    <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                </div>
+                
+                <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email nhận tài liệu" required>
+                <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu quan tâm (VD: Căn 2PN, Shophouse...)" required>
+                
+                <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ NGAY</button>
+            </form>
+
+            <div id="v15-ver-success" class="success-overlay">
+                <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                <div class="success-text">Hệ thống đang chuẩn bị gửi tài liệu qua Zalo/Email cho quý khách.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script id="seo-json-ld-v15-ver" type="application/ld+json">{}</script>
+    <script>
+        // ============================================================
+        // ▼▼▼ CẤU HÌNH API & TRACKING ▼▼▼
+        const API_LEAD_V15_VER = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
+        const PROJECT_NAME_V15_VER = "Greenia Homes"; 
+        const GOOGLE_ADS_ID_V15_VER = "AW-344693658"; 
+        const GOOGLE_ADS_EVENT_NAME_VER = "Dang_Ky_Form_Ngang"; 
+        const FB_EVENT_V15_VER = "Lead"; 
+        // ============================================================
+
+        document.getElementById('prj-name-v15-ver').innerText = PROJECT_NAME_V15_VER;
+        let currentCountVer = 0;
+        let clientIPV15Ver = "";
+
+        fetch('https://api.ipify.org?format=json').then(res=>res.json()).then(data=>{clientIPV15Ver=data.ip});
+
+        // Lấy số liệu sao
+        fetch(API_LEAD_V15_VER + "?action=count") 
+        .then(res => res.json())
+        .then(data => {
+            if(data.count !== undefined) {
+                currentCountVer = parseInt(data.count);
+                if(currentCountVer < 5) currentCountVer = 186; 
+                updateDisplayAndSchemaV15Ver(currentCountVer);
+            }
+        })
+        .catch(err => { currentCountVer = 186; updateDisplayAndSchemaV15Ver(currentCountVer); });
+
+        function updateDisplayAndSchemaV15Ver(count) {
+            document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${count} đánh giá)`;
+            const schemaData = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": PROJECT_NAME_V15_VER,
+                "description": "Dịch vụ tư vấn bất động sản",
+                "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5", "ratingCount": count, "reviewCount": count }
+            };
+            document.getElementById('seo-json-ld-v15-ver').textContent = JSON.stringify(schemaData);
+        }
+
+        document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-v15-ver-submit');
+            const form = document.getElementById('leadFormV15Ver');
+            const successBox = document.getElementById('v15-ver-success');
+            
+            const originalText = btn.innerText;
+            btn.innerText = "ĐANG XỬ LÝ...";
+            btn.style.color = "#000"; 
+            btn.disabled = true;
+
+            let fd = new FormData();
+            fd.append("project", PROJECT_NAME_V15_VER);
+            fd.append("name", document.getElementById('v15-ver-name').value);
+            fd.append("phone", document.getElementById('v15-ver-phone').value);
+            fd.append("email", document.getElementById('v15-ver-email').value);
+            fd.append("demand", document.getElementById('v15-ver-demand').value);
+            fd.append("url", window.location.href);
+            fd.append("ip", clientIPV15Ver);
+            fd.append("rating", 5);
+
+            fetch(API_LEAD_V15_VER, { method: 'POST', body: fd })
+            .then(res => {
+                form.style.display = 'none';
+                successBox.style.display = 'block';
+                currentCountVer++;
+                updateDisplayAndSchemaV15Ver(currentCountVer);
+                
+                // TRACKING
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'dang_ky_thanh_cong',
+                    'vi_tri_form': 'form_doc' 
+                });
+                if(typeof fbq === 'function') fbq('track', FB_EVENT_V15_VER);
+                if(typeof gtag === 'function' && GOOGLE_ADS_ID_V15_VER !== "") {
+                    gtag('event', GOOGLE_ADS_EVENT_NAME_VER, { 'send_to': GOOGLE_ADS_ID_V15_VER });
+                }
+            })
+            .catch(err => {
+                alert("Đã xảy ra lỗi mạng. Vui lòng thử lại hoặc gọi Hotline.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+</section>
