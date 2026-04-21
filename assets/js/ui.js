@@ -362,3 +362,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initMasterFormsAndPopup();
 });
+
+// CHỨC NĂNG TỰ ĐỘNG ACTIVE MENU
+document.addEventListener("DOMContentLoaded", function() {
+    // Nếu header của bác được tải bằng JS (như fetch/innerHTML), hãy đảm bảo 
+    // đặt hàm setActiveMenu() này chạy SAU KHI header đã render xong.
+    setTimeout(setActiveMenu, 100); 
+});
+
+function setActiveMenu() {
+    // 1. Lấy đường dẫn URL hiện tại của trình duyệt (VD: /greenia-homes/san-pham.html)
+    let currentUrl = window.location.pathname;
+    
+    // 2. Lấy tất cả các thẻ <a> trong menu
+    let navLinks = document.querySelectorAll('.nav-list .nav-link');
+    
+    // 3. Xóa toàn bộ class active cũ đi cho chắc cú
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // 4. Xử lý trường hợp đang ở Trang chủ (domain.com/ hoặc domain.com/index.html)
+    if (currentUrl.endsWith('/') || currentUrl.endsWith('index.html')) {
+        let homeLink = document.querySelector('.nav-link[href="index.html"]');
+        if(homeLink) homeLink.classList.add('active');
+        return; // Xong trang chủ thì dừng luôn
+    }
+
+    // 5. Xử lý các trang còn lại (Tìm xem URL có chứa tên file href không)
+    navLinks.forEach(link => {
+        let href = link.getAttribute('href');
+        // Bỏ qua index.html vì đã xử lý ở trên
+        if (href && href !== 'index.html' && currentUrl.includes(href)) {
+            link.classList.add('active');
+        }
+    });
+}
