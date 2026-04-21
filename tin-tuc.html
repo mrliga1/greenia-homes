@@ -92,7 +92,20 @@
         .s1-btn { display: inline-block; font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; padding: 10px 30px; border: 1px solid var(--gold); border-radius: 3px; transition: 0.3s; text-decoration: none; cursor: pointer; background: transparent; }
         .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: var(--gold); }
 
-        @media (max-width: 900px) { .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } .gr-sec2 { flex-direction: column; gap: 30px; } .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } .s3-grid { grid-template-columns: repeat(2, 1fr); } .gr-carousel .s2-card { flex: 0 0 calc(50% - 10px); max-width: calc(50% - 10px); } }
+       @media (max-width: 900px) { 
+            .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } 
+            .gr-sec2 { flex-direction: column; gap: 30px; } 
+            .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } 
+            
+            /* Ép về 1 cột cho phần "Bất động sản dành cho bạn" (s3-grid) */
+            .s3-grid { grid-template-columns: 1fr; } 
+            
+            /* Ép về 1 cột (chiếm 85% chiều rộng để thò ra mép cột sau) cho các thanh trượt (Carousel) */
+            .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
+
+            /* Bổ sung: Ép list tin tức (70/30) về 1 cột trên Mobile để chữ to dễ đọc hơn */
+            .gr-sec2-left { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
