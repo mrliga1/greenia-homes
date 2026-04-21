@@ -1,3 +1,39 @@
+<style>
+    /* CSS nội bộ của riêng Header - Đi đâu cũng giữ nguyên thiết kế này */
+    .site-header {
+        position: relative;
+        background-color: #05080f !important; /* Ép nền đen tuyền */
+        border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        font-family: 'Manrope', sans-serif !important;
+        z-index: 1000;
+    }
+    .site-header .nav-link {
+        font-family: 'Manrope', sans-serif !important;
+        font-weight: 500 !important; /* Ép nét chữ thanh mảnh */
+        letter-spacing: 0.5px;
+    }
+</style>
+
+<header id="main-header" class="site-header">
+    <div class="header-container">
+        ```
+
+### Bước 2: Dọn dẹp rác ở file `index.html`
+Vì bây giờ cái Header đã tự mang theo "quần áo" của nó rồi, nên bác mở file **`index.html`** (Trang chủ) ra, tìm và **XÓA BỎ** cái đoạn `<style>` tớ hướng dẫn dán vào lúc nãy đi để code cho gọn gàng:
+
+```css
+/* XÓA BỎ ĐOẠN NÀY TRONG INDEX.HTML ĐI NHÉ */
+/* 3. ÉP HEADER HIỂN THỊ NỀN ĐEN TUYỀN NHƯ TRANG CON */
+.site-header {
+    position: relative; 
+    background-color: #05080f !important; 
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+    z-index: 1000;
+}
+.site-header .nav-link {
+    font-family: 'Manrope', sans-serif !important;
+    font-weight: 500 !important; 
+}
 <header id="main-header" class="site-header">
     <div class="header-container">
         <div class="header-center-group">
