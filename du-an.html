@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dự Án Đang Triển Khai | Greenia Homes</title>
+    
+    <title>Danh Sách Dự Án Bất Động Sản Đẳng Cấp | Greenia Homes</title>
+    <meta name="description" content="Tổng hợp các dự án căn hộ, nhà phố, biệt thự cao cấp đang và sắp mở bán. Cập nhật thông tin, bảng giá, chính sách ưu đãi và tiến độ mới nhất từ Greenia Homes.">
+    <meta name="keywords" content="dự án bất động sản, dự án căn hộ, dự án nhà phố, dự án vinhomes, greenia homes">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -14,7 +17,7 @@
 
         #lux-project-archive { 
             background-color: #05080f; 
-            padding: 100px 0 60px 0; /* Cách top 100px để không bị Menu đè */
+            padding: 100px 0 60px 0; 
             width: 100%; 
             box-sizing: border-box;
             min-height: 80vh;
@@ -76,11 +79,17 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         }
 
-        /* BADGE TRẠNG THÁI */
+        /* ĐÃ SỬA: BADGE TRẠNG THÁI DÍNH SÁT GÓC TRÁI TRÊN CÙNG */
         .lux5-status-badge {
-            position: absolute; top: 15px; left: 15px; z-index: 10;
-            background: #ff9f43; color: #000; font-size: 11px; font-weight: 700;
-            padding: 4px 12px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            position: absolute; 
+            top: 0; left: 0; z-index: 10;
+            background: #ff9f43; color: #000; 
+            font-size: 11px; font-weight: 800;
+            padding: 6px 15px; 
+            border-radius: 6px 0 8px 0; /* Bo góc khớp thẻ */
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .status-sap-ra-mat { background: #3498db; color: #fff; }
         .status-da-ban-giao { background: #2ecc71; color: #fff; }
