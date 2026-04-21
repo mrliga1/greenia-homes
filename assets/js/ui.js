@@ -11,7 +11,7 @@ function getBaseUrl() {
         const repoName = window.location.pathname.split('/')[1];
         return '/' + repoName + '/'; // Kết quả: /greenia-homes/
     }
-    return '/'; // Dành cho chạy thử ở máy tính (Localhost)
+    return '/'; // Dành cho chạy thử ở máy tính (Localhost) hoặc Tên miền chính
 }
 const BASE_URL = getBaseUrl();
 
@@ -101,7 +101,7 @@ async function loadSpecificForm(containerId, templateId, projectName) {
 }
 
 // --------------------------------------------------------------
-// PHẦN 3: CÁC HÀM HIỆU ỨNG GIAO DIỆN (GIỮ NGUYÊN)
+// PHẦN 3: CÁC HÀM HIỆU ỨNG GIAO DIỆN
 // --------------------------------------------------------------
 function initScrollEffects() {
     const threshold = window.innerHeight * 0.6;
@@ -346,7 +346,7 @@ function initMasterFormsAndPopup() {
 // PHẦN 5: ĐIỂM KHỞI ĐỘNG (IGNITION SWITCH)
 // --------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    // 💥 NƠI GỌI HEADER / FOOTER TUYỆT ĐỐI KHÔNG LỖI
+    // NƠI GỌI HEADER / FOOTER
     await loadComponent('site-header', 'components/header.html');
     await loadComponent('site-footer', 'components/footer.html');
     
@@ -363,76 +363,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     initMasterFormsAndPopup();
 });
 
-// CHỨC NĂNG TỰ ĐỘNG ACTIVE MENU
-document.addEventListener("DOMContentLoaded", function() {
-    // Nếu header của bác được tải bằng JS (như fetch/innerHTML), hãy đảm bảo 
-    // đặt hàm setActiveMenu() này chạy SAU KHI header đã render xong.
-    setTimeout(setActiveMenu, 100); 
-});
-
-function setActiveMenu() {
-    // 1. Lấy đường dẫn URL hiện tại của trình duyệt (VD: /greenia-homes/san-pham.html)
-    let currentUrl = window.location.pathname;
-    
-    // 2. Lấy tất cả các thẻ <a> trong menu
-    let navLinks = document.querySelectorAll('.nav-list .nav-link');
-    
-    // 3. Xóa toàn bộ class active cũ đi cho chắc cú
-    navLinks.forEach(link => link.classList.remove('active'));
-
-    // 4. Xử lý trường hợp đang ở Trang chủ (domain.com/ hoặc domain.com/index.html)
-    if (currentUrl.endsWith('/') || currentUrl.endsWith('index.html')) {
-        let homeLink = document.querySelector('.nav-link[href="index.html"]');
-        if(homeLink) homeLink.classList.add('active');
-        return; // Xong trang chủ thì dừng luôn
-    }
-
-    // 5. Xử lý các trang còn lại (Tìm xem URL có chứa tên file href không)
-    navLinks.forEach(link => {
-        let href = link.getAttribute('href');
-        // Bỏ qua index.html vì đã xử lý ở trên
-        if (href && href !== 'index.html' && currentUrl.includes(href)) {
-            link.classList.add('active');
-        }
-    });
-}
-
 // =========================================================
-// HỆ THỐNG TỰ ĐỘNG ACTIVE MENU (NHẬN DIỆN THÔNG MINH)
+// HỆ THỐNG TỰ ĐỘNG ACTIVE MENU (BẢN V3 - TỐI THƯỢNG)
+// NHẬN DIỆN THÔNG MINH BẰNG TỪ KHÓA, KHÔNG BỊ LỖI PATH GITHUB
 // =========================================================
 document.addEventListener("DOMContentLoaded", function() {
-    // Đợi đến khi Header được tải xong vào trang
     let checkMenu = setInterval(function() {
-        const navLinks = document.querySelectorAll('.nav-list .nav-link');
+        const navLinks = document.querySelectorAll('.main-nav .nav-link');
         
         if (navLinks.length > 0) {
-            clearInterval(checkMenu); // Tắt bộ đếm
+            clearInterval(checkMenu); // Tìm thấy menu thì tắt radar
             
-            let currentUrl = window.location.pathname;
+            // Lấy URL hiện tại
+            let fullUrl = window.location.href.toLowerCase();
+            let pathName = window.location.pathname.toLowerCase();
             
-            // 1. Xóa toàn bộ hiệu ứng active đang bị gắn cứng
+            // Xóa toàn bộ active cũ
             navLinks.forEach(link => link.classList.remove('active'));
 
-            // 2. Quét URL và bôi sáng đúng Menu tương ứng
-            if (currentUrl === '/' || currentUrl.endsWith('index.html') || currentUrl.endsWith('greenia-homes/')) {
-                let btn = document.querySelector('.nav-link[href="index.html"]');
-                if (btn) btn.classList.add('active');
+            // Hàm quét từ khóa
+            function activeLinkByKeyword(keyword) {
+                navLinks.forEach(link => {
+                    let href = link.getAttribute('href') || '';
+                    if (href.toLowerCase().includes(keyword)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Đối chiếu URL
+            if (pathName === '/' || pathName === '/greenia-homes/' || fullUrl.endsWith('index.html')) {
+                activeLinkByKeyword('index.html');
             } 
-            else if (currentUrl.includes('san-pham')) {
-                let btn = document.querySelector('.nav-link[href="san-pham.html"]');
-                if (btn) btn.classList.add('active');
+            else if (fullUrl.includes('san-pham')) {
+                activeLinkByKeyword('san-pham');
             } 
-            else if (currentUrl.includes('du-an')) {
-                let btn = document.querySelector('.nav-link[href="du-an.html"]');
-                if (btn) btn.classList.add('active');
+            else if (fullUrl.includes('du-an')) {
+                activeLinkByKeyword('du-an');
             } 
-            else if (currentUrl.includes('tin-tuc')) {
-                let btn = document.querySelector('.nav-link[href="tin-tuc.html"]');
-                if (btn) btn.classList.add('active');
+            else if (fullUrl.includes('tin-tuc')) {
+                activeLinkByKeyword('tin-tuc');
             } 
-            else if (currentUrl.includes('lien-he')) {
-                let btn = document.querySelector('.nav-link[href="lien-he.html"]');
-                if (btn) btn.classList.add('active');
+            else if (fullUrl.includes('lien-he')) {
+                activeLinkByKeyword('lien-he');
             }
         }
     }, 100);
