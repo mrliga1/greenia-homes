@@ -218,20 +218,40 @@
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
+            // Bổ sung HTML cho Diện tích và Phòng ngủ (Có kiểm tra nếu trống thì ẩn đi)
+            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
+            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+
             if(isList) {
+                // Thẻ nhỏ ở Sidebar (Danh sách dọc)
                 return `<a href="${link}" class="gr-list-prod">
                             <div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
-                            <div class="gr-lprod-info"><h4 class="gr-lprod-tit">${p.title}</h4><div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div><div class="gr-lprod-meta"><span class="gr-lprod-hl">${p.price}</span></div></div>
+                            <div class="gr-lprod-info">
+                                <h4 class="gr-lprod-tit">${p.title}</h4>
+                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-lprod-meta">
+                                    <span class="gr-lprod-hl">${p.price}</span>
+                                </div>
+                            </div>
                         </a>`;
             } else {
-                const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+                // Thẻ lớn ở Carousel & Bất động sản dành cho bạn
                 return `<a href="${link}" class="s2-card">
                             <div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
-                            <div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div><div class="gr-meta"><span class="gr-hl">${p.price}</span><div style="display:flex; gap:10px;"><span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>${bedHtml}</div></div></div>
+                            <div class="s2-body">
+                                <h3 class="gr-tit">${p.title}</h3>
+                                <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
+                                <div class="gr-meta">
+                                    <span class="gr-hl">${p.price}</span>
+                                    <div style="display:flex; gap:10px;">
+                                        ${areaHtml}
+                                        ${bedHtml}
+                                    </div>
+                                </div>
+                            </div>
                         </a>`;
             }
         }
-
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
