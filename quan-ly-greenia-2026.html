@@ -59,12 +59,12 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { margin-bottom: 15px; }
         .form-group.full { grid-column: 1 / -1; }
-        .form-group.third { grid-column: span 1; } /* Class cho các trường nhỏ */
+        .form-group.third { grid-column: span 1; }
         label { display: block; margin-bottom: 8px; color: #fff; font-weight: 600; font-size: 13px; text-transform: uppercase;}
         input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         input:focus { outline: none; border-color: var(--gold); }
         input:disabled { opacity: 0.5; cursor: not-allowed; background: #000; }
-        textarea.seo-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
+        textarea.seo-txt, textarea.map-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         
         .seo-box { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; position: relative;}
         .seo-box::before { content: 'Tùy chỉnh SEO (Google)'; position: absolute; top: -12px; left: 20px; background: var(--card); padding: 0 10px; color: var(--gold); font-size: 12px; font-weight: bold; }
@@ -199,7 +199,7 @@
                     </div>
                     <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat" placeholder="Chọn hoặc nhập mới..."><datalist id="p-cats"></datalist></div>
                     <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode" placeholder="VD: P123"></div>
-                    <div class="form-group full"><label>Vị trí:</label><input type="text" id="p-loc" placeholder="Nhập địa chỉ cụ thể"></div>
+                    <div class="form-group full"><label>Địa chỉ hiển thị trên đầu:</label><input type="text" id="p-loc" placeholder="Nhập địa chỉ cụ thể (Hiển thị văn bản)"></div>
                     
                     <div class="form-group third"><label>Giá hiển thị:</label><input type="text" id="p-price" placeholder="VD: 5 Tỷ"></div>
                     <div class="form-group third"><label>Diện tích (m2):</label><input type="text" id="p-area" placeholder="VD: 120"></div>
@@ -211,16 +211,26 @@
                     
                     <div class="form-group third"><label>Mặt tiền (m):</label><input type="text" id="p-front" placeholder="VD: 5"></div>
                     <div class="form-group third"><label>Pháp lý:</label><input type="text" id="p-legal" placeholder="VD: Sổ hồng"></div>
-                    <div class="form-group third"></div> <div class="form-group full">
+                    <div class="form-group third"></div> 
+                    
+                    <div class="form-group full">
                         <label>1. Ảnh Bìa (Auto Cloud):</label>
                         <div class="upload-area" onclick="document.getElementById('p-main-img-file').click()"><i class="fas fa-cloud-upload-alt fa-2x"></i><input type="file" id="p-main-img-file" hidden onchange="handleSingleUpload(this, 'p-main-preview')"></div>
                         <div id="p-main-preview" class="preview-grid"></div>
                     </div>
+                    
+                    <div class="form-group full">
+                        <label style="color:#00b894;"><i class="fas fa-map-marked-alt"></i> Mã nhúng Bản đồ Google Maps (Iframe hoặc Link):</label>
+                        <textarea id="p-map" class="map-txt" rows="2" placeholder="Nhập đường link chia sẻ của Google Map hoặc dán nguyên mã nhúng <iframe> vào đây..."></textarea>
+                        <div style="font-size: 11px; color:#888; margin-top:5px;">Truy cập Google Maps -> Chia sẻ -> Nhúng bản đồ -> Sao chép HTML và dán vào đây.</div>
+                    </div>
+
                     <div class="form-group full">
                         <label>2. Album Ảnh (Auto Cloud):</label>
                         <div class="upload-area" onclick="document.getElementById('p-gallery-files').click()"><i class="fas fa-images fa-2x"></i><input type="file" id="p-gallery-files" hidden multiple onchange="handleMultiUpload(this, 'p-gallery-preview', 'gallery')"></div>
                         <div id="p-gallery-preview" class="preview-grid"></div>
                     </div>
+                    
                     <div class="form-group full" style="color: #000;">
                         <label style="color:#fff;">Nội dung chi tiết (Copy mã ảnh từ cột phải và chọn nút "Nguồn" (Source) để dán vào):</label>
                         <textarea id="p-content" name="p-content"></textarea>
@@ -324,7 +334,7 @@
             
             <div id="list-media" class="link-list-scroll">
                 <div id="media-placeholder" style="text-align:center; padding:30px; color:#666; font-size:12px;">Ảnh tải lên sẽ tự động hiện ở đây.</div>
-                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -486,13 +496,14 @@
             document.getElementById('p-price').value = item.price || "";
             document.getElementById('p-area').value = item.area || "";
             
-            // CÁC TRƯỜNG THÔNG SỐ ĐÃ BỔ SUNG ĐỂ SỬA
+            // TRƯỜNG DỮ LIỆU ĐƯỢC LOAD LÊN KHI SỬA
             document.getElementById('p-dir').value = item.dir || "";
             document.getElementById('p-floor').value = item.floor || "";
             document.getElementById('p-bed').value = item.bed || "";
             document.getElementById('p-wc').value = item.wc || "";
             document.getElementById('p-front').value = item.front || "";
             document.getElementById('p-legal').value = item.legal || "";
+            document.getElementById('p-map').value = item.map || ""; // Bổ sung Load MAP
             
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || "";
@@ -586,7 +597,6 @@
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
     }
 
-    // HÀM TẢI ẢNH LÊN CLOUD VÀ ĐẨY VÀO THƯ VIỆN BÊN PHẢI
     async function uploadToCloud(file) {
         const apiKey = document.getElementById('imgbbKey').value;
         if(!apiKey) { alert("Lỗi API Key ImgBB!"); return null; }
@@ -599,18 +609,16 @@
             const data = await res.json();
             if(data.success) {
                 const directUrl = data.data.url;
-                addToMediaLibrary(directUrl, file.name); // THÊM ẢNH VÀO CỘT PHẢI NGAY LẬP TỨC
+                addToMediaLibrary(directUrl, file.name);
                 return directUrl;
             } else { throw new Error(data.error.message); }
         } catch(e) { alert("Lỗi Cloud ImgBB!"); return null; }
     }
 
-    // HÀM RENDER ẢNH TẠI TAB ẢNH CLOUD
     function addToMediaLibrary(url, name) {
         document.getElementById('media-placeholder').style.display = 'none';
         const container = document.getElementById('list-media');
         
-        // Sinh ra thẻ HTML chèn ảnh để copy
         const imgHtmlCode = `<img src="${url}" alt="${name}" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`;
         const encodedHtml = encodeURIComponent(imgHtmlCode);
 
@@ -621,7 +629,7 @@
             <div class="media-url">${name}</div>
             <div class="btn-group">
                 <button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-link"></i> Link</button>
-                <button class="btn-action" onclick="copyDecodedHTML('${encodedHtml}')" style="background:#00b894; border-color:#00b894;"><i class="fas fa-code"></i> Mã HTML</button>
+                <button class="btn-action" onclick="copyDecodedHTML('${encodedHtml}')" style="background:#00b894; border-color:#00b894;"><i class="fas fa-code"></i> HTML</button>
             </div>
         `;
         container.prepend(item);
@@ -653,7 +661,6 @@
         document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join('');
     }
 
-    // TẢI FAVICON LÊN CLOUD VÀ LẤY MÃ
     async function uploadFavicon(input) {
         if(!input.files[0]) return;
         const resDiv = document.getElementById('favicon-result');
@@ -703,13 +710,13 @@
                 cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
                 price: document.getElementById('p-price').value, area: document.getElementById('p-area').value,
                 
-                // CÁC TRƯỜNG THÔNG SỐ ĐƯỢC BỔ SUNG ĐỂ XUẤT LÊN DATA
                 dir: document.getElementById('p-dir').value || "",
                 floor: document.getElementById('p-floor').value || "",
                 bed: document.getElementById('p-bed').value || "",
                 wc: document.getElementById('p-wc').value || "",
                 front: document.getElementById('p-front').value || "",
                 legal: document.getElementById('p-legal').value || "",
+                map: document.getElementById('p-map').value || "", // DỮ LIỆU BẢN ĐỒ ĐƯỢC LƯU Ở ĐÂY
 
                 img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
                 seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
