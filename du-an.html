@@ -6,13 +6,17 @@
     
     <title>Danh Sách Dự Án Bất Động Sản Đẳng Cấp | Greenia Homes</title>
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
     <meta name="description" content="Tổng hợp các dự án căn hộ, nhà phố, biệt thự cao cấp đang và sắp mở bán. Cập nhật thông tin, bảng giá, chính sách ưu đãi và tiến độ mới nhất từ Greenia Homes.">
     <meta name="keywords" content="dự án bất động sản, dự án căn hộ, dự án nhà phố, dự án vinhomes, greenia homes">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
@@ -63,7 +67,7 @@
         }
         .lux5-grid.loading { opacity: 0.5; pointer-events: none; }
 
-        /* --- 4. CARD STYLE (ĐÃ TINH CHỈNH GỌN GÀNG HƠN) --- */
+        /* --- 4. CARD STYLE --- */
         .lux5-card {
             background-color: var(--lx-card);
             border: 1px solid var(--lx-border);
@@ -76,7 +80,7 @@
             text-decoration: none !important;
         }
         .lux5-card:hover {
-            transform: translateY(-6px); /* Nảy lên nhẹ nhàng hơn */
+            transform: translateY(-6px);
             border-color: var(--lx-gold);
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
@@ -108,15 +112,15 @@
         }
         .lux5-card:hover .lux5-thumb img { transform: scale(1.08); }
 
-        /* --- 6. NỘI DUNG (ĐÃ CHỈNH LẠI PADDING VÀ SIZE CHỮ) --- */
+        /* --- 6. NỘI DUNG --- */
         .lux5-body { 
-            padding: 15px 18px; /* Ép mỏng thẻ lại cho tinh tế */
+            padding: 15px 18px;
             flex: 1; display: flex; flex-direction: column; 
         }
         
         .lux5-card-title {
             font-family: 'Playfair Display', serif;
-            font-size: 16px !important; /* Hạ size chữ xuống cho thanh thoát */
+            font-size: 16px !important;
             color: var(--lx-gold) !important;
             font-weight: 600; line-height: 1.4;
             margin: 0 0 10px 0; transition: color 0.3s ease;
@@ -131,8 +135,8 @@
             display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
             font-size: 12px; color: #888; 
             margin-bottom: 12px; 
-            padding-bottom: 1px; /* Tạo khoảng trống để vẽ đường kẻ */
-            border-bottom: 1px solid var(--lx-line); /* Đường kẻ mờ dưới vị trí */
+            padding-bottom: 1px;
+            border-bottom: 1px solid var(--lx-line); 
         }
         .lux5-meta i { color: var(--lx-gold); }
 
@@ -143,7 +147,7 @@
             display: flex; align-items: center; gap: 6px;
         }
         .lux5-price span.label {
-            font-size: 12px; font-weight: 400; color: #888; /* Màu xám cho chữ "Giá bán:" */
+            font-size: 12px; font-weight: 400; color: #888;
         }
 
         /* --- PHẦN MÔ TẢ NGẮN --- */
@@ -174,7 +178,7 @@
             .lux5-grid { grid-template-columns: 1fr; padding: 0 10px; } 
             #lux-project-archive { padding-top: 130px; } 
             .lux5-title { font-size: 26px; }
-        }              
+        }               
     </style>
 </head>
 <body>
@@ -205,6 +209,22 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         let allProjects = [];
         let currentPage = 1;
@@ -212,14 +232,16 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const res = await fetch(safeBaseUrl + 'assets/data/projects.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    allProjects = Array.isArray(data) ? data.reverse() : []; 
+                // Lấy dữ liệu từ Firebase thay vì file json
+                const projSnap = await db.collection('projects').get();
+                const data = projSnap.docs.map(doc => doc.data());
+
+                if (data && data.length > 0) {
+                    allProjects = data.sort((a,b) => b.id - a.id); // Sắp xếp ID giảm dần (mới nhất lên đầu)
                     document.getElementById('lux-loader').classList.remove('show');
                     renderProjects();
                 } else {
-                    throw new Error('Lỗi data');
+                    throw new Error('Dữ liệu rỗng');
                 }
             } catch (e) {
                 console.error(e);
@@ -248,7 +270,6 @@
                     const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                     
                     const loc = p.loc ? `<div class="lux5-meta"><span><i class="fas fa-map-marker-alt"></i> ${p.loc}</span></div>` : '';
-                    // Đã chèn thêm chữ Giá bán: màu xám trước dữ liệu giá
                     const price = p.price ? `<div class="lux5-price"><span class="label">Giá bán:</span> ${p.price}</div>` : '';
                     const desc = p.seoDesc ? `<div class="lux5-desc">${p.seoDesc}</div>` : '';
                     const statusClass = getStatusClass(p.status);
