@@ -13,6 +13,9 @@
     
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
         #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
         #gr-v53 * { box-sizing: border-box; } #gr-v53 a { text-decoration: none; color: inherit; transition: 0.3s; } #gr-v53 img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -174,10 +177,22 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // Lệnh này để con Bot Build.js tìm và nhét thông số danh mục vào
+        // FIREBASE DATABASE CONFIG
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         window.GREENIA_CURRENT_CATEGORY = null; 
 
-        // KHO KHAI BÁO BIẾN ĐÃ ĐƯỢC TỐI ƯU CÔ LẬP
+        // KHO KHAI BÁO BIẾN
         let allPosts = [];
         let allProducts = [];
         let postsInThisCat = []; 
@@ -256,19 +271,18 @@
             }
         }
 
+        // TẢI DỮ LIỆU TỪ FIREBASE
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const [postRes, prodRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/posts.json'),
-                    fetch(safeBaseUrl + 'assets/data/products.json')
+                const [postSnap, prodSnap, projSnap] = await Promise.all([
+                    db.collection('posts').get(),
+                    db.collection('products').get(),
+                    db.collection('projects').get()
                 ]);
-                allPosts = await postRes.json();
-                allProducts = await prodRes.json();
 
-                try {
-                    const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
-                    if (projRes.ok) { independentProjects = await projRes.json(); }
-                } catch(e) {}
+                allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 // 1. GẮN THÔNG TIN DANH MỤC HIỆN TẠI VÀO TIÊU ĐỀ
                 const currentCatName = window.GREENIA_CURRENT_CATEGORY ? window.GREENIA_CURRENT_CATEGORY.name : 'Tin Tức';
@@ -278,11 +292,11 @@
                     document.querySelector('.gr-cat-desc').innerText = window.GREENIA_CURRENT_CATEGORY.desc || `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
                 }
 
-                // 2. CÔ LẬP BÀI VIẾT: Chỉ lấy bài viết thuộc về danh mục này
+                // 2. CÔ LẬP BÀI VIẾT
                 postsInThisCat = window.GREENIA_CURRENT_CATEGORY ? allPosts.filter(p => p.cat === currentCatName) : [...allPosts];
 
-                // 3. TẠO TABS THÔNG MINH: Chỉ hiển thị "Tất cả" & Các Danh Mục Con (Nếu có)
-                const subCategories = []; // Mảng rỗng chờ nâng cấp Admin trong tương lai
+                // 3. TẠO TABS THÔNG MINH
+                const subCategories = []; 
                 const tabs = ['Tất cả', ...subCategories];
 
                 const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${cat}', this)">${cat}</div>`).join('');
@@ -291,7 +305,7 @@
                 // 4. KÍCH HOẠT TAB MẶC ĐỊNH
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
-                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI (Giữ nguyên)
+                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -323,7 +337,8 @@
                 }
 
             } catch(e) {
-                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang cập nhật dữ liệu.</div>";
+                console.error("Lỗi kết nối Firebase:", e);
+                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang kết nối cơ sở dữ liệu. Vui lòng tải lại trang.</div>";
                 document.getElementById('top-grid-container').style.opacity = 1;
             }
         });
