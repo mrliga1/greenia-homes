@@ -4,12 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Greenia Homes | Chuyên Gia Tư Vấn Bất Động Sản</title>
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
     
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Manrope:wght@300;400;500;600;700&family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="/greenia-homes/manifest.json">
     <meta name="theme-color" content="#c5a059">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        /* Sửa nhanh CSS cho phần hiển thị dự án trên trang chủ */
+        #du-an { height: auto !important; padding: 80px 20px; background: #05080f; }
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 8px; margin-bottom: 30px; max-width: 1250px; margin-left: auto; margin-right: auto;}
+        .s-tit { font-size: 24px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; font-family: 'Montserrat', sans-serif;}
+        
+        .gr-carousel-wrapper { position: relative; max-width: 1250px; margin: 0 auto; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+        .gr-carousel::-webkit-scrollbar { display: none; }
+        .gr-carousel .s2-card { flex: 0 0 calc(25% - 15px); max-width: calc(25% - 15px); scroll-snap-align: start; }
+        
+        .s2-card { background: #0e121b; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 4px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; position: relative; height: 100%; text-decoration: none;}
+        .s2-card:hover { transform: translateY(-5px); border-color: #c5a059; }
+        .s2-thumb-box { height: 200px; position: relative; overflow: hidden; }
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.1); }
+        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-tit { font-size: 14px !important; font-weight: 600 !important; color: #fff; line-height: 1.4 !important; margin-bottom: 6px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; transition: 0.3s; font-family: 'Manrope', sans-serif;}
+        .s2-card:hover .gr-tit { color: #c5a059 !important; }
+        .gr-meta { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px; font-family: 'Manrope', sans-serif;}
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #000; z-index: 5; border-bottom-right-radius: 5px; background: #ff9f43; font-family: 'Manrope', sans-serif;}
+        
+        .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(197, 160, 89, 0.2); background: rgba(14, 18, 27, 0.8); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .gr-nav-btn:hover { background: #c5a059; color: #000; border-color: #c5a059; }
+        .gr-prev { left: -20px; } .gr-next { right: -20px; }
+
+        @media (max-width: 900px) {
+            .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
+            .gr-nav-btn { display: none; }
+        }
+    </style>
         
 </head>
 <body>
@@ -36,16 +73,16 @@
 
                 <div class="hero-form-box">
                     <h3>Đăng Ký Nhận Thông Tin</h3>
-                    <form action="#" method="POST" class="contact-form">
-                        <input type="text" name="hoTen" placeholder="Họ và tên của bạn *" required>
-                        <input type="tel" name="soDienThoai" placeholder="Số điện thoại (Zalo/Viber) *" required>
-                        <select name="phanKhuc" required>
+                    <form id="hero-lead-form" class="contact-form">
+                        <input type="text" id="hero-name" placeholder="Họ và tên của bạn *" required>
+                        <input type="tel" id="hero-phone" placeholder="Số điện thoại (Zalo/Viber) *" required pattern="[0-9]{10}">
+                        <select id="hero-project" required>
                             <option value="">-- Dự án bạn quan tâm --</option>
-                            <option value="Vinhomes Grand Park">Vinhomes Grand Park</option>
-                            <option value="The Global City">The Global City</option>
+                            <option value="Khác">Khác</option>
                         </select>
-                        <button type="submit" class="btn-primary">Nhận Bảng Giá Chi Tiết</button>
+                        <button type="submit" id="hero-submit-btn" class="btn-primary">Nhận Bảng Giá Chi Tiết</button>
                     </form>
+                    <div id="hero-success-msg" style="display:none; color:#2ecc71; font-size:13px; margin-top:10px; text-align:center; font-weight:bold;">✔ Đăng ký thành công!</div>
                 </div>
             </div>
         </section>
@@ -69,13 +106,116 @@
             </div>
         </section>
         
-        <section id="du-an" style="height: 800px; padding: 80px 20px;"><h2 class="text-center">Dự Án Đang Triển Khai</h2></section>
+        <section id="du-an">
+            <div class="s-head"><h2 class="s-tit">Dự Án Nổi Bật</h2></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-proj-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="home-proj-scroll" class="gr-carousel">
+                    <div style="color:#c5a059; padding:20px; text-align:center; width:100%;"><i class="fas fa-circle-notch fa-spin"></i> Đang tải dự án...</div>
+                </div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('home-proj-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div style="text-align:center; margin-top: 30px;">
+                <a href="/greenia-homes/du-an/" style="display:inline-block; border:1px solid #c5a059; color:#c5a059; padding:10px 30px; text-decoration:none; font-weight:bold; font-family:'Manrope',sans-serif; text-transform:uppercase; font-size:12px; border-radius:4px; transition:0.3s;" onmouseover="this.style.background='rgba(197,160,89,0.1)'" onmouseout="this.style.background='transparent'">Xem Tất Cả Dự Án</a>
+            </div>
+        </section>
     </main>
 
     <div id="site-footer"></div>
 
     <script src="assets/js/ui.js"></script>
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/render.js"></script>
+
+    <script>
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            // TẢI DỮ LIỆU DỰ ÁN TỪ FIREBASE CHO TRANG CHỦ
+            try {
+                const projSnap = await db.collection('projects').get();
+                const projects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+
+                const scrollContainer = document.getElementById('home-proj-scroll');
+                const selectContainer = document.getElementById('hero-project');
+
+                if (projects.length > 0) {
+                    // Đổ dữ liệu vào Carousel
+                    scrollContainer.innerHTML = projects.map(p => {
+                        const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                        const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
+                        return `<a href="${p.link}" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
+                                    <div class="s2-body">
+                                        <h3 class="gr-tit">${p.title}</h3>
+                                        <div class="gr-meta"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div>
+                                    </div>
+                                </a>`;
+                    }).join('');
+
+                    // Đổ dữ liệu vào Form tư vấn
+                    let optionsHtml = '<option value="">-- Dự án bạn quan tâm --</option>';
+                    optionsHtml += projects.map(p => `<option value="${p.title}">${p.title}</option>`).join('');
+                    optionsHtml += '<option value="Khác">Khác</option>';
+                    selectContainer.innerHTML = optionsHtml;
+
+                } else {
+                    scrollContainer.innerHTML = '<div style="color:#888; padding:20px; text-align:center; width:100%;">Đang cập nhật dự án...</div>';
+                }
+
+            } catch (e) {
+                console.error("Lỗi kết nối Firebase:", e);
+                document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; text-align:center; width:100%;">Lỗi kết nối cơ sở dữ liệu.</div>';
+            }
+
+            // XỬ LÝ FORM GỬI THÔNG TIN VỀ GOOGLE SHEET (GIỮ NGUYÊN API CỦA BÁC)
+            const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+            document.getElementById('hero-lead-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('hero-submit-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "ĐANG XỬ LÝ..."; btn.disabled = true;
+
+                let fd = new FormData();
+                fd.append("project", document.getElementById('hero-project').value);
+                fd.append("name", document.getElementById('hero-name').value);
+                fd.append("phone", document.getElementById('hero-phone').value);
+                fd.append("email", "Chưa cung cấp");
+                fd.append("demand", "Đăng ký từ trang chủ");
+                fd.append("url", window.location.href);
+                fd.append("rating", 5);
+
+                fetch(API_LEAD, { method: 'POST', body: fd })
+                .then(res => {
+                    document.getElementById('hero-lead-form').style.display = 'none';
+                    document.getElementById('hero-success-msg').style.display = 'block';
+                    if(typeof fbq === 'function') fbq('track', 'Lead');
+                })
+                .catch(err => {
+                    alert("Có lỗi xảy ra, vui lòng thử lại!");
+                    btn.innerText = originalText; btn.disabled = false;
+                });
+            });
+        });
+
+        // Hàm trượt ngang Carousel
+        window.grScrollHorizontal = function(id, dir) {
+            var el = document.getElementById(id); if(!el) return;
+            var item = el.querySelector(".s2-card"); if(!item) return;
+            var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
+        };
+    </script>
 </body>
 </html>
