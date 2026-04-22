@@ -412,7 +412,9 @@
                                 <div class="gr-share-group">
                                     <span class="gr-share-lbl">Chia sẻ:</span>
                                     <a href="https://www.facebook.com/sharer/sharer.php?u=${shareLink}" target="_blank" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="gr-s-btn zalo">${zaloSvgIcon}</a>
+                                    <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; display: block; transition: 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                        <img src="${zaloIcon}" style="width: 100%; height: 100%; object-fit: cover; border: none; display: block;">
+                                    </a>
                                 </div>
                             </div>
 
