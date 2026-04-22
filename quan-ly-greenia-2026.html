@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Greenia Admin - System Locked</title>
+    <title>Greenia Admin V2 - Database System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
         *, *::before, *::after { box-sizing: border-box; }
-
         :root { --gold: #c5a059; --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --text: #b0b8c4; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; overflow: hidden; }
         
@@ -40,19 +43,17 @@
         }
        
         .cke_notifications_area { display: none !important; }
-       
         #admin-dashboard { display: none; padding: 20px; overflow-y: auto; height: 100vh; }
-       
         .layout-wrapper { display: flex; gap: 30px; max-width: 1450px; margin: 0 auto; align-items: flex-start; }
         .col-left { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .col-right { width: 450px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; position: sticky; top: 20px; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
         h1 { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 22px; text-transform: uppercase; margin-top: 0;}
        
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;}
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; flex-wrap: wrap;}
         .tab-btn { padding: 12px 20px; background: transparent; border: 1px solid var(--border); color: #fff; cursor: pointer; border-radius: 5px; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
         .tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
         .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
-        .btn-cancel-edit { display: none; margin-left: auto; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-cancel-edit { display: none; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         
         .form-section { display: none; animation: fadeIn 0.3s; }
         .form-section.active { display: block; }
@@ -131,12 +132,9 @@
     <div class="layout-wrapper">
         <div class="col-left">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1><i class="fas fa-cogs"></i> QUẢN TRỊ CMS</h1>
+                <h1 id="admin-heading"><i class="fas fa-cogs"></i> QUẢN TRỊ CMS</h1>
                 <div id="sync-status" style="color: #00b894; font-weight: bold; font-size: 13px;"><i class="fas fa-circle-notch fa-spin"></i> Chờ đồng bộ...</div>
             </div>
-
-            <input type="hidden" id="ghToken">
-            <input type="hidden" id="imgbbKey">
 
             <div class="tabs" style="margin-top: 20px;">
                 <button class="tab-btn active" id="tab-prod-btn" onclick="switchTab('prod')"><i class="fas fa-building"></i> SẢN PHẨM</button>
@@ -144,6 +142,8 @@
                 <button class="tab-btn" id="tab-proj-btn" onclick="switchTab('proj')"><i class="fas fa-project-diagram"></i> DỰ ÁN</button>
                 <button class="tab-btn" id="tab-cat-btn" onclick="switchTab('cat')"><i class="fas fa-folder-open"></i> DANH MỤC</button>
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
+                
+                <button class="tab-btn" id="btn-migrate" style="background:#0984e3; border-color:#0984e3; margin-left:auto;" onclick="migrateData()"><i class="fas fa-truck-moving"></i> CHUYỂN DỮ LIỆU SANG FIREBASE</button>
             </div>
 
             <div id="section-cat" class="form-section">
@@ -184,7 +184,7 @@
                 </div>
                 <div style="display:flex; gap:10px;">
                     <button id="btn-submit-cat" class="btn-push" onclick="pushData('cat')"><i class="fas fa-save"></i> LƯU DANH MỤC</button>
-                    <button id="btn-delete-cat" class="btn-push" style="background:#ff4757; flex: 0 0 150px; display:none;" onclick="if(editMode.active && editMode.type==='cat') deleteItem(editMode.id, 'cat')"><i class="fas fa-trash"></i> XÓA</button>
+                    <button id="btn-delete-cat" class="btn-push del-btn-master" style="background:#ff4757; flex: 0 0 150px; display:none;" onclick="if(editMode.active && editMode.type==='cat') deleteItem(editMode.id, 'cat')"><i class="fas fa-trash"></i> XÓA</button>
                 </div>
             </div>
 
@@ -305,18 +305,7 @@
                     <div class="form-group"><label>SEO Description (Tùy chọn):</label><textarea id="pj-seo-desc" class="seo-txt" rows="3" oninput="checkLength(this, 'pj-desc-count', 155)"></textarea><div class="char-count" id="pj-desc-count">0/155</div></div>
                     <div class="form-group" style="margin-bottom:0;"><label>SEO Keywords:</label><input type="text" id="pj-seo-key" placeholder="VD: dự án vinhomes, vinhomes cần giờ..."></div>
                 </div>
-                <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN</button>
-            </div>
-
-            <div class="favicon-box">
-                <h4><i class="fas fa-globe"></i> Đổi Icon Quả Địa Cầu (Favicon)</h4>
-                <p>Tải ảnh logo vuông (VD: 512x512px) để lấy mã nhúng vào thẻ <code>&lt;head&gt;</code>.</p>
-                <input type="file" id="favicon-upload" accept="image/png, image/jpeg, image/ico" style="display:none;" onchange="uploadFavicon(this)">
-                <button class="btn-action" style="padding: 10px 20px; font-size: 13px;" onclick="document.getElementById('favicon-upload').click()"><i class="fas fa-upload"></i> Tải ảnh lên</button>
-                <div id="favicon-result" style="margin-top: 15px; display: none;">
-                    <input type="text" id="favicon-code" readonly style="font-family: monospace; background: #000; font-size: 11px; text-align: left;">
-                    <button class="btn-action" style="margin-top: 5px; width: 100%;" onclick="copyFaviconCode()"><i class="fas fa-copy"></i> Copy Mã Favicon</button>
-                </div>
+                <button id="btn-submit-proj" class="btn-push" onclick="pushData('proj')"><i class="fas fa-rocket"></i> LƯU THÔNG TIN DỰ ÁN</button>
             </div>
 
         </div>
@@ -341,20 +330,37 @@
 
 <script>
     /* =================================================================
-       KHU VỰC CÀI ĐẶT BẢO MẬT & API (ĐIỀN TOKEN CỦA BÁC VÀO ĐÂY)
+       CẤU HÌNH FIREBASE DATABASE (V2) & PHÂN QUYỀN
     ================================================================= */
-    const SECRET_PASSWORD = "10091995Tt!"; 
-    const PART_1 = "ghp_klr40QV55Zb8ta3"; 
-    const PART_2 = "FWZgFjmkFbZgHmR3AuosC";
-    const AUTO_GH_TOKEN = PART_1 + PART_2; 
-    const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
-    /* ================================================================= */
+    // 1. MÃ CONFIG FIREBASE BÁC VỪA CHỤP ẢNH
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+      authDomain: "greenia-homes.firebaseapp.com",
+      projectId: "greenia-homes",
+      storageBucket: "greenia-homes.appspot.com",
+      messagingSenderId: "24027695632",
+      appId: "1:24027695632:web:13a23aa156e864f7d55895",
+      measurementId: "G-YRK63BNPP0"
+    };
+    
+    // Khởi tạo Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" };
+    // 2. MẬT KHẨU PHÂN QUYỀN TRUY CẬP (AN TOÀN HƠN GITHUB VÌ DB LÀ RIÊNG TƯ)
+    const USERS = {
+        "10091995Tt!": "admin",     // Full quyền
+        "NhanVien2026!": "editor"   // Không được xóa
+    };
+    let currentUserRole = "";
+
+    const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
+    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" }; // Chỉ dùng để kéo dữ liệu cũ lúc chuyển nhà
+    const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
+
     let currentData = { posts: [], products: [], projects: [], categories: [] };
     let uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" };
     let editMode = { active: false, type: null, id: null };
-    const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
 
     CKEDITOR.replace('p-content', { height: 350, versionCheck: false, allowedContent: true });
     CKEDITOR.replace('n-content', { height: 350, versionCheck: false, allowedContent: true });
@@ -363,19 +369,112 @@
         const pwd = document.getElementById('sys-password').value;
         const err = document.getElementById('login-error');
         
-        if (pwd === SECRET_PASSWORD) {
+        if (USERS[pwd]) {
+            currentUserRole = USERS[pwd];
             document.getElementById('login-screen').style.display = 'none';
             document.body.style.overflow = 'auto';
             document.getElementById('admin-dashboard').style.display = 'block';
             
-            document.getElementById('ghToken').value = AUTO_GH_TOKEN;
-            document.getElementById('imgbbKey').value = AUTO_IMGBB_KEY;
-            
-            loadOldData();
+            applyRoleRestrictions();
+            loadDataFromFirebase(); // TẢI TỪ FIREBASE THAY VÌ GITHUB
         } else {
             err.style.display = 'block';
         }
     }
+
+    function applyRoleRestrictions() {
+        if (currentUserRole === 'editor') {
+            const style = document.createElement('style');
+            style.innerHTML = `.del-btn, .del-btn-master { display: none !important; }`;
+            document.head.appendChild(style);
+            document.getElementById('admin-heading').innerHTML += ` <span style="font-size:12px; color:#ff9f43; background:rgba(255,159,67,0.1); padding:3px 8px; border-radius:4px; vertical-align:middle;">(Biên Tập Viên)</span>`;
+            
+            // Ẩn luôn nút chuyển nhà
+            document.getElementById('btn-migrate').style.display = 'none';
+        }
+    }
+
+    // =================================================================
+    // LOGIC KẾT NỐI FIREBASE DATABASE MỚI TỐC ĐỘ CAO
+    // =================================================================
+
+    async function loadDataFromFirebase() {
+        const status = document.getElementById('sync-status');
+        status.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Đang tải từ Firebase...';
+        status.style.color = "#c5a059";
+        document.getElementById('n-date').value = new Date().toLocaleDateString('vi-VN');
+
+        try {
+            const [pSnap, nSnap, pjSnap, cSnap] = await Promise.all([
+                db.collection('products').get(),
+                db.collection('posts').get(),
+                db.collection('projects').get(),
+                db.collection('categories').get()
+            ]);
+
+            currentData.products = pSnap.docs.map(d => d.data());
+            currentData.posts = nSnap.docs.map(d => d.data());
+            currentData.projects = pjSnap.docs.map(d => d.data());
+            currentData.categories = cSnap.docs.map(d => d.data());
+
+            resetFormCalculations(); buildLinkLibrary();
+            status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ Firebase';
+            status.style.color = "#00b894";
+        } catch (e) { 
+            console.error(e);
+            status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi tải dữ liệu!';
+            status.style.color = "#ff4d4f";
+        }
+    }
+
+    // HÀM CHUYỂN NHÀ: HÚT JSON TỪ GITHUB ĐỔ VÀO FIREBASE
+    async function migrateData() {
+        if (currentUserRole !== 'admin') { alert("Chỉ Admin mới được dùng chức năng này!"); return; }
+        if(!confirm("Hành động này sẽ COPY toàn bộ dữ liệu hiện có trên GitHub cũ sang Database Firebase mới.\nBạn có chắc chắn muốn thực hiện?")) return;
+        
+        const btn = document.getElementById('btn-migrate');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang copy dữ liệu...';
+        btn.disabled = true;
+
+        try {
+            // Lấy dữ liệu json thô từ Github (Kênh tĩnh)
+            const ghUrl = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/assets/data/`;
+            const [pRes, nRes, pjRes, cRes] = await Promise.all([
+                fetch(ghUrl + 'products.json?t=' + Date.now()),
+                fetch(ghUrl + 'posts.json?t=' + Date.now()),
+                fetch(ghUrl + 'projects.json?t=' + Date.now()),
+                fetch(ghUrl + 'categories.json?t=' + Date.now())
+            ]);
+
+            const prods = pRes.ok ? await pRes.json() : [];
+            const posts = nRes.ok ? await nRes.json() : [];
+            const projs = pjRes.ok ? await pjRes.json() : [];
+            const cats = cRes.ok ? await cRes.json() : [];
+
+            // Gói tất cả vào một lệnh Batch để gửi lên Firebase cùng lúc
+            const batch = db.batch();
+
+            prods.forEach(item => { const ref = db.collection('products').doc(String(item.id)); batch.set(ref, item); });
+            posts.forEach(item => { const ref = db.collection('posts').doc(String(item.id)); batch.set(ref, item); });
+            projs.forEach(item => { const ref = db.collection('projects').doc(String(item.id)); batch.set(ref, item); });
+            cats.forEach(item => { const ref = db.collection('categories').doc(String(item.id)); batch.set(ref, item); });
+
+            await batch.commit(); // Gửi lên Firebase
+
+            alert("CHUYỂN NHÀ THÀNH CÔNG!\nToàn bộ dữ liệu đã được lưu an toàn trên Database Firebase mới.");
+            btn.style.display = 'none'; // Giấu nút đi vì đã chuyển xong
+            loadDataFromFirebase(); // Tải lại bảng điều khiển
+        } catch(e) {
+            console.error(e);
+            alert("Có lỗi mạng xảy ra khi chuyển dữ liệu!");
+            btn.innerHTML = '<i class="fas fa-truck-moving"></i> THỬ LẠI';
+            btn.disabled = false;
+        }
+    }
+
+    // =================================================================
+    // LOGIC HOẠT ĐỘNG CỦA ADMIN (GIỮ NGUYÊN)
+    // =================================================================
 
     function getAbsoluteImageUrl(imgRaw) {
         if (!imgRaw) return '';
@@ -391,37 +490,6 @@
         
         document.getElementById(`side-tab-${type}`).classList.add('active');
         document.getElementById(`list-${type}`).classList.add('active');
-    }
-
-    async function loadOldData() {
-        const status = document.getElementById('sync-status');
-        status.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Đang đồng bộ máy chủ...';
-        status.style.color = "#c5a059";
-        
-        document.getElementById('n-date').value = new Date().toLocaleDateString('vi-VN');
-        const token = document.getElementById('ghToken').value;
-        const headers = token ? { "Authorization": `token ${token}` } : {};
-        
-        try {
-            const [pRes, nRes, projRes, catRes] = await Promise.all([
-                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/products.json?t=${Date.now()}`, { headers }),
-                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/posts.json?t=${Date.now()}`, { headers }),
-                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/projects.json?t=${Date.now()}`, { headers }),
-                fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/assets/data/categories.json?t=${Date.now()}`, { headers })
-            ]);
-            
-            if(pRes.ok) currentData.products = JSON.parse(decodeURIComponent(escape(atob((await pRes.json()).content)))); else currentData.products = [];
-            if(nRes.ok) currentData.posts = JSON.parse(decodeURIComponent(escape(atob((await nRes.json()).content)))); else currentData.posts = [];
-            if(projRes.ok) currentData.projects = JSON.parse(decodeURIComponent(escape(atob((await projRes.json()).content)))); else currentData.projects = [];
-            if(catRes.ok) currentData.categories = JSON.parse(decodeURIComponent(escape(atob((await catRes.json()).content)))); else currentData.categories = [];
-
-            resetFormCalculations(); buildLinkLibrary();
-            status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ thành công';
-            status.style.color = "#00b894";
-        } catch (e) { 
-            status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi đồng bộ!';
-            status.style.color = "#ff4d4f";
-        }
     }
 
     function resetFormCalculations() {
@@ -495,15 +563,13 @@
             document.getElementById('p-loc').value = item.loc || "";
             document.getElementById('p-price').value = item.price || "";
             document.getElementById('p-area').value = item.area || "";
-            
-            // TRƯỜNG DỮ LIỆU ĐƯỢC LOAD LÊN KHI SỬA
             document.getElementById('p-dir').value = item.dir || "";
             document.getElementById('p-floor').value = item.floor || "";
             document.getElementById('p-bed').value = item.bed || "";
             document.getElementById('p-wc').value = item.wc || "";
             document.getElementById('p-front').value = item.front || "";
             document.getElementById('p-legal').value = item.legal || "";
-            document.getElementById('p-map').value = item.map || ""; // Bổ sung Load MAP
+            document.getElementById('p-map').value = item.map || ""; 
             
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || "";
@@ -592,15 +658,13 @@
         
         document.getElementById('btn-submit-prod').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; document.getElementById('btn-submit-prod').classList.remove('update-mode');
         document.getElementById('btn-submit-news').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; document.getElementById('btn-submit-news').classList.remove('update-mode');
-        document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-rocket"></i> KHỞI TẠO THƯ MỤC DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
+        document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-save"></i> LƯU THÔNG TIN DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode');
         document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-save"></i> LƯU DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode');
         document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing'));
     }
 
     async function uploadToCloud(file) {
-        const apiKey = document.getElementById('imgbbKey').value;
-        if(!apiKey) { alert("Lỗi API Key ImgBB!"); return null; }
-        
+        const apiKey = AUTO_IMGBB_KEY;
         let formData = new FormData();
         formData.append("image", file);
         
@@ -618,10 +682,8 @@
     function addToMediaLibrary(url, name) {
         document.getElementById('media-placeholder').style.display = 'none';
         const container = document.getElementById('list-media');
-        
         const imgHtmlCode = `<img src="${url}" alt="${name}" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`;
         const encodedHtml = encodeURIComponent(imgHtmlCode);
-
         const item = document.createElement('div');
         item.className = 'media-item';
         item.innerHTML = `
@@ -661,39 +723,10 @@
         document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join('');
     }
 
-    async function uploadFavicon(input) {
-        if(!input.files[0]) return;
-        const resDiv = document.getElementById('favicon-result');
-        const codeInput = document.getElementById('favicon-code');
-        
-        codeInput.value = "Đang tải lên mây...";
-        resDiv.style.display = 'block';
-
-        const url = await uploadToCloud(input.files[0]);
-        if(url) {
-            const faviconCode = `<link rel="icon" href="${url}" type="image/x-icon" />`;
-            codeInput.value = faviconCode;
-        } else {
-            resDiv.style.display = 'none';
-        }
-    }
-
-    function copyFaviconCode() {
-        const codeInput = document.getElementById('favicon-code');
-        codeInput.select();
-        document.execCommand("copy");
-        alert("Đã Copy mã Favicon.\nHãy dán dòng mã này vào bên dưới thẻ <head> của file HTML để đổi icon quả địa cầu nhé!");
-    }
-
+    // LƯU LÊN FIREBASE THAY VÌ GITHUB
     async function pushData(type) {
-        const token = document.getElementById('ghToken').value;
-        const fileMap = {
-            'prod': 'assets/data/products.json',
-            'news': 'assets/data/posts.json',
-            'proj': 'assets/data/projects.json',
-            'cat': 'assets/data/categories.json'
-        };
-        const fileToUpdate = fileMap[type];
+        const collectionMap = { 'prod': 'products', 'news': 'posts', 'proj': 'projects', 'cat': 'categories' };
+        const colName = collectionMap[type];
         
         let titleVal, slugVal, contentVal, rawDesc, autoDesc, newData;
 
@@ -709,15 +742,9 @@
                 id: parseInt(document.getElementById('p-id').value), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal,
                 cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value,
                 price: document.getElementById('p-price').value, area: document.getElementById('p-area').value,
-                
-                dir: document.getElementById('p-dir').value || "",
-                floor: document.getElementById('p-floor').value || "",
-                bed: document.getElementById('p-bed').value || "",
-                wc: document.getElementById('p-wc').value || "",
-                front: document.getElementById('p-front').value || "",
-                legal: document.getElementById('p-legal').value || "",
-                map: document.getElementById('p-map').value || "", // DỮ LIỆU BẢN ĐỒ ĐƯỢC LƯU Ở ĐÂY
-
+                dir: document.getElementById('p-dir').value || "", floor: document.getElementById('p-floor').value || "", bed: document.getElementById('p-bed').value || "",
+                wc: document.getElementById('p-wc').value || "", front: document.getElementById('p-front').value || "", legal: document.getElementById('p-legal').value || "",
+                map: document.getElementById('p-map').value || "", 
                 img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal,
                 seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản`
             };
@@ -740,16 +767,10 @@
             slugVal = slugify(titleVal);
 
             newData = {
-                id: parseInt(document.getElementById('pj-id').value), 
-                title: titleVal, 
-                slug: slugVal, 
-                status: document.getElementById('pj-status').value, 
-                loc: document.getElementById('pj-loc').value,
-                price: document.getElementById('pj-price').value,
-                img: uploadedFiles.projMain, 
+                id: parseInt(document.getElementById('pj-id').value), title: titleVal, slug: slugVal, status: document.getElementById('pj-status').value, 
+                loc: document.getElementById('pj-loc').value, price: document.getElementById('pj-price').value, img: uploadedFiles.projMain, 
                 link: `${GITHUB_PAGES_DOMAIN}/du-an/${slugVal}/`, 
-                seoTitle: document.getElementById('pj-seo-title').value || titleVal, 
-                seoDesc: document.getElementById('pj-seo-desc').value || `Dự án ${titleVal}`, 
+                seoTitle: document.getElementById('pj-seo-title').value || titleVal, seoDesc: document.getElementById('pj-seo-desc').value || `Dự án ${titleVal}`, 
                 seoKeywords: document.getElementById('pj-seo-key').value || `dự án ${titleVal}, bất động sản`
             };
         } else if (type === 'cat') {
@@ -759,93 +780,56 @@
             rawDesc = document.getElementById('c-seo-desc').value;
 
             newData = {
-                id: parseInt(document.getElementById('c-id').value),
-                type: document.getElementById('c-type').value,
-                title: titleVal,
-                slug: slugVal,
-                desc: document.getElementById('c-desc').value,
-                seoTitle: document.getElementById('c-seo-title').value || titleVal,
-                seoDesc: rawDesc || document.getElementById('c-desc').value,
-                seoKeywords: document.getElementById('c-seo-key').value || `${titleVal}, bất động sản`
+                id: parseInt(document.getElementById('c-id').value), type: document.getElementById('c-type').value, title: titleVal, slug: slugVal, desc: document.getElementById('c-desc').value,
+                seoTitle: document.getElementById('c-seo-title').value || titleVal, seoDesc: rawDesc || document.getElementById('c-desc').value, seoKeywords: document.getElementById('c-seo-key').value || `${titleVal}, bất động sản`
             };
         }
 
-        let updatedFullData;
-        if (type === 'prod') updatedFullData = [...currentData.products];
-        else if (type === 'news') updatedFullData = [...currentData.posts];
-        else if (type === 'proj') updatedFullData = [...currentData.projects];
-        else if (type === 'cat') updatedFullData = [...currentData.categories];
-
-        if (editMode.active && editMode.type === type) {
-            const idx = updatedFullData.findIndex(item => item.id === editMode.id);
-            if (idx !== -1) updatedFullData[idx] = newData;
-        } else { updatedFullData.push(newData); }
-
         try {
-            const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
-            let sha = ""; if(shaRes.ok) sha = (await shaRes.json()).sha;
-            
             const btn = document.getElementById(`btn-submit-${type}`);
             const originalBtnText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU VÀO CLOUD...';
+            btn.disabled = true;
 
-            const pushRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, {
-                method: "PUT", headers: { "Authorization": `token ${token}` },
-                body: JSON.stringify({ message: `CMS Auto: ${editMode.active ? 'Sửa' : 'Thêm'} [ID: ${newData.id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedFullData, null, 2)))), sha: sha })
-            });
+            // ĐẨY LÊN FIREBASE BẰNG ID CỦA DOCUMENT
+            await db.collection(colName).doc(String(newData.id)).set(newData);
 
-            if(pushRes.ok) {
-                if (type === 'proj' && !editMode.active) {
-                    try {
-                        const defaultHtml = `<!DOCTYPE html>\n<html lang="vi">\n<head>\n<meta charset="UTF-8">\n<title>${newData.title}</title>\n</head>\n<body>\n<h1>Dự án ${newData.title}</h1>\n<p>Thư mục đã sẵn sàng. Vui lòng Upload các file thiết kế tay của bạn (index.html, vi-tri.html...) đè lên file này.</p>\n</body>\n</html>`;
-                        await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/du-an/${newData.slug}/index.html`, {
-                            method: "PUT", headers: { "Authorization": `token ${token}` },
-                            body: JSON.stringify({ message: `Khởi tạo thư mục dự án: ${newData.slug}`, content: btoa(unescape(encodeURIComponent(defaultHtml))) })
-                        });
-                    } catch(err) { console.log("Lỗi tạo thư mục dự án", err); }
-                }
-
-                alert(`Lưu thành công! Hệ thống đang tự động đồng bộ.`);
-                if (type === 'prod') currentData.products = updatedFullData; 
-                else if (type === 'news') currentData.posts = updatedFullData;
-                else if (type === 'proj') currentData.projects = updatedFullData;
-                else if (type === 'cat') currentData.categories = updatedFullData;
-                
-                cancelEdit(); buildLinkLibrary(); 
-            } else { throw new Error(); }
-        } catch(e) { alert("Lỗi xuất bản! Hãy kiểm tra lại Github Token."); }
+            alert(`Lưu thành công vào cơ sở dữ liệu Cloud!`);
+            
+            // Cập nhật lại mảng dữ liệu tạm thời trên giao diện
+            let targetArray = currentData[collectionMap[type] === 'posts' ? 'posts' : colName];
+            const idx = targetArray.findIndex(item => item.id === newData.id);
+            if (idx !== -1) targetArray[idx] = newData;
+            else targetArray.push(newData);
+            
+            cancelEdit(); buildLinkLibrary(); 
+            btn.innerHTML = originalBtnText;
+            btn.disabled = false;
+        } catch(e) { 
+            console.error(e);
+            alert("Lỗi xuất bản! Không thể kết nối tới Database."); 
+            const btn = document.getElementById(`btn-submit-${type}`);
+            btn.disabled = false;
+        }
     }
 
+    // XÓA KHỎI FIREBASE
     async function deleteItem(id, type) {
-        if(!confirm(`⚠️ XÓA VĨNH VIỄN?`)) return;
-        const token = document.getElementById('ghToken').value;
-        const fileMap = { 'prod': 'assets/data/products.json', 'news': 'assets/data/posts.json', 'proj': 'assets/data/projects.json', 'cat': 'assets/data/categories.json' };
-        const fileToUpdate = fileMap[type];
+        if (currentUserRole !== 'admin') { alert("⛔ BẠN KHÔNG CÓ QUYỀN XÓA NỘI DUNG NÀY!\nVui lòng liên hệ Quản trị viên."); return; }
+        if(!confirm(`⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA VĨNH VIỄN KHỎI DATABASE?`)) return;
         
-        let updatedData;
-        if (type === 'prod') updatedData = currentData.products.filter(p => p.id !== id);
-        else if (type === 'news') updatedData = currentData.posts.filter(p => p.id !== id);
-        else if (type === 'proj') updatedData = currentData.projects.filter(p => p.id !== id);
-        else if (type === 'cat') updatedData = currentData.categories.filter(p => p.id !== id);
+        const collectionMap = { 'prod': 'products', 'news': 'posts', 'proj': 'projects', 'cat': 'categories' };
+        const colName = collectionMap[type];
 
         try {
-            const shaRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, { headers: { "Authorization": `token ${token}` }});
-            let sha = ""; if(shaRes.ok) sha = (await shaRes.json()).sha;
+            await db.collection(colName).doc(String(id)).delete();
 
-            const pushRes = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${fileToUpdate}`, {
-                method: "PUT", headers: { "Authorization": `token ${token}` },
-                body: JSON.stringify({ message: `CMS Auto: Xóa [ID: ${id}]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(updatedData, null, 2)))), sha: sha })
-            });
+            let arrName = collectionMap[type] === 'posts' ? 'posts' : colName;
+            currentData[arrName] = currentData[arrName].filter(item => item.id !== id);
 
-            if(pushRes.ok) {
-                if (type === 'prod') currentData.products = updatedData; 
-                else if (type === 'news') currentData.posts = updatedData;
-                else if (type === 'proj') currentData.projects = updatedData;
-                else if (type === 'cat') currentData.categories = updatedData;
-                
-                if(editMode.id === id) cancelEdit(); buildLinkLibrary(); 
-            } else alert("Lỗi máy chủ khi xóa!");
-        } catch(e) { alert("Lỗi kết nối!"); }
+            if(editMode.id === id) cancelEdit(); buildLinkLibrary(); 
+            alert("Đã xóa dữ liệu thành công!");
+        } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); }
     }
 
     function buildLinkLibrary() {
