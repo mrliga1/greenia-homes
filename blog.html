@@ -13,6 +13,9 @@
     
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
@@ -215,6 +218,22 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
         window.GREENIA_CURRENT_POST = null;
 
         function createSafeSlug(title) {
@@ -230,16 +249,14 @@
             if (!post) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
 
             try {
-                const [postRes, prodRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/posts.json'),
-                    fetch(safeBaseUrl + 'assets/data/products.json')
+                // TẢI DỮ LIỆU TỪ FIREBASE
+                const [postSnap, prodSnap] = await Promise.all([
+                    db.collection('posts').get(),
+                    db.collection('products').get()
                 ]);
                 
-                // BỌC THÉP TRÁNH LỖI DỮ LIỆU RỖNG/SAI ĐỊNH DẠNG
-                let posts = [];
-                let prods = [];
-                try { posts = await postRes.json(); if(!Array.isArray(posts)) posts = []; } catch(e) {}
-                try { prods = await prodRes.json(); if(!Array.isArray(prods)) prods = []; } catch(e) {}
+                let posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                let prods = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 // 1. Sidebar - Danh mục Sản Phẩm
                 let countBan = 0, countThue = 0;
@@ -257,7 +274,7 @@
                 });
 
                 let catLines = [];
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/ban/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
                 if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
                 
                 Object.keys(otherCats).forEach(c => {
@@ -406,7 +423,6 @@
 
                 const catSlug = createSafeSlug(post.cat);
                 const shareLink = encodeURIComponent(window.location.href);
-                // DÙNG CHUẨN URL ẢNH ZALO CHO ĐỒNG BỘ VỚI TRANG SẢN PHẨM
                 const zaloIconUrl = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
                 
                 // BƠM TOÀN BỘ GIAO DIỆN VÀO TRANG TĨNH
@@ -586,7 +602,6 @@
                     document.getElementById('v15-ver-success').style.display = 'block';
                     currentCountVer++;
                     document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
-                    // Bắn mã theo dõi quảng cáo nếu có cài mã trong web
                     if(typeof fbq === 'function') fbq('track', 'Lead'); 
                     if(typeof gtag === 'function') gtag('event', 'conversion', {'send_to': ''});
                 }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
