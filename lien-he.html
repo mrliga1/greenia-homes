@@ -1,10 +1,20 @@
-<section id="vhgp-final-v15-vertical" class="luxury-contact-wrapper">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ | Greenia Homes</title>
+
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
     
-    <div class="luxury-bg-pattern"></div>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* --- NHÚNG FONT CHỮ SANG TRỌNG --- */
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
         /* --- CẤU HÌNH MÀU SẮC --- */
         .luxury-contact-wrapper {
@@ -15,11 +25,10 @@
             --g-text: #94a3b8; 
             --g-border: rgba(255, 255, 255, 0.08);
             font-family: 'Manrope', sans-serif; box-sizing: border-box;
-            width: 100%; position: relative; padding: 70px 0;
+            width: 100%; position: relative; padding: 100px 0 70px 0; /* Tăng padding top để không bị header đè */
             background-color: var(--g-navy); 
             overflow: hidden; z-index: 1; display: block; 
-            border-top: 1px solid rgba(197, 160, 89, 0.2);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            min-height: 80vh;
         }
         .luxury-contact-wrapper * { box-sizing: border-box; }
 
@@ -32,7 +41,7 @@
 
         /* --- CỘT TRÁI: THÔNG TIN TINH TẾ --- */
         .lux-info-box h2 {
-            font-family: 'Playfair Display', serif; /* Đổi sang Playfair */
+            font-family: 'Playfair Display', serif; 
             color: #fff; font-size: 34px; font-weight: 600; margin: 0 0 15px 0;
             letter-spacing: 0.5px; line-height: 1.3;
         }
@@ -66,7 +75,7 @@
         }
 
         .v15-ver-title { 
-            font-family: 'Playfair Display', serif; /* Font Tiêu đề */
+            font-family: 'Playfair Display', serif; 
             font-size: 26px; font-weight: 600; color: var(--g-gold); 
             margin: 0 0 5px 0; text-align: left;
         }
@@ -122,70 +131,83 @@
         .luxury-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; animation: bgFloat 60s linear infinite; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 22.485l.828.83-1.415 1.415-.828-.828-.828.828L-3.658 22.485l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828.828-.828 1.415 1.415-.828.828zM0 54.627l.828.83-1.415 1.415-.828-.828-.828.828L-3.658 54.627l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828.828-.828 1.415 1.415-.828.828zM54.627 60l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 60l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828z' fill='%23c5a059' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"); }
         @keyframes bgFloat { 0% { background-position: 0 0; } 100% { background-position: 100px 100px; } }
     </style>
+</head>
+<body>
 
-    <div class="lux-contact-grid">
-        
-        <div class="lux-info-box">
-            <h2>Kết Nối Cùng Chuyên Gia</h2>
-            <p class="lux-info-desc">
-                Nhận đặc quyền tư vấn trực tiếp và bộ tài liệu nội bộ dành riêng cho quỹ căn hộ/dự án hạng sang. Đội ngũ của Greenia Homes luôn sẵn sàng đồng hành cùng bạn 24/7.
-            </p>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
 
-            <div class="lux-info-item">
-                <div class="lux-icon-circle"><i class="fas fa-phone-alt"></i></div>
-                <div class="lux-info-content">
-                    <h4>Hotline Chuyên Trách</h4>
-                    <p><a href="tel:0932966700">0932 966 700</a> (Zalo/Viber 24/7)</p>
+    <section id="vhgp-final-v15-vertical" class="luxury-contact-wrapper">
+        <div class="luxury-bg-pattern"></div>
+
+        <div class="lux-contact-grid">
+            
+            <div class="lux-info-box">
+                <h2>Kết Nối Cùng Chuyên Gia</h2>
+                <p class="lux-info-desc">
+                    Nhận đặc quyền tư vấn trực tiếp và bộ tài liệu nội bộ dành riêng cho quỹ căn hộ/dự án hạng sang. Đội ngũ của Greenia Homes luôn sẵn sàng đồng hành cùng bạn 24/7.
+                </p>
+
+                <div class="lux-info-item">
+                    <div class="lux-icon-circle"><i class="fas fa-phone-alt"></i></div>
+                    <div class="lux-info-content">
+                        <h4>Hotline Chuyên Trách</h4>
+                        <p><a href="tel:0932966700">0932 966 700</a> (Zalo/Viber 24/7)</p>
+                    </div>
+                </div>
+
+                <div class="lux-info-item">
+                    <div class="lux-icon-circle"><i class="fas fa-envelope"></i></div>
+                    <div class="lux-info-content">
+                        <h4>Email CSKH</h4>
+                        <p><a href="mailto:thuankdbds@gmail.com">thuankdbds@gmail.com</a></p>
+                    </div>
+                </div>
+
+                <div class="lux-info-item">
+                    <div class="lux-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="lux-info-content">
+                        <h4>Văn Phòng Trải Nghiệm</h4>
+                        <p>E32 An Phú New City, Phường An Phú, Tp Thủ Đức</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="lux-info-item">
-                <div class="lux-icon-circle"><i class="fas fa-envelope"></i></div>
-                <div class="lux-info-content">
-                    <h4>Email CSKH</h4>
-                    <p><a href="mailto:thuankdbds@gmail.com">thuankdbds@gmail.com</a></p>
+            <div class="lux-form-wrapper">
+                <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                <div class="v15-ver-rating-box" id="rating-container-v15-ver">
+                    <span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span>
+                    <span class="v15-ver-count" id="count-v15-ver">(Checking...)</span>
+                </div>
+                <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong id="prj-name-v15-ver">...</strong> qua Zalo/Email.</p>
+
+                <form id="leadFormV15Ver" class="v15-ver-form">
+                    
+                    <div class="v15-form-row">
+                        <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                        <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    </div>
+                    
+                    <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email nhận tài liệu" required>
+                    <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu quan tâm (VD: Căn 2PN, Shophouse...)" required>
+                    
+                    <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ NGAY</button>
+                </form>
+
+                <div id="v15-ver-success" class="success-overlay">
+                    <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                    <div class="success-text">Hệ thống đang chuẩn bị gửi tài liệu qua Zalo/Email cho quý khách.</div>
                 </div>
             </div>
 
-            <div class="lux-info-item">
-                <div class="lux-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="lux-info-content">
-                    <h4>Văn Phòng Trải Nghiệm</h4>
-                    <p>E32 An Phú New City, Phường An Phú, Tp Thủ Đức</p>
-                </div>
-            </div>
         </div>
+    </section>
 
-        <div class="lux-form-wrapper">
-            <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
-            <div class="v15-ver-rating-box" id="rating-container-v15-ver">
-                <span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span>
-                <span class="v15-ver-count" id="count-v15-ver">(Checking...)</span>
-            </div>
-            <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong id="prj-name-v15-ver">...</strong> qua Zalo/Email.</p>
-
-            <form id="leadFormV15Ver" class="v15-ver-form">
-                
-                <div class="v15-form-row">
-                    <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
-                    <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                </div>
-                
-                <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email nhận tài liệu" required>
-                <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu quan tâm (VD: Căn 2PN, Shophouse...)" required>
-                
-                <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ NGAY</button>
-            </form>
-
-            <div id="v15-ver-success" class="success-overlay">
-                <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
-                <div class="success-text">Hệ thống đang chuẩn bị gửi tài liệu qua Zalo/Email cho quý khách.</div>
-            </div>
-        </div>
-
-    </div>
+    <div id="site-footer"></div>
 
     <script id="seo-json-ld-v15-ver" type="application/ld+json">{}</script>
+    <script src="/greenia-homes/assets/js/ui.js"></script>
+
     <script>
         // ============================================================
         // ▼▼▼ CẤU HÌNH API & TRACKING ▼▼▼
@@ -272,4 +294,5 @@
             });
         });
     </script>
-</section>
+</body>
+</html>
