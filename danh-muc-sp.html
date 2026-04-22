@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh mục Sản phẩm | Greenia Homes</title>
-
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
@@ -207,6 +211,19 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         const defaultSeoTitle = "Greenia Homes - Mua bán, cho thuê Nhà phố, Biệt thự, Căn hộ giá tốt";
         const defaultSeoDesc = "Cập nhật các sản phẩm bán, cho thuê giá tốt được phân phối tại Greenia Homes. Các sản phẩm: Nhà phố, căn hộ, biệt thự riêng lẻ và các khu đô thị tại Tp HCM và khu vực lân cận.";
@@ -241,7 +258,6 @@
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
-        // ĐÃ BỎ HIDEMETA, HIỂN THỊ ĐẦY ĐỦ THÔNG SỐ
         function renderCardHTML(p) {
             const pCat = p.cat ? String(p.cat) : 'san-pham';
             const catSlug = createSafeSlug(pCat);
@@ -253,7 +269,6 @@
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
             
-            // LUÔN HIỂN THỊ META
             const metaHtml = `
             <div class="gr-meta">
                 <span class="gr-hl">${p.price || 'Liên hệ'}</span>
@@ -297,15 +312,17 @@
                 else filterBar.classList.remove('is-stuck');
             });
 
+            // TẢI DỮ LIỆU TRỰC TIẾP TỪ FIREBASE THAY VÌ GITHUB
             try {
-                const [prodRes, catRes, projRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null)
+                const [pSnap, cSnap, pjSnap] = await Promise.all([
+                    db.collection('products').get(),
+                    db.collection('categories').get(),
+                    db.collection('projects').get()
                 ]);
-                if(prodRes && prodRes.ok) { const prodsData = await prodRes.json(); allProducts = Array.isArray(prodsData) ? prodsData.reverse() : []; }
-                if(catRes && catRes.ok) { allCategories = await catRes.json(); }
-                if(projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
+
+                allProducts = pSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allCategories = cSnap.docs.map(doc => doc.data());
+                independentProjects = pjSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
@@ -334,7 +351,6 @@
 
                 updateSeoUI(activeCatSlug, filterState.type);
 
-                // FIX MENU ĐẾM ĐÚNG CHUẨN XÁC SỐ LƯỢNG SẢN PHẨM TRONG DANH MỤC
                 const ddList = document.getElementById('dyn-cat-list');
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item ${activeCatSlug === '' ? 'selected' : ''}" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
@@ -343,7 +359,6 @@
                         let cleanSlug = createSafeSlug(c.slug || c.name);
                         
                         if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
-                            // CHỈ LỌC NHỮNG SẢN PHẨM NÀO CÓ CHỨA ĐÚNG SLUG CỦA DANH MỤC NÀY
                             let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
                             
                             if (count > 0 || c.showEmpty) {
@@ -399,7 +414,7 @@
 
             } catch (e) {
                 console.log(e);
-                document.getElementById('luc-grid-result').innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:50px; color:#ff4d4f;'>Không thể tải dữ liệu sản phẩm. Vui lòng F5 lại trang.</div>";
+                document.getElementById('luc-grid-result').innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:50px; color:#ff4d4f;'>Không thể kết nối cơ sở dữ liệu. Vui lòng tải lại trang.</div>";
                 document.querySelector('.luc-loader').style.display = 'none';
             }
         });
@@ -445,7 +460,6 @@
             else { loadBtnWrap.style.display = 'block'; document.getElementById('luc-load-more-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
         }
 
-        // ĐÃ SỬA: SỬ DỤNG LẠI HÀM RENDERCARD CÓ ĐẦY ĐỦ THÔNG SỐ (BỎ QUA THUỘC TÍNH HIDEMETA)
         function renderForYouGrid() {
             const grid = document.getElementById('foryou-grid-v67');
             const wrap = document.getElementById('foryou-load-wrap-v67');
