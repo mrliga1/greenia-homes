@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bbbbbbbbbbbbbb | Greenia Homes</title>
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
-
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     
@@ -34,7 +34,6 @@
         /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
         .gr-sp-main { width: 75%; } 
-        /* ĐÃ KHÔI PHỤC THUỘC TÍNH HEIGHT: FIT-CONTENT ĐỂ STICKY HOẠT ĐỘNG */
         .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
 
         /* TOC */
@@ -192,6 +191,8 @@
             .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
             .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
             .rev-row-inputs { grid-template-columns: 1fr; gap: 10px; } .rev-btn { width: 100%; }
+            /* ẨN REVIEWS TRÊN MOBILE */
+            #vhgp-reviews-ip { display: none !important; }
         }
         @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
     </style>
@@ -263,16 +264,20 @@
                 const posts = await postRes.json();
                 const prods = await prodRes.json();
 
-                // 1. Sidebar - Danh mục Sản Phẩm
+                // 1. Sidebar - Danh mục Sản Phẩm (Đã sửa lỗi trùng lặp logic)
                 let countBan = 0, countThue = 0;
                 let otherCats = {};
                 prods.forEach(p => {
+                    // Nếu là danh mục đặc biệt (Bán/Thuê) thì không gom vào otherCats
                     if(p.type === 'Bán') countBan++;
                     else if(p.type === 'Thuê') countThue++;
                     
                     if(p.cat) {
                         let c = p.cat.trim();
-                        if(c !== '') otherCats[c] = (otherCats[c] || 0) + 1;
+                        // Tránh việc Danh mục "Chuyển nhượng/Cho thuê" bị lặp lại 2 lần do ai đó lỡ cấu hình trùng tên trong p.cat
+                        if(c !== '' && c.toLowerCase() !== 'chuyển nhượng' && c.toLowerCase() !== 'cho thuê') {
+                            otherCats[c] = (otherCats[c] || 0) + 1;
+                        }
                     }
                 });
 
@@ -300,29 +305,37 @@
                     latestNewsHTML += `<a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:block; color:#888; margin-bottom:12px; font-size:14px; border-bottom:1px dashed rgba(255,255,255,0.05); padding-bottom:8px; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#888'"><i class="fas fa-chevron-right" style="color:#c5a059; margin-right:5px; font-size:10px;"></i> ${p.title}</a>`;
                 });
 
-                // 3. Sidebar - Sản phẩm nổi bật
+                // 3. Sidebar - Sản phẩm nổi bật (Đã đồng bộ layout và thêm chống mù ảnh)
                 let sidebarProdHTML = '';
                 [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
                     const pCatSlug = createSafeSlug(p.cat || 'san-pham');
                     const pSlug = p.slug || createSafeSlug(p.title);
                     const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                    const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                     
                     let tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
                     let tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+                    
+                    let extraInfo = "";
+                    let specArr = [];
+                    if (p.area) specArr.push(`${p.area} m²`);
+                    if (p.bed) specArr.push(`${p.bed} PN`);
+                    if (specArr.length > 0) {
+                        extraInfo = `<span style="color:#555; margin: 0 6px;">|</span><span style="font-size:11px; font-weight:400; color:#aaa;">${specArr.join(' - ')}</span>`;
+                    }
 
                     sidebarProdHTML += `
                         <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="gr-prod-card">
                             <div class="gr-prod-thumb">
                                 <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                                <img src="${imgUrl}">
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
                             </div>
                             <div class="gr-prod-info">
                                 <h4 class="gr-tit-mini">${p.title}</h4>
                                 ${p.loc ? `<div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${p.loc.substring(0, 30)}...</div>` : ''}
-                                <div class="gr-meta-mini">
+                                <div class="gr-meta-mini" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                     <span class="gr-hl">${p.price || 'Liên hệ'}</span>
-                                    ${p.area ? `<span class="gr-sep">|</span> <span class="gr-txt">${p.area} m²</span>` : ''}
-                                    ${p.bed ? `<span class="gr-sep">|</span> <span class="gr-txt">${p.bed} PN</span>` : ''}
+                                    <div style="display:flex; align-items:center;">${extraInfo}</div>
                                 </div>
                             </div>
                         </a>`;
@@ -386,7 +399,8 @@
 
                 const catSlug = createSafeSlug(post.cat);
                 const shareLink = encodeURIComponent(window.location.href);
-                const zaloIcon = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/1200px-Icon_of_Zalo.svg.png';
+                // ĐÃ SỬA ICON ZALO BASE64 SIÊU NHẸ (Không bị lỗi ảnh)
+                const zaloIcon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICA8cGF0aCBmaWxsPSIjMDA2OEZGIiBkPSJNMjUwIDExOS44YzAgNjUuMy01MS42IDExOC4zLTExNS4zIDExOC4zLTE4LjUgMC0zNi40LTMuOS01Mi45LTExbDYuNy0yMy45Yy01NC4zIDI2LjYtMTAzLjktMjEuMi04Ny03Ny4zQTIwLjIgMjAuMiAwIDAgMCAxNiAxMDBDMTYgNTIuNSA2OC4zIDAgMTMzLjMgMCAyNDguMyAwIDI1MCAxMTkuOHoiLz4KICA8cGF0aCBmaWxsPSIjRkZGIiBkPSJNNjcuMyAxNzNjLTYgMTYuOS0xMiA0NS0xNy40IDUwLjggMTguNC0xIDMyLTEyLjMgNDYuNS0yMy4zQTM0IDM0IDAgMCAwIDY3LjMgMTY4em0tMi4yLTIwLjNjMzQuNiA1NS4zIDExMy44IDU1LjEgMTI5LjkgMTEuNCAxMi41LTM0LjItOC4yLTgxLjktNTEuNy05Ni00OC4zLTE1LjQtMTEzLjItMy44LTExMS45IDYyLjYgMSAyNS44IDE3LjYgMzggMzMuNyAyMnoiLz4KPC9zdmc+';
 
                 // BƠM TOÀN BỘ GIAO DIỆN VÀO TRANG TĨNH
                 container.innerHTML = `
