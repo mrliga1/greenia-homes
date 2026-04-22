@@ -215,35 +215,41 @@
             const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
-            let extraInfo = "";
-            let specArr = [];
-            if (p.area) specArr.push(`${p.area} m²`);
-            if (p.bed) specArr.push(`${p.bed} PN`);
-            if (specArr.length > 0) {
-                extraInfo = `<span style="color:#555; margin: 0 6px;">|</span><span style="font-size:11px; font-weight:400; color:#aaa;">${specArr.join(' - ')}</span>`;
+            let areaBedHtml = "";
+            if (p.area || p.bed) {
+                let areaPart = p.area ? `<span style="color: var(--gold); font-size:12px;">${p.area} m²</span>` : "";
+                let bedPart = p.bed ? `<span style="color: var(--gold); font-size:12px;">${p.bed} PN</span>` : "";
+                let divider = (p.area && p.bed) ? `<span style="color:#555; margin: 0 6px;">|</span>` : "";
+                areaBedHtml = `<div style="display:flex; align-items:center;">${areaPart}${divider}${bedPart}</div>`;
             }
 
             if(isList) {
                 return `<a href="${link}" class="gr-list-prod">
-                            <div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div>
+                            <div class="gr-lprod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
                             <div class="gr-lprod-info">
                                 <h4 class="gr-lprod-tit">${p.title}</h4>
                                 <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-lprod-meta" style="display:flex; align-items:center; flex-wrap:wrap;">
+                                <div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                     <span class="gr-lprod-hl">${p.price}</span>
-                                    ${extraInfo}
+                                    ${areaBedHtml}
                                 </div>
                             </div>
                         </a>`;
             } else {
                 return `<a href="${link}" class="s2-card">
-                            <div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div>
+                            <div class="s2-thumb-box">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
                             <div class="s2-body">
                                 <h3 class="gr-tit">${p.title}</h3>
                                 <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-meta" style="display:flex; align-items:center; flex-wrap:wrap;">
+                                <div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;">
                                     <span class="gr-hl">${p.price}</span>
-                                    ${extraInfo}
+                                    ${areaBedHtml}
                                 </div>
                             </div>
                         </a>`;
@@ -301,8 +307,9 @@
                 if (independentProjects.length > 0) {
                     document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
                         const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                        const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}"></div>
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
                                     <div class="s2-body">
                                         <h3 class="gr-tit">${p.title}</h3>
                                         <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
