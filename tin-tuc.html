@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tin Tức & Cẩm Nang Bất Động Sản | Greenia Homes</title>
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
@@ -172,7 +176,20 @@
     <script src="assets/js/ui.js"></script>
 
     <script>
-        // KHO KHAI BÁO BIẾN (Tuyệt đối không dùng await ở đây)
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // KHO KHAI BÁO BIẾN
         let allPosts = [];
         let allProducts = [];
         let currentTabPosts = [];
@@ -189,7 +206,7 @@
         }
 
         function extractPostData(p) {
-            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content;
+            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content || "";
             const firstImg = tempDiv.querySelector('img');
             let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.substring(0, 120) + '...';
@@ -208,7 +225,6 @@
             const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
-            // BỐ CỤC ĐỒNG BỘ 100% VỚI TRANG SẢN PHẨM
             let areaBedHtml = "";
             if (p.area || p.bed) {
                 let areaPart = p.area ? `<span style="color: var(--gold); font-size:12px;">${p.area} m²</span>` : "";
@@ -250,25 +266,18 @@
             }
         }
 
-        // TẢI DỮ LIỆU KHI TRANG SẴN SÀNG
+        // TẢI DỮ LIỆU TỪ FIREBASE KHI TRANG SẴN SÀNG
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const [postRes, prodRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/posts.json'),
-                    fetch(safeBaseUrl + 'assets/data/products.json')
+                const [postSnap, prodSnap, projSnap] = await Promise.all([
+                    db.collection('posts').get(),
+                    db.collection('products').get(),
+                    db.collection('projects').get()
                 ]);
-                allPosts = await postRes.json();
-                allProducts = await prodRes.json();
 
-                // Load Project Độc Lập an toàn
-                try {
-                    const projRes = await fetch(safeBaseUrl + 'assets/data/projects.json');
-                    if (projRes.ok) {
-                        independentProjects = await projRes.json();
-                    }
-                } catch(e) {
-                    console.log("File projects.json chưa có dữ liệu.");
-                }
+                allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 // TẠO TABS
                 const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
@@ -292,7 +301,7 @@
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
 
-                // CAROUSEL DỰ ÁN (Load từ bot Build.js)
+                // CAROUSEL DỰ ÁN
                 if (independentProjects.length > 0) {
                     document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
                         const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
@@ -315,7 +324,8 @@
                 }
 
             } catch(e) {
-                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang cập nhật dữ liệu.</div>";
+                console.error("Lỗi kết nối Firebase:", e);
+                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang kết nối cơ sở dữ liệu. Vui lòng tải lại trang.</div>";
                 document.getElementById('top-grid-container').style.opacity = 1;
             }
         });
