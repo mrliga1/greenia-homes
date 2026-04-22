@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tin tức thị trường | Greenia Homes</title>
     
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -97,14 +98,8 @@
             .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } 
             .gr-sec2 { flex-direction: column; gap: 30px; } 
             .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } 
-            
-            /* Ép về 1 cột cho phần "Bất động sản dành cho bạn" (s3-grid) */
             .s3-grid { grid-template-columns: 1fr; } 
-            
-            /* Ép về 1 cột cho các thanh trượt (Carousel) - chiếm 85% để lộ mép thẻ sau */
             .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
-
-            /* Ép list bài viết (70/30) về 1 cột trên Mobile để chữ to dễ đọc hơn */
             .gr-sec2-left { grid-template-columns: 1fr; }
         }
     </style>
@@ -203,7 +198,7 @@
         // KHO KHAI BÁO BIẾN ĐÃ ĐƯỢC TỐI ƯU CÔ LẬP
         let allPosts = [];
         let allProducts = [];
-        let postsInThisCat = []; // Cô lập dữ liệu: Chỉ chứa bài của đúng danh mục này
+        let postsInThisCat = []; 
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
@@ -218,9 +213,10 @@
         }
 
         function extractPostData(p) {
-            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content;
+            const tempDiv = document.createElement('div'); 
+            tempDiv.innerHTML = p.content;
             const firstImg = tempDiv.querySelector('img');
-            const img = firstImg ? firstImg.src : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; 
+            let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.substring(0, 120) + '...';
             const catSlug = createSafeSlug(p.cat);
             const pSlug = p.slug || createSafeSlug(p.title);
@@ -234,42 +230,50 @@
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
-            // Bổ sung HTML cho Diện tích và Phòng ngủ (Có kiểm tra nếu trống thì ẩn đi)
-            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
-            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+            let areaBedHtml = "";
+            if (p.area || p.bed) {
+                let areaPart = p.area ? `<span style="color: var(--gold); font-size:12px;">${p.area} m²</span>` : "";
+                let bedPart = p.bed ? `<span style="color: var(--gold); font-size:12px;">${p.bed} PN</span>` : "";
+                let divider = (p.area && p.bed) ? `<span style="color:#555; margin: 0 6px;">|</span>` : "";
+                areaBedHtml = `<div style="display:flex; align-items:center;">${areaPart}${divider}${bedPart}</div>`;
+            }
 
             if(isList) {
-                // Thẻ nhỏ ở Sidebar (Danh sách dọc)
                 return `<a href="${link}" class="gr-list-prod">
-                            <div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
+                            <div class="gr-lprod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
                             <div class="gr-lprod-info">
                                 <h4 class="gr-lprod-tit">${p.title}</h4>
                                 <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-lprod-meta">
+                                <div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                     <span class="gr-lprod-hl">${p.price}</span>
+                                    ${areaBedHtml}
                                 </div>
                             </div>
                         </a>`;
             } else {
-                // Thẻ lớn ở Carousel & Bất động sản dành cho bạn
                 return `<a href="${link}" class="s2-card">
-                            <div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}"></div>
+                            <div class="s2-thumb-box">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
                             <div class="s2-body">
                                 <h3 class="gr-tit">${p.title}</h3>
                                 <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-meta">
+                                <div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;">
                                     <span class="gr-hl">${p.price}</span>
-                                    <div style="display:flex; gap:10px;">
-                                        ${areaHtml}
-                                        ${bedHtml}
-                                    </div>
+                                    ${areaBedHtml}
                                 </div>
                             </div>
                         </a>`;
             }
         }
+
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postRes, prodRes] = await Promise.all([
@@ -321,8 +325,9 @@
                 if (independentProjects.length > 0) {
                     document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
                         const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                        const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}"></div>
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
                                     <div class="s2-body">
                                         <h3 class="gr-tit">${p.title}</h3>
                                         <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
@@ -373,9 +378,19 @@
             }).join('');
             
             const relatedPosts = currentTabPosts.slice(7, 12);
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            
             document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
                 const pd = extractPostData(p);
-                return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center;"><div class="gr-img-col3"><img src="${pd.img}"></div><div class="gr-prod-info"><h4 class="gr-tit">${pd.title}</h4><div class="gr-meta" style="color: #888; font-size: 11px; border-top: none; padding-top: 0;"><i class="far fa-clock"></i> ${pd.date}</div></div></a>`;
+                return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center; display:flex; gap:10px; margin-bottom:15px;">
+                            <div class="gr-img-col3" style="width:70px; height:50px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
+                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';" style="width:100%; height:100%; object-fit:cover;">
+                            </div>
+                            <div class="gr-prod-info" style="flex:1;">
+                                <h4 class="gr-tit" style="font-size:12px !important; margin:0 0 4px !important;">${pd.title}</h4>
+                                <div class="gr-meta" style="color: #888; font-size: 10px; border-top: none; padding-top: 0;"><i class="far fa-clock"></i> ${pd.date}</div>
+                            </div>
+                        </a>`;
             }).join('') || '<div style="color:#888; font-size:12px;">Đang cập nhật...</div>';
             
             document.getElementById('top-grid-container').style.opacity = 1;
@@ -389,24 +404,58 @@
 
         window.renderHero = function(p) {
             const pd = extractPostData(p);
-            document.getElementById('hero-col').innerHTML = `<div class="s1-hero-img-box"><a href="${pd.link}" id="hero-link"><img src="${pd.img}" id="hero-img" class="s1-hero-img"></a></div><div class="s1-hero-body"><a href="${pd.link}"><h3 class="s1-hero-tit" id="hero-tit">${pd.title}</h3></a><div class="s1-hero-desc" id="hero-desc">${pd.excerpt}</div><div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${pd.date}</div></div>`;
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            
+            document.getElementById('hero-col').innerHTML = `
+                <div class="s1-hero-img-box">
+                    <a href="${pd.link}" id="hero-link">
+                        <img src="${pd.img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img">
+                    </a>
+                </div>
+                <div class="s1-hero-body">
+                    <a href="${pd.link}"><h3 class="s1-hero-tit" id="hero-tit">${pd.title}</h3></a>
+                    <div class="s1-hero-desc" id="hero-desc">${pd.excerpt}</div>
+                    <div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${pd.date}</div>
+                </div>`;
         }
 
         window.updateHero = function(link, img, tit, desc, date, el) {
-            document.getElementById('hero-link').href = link; document.querySelector('.s1-hero-body a').href = link;
-            document.getElementById('hero-img').src = img; document.getElementById('hero-tit').innerText = tit;
-            document.getElementById('hero-desc').innerText = desc; document.getElementById('hero-date').innerHTML = `<i class="far fa-clock"></i> ${date}`;
-            document.querySelectorAll('.s1-news-item').forEach(item => item.classList.remove('active')); el.classList.add('active');
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            document.getElementById('hero-link').href = link; 
+            document.querySelector('.s1-hero-body a').href = link;
+            
+            const heroImgEl = document.getElementById('hero-img');
+            heroImgEl.src = img;
+            heroImgEl.onerror = function() { this.src = fallbackImg; };
+            
+            document.getElementById('hero-tit').innerText = tit;
+            document.getElementById('hero-desc').innerText = desc; 
+            document.getElementById('hero-date').innerHTML = `<i class="far fa-clock"></i> ${date}`;
+            
+            document.querySelectorAll('.s1-news-item').forEach(item => item.classList.remove('active')); 
+            el.classList.add('active');
         }
 
         window.loadMorePosts = function() {
             const grid = document.getElementById('main-post-grid');
             const batch = mixedPostsPool.slice(loadedCount, loadedCount + postsPerPage);
             if(batch.length === 0) return;
+            
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            
             let html = batch.map(p => {
                 const pd = extractPostData(p);
-                return `<a href="${pd.link}" class="gr-list-post"><div class="gr-list-thumb"><img src="${pd.img}"></div><div class="gr-list-info"><h4 class="gr-list-tit">${pd.title}</h4><div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div></div></a>`;
+                return `<a href="${pd.link}" class="gr-list-post">
+                            <div class="gr-list-thumb">
+                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';">
+                            </div>
+                            <div class="gr-list-info">
+                                <h4 class="gr-list-tit">${pd.title}</h4>
+                                <div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div>
+                            </div>
+                        </a>`;
             }).join('');
+            
             grid.insertAdjacentHTML('beforeend', html);
             loadedCount += batch.length;
             if(loadedCount >= mixedPostsPool.length) document.getElementById('load-more-wrap').style.display = 'none';
