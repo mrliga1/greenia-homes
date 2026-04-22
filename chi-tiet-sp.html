@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết Sản phẩm | Greenia Homes</title>
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
@@ -208,7 +212,7 @@
         <div class="luc-inner" id="sp-container">
             <div style="text-align:center; padding: 100px 0; color: #c5a059;">
                 <i class="fas fa-circle-notch fa-spin fa-3x"></i>
-                <p>Đang tải dữ liệu sản phẩm...</p>
+                <p>Đang tải dữ liệu sản phẩm từ hệ thống...</p>
             </div>
         </div>
     </div>
@@ -228,6 +232,22 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        // CẤU HÌNH FIREBASE DATABASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
         window.GREENIA_CURRENT_PRODUCT = null;
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         
@@ -311,19 +331,15 @@
             if (!prod) { window.location.replace(safeBaseUrl + 'san-pham.html'); return; }
 
             try {
-                const [prodRes, catRes, projRes] = await Promise.all([
-                    fetch(safeBaseUrl + 'assets/data/products.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/categories.json').catch(() => null),
-                    fetch(safeBaseUrl + 'assets/data/projects.json').catch(() => null)
+                const [prodSnap, catSnap, projSnap] = await Promise.all([
+                    db.collection('products').get(),
+                    db.collection('categories').get(),
+                    db.collection('projects').get()
                 ]);
                 
-                if(prodRes && prodRes.ok) {
-                    const prodsData = await prodRes.json();
-                    allProducts = Array.isArray(prodsData) ? prodsData.reverse() : [];
-                }
-                if(catRes && catRes.ok) { allCategories = await catRes.json(); }
-                let independentProjects = [];
-                if(projRes && projRes.ok) { let pj = await projRes.json(); independentProjects = Array.isArray(pj) ? pj.reverse() : []; }
+                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allCategories = catSnap.docs.map(doc => doc.data());
+                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 // 1. TẠO MEDIA LIST (Gallery)
                 mediaList = [];
@@ -684,7 +700,8 @@
                 }
 
             } catch (e) {
-                document.getElementById('sp-container').innerHTML = "<div style='text-align:center; padding:50px; color:#ff4d4f;'>Không tải được thông tin sản phẩm.</div>";
+                console.error("Lỗi:", e);
+                document.getElementById('sp-container').innerHTML = "<div style='text-align:center; padding:50px; color:#ff4d4f;'>Hệ thống đang cập nhật dữ liệu. Vui lòng F5 lại trang.</div>";
             }
         });
 
