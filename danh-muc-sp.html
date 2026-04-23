@@ -32,6 +32,7 @@
             position: -webkit-sticky; 
             position: sticky; 
             top: 0px; 
+            /* BIỆN PHÁP MẠNH 1: Hạ xuống 10 (chỉ cần lớn hơn 5 của tag sản phẩm là đủ) */
             z-index: 10; 
             background-color: #05080f; 
             padding: 5px 0; 
@@ -123,7 +124,7 @@
             .gr-nav-btn { display: none !important; }
         }
 
-        /* BIỆN PHÁP MẠNH 2: Ép tất cả các loại Popup, Modal, Overlay nổi lên trên cùng */
+        /* BIỆN PHÁP MẠNH 2: NẰM NGOÀI MEDIA QUERY ĐỂ CHẠY TRÊN MỌI MÀN HÌNH */
         [class*="popup"], 
         [id*="popup"], 
         [class*="overlay"], 
