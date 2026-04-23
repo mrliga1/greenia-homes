@@ -26,7 +26,7 @@
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
         /* TAB BAR CÓ TÍNH NĂNG SMART STICKY */
-        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0px; z-index: 10; background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s, background 0.3s; }
+        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0px; z-index: 10; /* ĐÃ SỬA: Hạ xuống 10 để không đè popup */ background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s, background 0.3s; }
         .luc-sticky-wrapper.is-stuck { top: 0 !important; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
         
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
@@ -200,6 +200,16 @@
             #luc-search-form { width: 100%; }
             .gr-carousel .s2-card { flex: 0 0 100% !important; max-width: 100% !important; }
             .gr-nav-btn { display: none !important; }
+        }
+
+        /* BIỆN PHÁP MẠNH 2: Ép tất cả các loại Popup, Modal, Overlay nổi lên trên cùng */
+        [class*="popup"], 
+        [id*="popup"], 
+        [class*="overlay"], 
+        [id*="overlay"], 
+        [class*="modal"],
+        .gr-popup-wrapper { 
+            z-index: 99999999 !important; 
         }
     </style>
 </head>
