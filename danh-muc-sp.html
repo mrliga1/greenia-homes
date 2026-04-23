@@ -122,6 +122,16 @@
             .gr-carousel { gap: 15px; } .gr-carousel .s2-card { flex: 0 0 100%; max-width: 100%; } 
             .gr-nav-btn { display: none !important; }
         }
+
+        /* BIỆN PHÁP MẠNH 2: Ép tất cả các loại Popup, Modal, Overlay nổi lên trên cùng */
+        [class*="popup"], 
+        [id*="popup"], 
+        [class*="overlay"], 
+        [id*="overlay"], 
+        [class*="modal"],
+        .gr-popup-wrapper { 
+            z-index: 99999999 !important; 
+        }
     </style>
 </head>
 <body>
