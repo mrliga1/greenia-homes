@@ -58,15 +58,20 @@
         .form-section { display: none; animation: fadeIn 0.3s; }
         .form-section.active { display: block; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; position: relative;}
         .form-group.full { grid-column: 1 / -1; }
         .form-group.third { grid-column: span 1; }
         label { display: block; margin-bottom: 8px; color: #fff; font-weight: 600; font-size: 13px; text-transform: uppercase;}
         input, select { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         input:focus { outline: none; border-color: var(--gold); }
-        input:disabled { opacity: 0.5; cursor: not-allowed; background: #000; }
+        input:disabled { opacity: 0.4; cursor: not-allowed; background: #000; }
         textarea.seo-txt, textarea.map-txt { width: 100%; padding: 12px; background: #1a1f2b; border: 1px solid var(--border); color: #fff; border-radius: 5px; font-family: inherit; font-size: 14px;}
         
+        /* Chỉnh sửa giao diện nút Unlock Slug */
+        .btn-unlock { position: absolute; right: 10px; top: 38px; background: transparent; border: none; color: #888; cursor: pointer; font-size: 14px; transition: 0.3s;}
+        .btn-unlock:hover { color: var(--gold); }
+        .btn-unlock.unlocked { color: #00b894; }
+
         .seo-box { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; position: relative;}
         .seo-box::before { content: 'Tùy chỉnh SEO (Google)'; position: absolute; top: -12px; left: 20px; background: var(--card); padding: 0 10px; color: var(--gold); font-size: 12px; font-weight: bold; }
         .char-count { font-size: 11px; color: #888; float: right; margin-top: 5px; }
@@ -112,9 +117,6 @@
         .select-edit-box { background: rgba(197,160,89,0.1); border: 1px dashed var(--gold); border-radius: 8px; padding: 15px; margin-bottom: 25px; }
         .select-edit-box select { background: #000; border-color: var(--gold); color: var(--gold); font-weight: bold; }
 
-        .favicon-box { margin-top: 30px; padding: 20px; border: 1px dashed #444; border-radius: 8px; background: #111; text-align: center; }
-        .favicon-box h4 { margin-top: 0; color: #fff; font-size: 14px; }
-        .favicon-box p { font-size: 12px; color: #888; }
     </style>
 </head>
 <body>
@@ -164,12 +166,13 @@
                     </div>
                     <div class="form-group full">
                         <label>Tên Danh Mục:</label>
-                        <input type="text" id="c-title" oninput="document.getElementById('c-slug').value = slugify(this.value); checkLength(this, 'c-title-count', 60);" placeholder="VD: Tin dự án">
+                        <input type="text" id="c-title" oninput="handleTitleInput(this, 'c-slug'); checkLength(this, 'c-title-count', 60);" placeholder="VD: Tin dự án">
                         <div class="char-count" id="c-title-count">0/60</div>
                     </div>
                     <div class="form-group full">
                         <label>Đường dẫn tĩnh (Slug):</label>
                         <input type="text" id="c-slug" placeholder="VD: tin-du-an">
+                        <button class="btn-unlock" id="c-slug-lock" onclick="toggleSlugLock('c-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
                     <div class="form-group full">
                         <label>Mô tả ngắn danh mục:</label>
@@ -194,8 +197,13 @@
                     <div class="form-group"><label>Trạng thái GD:</label><select id="p-type"><option value="Bán">Bán</option><option value="Thuê">Cho Thuê</option></select></div>
                     <div class="form-group full">
                         <label>Tên Sản Phẩm / Tiêu đề:</label>
-                        <input type="text" id="p-title" oninput="checkLength(this, 'p-title-count', 65)" placeholder="VD: Biệt thự The Global City">
+                        <input type="text" id="p-title" oninput="handleTitleInput(this, 'p-slug'); checkLength(this, 'p-title-count', 65)" placeholder="VD: Biệt thự The Global City">
                         <div class="char-count" id="p-title-count">0/65</div>
+                    </div>
+                     <div class="form-group full">
+                        <label>Đường dẫn tĩnh (Slug):</label>
+                        <input type="text" id="p-slug" placeholder="Tu-dong-tao-link-khi-go-tieu-de">
+                        <button class="btn-unlock" id="p-slug-lock" onclick="toggleSlugLock('p-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
                     <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat" placeholder="Chọn hoặc nhập mới..."><datalist id="p-cats"></datalist></div>
                     <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode" placeholder="VD: P123"></div>
@@ -251,8 +259,13 @@
                     <div class="form-group"><label>Ngày đăng:</label><input type="text" id="n-date" disabled></div>
                     <div class="form-group full">
                         <label>Tiêu Đề:</label>
-                        <input type="text" id="n-title" oninput="checkLength(this, 'n-title-count', 65)">
+                        <input type="text" id="n-title" oninput="handleTitleInput(this, 'n-slug'); checkLength(this, 'n-title-count', 65)">
                         <div class="char-count" id="n-title-count">0/65</div>
+                    </div>
+                    <div class="form-group full">
+                        <label>Đường dẫn tĩnh (Slug):</label>
+                        <input type="text" id="n-slug" placeholder="Tu-dong-tao-link-khi-go-tieu-de">
+                        <button class="btn-unlock" id="n-slug-lock" onclick="toggleSlugLock('n-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
                     <div class="form-group"><label>Danh mục:</label><input list="n-cats" id="n-cat"><datalist id="n-cats"></datalist></div>
                     <div class="form-group"><label>Tác giả:</label><input type="text" id="n-author" value="Chuyên gia Greenia"></div>
@@ -287,8 +300,13 @@
                     </div>
                     <div class="form-group full">
                         <label>Tên Dự Án:</label>
-                        <input type="text" id="pj-title" oninput="checkLength(this, 'pj-title-count', 65)" placeholder="VD: Vinhomes Grand Park">
+                        <input type="text" id="pj-title" oninput="handleTitleInput(this, 'pj-slug'); checkLength(this, 'pj-title-count', 65)" placeholder="VD: Vinhomes Grand Park">
                         <div class="char-count" id="pj-title-count">0/65</div>
+                    </div>
+                     <div class="form-group full">
+                        <label>Đường dẫn tĩnh (Slug):</label>
+                        <input type="text" id="pj-slug" placeholder="Tu-dong-tao-link-khi-go-tieu-de">
+                        <button class="btn-unlock" id="pj-slug-lock" onclick="toggleSlugLock('pj-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
                     <div class="form-group"><label>Khu vực / Tỉnh thành:</label><input type="text" id="pj-loc" placeholder="VD: Quận 9, TP.HCM"></div>
                     <div class="form-group"><label>Giá tham chiếu:</label><input type="text" id="pj-price" placeholder="VD: Từ 3 tỷ/căn"></div>
@@ -332,7 +350,6 @@
     /* =================================================================
        CẤU HÌNH FIREBASE DATABASE (V2) & PHÂN QUYỀN
     ================================================================= */
-    // 1. MÃ CONFIG FIREBASE BÁC VỪA CHỤP ẢNH
     const firebaseConfig = {
       apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
       authDomain: "greenia-homes.firebaseapp.com",
@@ -343,19 +360,17 @@
       measurementId: "G-YRK63BNPP0"
     };
     
-    // Khởi tạo Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. MẬT KHẨU PHÂN QUYỀN TRUY CẬP (AN TOÀN HƠN GITHUB VÌ DB LÀ RIÊNG TƯ)
     const USERS = {
-        "10091995Tt!": "admin",     // Full quyền
-        "00000000": "editor"   // Không được xóa
+        "10091995Tt!": "admin",     
+        "00000000": "editor"   
     };
     let currentUserRole = "";
 
     const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
-    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" }; // Chỉ dùng để kéo dữ liệu cũ lúc chuyển nhà
+    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" }; 
     const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
 
     let currentData = { posts: [], products: [], projects: [], categories: [] };
@@ -376,7 +391,7 @@
             document.getElementById('admin-dashboard').style.display = 'block';
             
             applyRoleRestrictions();
-            loadDataFromFirebase(); // TẢI TỪ FIREBASE THAY VÌ GITHUB
+            loadDataFromFirebase(); 
         } else {
             err.style.display = 'block';
         }
@@ -388,11 +403,38 @@
             style.innerHTML = `.del-btn, .del-btn-master { display: none !important; }`;
             document.head.appendChild(style);
             document.getElementById('admin-heading').innerHTML += ` <span style="font-size:12px; color:#ff9f43; background:rgba(255,159,67,0.1); padding:3px 8px; border-radius:4px; vertical-align:middle;">(Biên Tập Viên)</span>`;
-            
-            // Ẩn luôn nút chuyển nhà
             document.getElementById('btn-migrate').style.display = 'none';
         }
     }
+
+    // =================================================================
+    // LOGIC AUTO-SLUG THÔNG MINH (CHỈ CHẠY KHI ĐĂNG MỚI HOẶC MỞ KHÓA)
+    // =================================================================
+    function handleTitleInput(titleInput, slugInputId) {
+        const slugInput = document.getElementById(slugInputId);
+        // Nếu không trong chế độ sửa HOẶC ô slug đang được mở khóa thủ công thì mới cho tự chạy
+        if (!editMode.active || !slugInput.disabled) {
+            slugInput.value = slugify(titleInput.value);
+        }
+    }
+
+    function toggleSlugLock(slugInputId) {
+        const input = document.getElementById(slugInputId);
+        const icon = document.querySelector(`#${slugInputId}-lock i`);
+        
+        if(input.disabled) {
+            if(confirm("CẢNH BÁO: Đổi Slug (Link) của bài viết ĐÃ CÓ SẴN có thể gây lỗi 404 nếu bạn chưa đổi tên thư mục trên GitHub.\nBạn có chắc chắn muốn mở khóa để sửa không?")) {
+                input.disabled = false;
+                icon.className = "fas fa-unlock";
+                document.getElementById(`${slugInputId}-lock`).classList.add('unlocked');
+            }
+        } else {
+            input.disabled = true;
+            icon.className = "fas fa-lock";
+            document.getElementById(`${slugInputId}-lock`).classList.remove('unlocked');
+        }
+    }
+
 
     // =================================================================
     // LOGIC KẾT NỐI FIREBASE DATABASE MỚI TỐC ĐỘ CAO
@@ -427,7 +469,6 @@
         }
     }
 
-    // HÀM CHUYỂN NHÀ: HÚT JSON TỪ GITHUB ĐỔ VÀO FIREBASE
     async function migrateData() {
         if (currentUserRole !== 'admin') { alert("Chỉ Admin mới được dùng chức năng này!"); return; }
         if(!confirm("Hành động này sẽ COPY toàn bộ dữ liệu hiện có trên GitHub cũ sang Database Firebase mới.\nBạn có chắc chắn muốn thực hiện?")) return;
@@ -437,7 +478,6 @@
         btn.disabled = true;
 
         try {
-            // Lấy dữ liệu json thô từ Github (Kênh tĩnh)
             const ghUrl = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/assets/data/`;
             const [pRes, nRes, pjRes, cRes] = await Promise.all([
                 fetch(ghUrl + 'products.json?t=' + Date.now()),
@@ -451,7 +491,6 @@
             const projs = pjRes.ok ? await pjRes.json() : [];
             const cats = cRes.ok ? await cRes.json() : [];
 
-            // Gói tất cả vào một lệnh Batch để gửi lên Firebase cùng lúc
             const batch = db.batch();
 
             prods.forEach(item => { const ref = db.collection('products').doc(String(item.id)); batch.set(ref, item); });
@@ -459,11 +498,11 @@
             projs.forEach(item => { const ref = db.collection('projects').doc(String(item.id)); batch.set(ref, item); });
             cats.forEach(item => { const ref = db.collection('categories').doc(String(item.id)); batch.set(ref, item); });
 
-            await batch.commit(); // Gửi lên Firebase
+            await batch.commit(); 
 
             alert("CHUYỂN NHÀ THÀNH CÔNG!\nToàn bộ dữ liệu đã được lưu an toàn trên Database Firebase mới.");
-            btn.style.display = 'none'; // Giấu nút đi vì đã chuyển xong
-            loadDataFromFirebase(); // Tải lại bảng điều khiển
+            btn.style.display = 'none'; 
+            loadDataFromFirebase(); 
         } catch(e) {
             console.error(e);
             alert("Có lỗi mạng xảy ra khi chuyển dữ liệu!");
@@ -472,9 +511,6 @@
         }
     }
 
-    // =================================================================
-    // LOGIC HOẠT ĐỘNG CỦA ADMIN (GIỮ NGUYÊN)
-    // =================================================================
 
     function getAbsoluteImageUrl(imgRaw) {
         if (!imgRaw) return '';
@@ -511,6 +547,19 @@
         const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title).concat(currentData.posts.map(x => x.cat));
         populateCats('p-cats', prodCats); 
         populateCats('n-cats', newsCats);
+
+        // Mở khóa ô Slug khi tạo mới
+        ['p-slug', 'n-slug', 'pj-slug', 'c-slug'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.disabled = false;
+                const icon = document.querySelector(`#${id}-lock i`);
+                if(icon) {
+                    icon.className = "fas fa-lock";
+                    document.getElementById(`${id}-lock`).classList.remove('unlocked');
+                }
+            }
+        });
     }
 
     function populateCats(id, cats) {
@@ -558,6 +607,7 @@
             document.getElementById('p-id').value = item.id;
             document.getElementById('p-type').value = item.type || "Bán";
             document.getElementById('p-title').value = item.title || "";
+            document.getElementById('p-slug').value = item.slug || "";
             document.getElementById('p-cat').value = item.cat || "";
             document.getElementById('p-projectCode').value = item.projectCode || "";
             document.getElementById('p-loc').value = item.loc || "";
@@ -586,10 +636,15 @@
             checkLength(document.getElementById('p-title'), 'p-title-count', 65);
             checkLength(document.getElementById('p-seo-desc'), 'p-desc-count', 155);
             
+            // Khóa Slug khi sửa
+            document.getElementById('p-slug').disabled = true;
+            document.querySelector('#p-slug-lock i').className = "fas fa-lock";
+            
         } else if (type === 'news') {
             document.getElementById('n-id').value = item.id;
             document.getElementById('n-date').value = item.date || new Date().toLocaleDateString('vi-VN');
             document.getElementById('n-title').value = item.title || "";
+            document.getElementById('n-slug').value = item.slug || "";
             document.getElementById('n-cat').value = item.cat || "";
             document.getElementById('n-author').value = item.author || "Chuyên gia Greenia";
             CKEDITOR.instances['n-content'].setData(item.content || "");
@@ -605,10 +660,14 @@
             checkLength(document.getElementById('n-title'), 'n-title-count', 65);
             checkLength(document.getElementById('n-seo-desc'), 'n-desc-count', 155);
             
+            document.getElementById('n-slug').disabled = true;
+            document.querySelector('#n-slug-lock i').className = "fas fa-lock";
+            
         } else if (type === 'proj') {
             document.getElementById('pj-id').value = item.id;
             document.getElementById('pj-status').value = item.status || "Đang mở bán";
             document.getElementById('pj-title').value = item.title || "";
+            document.getElementById('pj-slug').value = item.slug || "";
             document.getElementById('pj-loc').value = item.loc || "";
             document.getElementById('pj-price').value = item.price || "";
             document.getElementById('pj-seo-title').value = item.seoTitle || "";
@@ -622,6 +681,9 @@
             btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode');
             checkLength(document.getElementById('pj-title'), 'pj-title-count', 65);
             checkLength(document.getElementById('pj-seo-desc'), 'pj-desc-count', 155);
+            
+            document.getElementById('pj-slug').disabled = true;
+            document.querySelector('#pj-slug-lock i').className = "fas fa-lock";
             
         } else if (type === 'cat') {
             document.getElementById('c-existing').value = item.id;
@@ -640,6 +702,9 @@
             
             checkLength(document.getElementById('c-title'), 'c-title-count', 60);
             checkLength(document.getElementById('c-seo-desc'), 'c-desc-count', 155);
+
+            document.getElementById('c-slug').disabled = true;
+            document.querySelector('#c-slug-lock i').className = "fas fa-lock";
         }
     }
 
@@ -733,7 +798,7 @@
         if (type === 'prod') {
             titleVal = document.getElementById('p-title').value;
             if(!titleVal) { alert("Tiêu đề Sản phẩm là bắt buộc!"); return; }
-            slugVal = slugify(titleVal);
+            slugVal = document.getElementById('p-slug').value || slugify(titleVal);
             contentVal = CKEDITOR.instances['p-content'].getData();
             rawDesc = document.getElementById('p-seo-desc').value;
             autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
@@ -751,7 +816,7 @@
         } else if (type === 'news') {
             titleVal = document.getElementById('n-title').value;
             if(!titleVal) { alert("Tiêu đề Tin tức là bắt buộc!"); return; }
-            slugVal = slugify(titleVal);
+            slugVal = document.getElementById('n-slug').value || slugify(titleVal);
             contentVal = CKEDITOR.instances['n-content'].getData();
             rawDesc = document.getElementById('n-seo-desc').value;
             autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
@@ -764,7 +829,7 @@
         } else if (type === 'proj') {
             titleVal = document.getElementById('pj-title').value;
             if(!titleVal) { alert("Tên Dự án là bắt buộc!"); return; }
-            slugVal = slugify(titleVal);
+            slugVal = document.getElementById('pj-slug').value || slugify(titleVal);
 
             newData = {
                 id: parseInt(document.getElementById('pj-id').value), title: titleVal, slug: slugVal, status: document.getElementById('pj-status').value, 
@@ -791,12 +856,10 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU VÀO CLOUD...';
             btn.disabled = true;
 
-            // ĐẨY LÊN FIREBASE BẰNG ID CỦA DOCUMENT
             await db.collection(colName).doc(String(newData.id)).set(newData);
 
             alert(`Lưu thành công vào cơ sở dữ liệu Cloud!`);
             
-            // Cập nhật lại mảng dữ liệu tạm thời trên giao diện
             let targetArray = currentData[collectionMap[type] === 'posts' ? 'posts' : colName];
             const idx = targetArray.findIndex(item => item.id === newData.id);
             if (idx !== -1) targetArray[idx] = newData;
@@ -813,7 +876,6 @@
         }
     }
 
-    // XÓA KHỎI FIREBASE
     async function deleteItem(id, type) {
         if (currentUserRole !== 'admin') { alert("⛔ BẠN KHÔNG CÓ QUYỀN XÓA NỘI DUNG NÀY!\nVui lòng liên hệ Quản trị viên."); return; }
         if(!confirm(`⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA VĨNH VIỄN KHỎI DATABASE?`)) return;
