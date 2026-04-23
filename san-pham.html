@@ -32,7 +32,7 @@
             position: -webkit-sticky; 
             position: sticky; 
             top: 0px; 
-            z-index: 100; 
+            z-index: 40; /* ĐÃ SỬA: Giảm từ 100 xuống 40 để không đè lên popup */
             background-color: #05080f; 
             padding: 5px 0; 
             margin-bottom: 20px; 
@@ -121,6 +121,11 @@
             #luc-search-form { width: 100%; }
             .gr-carousel { gap: 15px; } .gr-carousel .s2-card { flex: 0 0 100%; max-width: 100%; } 
             .gr-nav-btn { display: none !important; }
+        }
+
+        /* ĐÃ SỬA: ÉP TẤT CẢ CÁC LOẠI POPUP LÊN TRÊN CÙNG */
+        .modal, .modal-form-overlay, .popup-v15-wrapper, #lead-popup-v15, .popup-overlay { 
+            z-index: 99999999 !important; 
         }
     </style>
 </head>
