@@ -10,150 +10,253 @@
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
-        /* --- CẤU HÌNH GIAO DIỆN TỔNG THỂ --- */
+        /* --- BẢNG MÀU & BIẾN CƠ BẢN --- */
         #greenia-policy-page {
-            --p-gold: #c5a059;
-            --p-navy: #05080f;
-            --p-card: #0b1120;
-            --p-text: #b0b8c4;
-            --p-white: #ffffff;
+            --p-gold: #d4af37; /* Vàng Champagne tinh tế */
+            --p-gold-dim: rgba(212, 175, 55, 0.15);
+            --p-bg: #0a0f16; /* Xanh đen sâu thẳm */
+            --p-surface: #131a26; /* Nền nổi cho các khối thẻ */
+            --p-text: #9ca3af; /* Xám bạc dễ đọc */
+            --p-heading: #f3f4f6; /* Trắng sáng */
+            --p-border: rgba(255, 255, 255, 0.06);
             
-            background-color: var(--p-navy);
+            background-color: var(--p-bg);
             color: var(--p-text);
             font-family: 'Manrope', sans-serif;
             line-height: 1.8;
-            padding-top: 80px; /* Tránh bị header đè */
+            padding-top: 80px; 
+            font-weight: 400;
         }
 
-        /* HERO SECTION */
+        /* --- HERO SECTION --- */
         .policy-hero {
-            padding: 80px 20px 60px;
+            padding: 100px 20px 80px;
             text-align: center;
-            background: linear-gradient(to bottom, #0e1629, #05080f);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: radial-gradient(ellipse at top, #162032 0%, var(--p-bg) 70%);
+            border-bottom: 1px solid var(--p-border);
+            position: relative;
         }
-        .policy-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: var(--p-white);
-            margin: 0 0 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .policy-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--p-gold);
         }
         .policy-subtitle {
             color: var(--p-gold);
-            font-size: 0.9rem;
-            font-weight: 700;
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .policy-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            font-weight: 500;
+            color: var(--p-heading);
+            margin: 0 0 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .policy-update {
             font-size: 0.85rem;
-            color: #666;
-            font-style: italic;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
+        .policy-update i { color: var(--p-gold); }
 
-        /* LAYOUT CHÍNH */
+        /* --- LAYOUT CHÍNH --- */
         .policy-container {
-            max-width: 1200px;
+            max-width: 1140px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 80px 20px;
             display: grid;
-            grid-template-columns: 2.5fr 1fr;
+            grid-template-columns: 1fr 300px;
             gap: 60px;
+            align-items: start;
         }
 
-        /* NỘI DUNG CHÍNH */
+        /* --- NỘI DUNG CHÍNH (THẺ CARD) --- */
         .policy-content section {
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            background: var(--p-surface);
+            padding: 45px 50px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid var(--p-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
         }
-        .policy-content section:last-child { border: none; }
+        .policy-content section:hover {
+            transform: translateY(-2px);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Đoạn mở đầu nổi bật */
+        #policy-intro {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0 0 20px 0;
+            font-size: 1.1rem;
+            color: #d1d5db;
+        }
 
         .policy-content h2 {
             font-family: 'Cinzel', serif;
-            color: var(--p-white);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--p-gold);
-            padding-left: 15px;
-            display: flex;
-            align-items: center;
+            color: var(--p-gold);
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--p-border);
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
-        .policy-content p { margin-bottom: 15px; text-align: justify; }
+        .policy-content p { 
+            margin-bottom: 18px; 
+            text-align: justify; 
+        }
+        .policy-content strong { color: var(--p-heading); font-weight: 600; }
         
+        /* Danh sách (Lists) */
         .policy-content ul {
             list-style: none;
-            padding-left: 15px;
+            padding-left: 0;
             margin-bottom: 20px;
         }
         .policy-content ul li {
             position: relative;
-            padding-left: 20px;
-            margin-bottom: 10px;
-            color: #d1d5db;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--p-text);
         }
         .policy-content ul li::before {
-            content: "\f0da";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            color: var(--p-gold);
+            content: "";
             position: absolute;
             left: 0;
-            top: 1px;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--p-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--p-gold);
         }
 
-        /* SIDEBAR MỤC LỤC (STICKY) */
+        /* Khối thông tin liên hệ */
+        .contact-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px 30px;
+            border-left: 3px solid var(--p-gold);
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+        .contact-card p { margin: 8px 0 0 0 !important; color: #d1d5db; }
+        .contact-card .c-title {
+            color: var(--p-heading);
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px !important;
+        }
+        .contact-card i {
+            color: var(--p-gold);
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        /* --- SIDEBAR MỤC LỤC (INDEX) --- */
         .policy-sidebar {
             position: sticky;
-            top: 100px;
-            height: fit-content;
+            top: 120px;
         }
         .toc-box {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(197, 160, 89, 0.3);
-            padding: 30px;
-            border-radius: 8px;
+            padding-left: 30px;
+            border-left: 1px solid var(--p-border);
         }
         .toc-title {
             font-family: 'Cinzel', serif;
-            color: var(--p-gold);
+            color: var(--p-heading);
             font-size: 1.1rem;
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .toc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         .toc-list a {
-            display: block;
-            padding: 8px 0;
-            color: #888;
+            color: #6b7280;
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            border-bottom: 1px dashed rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .toc-list a::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--p-gold);
+            transition: height 0.3s ease;
         }
         .toc-list a:hover {
             color: var(--p-gold);
-            padding-left: 5px;
+            transform: translateX(5px);
         }
-        .toc-list a i { margin-right: 8px; font-size: 0.7rem; }
+        .toc-list a:hover::before { height: 100%; }
+        
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding: 12px 25px;
+            background: transparent;
+            color: var(--p-gold);
+            border: 1px solid var(--p-gold);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+        .btn-home:hover {
+            background: var(--p-gold);
+            color: #000;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+        }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            #greenia-policy-page { padding-top: 120px; }
-            .policy-container { grid-template-columns: 1fr; }
+        /* --- RESPONSIVE --- */
+        @media (max-width: 992px) {
+            .policy-container { grid-template-columns: 1fr; padding: 60px 20px; gap: 40px;}
             .policy-sidebar { display: none; }
-            .policy-title { font-size: 1.8rem; }
+            .policy-title { font-size: 2rem; }
+            .policy-content section { padding: 30px 25px; }
         }
     </style>
 </head>
@@ -167,7 +270,7 @@
         <header class="policy-hero">
             <span class="policy-subtitle">Greenia Homes</span>
             <h1 class="policy-title">Chính Sách Bảo Mật</h1>
-            <div class="policy-update">Cập nhật lần cuối: 28/12/2025</div>
+            <div class="policy-update"><i class="far fa-clock"></i> Cập nhật lần cuối: 28/12/2025</div>
         </header>
 
         <div class="policy-container">
@@ -223,11 +326,12 @@
                 <section id="policy-contact">
                     <h2>6. Liên Hệ</h2>
                     <p>Nếu Quý khách có bất kỳ thắc mắc nào về Chính sách bảo mật này, vui lòng liên hệ với bộ phận CSKH của Greenia Homes:</p>
-                    <div style="background: rgba(197, 160, 89, 0.1); padding: 20px; border: 1px solid var(--p-gold); border-radius: 4px; display: inline-block; min-width: 300px;">
-                        <p style="margin:0; color:#fff;"><strong>GREENIA HOMES</strong></p>
-                        <p style="margin:5px 0 0; font-size:0.9rem;">Hotline: 0932 966 700</p>
-                        <p style="margin:5px 0 0; font-size:0.9rem;">Email: cskh@greeniahomes.vn</p>
-                        <p style="margin:5px 0 0; font-size:0.9rem;">Website: www.greeniahomes.vn</p>
+                    
+                    <div class="contact-card">
+                        <p class="c-title">GREENIA HOMES</p>
+                        <p><i class="fas fa-phone-alt"></i> 0932 966 700</p>
+                        <p><i class="fas fa-envelope"></i> cskh@greeniahomes.vn</p>
+                        <p><i class="fas fa-globe"></i> www.greeniahomes.vn</p>
                     </div>
                 </section>
 
@@ -237,19 +341,17 @@
                 <div class="toc-box">
                     <div class="toc-title">Nội Dung Chính</div>
                     <div class="toc-list">
-                        <a href="#policy-1"><i class="fas fa-chevron-right"></i> 1. Phạm vi thu thập</a>
-                        <a href="#policy-2"><i class="fas fa-chevron-right"></i> 2. Mục đích sử dụng</a>
-                        <a href="#policy-3"><i class="fas fa-chevron-right"></i> 3. Cam kết bảo mật</a>
-                        <a href="#policy-4"><i class="fas fa-chevron-right"></i> 4. Chia sẻ thông tin</a>
-                        <a href="#policy-5"><i class="fas fa-chevron-right"></i> 5. Chính sách Cookies</a>
-                        <a href="#policy-contact"><i class="fas fa-chevron-right"></i> 6. Liên hệ</a>
+                        <a href="#policy-1">1. Phạm vi thu thập</a>
+                        <a href="#policy-2">2. Mục đích sử dụng</a>
+                        <a href="#policy-3">3. Cam kết bảo mật</a>
+                        <a href="#policy-4">4. Chia sẻ thông tin</a>
+                        <a href="#policy-5">5. Chính sách Cookies</a>
+                        <a href="#policy-contact">6. Thông tin liên hệ</a>
                     </div>
                     
-                    <div style="margin-top: 25px; text-align: center;">
-                        <a href="/greenia-homes/" style="display: inline-block; padding: 10px 20px; background: var(--p-gold); color: #000; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; border-radius: 2px;">
-                            Về Trang Chủ
-                        </a>
-                    </div>
+                    <a href="/greenia-homes/" class="btn-home">
+                        <i class="fas fa-home"></i> Về Trang Chủ
+                    </a>
                 </div>
             </aside>
 
@@ -260,7 +362,7 @@
 
     <script src="/greenia-homes/assets/js/ui.js"></script>
     <script>
-        // Script để cuộn mượt khi bấm vào mục lục
+        // JS mượt mà cho Menu mục lục
         document.querySelectorAll('.toc-list a').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -268,7 +370,7 @@
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 100, // Trừ đi khoảng cách header cố định
+                        top: targetElement.offsetTop - 120, // Bù trừ khoảng cách thanh header dính
                         behavior: 'smooth'
                     });
                 }
