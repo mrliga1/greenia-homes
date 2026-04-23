@@ -3,49 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chính Sách Bảo Mật | Greenia Homes</title>
+    <title>Chính Sách Bảo Mật | Greenia Homes - Bất động sản cao cấp</title>
+    
+    <meta name="description" content="Chính sách bảo mật thông tin khách hàng tại Greenia Homes. Chúng tôi cam kết bảo vệ tuyệt đối dữ liệu cá nhân và quyền riêng tư của quý khách.">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
+    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
-
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
+
     <style>
-        .policy-wrap { padding: 60px 20px; }
-        .policy-box { max-width: 900px; margin: 0 auto; background: var(--card); padding: 40px; border-radius: 12px; border: 1px solid var(--border); }
-        .policy-box h1 { color: var(--gold); border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-top: 0; text-transform: uppercase; }
-        .policy-box h2 { color: #fff; font-size: 18px; margin-top: 30px; }
-        .policy-box p, .policy-box li { color: var(--text); line-height: 1.7; margin-bottom: 15px; text-align: justify; }
-        .policy-box ul { padding-left: 20px; }
+        /* --- CẤU HÌNH GIAO DIỆN TỔNG THỂ --- */
+        #greenia-policy-page {
+            --p-gold: #c5a059;
+            --p-navy: #05080f;
+            --p-card: #0b1120;
+            --p-text: #b0b8c4;
+            --p-white: #ffffff;
+            
+            background-color: var(--p-navy);
+            color: var(--p-text);
+            font-family: 'Manrope', sans-serif;
+            line-height: 1.8;
+            padding-top: 80px; /* Tránh bị header đè */
+        }
+
+        /* HERO SECTION */
+        .policy-hero {
+            padding: 80px 20px 60px;
+            text-align: center;
+            background: linear-gradient(to bottom, #0e1629, #05080f);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .policy-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--p-white);
+            margin: 0 0 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .policy-subtitle {
+            color: var(--p-gold);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .policy-update {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* LAYOUT CHÍNH */
+        .policy-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 60px;
+        }
+
+        /* NỘI DUNG CHÍNH */
+        .policy-content section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+        .policy-content section:last-child { border: none; }
+
+        .policy-content h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--p-white);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--p-gold);
+            padding-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .policy-content p { margin-bottom: 15px; text-align: justify; }
+        
+        .policy-content ul {
+            list-style: none;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        .policy-content ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: #d1d5db;
+        }
+        .policy-content ul li::before {
+            content: "\f0da";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--p-gold);
+            position: absolute;
+            left: 0;
+            top: 1px;
+        }
+
+        /* SIDEBAR MỤC LỤC (STICKY) */
+        .policy-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        .toc-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        .toc-title {
+            font-family: 'Cinzel', serif;
+            color: var(--p-gold);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+        .toc-list a {
+            display: block;
+            padding: 8px 0;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+        }
+        .toc-list a:hover {
+            color: var(--p-gold);
+            padding-left: 5px;
+        }
+        .toc-list a i { margin-right: 8px; font-size: 0.7rem; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            #greenia-policy-page { padding-top: 120px; }
+            .policy-container { grid-template-columns: 1fr; }
+            .policy-sidebar { display: none; }
+            .policy-title { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header id="site-header"></header>
-    <nav id="sub-menus"></nav>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
 
-    <main class="policy-wrap">
-        <div class="policy-box">
-            <h1>Chính Sách Bảo Mật</h1>
-            <p>Chào mừng bạn đến với <strong>Greenia Homes</strong>. Chúng tôi hiểu rằng sự riêng tư của bạn là vô cùng quan trọng. Chính sách này mô tả cách chúng tôi thu thập và bảo vệ thông tin cá nhân của bạn.</p>
+    <div id="greenia-policy-page">
 
-            <h2>1. Mục đích thu thập thông tin</h2>
-            <p>Chúng tôi thu thập thông tin (Họ tên, Số điện thoại, Email) thông qua các form đăng ký để:</p>
-            <ul>
-                <li>Tư vấn chi tiết về các dự án bất động sản bạn quan tâm.</li>
-                <li>Gửi bảng giá, chính sách ưu đãi và cập nhật tiến độ dự án.</li>
-                <li>Hỗ trợ thủ tục giao dịch và chăm sóc khách hàng sau bán.</li>
-            </ul>
+        <header class="policy-hero">
+            <span class="policy-subtitle">Greenia Homes</span>
+            <h1 class="policy-title">Chính Sách Bảo Mật</h1>
+            <div class="policy-update">Cập nhật lần cuối: 28/12/2025</div>
+        </header>
 
-            <h2>2. Cam kết bảo mật</h2>
-            <p>Greenia Homes cam kết tuyệt đối không bán, chia sẻ hay trao đổi thông tin cá nhân của khách hàng cho bất kỳ bên thứ ba nào vì mục đích thương mại.</p>
+        <div class="policy-container">
+            
+            <main class="policy-content">
+                
+                <section id="policy-intro">
+                    <p>Chào mừng bạn đến với <strong>Greenia Homes</strong> (greeniahomes.vn). Chúng tôi hiểu rằng quyền riêng tư và bảo mật thông tin cá nhân là vấn đề quan trọng hàng đầu đối với khách hàng trong lĩnh vực Bất động sản cao cấp. Chính sách này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ dữ liệu của bạn.</p>
+                </section>
 
-            <h2>3. Quyền của khách hàng</h2>
-            <p>Bạn có quyền yêu cầu chúng tôi ngừng gửi thông tin tư vấn hoặc xóa bỏ hoàn toàn dữ liệu cá nhân khỏi hệ thống bất cứ lúc nào bằng cách liên hệ trực tiếp với bộ phận CSKH.</p>
+                <section id="policy-1">
+                    <h2>1. Phạm Vi Thu Thập Thông Tin</h2>
+                    <p>Để cung cấp thông tin dự án chính xác và hỗ trợ tư vấn chuyên sâu, Greenia Homes có thể thu thập các thông tin sau khi bạn đăng ký nhận bản tin hoặc liên hệ tư vấn:</p>
+                    <ul>
+                        <li>Họ và tên khách hàng.</li>
+                        <li>Địa chỉ Email & Số điện thoại liên hệ.</li>
+                        <li>Nhu cầu đầu tư (Loại hình BĐS, Khu vực quan tâm, Ngân sách dự kiến).</li>
+                        <li>Thông tin kỹ thuật khi truy cập web (Địa chỉ IP, loại trình duyệt, thời gian truy cập) thông qua Cookies.</li>
+                    </ul>
+                </section>
+
+                <section id="policy-2">
+                    <h2>2. Mục Đích Sử Dụng Thông Tin</h2>
+                    <p>Mọi thông tin thu thập được đều nhằm mục đích nâng cao trải nghiệm của Quý khách hàng tại Greenia Homes:</p>
+                    <ul>
+                        <li><strong>Tư vấn chuyên sâu:</strong> Cung cấp thông tin dự án, bảng giá, pháp lý phù hợp với nhu cầu.</li>
+                        <li><strong>Cập nhật thị trường:</strong> Gửi báo cáo thị trường, tin tức quy hoạch mới nhất (nếu quý khách đăng ký nhận tin).</li>
+                        <li><strong>Hỗ trợ khách hàng:</strong> Giải đáp thắc mắc, hỗ trợ thủ tục mua bán, chuyển nhượng.</li>
+                        <li><strong>Nâng cấp hệ thống:</strong> Phân tích hành vi truy cập để cải thiện giao diện và tốc độ website.</li>
+                    </ul>
+                </section>
+
+                <section id="policy-3">
+                    <h2>3. Cam Kết Bảo Mật</h2>
+                    <p>Greenia Homes cam kết bảo mật tuyệt đối thông tin cá nhân của Quý khách theo chính sách bảo vệ thông tin cá nhân. Việc thu thập và sử dụng thông tin của mỗi khách hàng chỉ được thực hiện khi có sự đồng ý của khách hàng đó, trừ những trường hợp pháp luật có quy định khác.</p>
+                    <p>Chúng tôi sử dụng các biện pháp an ninh công nghệ cao (SSL, Firewall) để ngăn chặn hành vi truy cập trái phép, mất mát hoặc hủy hoại dữ liệu.</p>
+                </section>
+
+                <section id="policy-4">
+                    <h2>4. Chia Sẻ Thông Tin</h2>
+                    <p>Chúng tôi cam kết <strong>KHÔNG</strong> bán, trao đổi hoặc chia sẻ thông tin cá nhân của Quý khách cho bên thứ ba vì mục đích thương mại. Thông tin chỉ được chia sẻ trong các trường hợp:</p>
+                    <ul>
+                        <li>Chia sẻ với Chủ đầu tư dự án (khi Quý khách yêu cầu booking hoặc đặt mua cụ thể).</li>
+                        <li>Khi có yêu cầu từ cơ quan pháp luật có thẩm quyền.</li>
+                    </ul>
+                </section>
+
+                <section id="policy-5">
+                    <h2>5. Chính Sách Cookies</h2>
+                    <p>Website greeniahomes.vn sử dụng "Cookies" để cá nhân hóa và nâng cao hiệu quả sử dụng thời gian trực tuyến của Quý khách. Cookie không thể được sử dụng để chạy chương trình hoặc đưa virus vào máy tính của bạn. Bạn có thể chấp nhận hoặc từ chối Cookie thông qua cài đặt trình duyệt.</p>
+                </section>
+
+                <section id="policy-contact">
+                    <h2>6. Liên Hệ</h2>
+                    <p>Nếu Quý khách có bất kỳ thắc mắc nào về Chính sách bảo mật này, vui lòng liên hệ với bộ phận CSKH của Greenia Homes:</p>
+                    <div style="background: rgba(197, 160, 89, 0.1); padding: 20px; border: 1px solid var(--p-gold); border-radius: 4px; display: inline-block; min-width: 300px;">
+                        <p style="margin:0; color:#fff;"><strong>GREENIA HOMES</strong></p>
+                        <p style="margin:5px 0 0; font-size:0.9rem;">Hotline: 0932 966 700</p>
+                        <p style="margin:5px 0 0; font-size:0.9rem;">Email: cskh@greeniahomes.vn</p>
+                        <p style="margin:5px 0 0; font-size:0.9rem;">Website: www.greeniahomes.vn</p>
+                    </div>
+                </section>
+
+            </main>
+
+            <aside class="policy-sidebar">
+                <div class="toc-box">
+                    <div class="toc-title">Nội Dung Chính</div>
+                    <div class="toc-list">
+                        <a href="#policy-1"><i class="fas fa-chevron-right"></i> 1. Phạm vi thu thập</a>
+                        <a href="#policy-2"><i class="fas fa-chevron-right"></i> 2. Mục đích sử dụng</a>
+                        <a href="#policy-3"><i class="fas fa-chevron-right"></i> 3. Cam kết bảo mật</a>
+                        <a href="#policy-4"><i class="fas fa-chevron-right"></i> 4. Chia sẻ thông tin</a>
+                        <a href="#policy-5"><i class="fas fa-chevron-right"></i> 5. Chính sách Cookies</a>
+                        <a href="#policy-contact"><i class="fas fa-chevron-right"></i> 6. Liên hệ</a>
+                    </div>
+                    
+                    <div style="margin-top: 25px; text-align: center;">
+                        <a href="/greenia-homes/" style="display: inline-block; padding: 10px 20px; background: var(--p-gold); color: #000; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; border-radius: 2px;">
+                            Về Trang Chủ
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
         </div>
-    </main>
+    </div>
 
-    <footer id="site-footer"></footer>
-    <script src="assets/js/ui.js"></script>
+    <div id="site-footer"></div>
+
+    <script src="/greenia-homes/assets/js/ui.js"></script>
+    <script>
+        // Script để cuộn mượt khi bấm vào mục lục
+        document.querySelectorAll('.toc-list a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100, // Trừ đi khoảng cách header cố định
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
