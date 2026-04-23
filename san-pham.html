@@ -32,7 +32,8 @@
             position: -webkit-sticky; 
             position: sticky; 
             top: 0px; 
-            z-index: 40; /* ĐÃ SỬA: Giảm từ 100 xuống 40 để không đè lên popup */
+            /* BIỆN PHÁP MẠNH 1: Hạ xuống 10 (chỉ cần lớn hơn 5 của tag sản phẩm là đủ) */
+            z-index: 10; 
             background-color: #05080f; 
             padding: 5px 0; 
             margin-bottom: 20px; 
@@ -123,8 +124,13 @@
             .gr-nav-btn { display: none !important; }
         }
 
-        /* ĐÃ SỬA: ÉP TẤT CẢ CÁC LOẠI POPUP LÊN TRÊN CÙNG */
-        .modal, .modal-form-overlay, .popup-v15-wrapper, #lead-popup-v15, .popup-overlay { 
+        /* BIỆN PHÁP MẠNH 2: Dùng ký tự đại diện (Wildcard) để tóm gọn mọi loại Popup được sinh ra từ ui.js */
+        [class*="popup"], 
+        [id*="popup"], 
+        [class*="overlay"], 
+        [id*="overlay"], 
+        [class*="modal"],
+        .gr-popup-wrapper { 
             z-index: 99999999 !important; 
         }
     </style>
@@ -497,7 +503,7 @@
 
                 clearLucSearch(false); 
                 runFilter(); 
-                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top - 120, behavior: 'smooth' });
             });
         });
 
@@ -520,7 +526,7 @@
                 updateSeoUI(filterState.cat, '');
 
                 runFilter(); 
-                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top - 100, behavior: 'smooth' });
             }
         });
 
@@ -530,7 +536,7 @@
                 filterState.keyword = val; 
                 document.getElementById('luc-seo-header').style.display = 'none';
                 runFilter(); 
-                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+                window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top - 100, behavior: 'smooth' });
             }
         });
 
