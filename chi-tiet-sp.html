@@ -30,7 +30,7 @@
             position: -webkit-sticky; 
             position: sticky; 
             top: 0px; 
-            z-index: 10; /* ĐÃ SỬA: Hạ từ 100 xuống 10 để không đè Popup */
+            z-index: 10 !important; /* ĐÃ SỬA: Hạ từ 100 xuống 10 để không đè Popup */
             background-color: #05080f; 
             padding: 5px 0; 
             margin-bottom: 0px; 
@@ -38,7 +38,7 @@
             border-bottom: 1px solid rgba(197, 160, 89, 0.1); 
             transition: top 0.3s, background 0.3s; 
         }
-        .luc-sticky-wrapper.is-stuck { top: 0 !important; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
+        .luc-sticky-wrapper.is-stuck { top: 0px; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
         
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
