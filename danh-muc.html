@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>{{TITLE}} | Greenia Homes</title>
     <meta name="description" content="{{DESC}}" />
     <meta name="keywords" content="{{KEYWORDS}}" />
@@ -17,14 +16,12 @@
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
     <style>
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
+
         #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
         #gr-v53 * { box-sizing: border-box; } #gr-v53 a { text-decoration: none; color: inherit; transition: 0.3s; } #gr-v53 img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .gr-con { max-width: 1250px; width: 100%; margin: 0 auto; padding: 40px 15px; }
@@ -114,6 +111,9 @@
             .gr-sec2-left { grid-template-columns: 1fr; }
         }
     </style>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -203,14 +203,13 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ĐÃ SỬA: SỬ DỤNG PLACEHOLDER CHUẨN ĐỂ ADMIN BƠM DỮ LIỆU
+        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG TỪ ADMIN]
         window.GREENIA_CURRENT_CATEGORY = { 
             slug: "{{SLUG}}",
             name: "{{TITLE}}",
             desc: "{{DESC}}"
         }; 
 
-        // KHO KHAI BÁO BIẾN
         let allPosts = [];
         let allProducts = [];
         let postsInThisCat = []; 
@@ -289,7 +288,6 @@
             }
         }
 
-        // TẢI DỮ LIỆU TỪ FIREBASE
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
@@ -302,28 +300,25 @@
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // 1. GẮN THÔNG TIN DANH MỤC HIỆN TẠI VÀO TIÊU ĐỀ
                 const currentCatName = window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' ? window.GREENIA_CURRENT_CATEGORY.name : 'Tin Tức';
                 
-                if(window.GREENIA_CURRENT_CATEGORY) {
+                if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}') {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = window.GREENIA_CURRENT_CATEGORY.desc !== '{{DESC}}' ? window.GREENIA_CURRENT_CATEGORY.desc : `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
+                } else {
+                    document.getElementById('dyn-cat-title').innerText = "Tất cả Tin Tức";
                 }
 
-                // 2. CÔ LẬP BÀI VIẾT
                 postsInThisCat = (window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}') ? allPosts.filter(p => p.cat === currentCatName) : [...allPosts];
 
-                // 3. TẠO TABS THÔNG MINH
                 const subCategories = []; 
                 const tabs = ['Tất cả', ...subCategories];
 
                 const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // 4. KÍCH HOẠT TAB MẶC ĐỊNH
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
-                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -361,12 +356,10 @@
             }
         });
 
-        // HÀM LỌC NỘI BỘ TRONG DANH MỤC
         window.switchSubTab = function(subCatName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            // Tìm trong mảng đã được cô lập (postsInThisCat)
             currentTabPosts = subCatName === 'Tất cả' ? [...postsInThisCat] : postsInThisCat.filter(p => p.subCat === subCatName);
             
             if(currentTabPosts.length === 0) {
@@ -377,7 +370,6 @@
                 return;
             }
 
-            // Gắn lại khung nếu có dữ liệu
             document.getElementById('top-grid-container').innerHTML = `
                 <div class="s1-col-1" id="hero-col"></div>
                 <div class="s1-col-2" id="hover-list-col"></div>
@@ -478,7 +470,7 @@
 
         window.grScrollHorizontal = function(id, dir) {
             var el = document.getElementById(id); if(!el) return;
-            var item = el.querySelector(".s2-card"); if(!item) return;
+            var item = el.querySelector(".s2-card") || el.querySelector(".gr-news-card-v"); if(!item) return;
             var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
         };
     </script>
