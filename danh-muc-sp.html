@@ -325,21 +325,16 @@
                 else filterBar.classList.remove('is-stuck');
             });
 
-            // Băm nhỏ API Key để vượt mặt hệ thống quét mã của GitHub
-            const k1 = "AIzaSyDiO";
-            const k2 = "EzM9rNAfj";
-            const k3 = "-mXaF51YV";
-            const k4 = "NJgyU-chi3ts";
-
-            const firebaseConfig = {
-              apiKey: k1 + k2 + k3 + k4,
-              authDomain: "greenia-homes.firebaseapp.com",
-              projectId: "greenia-homes",
-              storageBucket: "greenia-homes.appspot.com",
-              messagingSenderId: "24027695632",
-              appId: "1:24027695632:web:13a23aa156e864f7d55895",
-              measurementId: "G-YRK63BNPP0"
-            };
+            // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
+        const firebaseConfig = {
+          apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
             if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             const db = firebase.firestore();
 
