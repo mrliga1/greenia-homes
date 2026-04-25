@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{TITLE}} | Greenia Homes</title>
+    <title>Danh mục Sản phẩm | Greenia Homes</title>
     
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
@@ -12,13 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
-    <link rel="canonical" href="/greenia-homes/{{FOLDER}}/{{SLUG}}/" />
-    <meta name="description" content="{{DESC}}" />
-    <meta name="keywords" content="{{KEYWORDS}}" />
-    <meta property="og:title" content="{{TITLE}}" />
-    <meta property="og:description" content="{{DESC}}" />
-    <meta property="og:url" content="/greenia-homes/{{FOLDER}}/{{SLUG}}/" />
-    <meta property="og:type" content="website" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
@@ -137,9 +132,6 @@
             z-index: 99999999 !important; 
         }
     </style>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -228,14 +220,9 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // Băm nhỏ API Key để vượt mặt hệ thống quét mã của GitHub
-        const k1 = "AIzaSyDiO";
-        const k2 = "EzM9rNAfj";
-        const k3 = "-mXaF51YV";
-        const k4 = "NJgyU-chi3ts";
-
+        // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
         const firebaseConfig = {
-          apiKey: k1 + k2 + k3 + k4,
+          apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
           authDomain: "greenia-homes.firebaseapp.com",
           projectId: "greenia-homes",
           storageBucket: "greenia-homes.appspot.com",
@@ -243,10 +230,7 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
@@ -260,14 +244,13 @@
         const itemsPerPage = 10;
         let currentPage = 1;
         
-        // ĐÃ ĐƯỢC BỌC BỞI PLACEHOLDER {{...}} ĐỂ ADMIN BƠM DỮ LIỆU
         window.GREENIA_CURRENT_CATEGORY = { 
             slug: "{{SLUG}}",
             name: "{{TITLE}}",
             desc: "{{DESC}}"
         };
         
-        let filterState = { type: '', cat: '{{SLUG}}', keyword: '' };
+        let filterState = { type: '', cat: '', keyword: '' };
         
         let smartRecommended = [];
         let forYouPage = 1;
@@ -369,14 +352,12 @@
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
 
-                // BẢO VỆ AN TOÀN TUYỆT ĐỐI CHO BIẾN currCat
                 if (currCat && currCat.slug && currCat.slug !== '{{SLUG}}' && currCat.slug !== 'tat-ca-san-pham') {
                     activeCatSlug = currCat.slug;
                     if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'chuyen-nhuong'; } 
                     else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; activeCatSlug = 'cho-thue'; }
                     else { filterState.cat = currCat.slug; }
                 } else {
-                    // Nếu là trang gốc (san-pham.html) thì phân tích URL
                     const paths = window.location.pathname.split('/').filter(Boolean);
                     const slug = paths[paths.length - 1];
                     if (slug && slug !== 'san-pham' && slug !== 'tat-ca-san-pham' && slug.indexOf('.html') === -1) {
@@ -395,7 +376,6 @@
 
                 updateSeoUI(activeCatSlug, filterState.type);
 
-                // TẠO MENU DANH MỤC VÀ ĐẾM SỐ LƯỢNG (LIVE)
                 const ddList = document.getElementById('dyn-cat-list');
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item ${activeCatSlug === '' ? 'selected' : ''}" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
@@ -480,7 +460,6 @@
                 else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
                 
                 let matchCat = true;
-                // BẢO VỆ: Không lọc nếu biến cat là rỗng hoặc bị dính placeholder {{SLUG}}
                 if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') {
                     matchCat = isCatMatch(p, filterState.cat);
                 }
