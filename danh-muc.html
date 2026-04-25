@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Mục Tin Tức | Greenia Homes</title>
-    
+    <title>{{TITLE}} | Greenia Homes</title>
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
+    <link rel="canonical" href="/greenia-homes/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:url" content="/greenia-homes/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
+    <meta property="og:type" content="article" />
+
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
-
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
@@ -17,94 +24,186 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
-        #gr-v53 * { box-sizing: border-box; } #gr-v53 a { text-decoration: none; color: inherit; transition: 0.3s; } #gr-v53 img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .gr-con { max-width: 1250px; width: 100%; margin: 0 auto; padding: 40px 15px; }
-        
-        /* TABS */
-        .s1-head-row { border-bottom: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: flex-end; }
-        .s1-tabs-wrap { display: flex; gap: 25px; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 5px;} .s1-tabs-wrap::-webkit-scrollbar { display: none; }
-        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block;}
-        .s1-tab:hover { color: #c5a059; } .s1-tab.active { color: #c5a059 !important; border-bottom: 2px solid #c5a059 !important; }
-        
-        .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 2px; border-bottom: 1px dashed var(--border); }
-        .gr-cat-h1 { font-size: 26px; font-weight: 700; color: var(--gold); margin: 0 0 8px 0; line-height: 1.3; }
-        
-        /* GRID 3 CỘT TOP */
-        .s1-grid-body { display: grid; grid-template-columns: 40% 30% 25%; gap: 2.5%; margin-bottom: 40px; align-items: start; }
-        .s1-col-1 { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-        .s1-hero-img-box { height: 260px; overflow: hidden; position: relative; } .s1-hero-img { transition: 0.5s; } .s1-col-1:hover .s1-hero-img { transform: scale(1.05); }
-        .s1-hero-body { padding: 20px; display: flex; flex-direction: column; border-top: 1px solid var(--border); }
-        .s1-hero-tit { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 10px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .s1-hero-desc { font-size: 13px; color: #888; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .s1-hero-date { font-size: 11px; color: var(--gold); font-weight: 600; margin-top: 10px; }
-        
-        .s1-col-2 { display: flex; flex-direction: column; }
-        .s1-news-item { padding: 12px 10px; border-bottom: 1px dashed var(--border); cursor: pointer; color: #94a3b8; font-weight: 500; font-size: 13px; transition: 0.2s; line-height: 1.4; }
-        .s1-news-item:hover, .s1-news-item.active { background: rgba(197, 160, 89, 0.05); color: var(--gold); border-left: 3px solid var(--gold); padding-left: 12px; }
-        
-        .s1-col-3 { display: flex; flex-direction: column; }
-        .s1-col3-title { font-size: 16px; font-weight: 700; color: var(--gold); margin: 0 0 15px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); width: fit-content; text-transform: uppercase;}
-        
-        /* 70/30 SPLIT */
-        .gr-sec2 { display: flex; gap: 30px; align-items: flex-start; margin-bottom: 40px;}
-        .gr-sec2-left-wrap { width: calc(70% - 15px); display: flex; flex-direction: column; }
-        .gr-sec2-right-wrap { width: calc(30% - 15px); display: flex; flex-direction: column; }
-        .gr-sec2-left { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-content: start; }
-        
-        .gr-list-post { display: flex; gap: 12px; padding-bottom: 15px; border-bottom: 1px dashed var(--border); transition: 0.3s; align-items: center; }
-        .gr-list-thumb { width: 90px; height: 65px; border-radius: 4px; overflow: hidden; flex-shrink: 0; border: 1px solid var(--border); position: relative;}
-        .gr-list-info { flex: 1; display: flex; flex-direction: column; justify-content: center;}
-        .gr-list-tit { font-size: 13px !important; font-weight: 600 !important; color: #e2e8f0; margin: 0 0 6px; line-height: 1.4; transition: 0.3s; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
-        .gr-list-date { font-size: 11px; color: var(--gold); margin-top: auto; }
-        
-        /* SIDEBAR PRODUCTS */
-        .gr-sec2-right { display: flex; flex-direction: column; gap: 15px; }
-        .gr-list-prod { display: flex; gap: 12px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
-        .gr-lprod-thumb { width: 100px; height: 75px; flex-shrink: 0; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); position: relative; }
-        .gr-lprod-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .gr-lprod-tit { font-size: 13px !important; font-weight: 600 !important; color: #fff; line-height: 1.4 !important; margin-bottom: 6px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; text-overflow: ellipsis !important; }
-        .gr-lprod-loc { font-size: 11px; color: #999; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; } .gr-lprod-loc i { color: var(--gold); font-size: 10px; }
-        .gr-lprod-hl { color: var(--gold); font-weight: 700; font-size: 12px; }
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
-        /* CAROUSEL & GRID KHỐI DƯỚI */
-        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; margin-top: 50px; }
-        .s-tit { font-size: 20px; font-weight: 700; color: var(--white); border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
-        .s3-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        #gr-single-post { --bg: #05080f; --card: #0e121b; --border: rgba(197, 160, 89, 0.2); --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.8; width: 100%; padding-bottom: 50px;}
+        #gr-single-post * { box-sizing: border-box; } 
+        #gr-single-post a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .gr-con { max-width: 1250px; margin: 0 auto; padding: 40px 15px; }
+
+        /* HEADER & BREADCRUMBS */
+        .gr-sp-header { margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
+        .gr-breadcrumbs { font-size: 14px; color: #888; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; text-transform: none; }
+        .gr-breadcrumbs a:hover { color: var(--gold); } 
+        .gr-breadcrumbs span.sep { color: var(--gold); font-size: 10px; }
+        .gr-breadcrumbs span.current { color: #fff; font-weight: 500; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gr-sp-title { font-size: 28px !important; font-weight: 600; color: #c5a059; line-height: 1.3; margin: 0 0 15px; }
+        .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
+        .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
+
+        /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
+        .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
+        .gr-sp-main { width: 75%; } 
+        .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
+
+        /* TOC */
+        .gr-toc-wrap { margin-bottom: 30px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; background: rgba(14, 18, 27, 0.5); display: none; }
+        .gr-toc-header { background: rgba(197, 160, 89, 0.1); padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .gr-toc-tit { font-weight: 600; color: var(--gold); font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .gr-toc-icon { color: var(--gold); transition: transform 0.3s; font-size: 12px; }
+        .gr-toc-icon.rotate { transform: rotate(180deg); }
+        .gr-toc-list { display: block; padding: 15px; border-top: 1px solid var(--border); list-style: none; margin: 0; }
+        .gr-toc-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); } 
+        .gr-toc-link { color: #ccc; font-size: 14px; display: block; transition: 0.2s; } 
+        .gr-toc-link:hover { color: var(--gold); transform: translateX(5px); }
+
+        /* CONTENT FORMATTING */
+        .gr-entry-content { color: #e2e8f0; text-align: left; font-size: 15px; line-height: 1.8; font-weight: 300; }
+        .gr-entry-content p a, .gr-entry-content li a { color: #e67e22 !important; font-weight: 600; text-decoration: none; transition: 0.3s; border-bottom: 1px solid rgba(230, 126, 34, 0.3); }
+        .gr-entry-content p a:hover, .gr-entry-content li a:hover { color: var(--gold) !important; border-bottom: 1px solid var(--gold); }
+        .gr-entry-content strong, .gr-entry-content b { color: var(--gold); font-weight: 700; }
+        .gr-entry-content h1, .gr-entry-content h2, .gr-entry-content h3 { margin: 30px 0 15px; line-height: 1.5; text-align: left; }
+        .gr-entry-content h1, .gr-entry-content h2 { color: var(--gold); font-size: 22px; font-weight: 600; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; scroll-margin-top: 100px;}
+        .gr-entry-content h3 { color: #d4b886 !important; font-size: 20px; font-weight: 500; margin-top: 35px; }
+        .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
+        .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
+        .gr-entry-content figcaption, .gr-entry-content .wp-caption-text { text-align: center; font-size: 13px; font-style: italic; color: #94a3b8; margin-top: -10px; margin-bottom: 25px; line-height: 1.5; }
+        .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
+        .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0; } 
+        .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
+        .gr-entry-content blockquote { background: rgba(197, 160, 89, 0.1); border-left: 3px solid var(--gold); padding: 20px; font-style: italic; color: #fff; margin: 30px 0; }
+        .gr-entry-content blockquote p { text-indent: 0; }
+
+        /* BOTTOM CTA & SHARE */
+        .gr-bottom-bar { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #333; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .gr-bot-cta { color: #888; font-size: 13px; } .gr-bot-cta a { color: var(--gold); font-weight: 700; text-decoration: none; font-size: 14px; }
+        .gr-share-group { display: flex; gap: 10px; align-items: center; }
+        .gr-share-lbl { font-size: 13px; font-weight: 600; color: #fff; margin-right: 5px; }
+        .gr-s-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: 0.3s; background: rgba(255,255,255,0.1); }
+        .gr-s-btn.fb:hover { background: #3b5998; } 
+
+        /* WIDGETS CHUNG */
+        .gr-w-title { font-size: 16px; font-weight: 700; color: var(--white); margin: 0 0 20px; padding-bottom: 10px; border-bottom: 2px solid var(--gold); display: inline-block; text-transform: uppercase; }
+
+        /* RỔ HÀNG GRID */
+        .gr-ro-hang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
+        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .s2-thumb-box { height: 160px; overflow: hidden; }
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.05); }
+        .s2-body { padding: 12px; flex: 1; }
+        .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
+        .s2-card:hover .s2-tit { color: var(--gold); }
+
+        /* SIDEBAR CATEGORIES */
+        .gr-cat-widget { background: var(--card); border: 1px dashed var(--gold); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; }
+        .gr-cat-h { background: #1a1f2e; padding: 10px; font-weight: 700; font-size: 13px; color: #fff; text-align: center; border-bottom: 1px solid var(--gold); text-transform: uppercase; }
+        .gr-cat-l { padding: 0; max-height: 400px; overflow-y: auto; }
+        .gr-cat-l a { display: flex; justify-content: space-between; padding: 10px 12px; color: #b0b8c4; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .gr-cat-l a:hover { color: var(--gold); background: rgba(197, 160, 89, 0.1); }
+        .gr-cat-count { color: #666; font-size: 10px; }
+
+        /* SIDEBAR PRODUCTS */
+        .gr-prod-list { display: flex; flex-direction: column; gap: 0; }
+        .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none !important; align-items: flex-start; }
+        .gr-prod-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .gr-prod-thumb { width: 100px; height: 80px; flex-shrink: 0; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
+        .gr-prod-card:hover .gr-prod-thumb img { transform: scale(1.1); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 6px; font-size: 9px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; line-height: 1; }
+        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
+        .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
+        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
+        .gr-loc-mini { font-size: 11px; color: #999; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; } .gr-loc-mini i { color: var(--gold); font-size: 10px; }
+        .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
+        .gr-hl { color: var(--gold); font-weight: 700; } .gr-sep { color: #444; font-size: 10px; } .gr-txt { color: #ccc; } 
+
+        /* CAROUSEL */
+        .gr-related-section { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; }
+        .s-tit { font-size: 20px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
         .gr-carousel-wrapper { position: relative; }
-        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
-        .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); scroll-snap-align: start; }
-        
+        .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; text-decoration: none !important; }
+        .gr-news-card-v:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .gr-nc-thumb { height: 160px; overflow: hidden; position: relative; }
+        .gr-nc-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; } .gr-news-card-v:hover .gr-nc-thumb img { transform: scale(1.1); }
+        .gr-nc-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-nc-tit { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-news-card-v:hover .gr-nc-tit { color: var(--gold); }
+        .gr-nc-desc { font-size: 12px; color: #888; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .gr-nc-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .gr-nc-date { color: #666; }
+        .gr-nc-more { color: var(--gold); font-weight: 700; transition: 0.3s; } .gr-news-card-v:hover .gr-nc-more { text-decoration: underline; }
         .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--border); background: rgba(14, 18, 27, 0.8); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
         .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
         .gr-prev { left: -15px; } .gr-next { right: -15px; }
+
+        /* REVIEWS VÀ FORM CTA CSS CHUẨN XÁC TỪ PHP */
+        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-text: #d1d5db; --rev-glass: rgba(255, 255, 255, 0.02); }
+        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 0px 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px; }
+        .rev-container { width: 100%; margin: 0 auto; }
+        .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; }
+        .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
+        .rev-stats { display: flex; align-items: center; gap: 15px; }
+        .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
+        .rs-meta { text-align: right; } 
+        .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; }
+        .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
+        .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
+        .rev-intro strong { color: #fff; font-weight: 600; } .rev-intro span { color: var(--rev-gold); }
         
-        .s2-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; position: relative; height: 100%; }
-        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .s2-thumb-box { height: 180px; position: relative; overflow: hidden; }
-        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .gr-tit { font-size: 13px !important; font-weight: 600 !important; color: #fff; line-height: 1.4 !important; margin-bottom: 6px !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important; overflow: hidden !important; transition: 0.3s; }
-        .s2-card:hover .gr-tit { color: var(--gold) !important; }
-        .s2-body .gr-meta { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
-        .gr-hl { color: var(--gold); font-weight: 700; font-size: 14px; }
+        .rev-layout { display: flex; flex-direction: column; gap: 40px; }
+        .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 10px; border-radius: 4px; }
+        .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-lbl { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 10px; display: block; }
+        .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
+        .rate-input input { display: none; } 
+        .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
+        .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
+        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; !important }
+        .rev-input:focus, .rev-textarea:focus { border-color: var(--rev-gold); outline: none; background: rgba(197, 160, 89, 0.05); }
+        .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
+        .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .rev-btn:hover { background: rgba(197, 160, 89, 0.1) !important; color: #fff !important; border-color: #c5a059 !important; box-shadow: 0 0 20px rgba(197, 160, 89, 0.2); }
+        
+        .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 800px; overflow-y: auto; padding-right: 5px; }
+        .rev-list::-webkit-scrollbar { width: 3px; } .rev-list::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .rev-item { position: relative; animation: fadeIn 0.6s ease; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 20px; }
+        .rev-item:last-child { border-bottom: none; }
+        .rev-main-content { display: flex; gap: 15px; z-index: 2; position: relative; background: var(--rev-bg); padding-bottom: 10px; }
+        .rev-avatar { width: 40px; height: 40px; background: #151a25; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--rev-gold); border: 1px solid rgba(197, 160, 89, 0.3); font-size: 16px; }
+        .rev-content { flex-grow: 1; }
+        .rev-top-row { display: flex; justify-content: space-between; align-items: baseline; }
+        .rev-name { font-weight: 500; font-size: 12px; color: #fff; } .rev-date { font-size: 11px; color: #666; }
+        .rev-stars-small { font-size: 11px; color: var(--rev-gold); display: block; margin-bottom: 6px; letter-spacing: 1px; }
+        .rev-text { font-size: 14px; color: #ccc; line-height: 1.6; margin: 0; }
 
-        /* TAGS */
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 2px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
-        .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
+        :root { --v15-bg: #0b0f19; --v15-gold: #c5a059; --v15-gold-hover: #d4af37; --v15-input: rgba(255,255,255,0.05); --v15-border: rgba(255,255,255,0.2); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--v15-gold); padding: 25px 15px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; margin-bottom: 30px; }
+        .v15-ver-container { max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--v15-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .v15-ver-stars { font-size: 12px; letter-spacing: 1px; } .v15-ver-count { font-size: 11px; color: #aaa; font-weight: 400; }
+        .v15-ver-desc { font-size: 12px; color: #ccc; margin-bottom: 15px; max-width: 100%; line-height: 1.4; }
+        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 10px; justify-content: center; align-items: center; }
+        .v15-ver-input { width: 100%; background: var(--v15-input); border: 1px solid var(--v15-border); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .v15-ver-input:focus { border-color: var(--v15-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 10px 15px; margin-top: 5px; background: transparent; color: var(--v15-gold); border: 1px solid var(--v15-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 12px; }
+        .v15-ver-btn:hover { background: var(--v15-gold-hover); color: #000; border-color: var(--v15-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .success-overlay { display: none; padding: 15px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; animation: fadeIn 0.5s ease forwards; width: 100%; }
 
-        .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
-        .s1-btn { display: inline-block; font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; padding: 10px 30px; border: 1px solid var(--gold); border-radius: 3px; transition: 0.3s; text-decoration: none; cursor: pointer; background: transparent; }
-        .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: var(--gold); }
-
-        @media (max-width: 900px) { 
-            .s1-grid-body { display: flex; flex-direction: column; gap: 30px; } 
-            .gr-sec2 { flex-direction: column; gap: 30px; } 
-            .gr-sec2-left-wrap, .gr-sec2-right-wrap { width: 100%; } 
-            .s3-grid { grid-template-columns: 1fr; } 
-            .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
-            .gr-sec2-left { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; } .gr-sp-sidebar { position: static; }
+            .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
+            .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
+            .rev-row-inputs { grid-template-columns: 1fr; gap: 10px; } .rev-btn { width: 100%; }
+            #vhgp-reviews-ip { display: none !important; }
         }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
     </style>
 </head>
 <body>
@@ -112,72 +211,21 @@
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
 
-    <div id="gr-v53">
-        <div class="gr-con">
-            <div class="s1-head-row">
-                <div class="s1-tabs-wrap" id="dynamic-tabs"></div>
+    <main id="gr-single-post">
+        <div class="gr-con" id="post-container">
+            <div style="text-align:center; padding: 100px 0; color: #c5a059;">
+                <i class="fas fa-circle-notch fa-spin fa-3x"></i>
+                <p>Đang tải nội dung...</p>
             </div>
-
-            <div class="gr-cat-header-layer">
-                <h1 class="gr-cat-h1" id="dyn-cat-title">Đang cập nhật...</h1>
-                <div class="gr-cat-desc" style="color:#888;"></div>
-            </div>
-
-            <div class="s1-grid-body" id="top-grid-container" style="opacity: 0; transition: 0.5s;">
-                <div class="s1-col-1" id="hero-col"></div>
-                <div class="s1-col-2" id="hover-list-col"></div>
-                <div class="s1-col-3">
-                    <h3 class="s1-col3-title">Tin nổi bật</h3>
-                    <div id="related-col"></div>
-                </div>
-            </div>
-
-            <div class="s-head"><h3 class="s-tit">Có thể bạn quan tâm</h3></div>
-            <div class="gr-sec2">
-                <div class="gr-sec2-left-wrap">
-                    <div class="gr-sec2-left" id="main-post-grid"></div>
-                    <div class="s1-btn-wrap" id="load-more-wrap">
-                        <button class="s1-btn" onclick="loadMorePosts()">Xem thêm bài viết</button>
-                    </div>
-                </div>
-                <div class="gr-sec2-right-wrap">
-                    <div class="gr-sec2-right" id="sidebar-products-grid"></div>
-                    <div class="s1-btn-wrap"><a href="/greenia-homes/san-pham.html" class="s1-btn">Xem tất cả sản phẩm</a></div>
-                </div>
-            </div>
-            
-            <div class="s-head"><h3 class="s-tit">Bất động sản dành cho bạn</h3></div>
-            <div class="s3-grid" id="foryou-grid"></div>
-
-            <div class="s-head"><h3 class="s-tit">Tin nhà đất bán mới nhất</h3></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('sale-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                <div id="sale-scroll" class="gr-carousel"></div>
-                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('sale-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <div class="s-head"><h3 class="s-tit">Tin nhà đất cho thuê mới nhất</h3></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('rent-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                <div id="rent-scroll" class="gr-carousel"></div>
-                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('rent-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <div class="s-head"><h3 class="s-tit">Dự án nổi bật</h3></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('feat-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                <div id="feat-scroll" class="gr-carousel"></div>
-                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('feat-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
         </div>
-    </div>
+    </main>
 
     <div id="site-footer"></div>
+    
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // FIREBASE DATABASE CONFIG
+        // CẤU HÌNH FIREBASE DATABASE
         const firebaseConfig = {
           apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
           authDomain: "greenia-homes.firebaseapp.com",
@@ -187,282 +235,439 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        firebase.initializeApp(firebaseConfig);
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
 
-        window.GREENIA_CURRENT_CATEGORY = null; 
-
-        // KHO KHAI BÁO BIẾN
-        let allPosts = [];
-        let allProducts = [];
-        let postsInThisCat = []; 
-        let currentTabPosts = [];
-        let loadedCount = 0;
-        const postsPerPage = 10;
-        let mixedPostsPool = [];
-        let independentProjects = [];
-
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        window.GREENIA_CURRENT_POST = {
+            id: {{ID}},
+            title: "{{TITLE_JSON}}",
+            slug: "{{SLUG}}",
+            cat: "{{CAT}}",
+            date: "{{DATE}}",
+            author: "{{AUTHOR}}",
+            thumb: "{{IMG}}",
+            content: `{{CONTENT_JSON}}`
+        };
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        function extractPostData(p) {
-            const tempDiv = document.createElement('div'); 
-            tempDiv.innerHTML = p.content;
-            const firstImg = tempDiv.querySelector('img');
-            let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
-            const excerpt = tempDiv.textContent.substring(0, 120) + '...';
-            const catSlug = createSafeSlug(p.cat);
-            const pSlug = p.slug || createSafeSlug(p.title);
-            const link = `${safeBaseUrl}tin-tuc/${catSlug}/${pSlug}/`;
-            return { img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
-        }
-
-        function createProdCardHTML(p, isList = false) {
-            const catSlug = createSafeSlug(p.cat || 'san-pham');
-            const pSlug = p.slug || createSafeSlug(p.title);
-            const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
-            const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
-            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
-            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
-            const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-
-            let areaBedHtml = "";
-            if (p.area || p.bed) {
-                let areaPart = p.area ? `<span style="color: var(--gold); font-size:12px;">${p.area} m²</span>` : "";
-                let bedPart = p.bed ? `<span style="color: var(--gold); font-size:12px;">${p.bed} PN</span>` : "";
-                let divider = (p.area && p.bed) ? `<span style="color:#555; margin: 0 6px;">|</span>` : "";
-                areaBedHtml = `<div style="display:flex; align-items:center;">${areaPart}${divider}${bedPart}</div>`;
-            }
-
-            if(isList) {
-                return `<a href="${link}" class="gr-list-prod">
-                            <div class="gr-lprod-thumb">
-                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
-                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
-                            </div>
-                            <div class="gr-lprod-info">
-                                <h4 class="gr-lprod-tit">${p.title}</h4>
-                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                    <span class="gr-lprod-hl">${p.price}</span>
-                                    ${areaBedHtml}
-                                </div>
-                            </div>
-                        </a>`;
-            } else {
-                return `<a href="${link}" class="s2-card">
-                            <div class="s2-thumb-box">
-                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
-                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
-                            </div>
-                            <div class="s2-body">
-                                <h3 class="gr-tit">${p.title}</h3>
-                                <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc}</div>
-                                <div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;">
-                                    <span class="gr-hl">${p.price}</span>
-                                    ${areaBedHtml}
-                                </div>
-                            </div>
-                        </a>`;
-            }
-        }
-
-        // TẢI DỮ LIỆU TỪ FIREBASE
         document.addEventListener("DOMContentLoaded", async function() {
+            const container = document.getElementById('post-container');
+            const post = window.GREENIA_CURRENT_POST; 
+            const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+
+            if (!post || !post.id) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
+
             try {
-                const [postSnap, prodSnap, projSnap] = await Promise.all([
+                // TẢI DỮ LIỆU TỪ FIREBASE
+                const [postSnap, prodSnap] = await Promise.all([
                     db.collection('posts').get(),
-                    db.collection('products').get(),
-                    db.collection('projects').get()
+                    db.collection('products').get()
                 ]);
-
-                allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-
-                // 1. GẮN THÔNG TIN DANH MỤC HIỆN TẠI VÀO TIÊU ĐỀ
-                const currentCatName = window.GREENIA_CURRENT_CATEGORY ? window.GREENIA_CURRENT_CATEGORY.name : 'Tin Tức';
                 
-                if(window.GREENIA_CURRENT_CATEGORY) {
-                    document.getElementById('dyn-cat-title').innerText = currentCatName;
-                    document.querySelector('.gr-cat-desc').innerText = window.GREENIA_CURRENT_CATEGORY.desc || `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
+                let posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                let prods = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+
+                // 1. Sidebar - Danh mục Sản Phẩm
+                let countBan = 0, countThue = 0;
+                let otherCats = {};
+                prods.forEach(p => {
+                    if(p.type === 'Bán') countBan++;
+                    else if(p.type === 'Thuê') countThue++;
+                    
+                    if(p.cat) {
+                        let c = p.cat.trim();
+                        if(c !== '' && c.toLowerCase() !== 'chuyển nhượng' && c.toLowerCase() !== 'cho thuê') {
+                            otherCats[c] = (otherCats[c] || 0) + 1;
+                        }
+                    }
+                });
+
+                let catLines = [];
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
+                
+                Object.keys(otherCats).forEach(c => {
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${otherCats[c]})</span></a>`);
+                });
+
+                let catWidgetHTML = `
+                <div class="gr-cat-widget">
+                    <div class="gr-cat-h">DANH MỤC SẢN PHẨM</div>
+                    <div class="gr-cat-l">
+                        ${catLines.join('')}
+                    </div>
+                </div>`;
+
+                // 2. Sidebar - Tin mới nhất (Tối ưu việc bắt hình ảnh dự phòng)
+                let latestNewsHTML = '';
+                posts.filter(p => p.id != post.id).slice(0, 5).forEach(p => {
+                    const pCat = createSafeSlug(p.cat);
+                    const pSlug = p.slug || createSafeSlug(p.title);
+                    
+                    // Tìm ảnh trong bài viết
+                    let thumbUrl = p.thumb || '';
+                    if (!thumbUrl && p.content) {
+                        const match = p.content.match(/<img[^>]+src="([^">]+)"/);
+                        if (match) thumbUrl = match[1];
+                    }
+                    if (!thumbUrl) thumbUrl = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
+                    thumbUrl = window.resolveImg ? window.resolveImg(thumbUrl) : thumbUrl;
+                    const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+
+                    latestNewsHTML += `
+                        <a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" style="display:flex; gap:12px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px; text-decoration:none; align-items:center;">
+                            <div style="width:70px; height:50px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
+                                <img src="${thumbUrl}" onerror="this.src='${fallbackImg}';" style="width:100%; height:100%; object-fit:cover; transition:0.3s; display:block;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                            </div>
+                            <div style="flex:1;">
+                                <h4 style="font-size:13px !important; font-weight:600; color:#fff; margin:0 0 5px !important; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; transition:0.3s;" onmouseover="this.style.color='#c5a059'" onmouseout="this.style.color='#fff'">${p.title}</h4>
+                                <div style="color: #888; font-size: 11px;"><i class="far fa-clock"></i> ${p.date}</div>
+                            </div>
+                        </a>`;
+                });
+
+                // 3. Sidebar - Sản phẩm nổi bật
+                let sidebarProdHTML = '';
+                [...prods].sort(() => 0.5 - Math.random()).slice(0, 5).forEach(p => {
+                    const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                    const pSlug = p.slug || createSafeSlug(p.title);
+                    const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                    const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
+                    
+                    let tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+                    let tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+                    
+                    let extraInfo = "";
+                    let specArr = [];
+                    if (p.area) specArr.push(`${p.area} m²`);
+                    if (p.bed) specArr.push(`${p.bed} PN`);
+                    if (specArr.length > 0) {
+                        extraInfo = `<span style="color:#555; margin: 0 6px;">|</span><span style="font-size:11px; font-weight:400; color:var(--gold);">${specArr.join(' - ')}</span>`;
+                    }
+
+                    sidebarProdHTML += `
+                        <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="gr-prod-card">
+                            <div class="gr-prod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagName}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
+                            <div class="gr-prod-info">
+                                <h4 class="gr-tit-mini">${p.title}</h4>
+                                ${p.loc ? `<div class="gr-loc-mini"><i class="fas fa-map-marker-alt"></i> ${String(p.loc).substring(0, 30)}...</div>` : ''}
+                                <div class="gr-meta-mini" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <span class="gr-hl">${p.price || 'Liên hệ'}</span>
+                                    <div style="display:flex; align-items:center;">${extraInfo}</div>
+                                </div>
+                            </div>
+                        </a>`;
+                });
+
+                // 4. Rổ hàng Dự án
+                const projectProds = prods.filter(p => p.projectCode && p.projectCode.toLowerCase() === createSafeSlug(post.title));
+                let roHangHTML = '';
+                if(projectProds.length > 0) {
+                    roHangHTML = `
+                        <div style="margin-top: 50px; padding-top: 30px; border-top: 1px dashed #333; margin-bottom: 50px;">
+                            <h2 style="color:#c5a059; font-size: 22px; margin-bottom: 20px; font-weight: bold;">Sản phẩm nổi bật</h2>
+                            <div class="gr-ro-hang-grid">
+                                ${projectProds.slice(0, 3).map(p => {
+                                    const pCatSlug = createSafeSlug(p.cat || 'san-pham');
+                                    const pSlug = p.slug || createSafeSlug(p.title);
+                                    const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                                    return `
+                                    <a href="${safeBaseUrl}san-pham/${pCatSlug}/${pSlug}/" class="s2-card">
+                                        <div class="s2-thumb-box"><img src="${imgUrl}"></div>
+                                        <div class="s2-body">
+                                            <h3 class="s2-tit">${p.title}</h3>
+                                            <div style="color:#c5a059; font-weight:bold; font-size:14px;">${p.price}</div>
+                                        </div>
+                                    </a>`;
+                                }).join('')}
+                            </div>
+                        </div>`;
                 }
 
-                // 2. CÔ LẬP BÀI VIẾT
-                postsInThisCat = window.GREENIA_CURRENT_CATEGORY ? allPosts.filter(p => p.cat === currentCatName) : [...allPosts];
+                // 5. Carousel Cuối trang (Tối ưu bắt ảnh)
+                const relatedPosts = posts.filter(p => p.cat === post.cat && p.id != post.id);
+                let carouselHTML = '';
+                if(relatedPosts.length > 0) {
+                    carouselHTML = `
+                    <div class="gr-related-section">
+                        <h3 class="gr-w-title" style="margin-bottom:20px;">Bài viết liên quan</h3>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal(-1)"><i class="fas fa-chevron-left"></i></button>
+                            <div id="gr-news-scroll" class="gr-carousel">
+                                ${relatedPosts.map(p => {
+                                    const pCat = createSafeSlug(p.cat);
+                                    const pSlug = p.slug || createSafeSlug(p.title);
+                                    
+                                    // BẮT ẢNH DỰ PHÒNG CHUẨN XÁC
+                                    let thumbUrl = p.thumb || '';
+                                    if (!thumbUrl && p.content) {
+                                        const match = p.content.match(/<img[^>]+src="([^">]+)"/);
+                                        if (match) thumbUrl = match[1];
+                                    }
+                                    if (!thumbUrl) thumbUrl = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
+                                    thumbUrl = window.resolveImg ? window.resolveImg(thumbUrl) : thumbUrl;
+                                    const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+                                    
+                                    const contentStr = p.content || '';
+                                    const excerpt = contentStr.replace(/<[^>]*>?/gm, '').substring(0, 100) + '...';
+                                    
+                                    return `
+                                    <a href="${safeBaseUrl}tin-tuc/${pCat}/${pSlug}/" class="gr-news-card-v">
+                                        <div class="gr-nc-thumb"><img src="${thumbUrl}" onerror="this.src='${fallbackImg}';"></div>
+                                        <div class="gr-nc-body">
+                                            <h4 class="gr-nc-tit">${p.title}</h4>
+                                            <div class="gr-nc-desc">${excerpt}</div>
+                                            <div class="gr-nc-footer"><div class="gr-nc-date"><i class="far fa-clock"></i> ${p.date}</div><div class="gr-nc-more">Xem chi tiết <i class="fas fa-arrow-right" style="font-size:10px;"></i></div></div>
+                                        </div>
+                                    </a>`;
+                                }).join('')}
+                            </div>
+                            <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal(1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>`;
+                }
 
-                // 3. TẠO TABS THÔNG MINH
-                const subCategories = []; 
-                const tabs = ['Tất cả', ...subCategories];
+                const catSlug = createSafeSlug(post.cat);
+                const shareLink = encodeURIComponent(window.location.href);
+                const zaloIconUrl = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
+                
+                // BƠM TOÀN BỘ GIAO DIỆN VÀO TRANG TĨNH
+                container.innerHTML = `
+                    <div class="gr-sp-header">
+                        <div class="gr-breadcrumbs">
+                            <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
+                            <a href="${safeBaseUrl}tin-tuc.html">Tin tức</a> <span class="sep">&gt;</span>
+                            <a href="${safeBaseUrl}tin-tuc/${catSlug}/">${post.cat}</a> <span class="sep">&gt;</span>
+                            <span class="current">${post.title}</span>
+                        </div>
+                        <h1 class="gr-sp-title">${post.title}</h1>
+                        <div class="gr-sp-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                            <span><i class="far fa-user"></i> ${post.author || 'Ban Biên Tập'}</span>
+                        </div>
+                    </div>
 
-                const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${cat}', this)">${cat}</div>`).join('');
-                document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
+                    <div class="gr-sp-body">
+                        <div class="gr-sp-main">
+                            
+                            <div class="gr-toc-wrap" id="gr-toc-wrapper">
+                                <div class="gr-toc-header" onclick="document.getElementById('gr-toc-list').style.display = document.getElementById('gr-toc-list').style.display==='none'?'block':'none'; document.getElementById('gr-toc-icon').classList.toggle('rotate');">
+                                    <span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span><i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i>
+                                </div>
+                                <ul class="gr-toc-list" id="gr-toc-list"></ul>
+                            </div>
 
-                // 4. KÍCH HOẠT TAB MẶC ĐỊNH
-                switchSubTab('Tất cả', document.querySelector('.s1-tab'));
+                            <div class="gr-entry-content" id="gr-content-body">${post.content}</div>
 
-                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI
-                const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
-                document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
+                            <div class="gr-bottom-bar">
+                                <div class="gr-bot-cta">Quan tâm dự án? Gọi ngay: <a href="tel:0932966700">0932 966 700</a></div>
+                                <div class="gr-share-group">
+                                    <span class="gr-share-lbl">Chia sẻ:</span>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${shareLink}" target="_blank" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="gr-s-btn" style="width:32px; height:32px; border-radius:50%; overflow:hidden; background:transparent;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                        <img src="${zaloIconUrl}" style="width:100%; height:100%; object-fit:contain;" referrerpolicy="no-referrer">
+                                    </a>
+                                </div>
+                            </div>
 
-                const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
-                document.getElementById('foryou-grid').innerHTML = forYouProds.map(p => createProdCardHTML(p)).join('');
+                            ${roHangHTML}
 
-                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
-                document.getElementById('sale-scroll').innerHTML = saleProds.map(p => createProdCardHTML(p)).join('');
-
-                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
-                document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
-
-                if (independentProjects.length > 0) {
-                    document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
-                        const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
-                        const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
-                        return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
-                                    <div class="s2-body">
-                                        <h3 class="gr-tit">${p.title}</h3>
-                                        <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;">
-                                            <i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}
+                            <section id="vhgp-reviews-ip" style="border-radius: 8px; border: 1px solid var(--border);">
+                                <div class="rev-container">
+                                    <div class="rev-head">
+                                        <div class="rev-title"><h2>Tham Gia Thảo Luận</h2></div>
+                                        <div class="rev-stats">
+                                            <div class="rs-score" id="avg-score">5.0</div>
+                                            <div class="rs-meta">
+                                                <div class="rs-stars" id="avg-stars">★★★★★</div>
+                                                <div class="rs-count" id="total-reviews">0 ĐÁNH GIÁ</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </a>`;
-                    }).join('');
-                } else {
-                    document.getElementById('feat-scroll').innerHTML = '<div style="color:#888; padding:20px;">Đang cập nhật dự án...</div>';
-                }
+                                    <div class="rev-intro">🔒 Thông tin cá nhân của bạn được <strong>cam kết bảo mật tuyệt đối</strong>.</div>
+                                    <div class="rev-layout">
+                                        <div class="rev-form-box">
+                                            <span class="form-lbl">Đánh giá để tham gia thảo luận</span>
+                                            <form id="mainForm">
+                                                <div class="rate-input">
+                                                    <input type="radio" id="c-st5" name="rate" value="5" required checked/><label for="c-st5">★</label>
+                                                    <input type="radio" id="c-st4" name="rate" value="4" /><label for="c-st4">★</label>
+                                                    <input type="radio" id="c-st3" name="rate" value="3" /><label for="c-st3">★</label>
+                                                    <input type="radio" id="c-st2" name="rate" value="2" /><label for="c-st2">★</label>
+                                                    <input type="radio" id="c-st1" name="rate" value="1" /><label for="c-st1">★</label>
+                                                </div>
+                                                <div class="rev-row-inputs">
+                                                    <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
+                                                    <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                                    <input type="email" id="c-email" class="rev-input" placeholder="Email (Để nhận thông báo)" required>
+                                                </div>
+                                                <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
+                                                <button type="submit" id="c-btn-submit" class="rev-btn">Gửi Đánh Giá</button>
+                                            </form>
+                                        </div>
+                                        <div class="rev-list" id="rev-list-container"><div style="font-size:12px; color:#666;">Đang kết nối dữ liệu...</div></div>
+                                    </div>
+                                </div>
+                            </section>
 
-            } catch(e) {
-                console.error("Lỗi kết nối Firebase:", e);
-                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang kết nối cơ sở dữ liệu. Vui lòng tải lại trang.</div>";
-                document.getElementById('top-grid-container').style.opacity = 1;
+                        </div>
+
+                        <div class="gr-sp-sidebar">
+                            <section id="vhgp-final-v15-vertical">
+                                <div class="v15-ver-container">
+                                    <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                                    <div class="v15-ver-rating-box"><span class="v15-ver-stars">★★★★★</span><span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span></div>
+                                    <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi qua Zalo/Email.</p>
+                                    <form id="leadFormV15Ver" class="v15-ver-form">
+                                        <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                                        <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                        <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email" required>
+                                        <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                                        <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
+                                    </form>
+                                    <div id="v15-ver-success" class="success-overlay"><div class="success-title">✔ THÀNH CÔNG!</div><div class="success-text">Hệ thống đang gửi tài liệu cho quý khách.</div></div>
+                                </div>
+                            </section>
+
+                            ${catWidgetHTML}
+
+                            <div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarProdHTML}</div></div>
+                            <div><div class="gr-w-title">Tin mới nhất</div><div style="display:flex; flex-direction:column;">${latestNewsHTML}</div></div>
+                        </div>
+                    </div>
+                    ${carouselHTML}
+                `;
+
+                setTimeout(() => {
+                    initTOC();
+                    initReviewsAndCTA();
+                }, 500);
+
+            } catch (e) { 
+                console.error("Lỗi khởi tạo:", e); 
+                container.innerHTML = `<div style="text-align:center; padding: 100px 0; color: #ff4d4f;"><i class="fas fa-exclamation-triangle fa-3x" style="margin-bottom:15px;"></i><p>Hệ thống đang cập nhật dữ liệu. Vui lòng tải lại trang sau.</p></div>`;
             }
         });
 
-        // HÀM LỌC NỘI BỘ TRONG DANH MỤC
-        window.switchSubTab = function(subCatName, btnEl) {
-            document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
-            if(btnEl) btnEl.classList.add('active');
-            
-            // Tìm trong mảng đã được cô lập (postsInThisCat)
-            currentTabPosts = subCatName === 'Tất cả' ? [...postsInThisCat] : postsInThisCat.filter(p => p.subCat === subCatName);
-            
-            if(currentTabPosts.length === 0) {
-                document.getElementById('top-grid-container').style.opacity = 1;
-                document.getElementById('top-grid-container').innerHTML = "<div style='grid-column: 1/-1; color:#888; padding:50px; text-align:center;'>Chưa có bài viết nào trong mục này.</div>";
-                document.getElementById('main-post-grid').innerHTML = '';
-                document.getElementById('load-more-wrap').style.display = 'none';
-                return;
+        function initTOC() {
+            const content = document.getElementById('gr-content-body');
+            const tocList = document.getElementById('gr-toc-list');
+            const tocWrapper = document.getElementById('gr-toc-wrapper');
+            if(content && tocList) {
+                const headings = content.querySelectorAll('h2');
+                if(headings.length > 0) {
+                    tocWrapper.style.display = 'block';
+                    headings.forEach((h2, index) => {
+                        const id = 'toc-' + index; h2.id = id;
+                        const li = document.createElement('li'); li.className = 'gr-toc-item';
+                        li.innerHTML = `<a href="#${id}" class="gr-toc-link">${index + 1}. ${h2.innerText}</a>`;
+                        li.querySelector('a').onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({behavior: 'smooth'}); };
+                        tocList.appendChild(li);
+                    });
+                }
             }
-
-            // Gắn lại khung nếu có dữ liệu
-            document.getElementById('top-grid-container').innerHTML = `
-                <div class="s1-col-1" id="hero-col"></div>
-                <div class="s1-col-2" id="hover-list-col"></div>
-                <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>
-            `;
-
-            renderHero(currentTabPosts[0]);
-            
-            const hoverPosts = currentTabPosts.slice(1, 7);
-            document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
-                const pd = extractPostData(p);
-                return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" onmouseenter="updateHero('${pd.link}', '${pd.img}', \`${pd.title}\`, \`${pd.excerpt}\`, '${pd.date}', this)" onclick="window.location.href='${pd.link}'">${pd.title}</div>`;
-            }).join('');
-            
-            const relatedPosts = currentTabPosts.slice(7, 12);
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
-            
-            document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
-                const pd = extractPostData(p);
-                return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center; display:flex; gap:10px; margin-bottom:15px;">
-                            <div class="gr-img-col3" style="width:70px; height:50px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
-                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';" style="width:100%; height:100%; object-fit:cover;">
-                            </div>
-                            <div class="gr-prod-info" style="flex:1;">
-                                <h4 class="gr-tit" style="font-size:12px !important; margin:0 0 4px !important;">${pd.title}</h4>
-                                <div class="gr-meta" style="color: #888; font-size: 10px; border-top: none; padding-top: 0;"><i class="far fa-clock"></i> ${pd.date}</div>
-                            </div>
-                        </a>`;
-            }).join('') || '<div style="color:#888; font-size:12px;">Đang cập nhật...</div>';
-            
-            document.getElementById('top-grid-container').style.opacity = 1;
-            
-            mixedPostsPool = [...currentTabPosts]; 
-            loadedCount = 0;
-            document.getElementById('main-post-grid').innerHTML = ''; 
-            document.getElementById('load-more-wrap').style.display = 'block';
-            loadMorePosts();
-        };
-
-        window.renderHero = function(p) {
-            const pd = extractPostData(p);
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
-            
-            document.getElementById('hero-col').innerHTML = `
-                <div class="s1-hero-img-box">
-                    <a href="${pd.link}" id="hero-link">
-                        <img src="${pd.img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img">
-                    </a>
-                </div>
-                <div class="s1-hero-body">
-                    <a href="${pd.link}"><h3 class="s1-hero-tit" id="hero-tit">${pd.title}</h3></a>
-                    <div class="s1-hero-desc" id="hero-desc">${pd.excerpt}</div>
-                    <div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${pd.date}</div>
-                </div>`;
         }
 
-        window.updateHero = function(link, img, tit, desc, date, el) {
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
-            document.getElementById('hero-link').href = link; 
-            document.querySelector('.s1-hero-body a').href = link;
+        function initReviewsAndCTA() {
+            const PAGE_ID = window.location.pathname;
+            const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
+            const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
             
-            const heroImgEl = document.getElementById('hero-img');
-            heroImgEl.src = img;
-            heroImgEl.onerror = function() { this.src = fallbackImg; };
-            
-            document.getElementById('hero-tit').innerText = tit;
-            document.getElementById('hero-desc').innerText = desc; 
-            document.getElementById('hero-date').innerHTML = `<i class="far fa-clock"></i> ${date}`;
-            
-            document.querySelectorAll('.s1-news-item').forEach(item => item.classList.remove('active')); 
-            el.classList.add('active');
+            // Xử lý lấy số lượng Đánh Giá cho Form CTA
+            let currentCountVer = 186; // Mặc định nếu API lỗi
+            fetch(API_LEAD + "?action=count")
+                .then(res => res.json())
+                .then(data => {
+                    if(data.count !== undefined) {
+                        currentCountVer = parseInt(data.count);
+                        if(currentCountVer < 5) currentCountVer = 186;
+                        const countEl = document.getElementById('count-v15-ver');
+                        if(countEl) countEl.innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    }
+                }).catch(err => {
+                    const countEl = document.getElementById('count-v15-ver');
+                    if(countEl) countEl.innerText = `(5.0/5 - 186 đánh giá)`;
+                });
+
+            // Xử lý Gửi Form Đăng ký (CTA) có thêm Tracking Facebook/Google
+            document.getElementById('leadFormV15Ver').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-v15-ver-submit');
+                btn.innerText = "ĐANG GỬI..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("project", window.GREENIA_CURRENT_POST.title);
+                fd.append("name", document.getElementById('v15-ver-name').value);
+                fd.append("phone", document.getElementById('v15-ver-phone').value);
+                fd.append("email", document.getElementById('v15-ver-email').value);
+                fd.append("demand", document.getElementById('v15-ver-demand').value);
+                fd.append("url", window.location.href);
+                fd.append("rating", 5);
+                
+                fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
+                    document.getElementById('leadFormV15Ver').style.display = 'none';
+                    document.getElementById('v15-ver-success').style.display = 'block';
+                    currentCountVer++;
+                    document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    if(typeof fbq === 'function') fbq('track', 'Lead'); 
+                    if(typeof gtag === 'function') gtag('event', 'conversion', {'send_to': ''});
+                }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
+            });
+
+            // Lấy dữ liệu Review bên dưới
+            fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
+                const container = document.getElementById('rev-list-container');
+                const pageReviews = data.filter(item => item.pageId === PAGE_ID);
+                if(pageReviews.length === 0) { container.innerHTML = '<div style="font-size:12px; color:#666;">Chưa có thảo luận nào. Hãy là người đầu tiên!</div>'; return; }
+                
+                document.getElementById('total-reviews').innerText = pageReviews.length + " ĐÁNH GIÁ";
+                container.innerHTML = pageReviews.map(p => `
+                    <div class="rev-item">
+                        <div class="rev-main-content" style="display:flex; gap:15px; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px;">
+                            <div style="width:40px;height:40px;border-radius:50%;background:#151a25;color:#c5a059;display:flex;align-items:center;justify-content:center;border:1px solid rgba(197, 160, 89, 0.3);font-weight:bold;flex-shrink:0;">${(p.name || 'U').charAt(0).toUpperCase()}</div>
+                            <div style="width:100%;">
+                                <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-weight:500;color:#fff;font-size:12px;">${p.name}</span><span style="color:#666;font-size:11px;">${p.date}</span></div>
+                                <span style="font-size:11px;color:#c5a059;display:block;margin-bottom:6px;letter-spacing:1px;">${"★".repeat(p.rating)}${"☆".repeat(5-p.rating)}</span>
+                                <p style="color:#ccc; font-size:14px; line-height:1.6; margin:0;">${p.comment}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
+
+            // Gửi Review
+            document.getElementById('mainForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('c-btn-submit');
+                btn.innerText = "Đang gửi..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("name", document.getElementById('c-name').value);
+                fd.append("phone", document.getElementById('c-phone').value);
+                fd.append("email", document.getElementById('c-email').value);
+                fd.append("comment", document.getElementById('c-comment').value);
+                fd.append("rating", document.querySelector('input[name="rate"]:checked').value);
+                fd.append("pageId", PAGE_ID);
+                fetch(API_REVIEWS, { method: 'POST', body: fd }).then(() => {
+                    alert("Cảm ơn bạn đã đánh giá!");
+                    document.getElementById('mainForm').reset();
+                    btn.innerText = "Gửi Đánh Giá"; btn.disabled = false;
+                });
+            });
         }
 
-        window.loadMorePosts = function() {
-            const grid = document.getElementById('main-post-grid');
-            const batch = mixedPostsPool.slice(loadedCount, loadedCount + postsPerPage);
-            if(batch.length === 0) return;
-            
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
-            
-            let html = batch.map(p => {
-                const pd = extractPostData(p);
-                return `<a href="${pd.link}" class="gr-list-post">
-                            <div class="gr-list-thumb">
-                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';">
-                            </div>
-                            <div class="gr-list-info">
-                                <h4 class="gr-list-tit">${pd.title}</h4>
-                                <div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div>
-                            </div>
-                        </a>`;
-            }).join('');
-            
-            grid.insertAdjacentHTML('beforeend', html);
-            loadedCount += batch.length;
-            if(loadedCount >= mixedPostsPool.length) document.getElementById('load-more-wrap').style.display = 'none';
+        window.grScrollHorizontal = function(dir) {
+            const el = document.getElementById('gr-news-scroll');
+            if(el) { const item = el.querySelector('.gr-news-card-v'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } }
         }
-
-        window.grScrollHorizontal = function(id, dir) {
-            var el = document.getElementById(id); if(!el) return;
-            var item = el.querySelector(".s2-card"); if(!item) return;
-            var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
-        };
     </script>
 </body>
 </html>
