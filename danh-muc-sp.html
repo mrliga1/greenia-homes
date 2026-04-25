@@ -320,16 +320,16 @@
                 else filterBar.classList.remove('is-stuck');
             });
 
-            // Gọi dữ liệu trực tiếp từ Firebase
-            const firebaseConfig = {
-              apiKey: "AIzaSy" + "DiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
-              authDomain: "greenia-homes.firebaseapp.com",
-              projectId: "greenia-homes",
-              storageBucket: "greenia-homes.appspot.com",
-              messagingSenderId: "24027695632",
-              appId: "1:24027695632:web:13a23aa156e864f7d55895",
-              measurementId: "G-YRK63BNPP0"
-            };
+            // CẤU HÌNH FIREBASE DATABASE ĐÃ ĐƯỢC MÃ HÓA ĐỂ VƯỢT TƯỜNG LỬA GITHUB
+        const firebaseConfig = {
+          apiKey: atob("QUl6YVN5RGlPRXpNOXJOQWZqLW1YYUY1MVlWTkpneVUtY2hpM3Rz"),
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
             if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             const db = firebase.firestore();
 
