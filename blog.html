@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>{{TITLE}} | Greenia Homes</title>
     <meta name="description" content="{{DESC}}" />
     <meta name="keywords" content="{{KEYWORDS}}" />
@@ -225,7 +226,6 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-    
         // Băm nhỏ API Key để vượt mặt hệ thống quét mã của GitHub
         const k1 = "AIzaSyDiO";
         const k2 = "EzM9rNAfj";
@@ -247,8 +247,9 @@
         }
         const db = firebase.firestore();
 
+        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG TỪ ADMIN]
         window.GREENIA_CURRENT_POST = {
-            id: {{ID}},
+            id: "{{ID}}",
             title: "{{TITLE_JSON}}",
             slug: "{{SLUG}}",
             cat: "{{CAT}}",
@@ -268,7 +269,11 @@
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            if (!post || !post.id) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
+            // Lệnh bảo vệ: Nếu là file template trắng thì chuyển về trang danh mục
+            if (!post || post.id === "{{ID}}" || post.id === "") { 
+                window.location.replace(safeBaseUrl + 'tin-tuc.html'); 
+                return; 
+            }
 
             try {
                 // TẢI DỮ LIỆU TỪ FIREBASE
@@ -459,7 +464,8 @@
                         <h1 class="gr-sp-title">${post.title}</h1>
                         <div class="gr-sp-meta">
                             <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
-                            <span><i class="far fa-user"></i> ${post.author || 'Ban Biên Tập'}</span>
+                            <span><i class="fas fa-user-edit"></i> ${post.author || 'Ban Biên Tập'}</span>
+                            <span><i class="fas fa-folder-open"></i> ${post.cat}</span>
                         </div>
                     </div>
 
