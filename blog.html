@@ -234,7 +234,16 @@
         }
         const db = firebase.firestore();
 
-        window.GREENIA_CURRENT_POST = null;
+        window.GREENIA_CURRENT_POST = {
+            id: {{ID}},
+            title: "{{TITLE_JSON}}",
+            slug: "{{SLUG}}",
+            cat: "{{CAT}}",
+            date: "{{DATE}}",
+            author: "{{AUTHOR}}",
+            thumb: "{{IMG}}",
+            content: `{{CONTENT_JSON}}`
+        };
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -246,7 +255,7 @@
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            if (!post) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
+            if (!post || !post.id) { window.location.replace(safeBaseUrl + 'tin-tuc.html'); return; }
 
             try {
                 // TẢI DỮ LIỆU TỪ FIREBASE
