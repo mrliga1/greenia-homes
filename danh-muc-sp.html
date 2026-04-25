@@ -239,8 +239,13 @@
         const itemsPerPage = 10;
         let currentPage = 1;
         
-        // ĐÃ ĐƯỢC BỌC BỞI {{SLUG}} TỪ ADMIN ĐỂ TỰ ĐỘNG CHỌN DANH MỤC
-        window.GREENIA_CURRENT_CATEGORY = { slug: "{{SLUG}}" };
+        // ĐÃ ĐƯỢC BỌC BỞI PLACEHOLDER {{...}} ĐỂ ADMIN BƠM DỮ LIỆU
+        window.GREENIA_CURRENT_CATEGORY = { 
+            slug: "{{SLUG}}",
+            name: "{{TITLE}}",
+            desc: "{{DESC}}"
+        };
+        
         let filterState = { type: '', cat: '{{SLUG}}', keyword: '' };
         
         let smartRecommended = [];
@@ -321,20 +326,20 @@
             });
 
             // Băm nhỏ API Key để vượt mặt hệ thống quét mã của GitHub
-        const k1 = "AIzaSyDiO";
-        const k2 = "EzM9rNAfj";
-        const k3 = "-mXaF51YV";
-        const k4 = "NJgyU-chi3ts";
+            const k1 = "AIzaSyDiO";
+            const k2 = "EzM9rNAfj";
+            const k3 = "-mXaF51YV";
+            const k4 = "NJgyU-chi3ts";
 
-        const firebaseConfig = {
-          apiKey: k1 + k2 + k3 + k4,
-          authDomain: "greenia-homes.firebaseapp.com",
-          projectId: "greenia-homes",
-          storageBucket: "greenia-homes.appspot.com",
-          messagingSenderId: "24027695632",
-          appId: "1:24027695632:web:13a23aa156e864f7d55895",
-          measurementId: "G-YRK63BNPP0"
-        };
+            const firebaseConfig = {
+              apiKey: k1 + k2 + k3 + k4,
+              authDomain: "greenia-homes.firebaseapp.com",
+              projectId: "greenia-homes",
+              storageBucket: "greenia-homes.appspot.com",
+              messagingSenderId: "24027695632",
+              appId: "1:24027695632:web:13a23aa156e864f7d55895",
+              measurementId: "G-YRK63BNPP0"
+            };
             if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             const db = firebase.firestore();
 
@@ -352,6 +357,7 @@
                 const currCat = window.GREENIA_CURRENT_CATEGORY;
                 let activeCatSlug = '';
 
+                // BẢO VỆ: Kiểm tra xem biến có bị kẹt chuỗi {{SLUG}} gốc không
                 if (currCat && currCat.slug && currCat.slug !== 'tat-ca-san-pham' && currCat.slug !== '{{SLUG}}') {
                     activeCatSlug = currCat.slug;
                     if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'chuyen-nhuong'; } 
@@ -371,7 +377,7 @@
                 document.querySelectorAll('.luc-nav-item').forEach(t => t.classList.remove('active'));
                 if (filterState.type === 'Bán') { document.getElementById('tab-ban').classList.add('active'); }
                 else if (filterState.type === 'Thuê') { document.getElementById('tab-thue').classList.add('active'); }
-                else if (filterState.cat !== '') { /* handled by dropdown */ }
+                else if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') { /* handled by dropdown */ }
                 else { document.getElementById('tab-all').classList.add('active'); }
 
                 updateSeoUI(activeCatSlug, filterState.type);
@@ -461,7 +467,7 @@
                 else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
                 
                 let matchCat = true;
-                if (filterState.cat !== '') matchCat = isCatMatch(p, filterState.cat);
+                if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') matchCat = isCatMatch(p, filterState.cat);
                 
                 return matchType && matchCat;
             });
