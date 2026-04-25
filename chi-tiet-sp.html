@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết Sản phẩm | Greenia Homes</title>
+    <title>{{TITLE}} | Greenia Homes</title>
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
+    <link rel="canonical" href="/greenia-homes/san-pham/{{CAT_SLUG}}/{{SLUG}}/" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:url" content="/greenia-homes/san-pham/{{CAT_SLUG}}/{{SLUG}}/" />
+    <meta property="og:type" content="website" />
 
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/greenia-homes/apple-touch-icon.png">
@@ -269,7 +276,29 @@
         }
         const db = firebase.firestore();
 
-        window.GREENIA_CURRENT_PRODUCT = null;
+        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG]
+        window.GREENIA_CURRENT_PRODUCT = {
+            id: {{ID}},
+            title: "{{TITLE_JSON}}",
+            slug: "{{SLUG}}",
+            type: "{{TYPE}}",
+            cat: "{{CAT}}",
+            loc: "{{LOC}}",
+            price: "{{PRICE}}",
+            area: "{{AREA}}",
+            dir: "{{DIR}}",
+            floor: "{{FLOOR}}",
+            bed: "{{BED}}",
+            wc: "{{WC}}",
+            front: "{{FRONT}}",
+            legal: "{{LEGAL}}",
+            img: "{{IMG}}",
+            gallery: {{GALLERY_JSON}},
+            video: "{{VIDEO}}",
+            map: "{{MAP_JSON}}",
+            content: `{{CONTENT_JSON}}`
+        };
+
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
         
         const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo-greenia-homes.png'; 
@@ -349,7 +378,11 @@
             const container = document.getElementById('sp-container');
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
-            if (!prod) { window.location.replace(safeBaseUrl + 'san-pham.html'); return; }
+            // NẾU KHÔNG CÓ DỮ LIỆU ĐƯỢC BƠM VÀO THÌ CHUYỂN HƯỚNG VỀ TRANG DANH MỤC SẢN PHẨM
+            if (!prod || !prod.id) { 
+                window.location.replace(safeBaseUrl + 'san-pham.html'); 
+                return; 
+            }
 
             try {
                 const [prodSnap, catSnap, projSnap] = await Promise.all([
