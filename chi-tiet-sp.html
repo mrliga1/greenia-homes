@@ -253,648 +253,325 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // CẤU HÌNH FIREBASE DATABASE
-        const firebaseConfig = {
-          apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
-          authDomain: "greenia-homes.firebaseapp.com",
-          projectId: "greenia-homes",
-          storageBucket: "greenia-homes.appspot.com",
-          messagingSenderId: "24027695632",
-          appId: "1:24027695632:web:13a23aa156e864f7d55895",
-          measurementId: "G-YRK63BNPP0"
-        };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
+    /* =================================================================
+       1. CẤU HÌNH HỆ THỐNG
+    ================================================================= */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+      authDomain: "greenia-homes.firebaseapp.com",
+      projectId: "greenia-homes",
+      storageBucket: "greenia-homes.appspot.com",
+      messagingSenderId: "24027695632",
+      appId: "1:24027695632:web:13a23aa156e864f7d55895",
+      measurementId: "G-YRK63BNPP0"
+    };
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    const db = firebase.firestore();
 
-        window.GREENIA_CURRENT_PRODUCT = null;
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
-        
-        const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo-greenia-homes.png'; 
-        const zalo_img = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
-        const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
-        
-        let mediaList = [];
-        let currentIdx = 0;
-        let isScrolling = false;
-        let autoPlayInterval;
-        let allProducts = [];
-        let allCategories = [];
+    const USERS = { "10091995Tt!": "admin", "00000000": "editor" };
+    const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
+    const CONFIG = { owner: "mrliga1", repo: "greenia-homes" }; 
+    const GITHUB_PAGES_DOMAIN = "https://mrliga1.github.io/greenia-homes";
+    
+    // 🔴 ĐIỀN TOKEN GITHUB MỚI VÀO ĐÂY
+    const TOKEN_GITHUB = "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxx"; 
 
-        let filteredData = [];
-        const itemsPerPage = 10;
-        let currentPage = 1;
-        let filterState = { type: '', cat: '', keyword: '' };
+    /* =================================================================
+       2. BIẾN TOÀN CỤC & KHỞI TẠO
+    ================================================================= */
+    let currentData = { posts: [], products: [], projects: [], categories: [] };
+    let uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" };
+    let editMode = { active: false, type: null, id: null };
+    let currentUserRole = "";
 
-        function createSafeSlug(title) {
-            if(!title) return 'san-pham';
-            return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
-        }
-        
-        function beautifyCatName(slug) {
-            if (!slug) return '';
-            const words = String(slug).split('-');
-            const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
-            return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
-        }
+    CKEDITOR.replace('p-content', { height: 350, versionCheck: false, allowedContent: true });
+    CKEDITOR.replace('n-content', { height: 350, versionCheck: false, allowedContent: true });
 
-        function isCatMatch(pData, targetCat) {
-            if (!targetCat || targetCat === '') return true;
-            const targetSlug = createSafeSlug(targetCat);
-            let catsArray = Array.isArray(pData.cat) ? pData.cat : (pData.cat ? String(pData.cat).split(',') : []);
-            return catsArray.some(c => createSafeSlug(c) === targetSlug);
-        }
-
-        function renderCardHTML(p) {
-            const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const catSlug = createSafeSlug(pCat);
-            const pSlug = p.slug || createSafeSlug(p.title);
-            const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
-            const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
-            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-            const locStr = p.loc ? String(p.loc) : '';
-            const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
-            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
-            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
-
-            return `
-            <a href="${link}" class="s2-card">
-                <div class="s2-thumb-box">
-                    <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                    <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
-                </div>
-                <div class="s2-body">
-                    <h3 class="gr-tit s2-tit">${p.title}</h3>
-                    ${locHtml}
-                    <div class="gr-meta">
-                        <span class="gr-hl">${p.price || 'Liên hệ'}</span>
-                        <div style="display:flex; gap:10px;">${areaHtml}${bedHtml}</div>
-                    </div>
-                </div>
-            </a>`;
-        }
-
-        document.addEventListener("DOMContentLoaded", async function() {
-            const filterBar = document.getElementById('luc-filter-bar');
-            if(filterBar) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 100) filterBar.classList.add('is-stuck');
-                    else filterBar.classList.remove('is-stuck');
-                });
+    /* =================================================================
+       3. ĐĂNG NHẬP VÀ BẢO MẬT
+    ================================================================= */
+    function checkLogin() {
+        let pwd = document.getElementById('sys-password').value.replace(/\s/g, "");
+        if (USERS[pwd]) {
+            currentUserRole = USERS[pwd];
+            document.getElementById('login-screen').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('admin-dashboard').style.display = 'block';
+            if(currentUserRole === 'editor') {
+                const style = document.createElement('style'); style.innerHTML = `.del-btn, .del-btn-master { display: none !important; }`; document.head.appendChild(style);
+                document.getElementById('admin-heading').innerHTML += ` <span style="font-size:12px; color:#ff9f43;">(Biên Tập Viên)</span>`;
             }
+            loadDataFromFirebase(); 
+        } else {
+            document.getElementById('login-error').style.display = 'block';
+        }
+    }
 
-            const container = document.getElementById('sp-container');
-            const prod = window.GREENIA_CURRENT_PRODUCT; 
+    /* =================================================================
+       4. ĐỒNG BỘ DỮ LIỆU TỪ FIREBASE
+    ================================================================= */
+    async function loadDataFromFirebase() {
+        const status = document.getElementById('sync-status');
+        status.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Đang tải từ Firebase...';
+        status.style.color = "#c5a059";
+        document.getElementById('n-date').value = new Date().toLocaleDateString('vi-VN');
 
-            if (!prod) { window.location.replace(safeBaseUrl + 'san-pham.html'); return; }
+        try {
+            const [pSnap, nSnap, pjSnap, cSnap] = await Promise.all([
+                db.collection('products').get(), db.collection('posts').get(),
+                db.collection('projects').get(), db.collection('categories').get()
+            ]);
 
-            try {
-                const [prodSnap, catSnap, projSnap] = await Promise.all([
-                    db.collection('products').get(),
-                    db.collection('categories').get(),
-                    db.collection('projects').get()
-                ]);
-                
-                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                allCategories = catSnap.docs.map(doc => doc.data());
-                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+            currentData.products = pSnap.docs.map(d => d.data());
+            currentData.posts = nSnap.docs.map(d => d.data());
+            currentData.projects = pjSnap.docs.map(d => d.data());
+            currentData.categories = cSnap.docs.map(d => d.data());
 
-                // 1. TẠO MEDIA LIST (Gallery)
-                mediaList = [];
-                if(prod.video) mediaList.push({type: 'video', url: prod.video, thumb: 'https://via.placeholder.com/800x450?text=Video+Preview'});
-                if(prod.img) mediaList.push({type: 'image', url: window.resolveImg ? window.resolveImg(prod.img) : prod.img});
-                if(prod.gallery && Array.isArray(prod.gallery)) {
-                    prod.gallery.forEach(g => { mediaList.push({type: 'image', url: window.resolveImg ? window.resolveImg(g) : g}); });
-                }
-                if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
+            resetFormCalculations(); buildLinkLibrary();
+            status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ Firebase';
+            status.style.color = "#00b894";
+        } catch (e) { 
+            console.error(e);
+            status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi tải dữ liệu!';
+            status.style.color = "#ff4d4f";
+        }
+    }
 
-                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI
-                let activeCatSlug = '';
-                let breadcrumbCatName = 'Sản phẩm';
-                
-                if (prod.cat) {
-                    let pCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
-                    let validCat = pCats.find(c => {
-                        let s = createSafeSlug(c);
-                        return s && s !== 'ban' && s !== 'cho-thue' && s !== 'chuyen-nhuong' && s !== 'san-pham';
-                    });
-                    if (validCat) {
-                        activeCatSlug = createSafeSlug(validCat);
-                        breadcrumbCatName = beautifyCatName(activeCatSlug);
-                    } else if (pCats.length > 0) {
-                        activeCatSlug = createSafeSlug(pCats[0]);
-                        breadcrumbCatName = beautifyCatName(activeCatSlug);
-                    }
-                }
-                if (!activeCatSlug) {
-                    const paths = window.location.pathname.split('/').filter(Boolean);
-                    if (paths.length >= 3 && paths[paths.length - 3] === 'san-pham') {
-                        activeCatSlug = createSafeSlug(paths[paths.length - 2]);
-                        breadcrumbCatName = beautifyCatName(activeCatSlug);
-                    }
-                }
+    /* =================================================================
+       5. GIAO DIỆN, HIỂN THỊ, VÀ XỬ LÝ ẢNH TRÊN ADMIN (Không sửa đổi)
+    ================================================================= */
+    function switchSideTab(type) { document.getElementById('side-tab-links').classList.remove('active'); document.getElementById('side-tab-media').classList.remove('active'); document.getElementById('list-links').classList.remove('active'); document.getElementById('list-media').classList.remove('active'); document.getElementById(`side-tab-${type}`).classList.add('active'); document.getElementById(`list-${type}`).classList.add('active'); }
+    function resetFormCalculations() { document.getElementById('p-id').value = Math.max(...currentData.products.map(x => x.id || 0), 0) + 1; document.getElementById('n-id').value = Math.max(...currentData.posts.map(x => x.id || 0), 0) + 1; document.getElementById('pj-id').value = Math.max(...currentData.projects.map(x => x.id || 0), 0) + 1; document.getElementById('c-id').value = Math.max(...currentData.categories.map(x => x.id || 0), 0) + 1; const catSelect = document.getElementById('c-existing'); if(catSelect) { catSelect.innerHTML = '<option value="">-- Tạo danh mục mới (Click Hủy Sửa) --</option>' + currentData.categories.map(c => { const prefix = c.type === 'news' ? '[Tin Tức]' : (c.type === 'prod' ? '[Sản Phẩm]' : '[Dự Án]'); return `<option value="${c.id}">${prefix} ${c.title}</option>`; }).join(''); } const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat)); const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title).concat(currentData.posts.map(x => x.cat)); populateCats('p-cats', prodCats); populateCats('n-cats', newsCats); ['p-slug', 'n-slug', 'pj-slug', 'c-slug'].forEach(id => { const el = document.getElementById(id); if(el) { el.disabled = false; const icon = document.querySelector(`#${id}-lock i`); if(icon) { icon.className = "fas fa-lock"; document.getElementById(`${id}-lock`).classList.remove('unlocked'); } } }); }
+    function populateCats(id, cats) { const list = document.getElementById(id); list.innerHTML = [...new Set(cats.filter(Boolean))].map(c => `<option value="${c}">`).join(''); }
+    function switchTab(type) { if(editMode.active && editMode.type !== type) { if(!confirm("Đang sửa mục khác. Chuyển tab sẽ mất dữ liệu. Chuyển?")) return; cancelEdit(); } document.querySelectorAll('.tab-btn:not(.btn-cancel-edit)').forEach(b => b.classList.remove('active')); document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active')); document.getElementById(`tab-${type}-btn`).classList.add('active'); document.getElementById(`section-${type}`).classList.add('active'); }
+    function checkLength(input, countId, max) { const len = input.value.length; const countDiv = document.getElementById(countId); countDiv.innerText = `${len}/${max}`; countDiv.className = 'char-count ' + (len > max ? 'error' : ''); }
+    function triggerEdit(id, type) { let item; if (type === 'prod') item = currentData.products.find(p => p.id === id); else if (type === 'news') item = currentData.posts.find(p => p.id === id); else if (type === 'proj') item = currentData.projects.find(p => p.id === id); else if (type === 'cat') item = currentData.categories.find(p => p.id === id); if(!item) return; editMode = { active: true, type: type, id: id }; switchTab(type); document.getElementById('btn-cancel-edit').style.display = "block"; window.scrollTo({ top: 0, behavior: 'smooth' }); document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing')); const linkCard = document.getElementById(`link-item-${type}-${id}`); if(linkCard) linkCard.classList.add('editing'); if(type === 'prod') { document.getElementById('p-id').value = item.id; document.getElementById('p-type').value = item.type || "Bán"; document.getElementById('p-title').value = item.title || ""; document.getElementById('p-slug').value = item.slug || ""; document.getElementById('p-cat').value = item.cat || ""; document.getElementById('p-projectCode').value = item.projectCode || ""; document.getElementById('p-loc').value = item.loc || ""; document.getElementById('p-price').value = item.price || ""; document.getElementById('p-area').value = item.area || ""; document.getElementById('p-dir').value = item.dir || ""; document.getElementById('p-floor').value = item.floor || ""; document.getElementById('p-bed').value = item.bed || ""; document.getElementById('p-wc').value = item.wc || ""; document.getElementById('p-front').value = item.front || ""; document.getElementById('p-legal').value = item.legal || ""; document.getElementById('p-map').value = item.map || ""; CKEDITOR.instances['p-content'].setData(item.content || ""); document.getElementById('p-seo-title').value = item.seoTitle || ""; document.getElementById('p-seo-desc').value = item.seoDesc || ""; document.getElementById('p-seo-key').value = item.seoKeywords || ""; uploadedFiles.main = item.img || ""; uploadedFiles.gallery = item.gallery || []; document.getElementById('p-main-preview').innerHTML = item.img ? `<img src="${item.img}" class="preview-item">` : ''; document.getElementById('p-gallery-preview').innerHTML = (item.gallery || []).map(url => `<img src="${url}" class="preview-item">`).join(''); const btn = document.getElementById('btn-submit-prod'); btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode'); checkLength(document.getElementById('p-title'), 'p-title-count', 65); checkLength(document.getElementById('p-seo-desc'), 'p-desc-count', 155); document.getElementById('p-slug').disabled = true; document.querySelector('#p-slug-lock i').className = "fas fa-lock"; } else if (type === 'news') { document.getElementById('n-id').value = item.id; document.getElementById('n-date').value = item.date || new Date().toLocaleDateString('vi-VN'); document.getElementById('n-title').value = item.title || ""; document.getElementById('n-slug').value = item.slug || ""; document.getElementById('n-cat').value = item.cat || ""; document.getElementById('n-author').value = item.author || "Chuyên gia Greenia"; CKEDITOR.instances['n-content'].setData(item.content || ""); document.getElementById('n-seo-title').value = item.seoTitle || ""; document.getElementById('n-seo-desc').value = item.seoDesc || ""; document.getElementById('n-seo-key').value = item.seoKeywords || ""; uploadedFiles.newsThumb = item.thumb || ""; document.getElementById('n-thumb-preview').innerHTML = item.thumb ? `<img src="${item.thumb}" class="preview-item">` : ''; const btn = document.getElementById('btn-submit-news'); btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode'); checkLength(document.getElementById('n-title'), 'n-title-count', 65); checkLength(document.getElementById('n-seo-desc'), 'n-desc-count', 155); document.getElementById('n-slug').disabled = true; document.querySelector('#n-slug-lock i').className = "fas fa-lock"; } else if (type === 'proj') { document.getElementById('pj-id').value = item.id; document.getElementById('pj-status').value = item.status || "Đang mở bán"; document.getElementById('pj-title').value = item.title || ""; document.getElementById('pj-slug').value = item.slug || ""; document.getElementById('pj-loc').value = item.loc || ""; document.getElementById('pj-price').value = item.price || ""; document.getElementById('pj-seo-title').value = item.seoTitle || ""; document.getElementById('pj-seo-desc').value = item.seoDesc || ""; document.getElementById('pj-seo-key').value = item.seoKeywords || ""; uploadedFiles.projMain = item.img || ""; document.getElementById('pj-main-preview').innerHTML = item.img ? `<img src="${item.img}" class="preview-item">` : ''; const btn = document.getElementById('btn-submit-proj'); btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode'); checkLength(document.getElementById('pj-title'), 'pj-title-count', 65); checkLength(document.getElementById('pj-seo-desc'), 'pj-desc-count', 155); document.getElementById('pj-slug').disabled = true; document.querySelector('#pj-slug-lock i').className = "fas fa-lock"; } else if (type === 'cat') { document.getElementById('c-existing').value = item.id; document.getElementById('c-id').value = item.id; document.getElementById('c-type').value = item.type || "news"; document.getElementById('c-title').value = item.title || ""; document.getElementById('c-slug').value = item.slug || ""; document.getElementById('c-desc').value = item.desc || ""; document.getElementById('c-seo-title').value = item.seoTitle || ""; document.getElementById('c-seo-desc').value = item.seoDesc || ""; document.getElementById('c-seo-key').value = item.seoKeywords || ""; const btn = document.getElementById('btn-submit-cat'); btn.innerHTML = '<i class="fas fa-save"></i> LƯU CẬP NHẬT'; btn.classList.add('update-mode'); document.getElementById('btn-delete-cat').style.display = "block"; checkLength(document.getElementById('c-title'), 'c-title-count', 60); checkLength(document.getElementById('c-seo-desc'), 'c-desc-count', 155); document.getElementById('c-slug').disabled = true; document.querySelector('#c-slug-lock i').className = "fas fa-lock"; } }
+    function cancelEdit() { editMode = { active: false, type: null, id: null }; document.getElementById('btn-cancel-edit').style.display = "none"; document.getElementById('btn-delete-cat').style.display = "none"; document.querySelectorAll('input[type="text"], input[type="number"], textarea:not(#p-content):not(#n-content)').forEach(el => el.value = ''); document.getElementById('c-existing').value = ""; CKEDITOR.instances['p-content'].setData(""); CKEDITOR.instances['n-content'].setData(""); document.querySelectorAll('.preview-grid').forEach(el => el.innerHTML = ''); uploadedFiles = { main: "", gallery: [], newsThumb: "", projMain: "" }; resetFormCalculations(); document.getElementById('btn-submit-prod').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN SẢN PHẨM'; document.getElementById('btn-submit-prod').classList.remove('update-mode'); document.getElementById('btn-submit-news').innerHTML = '<i class="fas fa-rocket"></i> XUẤT BẢN TIN TỨC'; document.getElementById('btn-submit-news').classList.remove('update-mode'); document.getElementById('btn-submit-proj').innerHTML = '<i class="fas fa-save"></i> LƯU THÔNG TIN DỰ ÁN'; document.getElementById('btn-submit-proj').classList.remove('update-mode'); document.getElementById('btn-submit-cat').innerHTML = '<i class="fas fa-save"></i> LƯU DANH MỤC'; document.getElementById('btn-submit-cat').classList.remove('update-mode'); document.querySelectorAll('.link-item').forEach(el => el.classList.remove('editing')); }
+    async function deleteItem(id, type) { if (currentUserRole !== 'admin') { alert("⛔ BẠN KHÔNG CÓ QUYỀN XÓA NỘI DUNG NÀY!\nVui lòng liên hệ Quản trị viên."); return; } if(!confirm(`⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA VĨNH VIỄN KHỎI DATABASE?`)) return; const collectionMap = { 'prod': 'products', 'news': 'posts', 'proj': 'projects', 'cat': 'categories' }; const colName = collectionMap[type]; try { await db.collection(colName).doc(String(id)).delete(); let arrName = collectionMap[type] === 'posts' ? 'posts' : colName; currentData[arrName] = currentData[arrName].filter(item => item.id !== id); if(editMode.id === id) cancelEdit(); buildLinkLibrary(); alert("Đã xóa dữ liệu thành công!"); } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); } }
+    function buildLinkLibrary() { const container = document.getElementById('list-links'); let html = ''; const allItems = [ ...currentData.categories.map(c => ({...c, folder: c.type === 'news' ? 'tin-tuc' : (c.type === 'prod' ? 'san-pham' : 'du-an'), label: 'DM ' + (c.type==='news'?'Tin tức':(c.type==='prod'?'Sản phẩm':'Dự án')), typeKey: 'cat'})), ...currentData.posts.map(p => ({...p, folder: 'tin-tuc', label: 'Tin tức', typeKey: 'news'})), ...currentData.products.map(p => ({...p, folder: 'san-pham', label: 'Sản phẩm', typeKey: 'prod'})), ...currentData.projects.map(p => ({...p, folder: 'du-an', label: 'Dự án', typeKey: 'proj'})) ].sort((a,b) => b.id - a.id); allItems.forEach(item => { let fullUrl; if (item.typeKey === 'proj') fullUrl = item.link || `${GITHUB_PAGES_DOMAIN}/du-an/${item.slug}/`; else if (item.typeKey === 'cat') fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${item.slug}/`; else { const itemSlug = item.slug || slugify(item.title); const catSlug = item.cat ? slugify(item.cat) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc'); fullUrl = `${GITHUB_PAGES_DOMAIN}/${item.folder}/${catSlug}/${itemSlug}/`; } const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;"); const isCatClass = item.typeKey === 'cat' ? 'is-category' : ''; html += `<div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(item.cat || item.label || '').toLowerCase()}"><div><span class="link-cat ${isCatClass}">${item.label} | ${item.cat || item.status || 'Mục SEO'}</span></div><a href="${fullUrl}" target="_blank" class="link-tit">${item.title}</a><div class="btn-group"><button class="btn-action" onclick="copyToClip('${fullUrl}')"><i class="fas fa-link"></i></button><button class="btn-action html-btn" onclick="copyEmbedCode('${fullUrl}', '${safeTitle}')"><i class="fas fa-code"></i></button><button class="btn-action edit-btn" onclick="triggerEdit(${item.id}, '${item.typeKey}')"><i class="fas fa-edit"></i></button><button class="btn-action del-btn" onclick="deleteItem(${item.id}, '${item.typeKey}')"><i class="fas fa-trash"></i></button></div></div>`; }); container.innerHTML = html || "<div style='text-align:center;color:#666;'>Trống.</div>"; }
+    function filterLinks() { const kw = document.getElementById('link-search').value.toLowerCase(); let targetList = document.getElementById('side-tab-links').classList.contains('active') ? '.link-item' : '.media-item'; document.querySelectorAll(targetList).forEach(el => { if(targetList === '.link-item') { if(el.getAttribute('data-title').includes(kw) || el.getAttribute('data-cat').includes(kw)) el.style.display = "flex"; else el.style.display = "none"; } else { if(el.innerText.toLowerCase().includes(kw)) el.style.display = "flex"; else el.style.display = "none"; } }); }
+    function copyToClip(text) { navigator.clipboard.writeText(text); alert("Đã Copy URL:\n" + text); }
+    function copyEmbedCode(url, title) { const code = `<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a href="${url}" class="gr-related-link" target="_blank">${title}</a></div>`; navigator.clipboard.writeText(code); alert("Đã copy MÃ GỢI Ý BÀI VIẾT LIÊN QUAN!\n\nDán vào chế độ NGUỒN của Nội dung chi tiết."); }
+    function slugify(text) { return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-'); }
+    function handleTitleInput(titleInput, slugInputId) { const slugInput = document.getElementById(slugInputId); if (!editMode.active || !slugInput.disabled) { slugInput.value = slugify(titleInput.value); } }
+    function toggleSlugLock(slugInputId) { const input = document.getElementById(slugInputId); const icon = document.querySelector(`#${slugInputId}-lock i`); if(input.disabled) { if(confirm("CẢNH BÁO: Đổi Slug có thể gây lỗi 404. Chắc chắn mở khóa?")) { input.disabled = false; icon.className = "fas fa-unlock"; document.getElementById(`${slugInputId}-lock`).classList.add('unlocked'); } } else { input.disabled = true; icon.className = "fas fa-lock"; document.getElementById(`${slugInputId}-lock`).classList.remove('unlocked'); } }
+    async function uploadToCloud(file) { let formData = new FormData(); formData.append("image", file); try { const res = await fetch(`https://api.imgbb.com/1/upload?key=${AUTO_IMGBB_KEY}`, { method: "POST", body: formData }); const data = await res.json(); if(data.success) { const directUrl = data.data.url; addToMediaLibrary(directUrl, file.name); return directUrl; } else { throw new Error(data.error.message); } } catch(e) { alert("Lỗi Cloud ImgBB!"); return null; } }
+    function addToMediaLibrary(url, name) { document.getElementById('media-placeholder').style.display = 'none'; const imgHtmlCode = `<img src="${url}" alt="${name}" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`; const item = document.createElement('div'); item.className = 'media-item'; item.innerHTML = `<img src="${url}" class="media-thumb-large"><div class="media-url">${name}</div><div class="btn-group"><button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-link"></i></button><button class="btn-action" onclick="copyDecodedHTML('${encodeURIComponent(imgHtmlCode)}')"><i class="fas fa-code"></i></button></div>`; document.getElementById('list-media').prepend(item); }
+    function copyDecodedHTML(encodedStr) { navigator.clipboard.writeText(decodeURIComponent(encodedStr)); alert("ĐÃ COPY MÃ HTML!"); }
+    async function handleSingleUpload(input, previewId, targetObj = 'main') { if(!input.files[0]) return; document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; const url = await uploadToCloud(input.files[0]); if(url) { uploadedFiles[targetObj] = url; document.getElementById(previewId).innerHTML = `<img src="${url}" class="preview-item">`; } else { document.getElementById(previewId).innerHTML = ''; } }
+    async function handleMultiUpload(input, previewId) { document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; uploadedFiles.gallery = []; for(let file of input.files) { const url = await uploadToCloud(file); if(url) uploadedFiles.gallery.push(url); } document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join(''); }
 
-                // TÍNH TOÁN KHỐI XEM THÊM (CHỐNG LỖI HIỂN THỊ 0)
-                let readmoreCatHTML = '';
-                if (activeCatSlug !== '') {
-                    if (allCategories && allCategories.length > 0) {
-                        const matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatSlug);
-                        if (matchedCat) breadcrumbCatName = matchedCat.name || breadcrumbCatName;
-                    }
-                    
-                    let currentProdSlug = prod.slug || createSafeSlug(prod.title);
-                    let relatedCount = allProducts.filter(p => {
-                        let loopProdSlug = p.slug || createSafeSlug(p.title);
-                        return isCatMatch(p, activeCatSlug) && loopProdSlug !== currentProdSlug;
-                    }).length;
-                    
-                    if (relatedCount > 0) {
-                        readmoreCatHTML = `
-                        <div class="v261-readmore-cat">
-                            <span>Xem thêm sản phẩm cùng danh mục: </span>
-                            <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName} <span class="cat-count">(${relatedCount})</span></a>
-                        </div>`;
-                    }
-                }
+    /* =================================================================
+       6. HÀM KÉO FILE TEMPLATE HTML TỪ GITHUB (TỐI ƯU HÓA)
+    ================================================================= */
+    async function getTemplateFile(fileName) {
+        try {
+            const url = `/${CONFIG.repo}/${fileName}?t=${Date.now()}`;
+            const response = await fetch(url, { cache: "no-store" });
+            if (!response.ok) throw new Error("Lỗi HTTP: " + response.status);
+            return await response.text();
+        } catch (error) {
+            console.error(`Không thể tải khuôn mẫu ${fileName}:`, error);
+            alert(`LỖI: Không tìm thấy file khuôn mẫu '${fileName}' trên web của bác! \nVui lòng đảm bảo file này đang tồn tại trên GitHub.`);
+            return null;
+        }
+    }
 
-                // 3. DANH MỤC Ở CỘT PHẢI
-                let countBan = 0, countThue = 0;
-                
-                let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
-                let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
-                if (prod) {
-                    if (prodIdForTracking && !viewedHistory.ids.includes(prodIdForTracking)) {
-                        viewedHistory.ids.unshift(prodIdForTracking);
-                        if (viewedHistory.ids.length > 30) viewedHistory.ids.pop();
-                    }
-                    let prodCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
-                    prodCats.forEach(c => {
-                        let cleanSlug = createSafeSlug(c);
-                        if (cleanSlug && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
-                            viewedHistory.cats = viewedHistory.cats.filter(existing => existing !== cleanSlug);
-                            viewedHistory.cats.unshift(cleanSlug);
-                        }
-                    });
-                    if (viewedHistory.cats.length > 5) viewedHistory.cats = viewedHistory.cats.slice(0, 5);
-                    localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
-                }
-
-                let rightSidebarCatHTML = `<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
-                
-                allProducts.forEach(p => {
-                    if(p.type === 'Bán') countBan++;
-                    else if(p.type === 'Thuê') countThue++;
-                });
-
-                if(countBan > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
-                if(countThue > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
-                
-                if (allCategories && allCategories.length > 0) {
-                    allCategories.forEach(c => {
-                        let catSlug = createSafeSlug(c.slug || c.name);
-                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
-                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
-                            if (count > 0 || c.showEmpty) {
-                                rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c.name || c.slug)}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${beautifyCatName(c.name || c.slug)}"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
-                            }
-                        }
-                    });
-                }
-
-                // 4. CAROUSEL GỢI Ý CÙNG CHUYÊN MỤC
-                let smartRecommended = [];
-                if (viewedHistory.cats.length > 0) {
-                    let matchedByCat = allProducts.filter(p => {
-                        let pSlug = p.slug || createSafeSlug(p.title);
-                        if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false; 
-                        let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
-                        return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
-                    });
-                    matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
-                    smartRecommended = matchedByCat.slice(0, 10);
-                }
-                
-                if (smartRecommended.length < 10) {
-                    let fallbackProds = allProducts.filter(p => {
-                        let pSlug = p.slug || createSafeSlug(p.title);
-                        if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false;
-                        return !smartRecommended.some(sp => (sp.slug || createSafeSlug(sp.title)) === pSlug);
-                    }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
-                    smartRecommended = [...smartRecommended, ...fallbackProds];
-                }
-
-                let relatedHTML = '';
-                if(smartRecommended.length > 0) {
-                    relatedHTML = `
-                    <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'related-scroll')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="related-scroll" class="gr-carousel">
-                            ${smartRecommended.map(p => renderCardHTML(p)).join('')}
-                        </div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'related-scroll')"><i class="fas fa-chevron-right"></i></button>
-                    </div>`;
-                }
-
-                // 5. MAP
-                let mapHTML = '<div style="padding:20px;text-align:center;color:#888;">Đang cập nhật vị trí.</div>';
-                if(prod.map) {
-                    if(prod.map.includes('<iframe')) mapHTML = prod.map;
-                    else mapHTML = `<iframe width="100%" height="450" frameborder="0" style="border:0" src="${prod.map}"></iframe>`;
-                }
-
-                const shareLink = encodeURIComponent(window.location.href);
-                const contentStr = prod.content ? String(prod.content) : '';
-
-                // ================= BƠM CAROUSEL MỚI NHẤT VÀ DỰ ÁN =================
-                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
-                let saleHTML = saleProds.length > 0 ? `
-                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem thêm BĐS Bán</a></div>
-                ` : '';
-
-                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
-                let rentHTML = rentProds.length > 0 ? `
-                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="rent-scroll-latest" class="gr-carousel">${rentProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem thêm BĐS Cho thuê</a></div>
-                ` : '';
-
-                let projHTML = '';
-                if (independentProjects && independentProjects.length > 0) {
-                    projHTML = `
-                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Dự án nổi bật</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'feat-scroll')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="feat-scroll" class="gr-carousel">
-                            ${independentProjects.slice(0, 10).map(p => {
-                                const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
-                                return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div>
-                                    <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
-                                </a>`;
-                            }).join('')}
-                        </div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
-                    </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
-                }
-
-                // ================= RÁP GIAO DIỆN =================
-                container.innerHTML = `
-                    <div class="luc-sticky-wrapper" id="luc-filter-bar">
-                        <div class="luc-nav-bar">
-                            <div class="luc-nav-left-group" id="luc-tabs-container">
-                                <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
-                                <a href="${safeBaseUrl}san-pham.html" class="luc-nav-item" id="tab-all">Tất cả</a>
-                                <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
-                                <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
-                                <div class="luc-nav-group" id="luc-cat-dropdown-group">
-                                    <div class="luc-nav-item luc-dd-trigger"><span id="luc-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
-                                    <div class="luc-dropdown">
-                                        <div class="luc-drop-scroll" style="max-height:400px; overflow-y:auto;" id="dyn-cat-list">${ddListHTML}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="luc-nav-right-group">
-                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="return false;">
-                                    <input type="text" id="luc-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
-                                    <button type="submit" id="luc-search-btn"><i class="fas fa-search"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="gr-breadcrumbs" style="padding: 0 15px;">
-                        <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
-                        <span class="current">${prod.title}</span>
-                    </div>
-
-                    <div class="luc-notification-area"><div id="luc-search-status" class="luc-status-bar" style="display:none;"></div></div>
-                    <div id="luc-grid-anchor"></div>
-
-                    <div id="luc-intro-section" class="v261-intro">
-                        <div class="v261-c1">
-                            <div class="v261-gallery-container">
-                                <div class="v261-gal-main-wrapper">
-                                    <div class="v261-gal-main" id="gal-main">
-                                        ${mediaList.map((item, k) => `
-                                            <div class="v261-gal-item" data-index="${k}">
-                                                ${item.type === 'video' ? 
-                                                    `<div class="v261-vid-wrap" onclick="v261OpenLB(${k})"><i class="fas fa-play-circle v261-play-icon"></i><div class="v261-vid-overlay"></div><img src="${item.thumb}" class="v261-vid-thumb"></div>` : 
-                                                    `<img src="${item.url}" onclick="v261OpenLB(${k})">`
-                                                }
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                    <button class="v261-nav p" onclick="v261Slide(-1)"><i class="fas fa-chevron-left"></i></button>
-                                    <button class="v261-nav n" onclick="v261Slide(1)"><i class="fas fa-chevron-right"></i></button>
-                                </div>
-                                <div class="v261-gal-thumbs" id="gal-thumbs">
-                                    ${mediaList.map((item, k) => `
-                                        <div class="v261-thumb-item ${k === 0 ? 'active' : ''}" onclick="v261GoTo(${k})">
-                                            ${item.type === 'video' ? `<i class="fas fa-video v261-th-icon"></i><img src="${item.thumb}">` : `<img src="${item.url}">`}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-
-                            <div class="v261-info-box">
-                                <h1 class="v261-tit">${prod.title}</h1>
-                                ${prod.loc ? `<div class="v261-addr"><i class="fas fa-map-marker-alt"></i> ${prod.loc}</div>` : ''}
-                                <div class="v261-meta-line">
-                                    <span class="v261-price">${prod.price || 'Liên hệ'}</span>
-                                    ${prod.area ? `<span class="v261-meta-item"><i class="fas fa-expand"></i> ${prod.area} m²</span>` : ''}
-                                    ${prod.bed ? `<span class="v261-meta-item"><i class="fas fa-bed"></i> ${prod.bed} PN</span>` : ''}
-                                    <div class="v261-share-group">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=${shareLink}" target="_blank" class="v261-s-btn fb"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="v261-s-btn zalo"><img src="${zalo_img}" referrerpolicy="no-referrer"></a>
-                                    </div>
-                                </div>
-                                
-                                <div class="v261-specs">
-                                    <div class="r"><span class="l">Mức giá:</span><span class="v">${prod.price || 'Liên hệ'}</span></div>
-                                    <div class="r"><span class="l">Diện tích:</span><span class="v">${prod.area || '--'} m²</span></div>
-                                    <div class="r"><span class="l">Hướng nhà:</span><span class="v">${prod.dir || '--'}</span></div>
-                                    <div class="r"><span class="l">Số tầng:</span><span class="v">${prod.floor || '--'}</span></div>
-                                    <div class="r"><span class="l">Phòng ngủ:</span><span class="v">${prod.bed || '--'} PN</span></div>
-                                    <div class="r"><span class="l">WC:</span><span class="v">${prod.wc || '--'}</span></div>
-                                    <div class="r"><span class="l">Mặt tiền:</span><span class="v">${prod.front || '--'} m</span></div>
-                                    <div class="r"><span class="l">Pháp lý:</span><span class="v">${prod.legal || '--'}</span></div>
-                                </div>
-
-                                <div class="v261-tabs">
-                                    <div class="v261-thd">
-                                        <div class="v261-tb active" onclick="v261Tab('desc',this)">Thông tin chi tiết</div>
-                                        <div class="v261-tb" onclick="v261Tab('map',this)">Vị trí</div>
-                                    </div>
-                                    <div class="v261-tbd">
-                                        <div id="v261-desc" class="v261-pane active">
-                                            <div class="v261-desc-content">
-                                                ${contentStr ? contentStr.replace(/\n/g, '<br>') : 'Đang cập nhật mô tả.'}
-                                            </div>
-                                            ${readmoreCatHTML}
-                                        </div>
-                                        <div id="v261-map" class="v261-pane"><div class="v261-map-box">${mapHTML}</div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="v261-c2">
-                            <div class="v261-box">
-                                <a href="${safeBaseUrl}"><img src="${u_logo}" class="v261-logo" onerror="this.style.display='none'"></a>
-                                <h4>Tư vấn mua nhà chuyên sâu</h4>
-                                <ul><li>Phân tích quỹ căn, chính sách, tiện ích giúp Khách hàng lựa chọn căn tốt nhất.</li><li>Giải đáp mọi thắc mắc của khách hàng.</li><li>Tuyệt đối bảo mật thông tin cá nhân.</li></ul>
-                                <div class="v261-btns">
-                                    <a href="tel:0932966700" class="v261-btn gr"><img src="${phone_img}"> 0932 966 700</a>
-                                    <a href="https://zalo.me/0932966700" target="_blank" class="v261-btn bl"><img src="${zalo_img}" referrerpolicy="no-referrer"> Chat Zalo</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="v261-c3">
-                            <div class="v261-cat">
-                                <div class="h">DANH MỤC SẢN PHẨM</div>
-                                <div class="l">${rightSidebarCatHTML}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="luc-grid-main-container" style="display:none;">
-                        <div class="luc-grid-wrapper"><div class="luc-loader"><i class="fas fa-circle-notch fa-spin"></i></div><div class="luc-grid s2-grid" id="luc-grid-result"></div></div>
-                        <div class="luc-load-wrap"><button id="luc-load-more-btn" class="luc-load-btn">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>
-                    </div>
-
-                    <div class="luc-clearfix"></div><div class="luc-spacer"></div>
-
-                    ${relatedHTML}
-                    ${saleHTML}
-                    ${rentHTML}
-                    ${projHTML}
-                `;
-
-                // KÍCH HOẠT GALLERY LOGIC JS
-                setTimeout(initGallery, 300);
-                
-                // GÁN SỰ KIỆN TÌM KIẾM
-                const searchForm = document.getElementById('luc-search-form');
-                if(searchForm) {
-                    searchForm.addEventListener('submit', function(e) {
-                        e.preventDefault(); 
-                        const val = document.getElementById('luc-keyword').value.trim();
-                        if(val !== '') { 
-                            filterState.keyword = val;
-                            document.getElementById('luc-intro-section').style.display = 'none';
-                            document.querySelector('.gr-breadcrumbs').style.display = 'none';
-                            document.getElementById('luc-grid-main-container').style.display = 'block';
-                            runFilter(); 
-                            window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
-                        }
-                    });
-                }
-
-                document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
-                
-                const ddGroup = document.getElementById('luc-cat-dropdown-group');
-                if(ddGroup) {
-                    ddGroup.querySelector('.luc-dd-trigger').addEventListener('click', function(e) {
-                        e.preventDefault(); e.stopPropagation(); ddGroup.classList.toggle('active-drop');
-                    });
-                    document.addEventListener('click', e => { if(!ddGroup.contains(e.target)) ddGroup.classList.remove('active-drop'); });
-                }
-
-            } catch (e) {
-                console.error("Lỗi:", e);
-                document.getElementById('sp-container').innerHTML = "<div style='text-align:center; padding:50px; color:#ff4d4f;'>Hệ thống đang cập nhật dữ liệu. Vui lòng F5 lại trang.</div>";
-            }
-        });
-
-        // ================= HÀM LỌC DÙNG KHI KHÁCH TÌM KIẾM NGAY TRÊN TRANG CHI TIẾT =================
-        function runFilter(isLoadMore = false) {
-            if(!isLoadMore) currentPage = 1;
+    /* =================================================================
+       7. HÀM TẠO FILE GITHUB (ĐÃ FIX LỖI CACHE/SHA XUNG ĐỘT)
+    ================================================================= */
+    async function createGithubFile(path, contentStr, commitMessage) {
+        if (!TOKEN_GITHUB) { alert("CẢNH BÁO: Bác chưa điền mã TOKEN_GITHUB!"); return false; }
+        try {
+            let currentSha = null;
+            // API Get phải truyền tham số ?t để lấy SHA mới nhất chống Cache
+            const checkUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?t=${Date.now()}`;
+            const checkRes = await fetch(checkUrl, { headers: { "Authorization": `token ${TOKEN_GITHUB}` } });
             
-            filteredData = allProducts.filter(p => {
-                if(filterState.keyword !== '') {
-                    const kw = filterState.keyword.toLowerCase();
-                    return (p.title && String(p.title).toLowerCase().includes(kw)) || 
-                           (p.loc && String(p.loc).toLowerCase().includes(kw)) || 
-                           (p.cat && String(p.cat).toLowerCase().includes(kw));
-                }
-                return true;
+            if (checkRes.status === 401) { alert("MÃ TOKEN GITHUB BỊ LỖI HOẶC BỊ KHÓA!\nVui lòng vào GitHub tạo lại Token mới!"); return false; }
+            if (checkRes.ok) { const checkData = await checkRes.json(); currentSha = checkData.sha; }
+
+            const bodyData = { message: commitMessage, content: btoa(unescape(encodeURIComponent(contentStr))) };
+            if (currentSha) bodyData.sha = currentSha;
+
+            // API Put KHÔNG được chứa tham số ?t (Nếu không sẽ bị lỗi Invalid Request)
+            const putUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}`;
+            const res = await fetch(putUrl, {
+                method: "PUT", headers: { "Authorization": `token ${TOKEN_GITHUB}`, "Content-Type": "application/json" }, body: JSON.stringify(bodyData)
             });
-
-            const statusDiv = document.getElementById('luc-search-status');
-            if(filterState.keyword !== '') {
-                statusDiv.style.display = 'flex';
-                statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearLucSearch()'>Xóa</span>`;
-            } else { statusDiv.style.display = 'none'; }
-
-            const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
-            const grid = document.getElementById('luc-grid-result');
             
-            if(paginatedData.length > 0) {
-                grid.innerHTML = paginatedData.map(p => renderCardHTML(p)).join('');
-            } else {
-                grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
-            }
+            if(res.ok) return true;
+            else { const errData = await res.json(); alert(`Lỗi lưu file GitHub: ${errData.message}`); return false; }
+        } catch (e) { console.error(e); alert("Lỗi mạng khi ghi file Github."); return false; }
+    }
 
-            const loadBtnWrap = document.querySelector('.luc-load-wrap');
-            if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
-            else { loadBtnWrap.style.display = 'block'; document.getElementById('luc-load-more-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
-        }
+    /* =================================================================
+       8. CÁC HÀM BƠM DỮ LIỆU VÀO TEMPLATE HTML
+    ================================================================= */
+    async function autoCreateCategoryFolder(catData) {
+        let folderName = '';
+        if (catData.type === 'prod') folderName = 'san-pham';
+        else if (catData.type === 'news') folderName = 'tin-tuc';
+        else if (catData.type === 'proj') folderName = 'du-an';
+        else return false;
+
+        const path = `${folderName}/${catData.slug}/index.html`;
+        let templateHtml = await getTemplateFile('danh-muc-sp.html');
+        if (!templateHtml) return false;
+
+        let finalHtml = templateHtml
+            .replace(/\{\{TITLE\}\}/g, () => catData.seoTitle || catData.title)
+            .replace(/\{\{DESC\}\}/g, () => catData.seoDesc || catData.desc || '')
+            .replace(/\{\{KEYWORDS\}\}/g, () => catData.seoKeywords || `${catData.title}, greenia homes`)
+            .replace(/\{\{FOLDER\}\}/g, () => folderName)
+            .replace(/\{\{SLUG\}\}/g, () => catData.slug);
+
+        return await createGithubFile(path, finalHtml, `Cập nhật danh mục: ${catData.title}`);
+    }
+
+    async function autoCreateProductFolder(prodData) {
+        let catSlug = prodData.cat ? slugify(prodData.cat) : 'san-pham';
+        const path = `san-pham/${catSlug}/${prodData.slug}/index.html`;
+        let templateHtml = await getTemplateFile('chi-tiet-sp.html');
+        if (!templateHtml) return false;
+
+        let finalHtml = templateHtml
+            .replace(/\{\{TITLE\}\}/g, () => prodData.seoTitle || prodData.title)
+            .replace(/\{\{TITLE_JSON\}\}/g, () => (prodData.title || "").replace(/"/g, '\\"'))
+            .replace(/\{\{DESC\}\}/g, () => prodData.seoDesc || '')
+            .replace(/\{\{KEYWORDS\}\}/g, () => prodData.seoKeywords || `${prodData.title}, greenia homes`)
+            .replace(/\{\{CAT_SLUG\}\}/g, () => catSlug)
+            .replace(/\{\{SLUG\}\}/g, () => prodData.slug)
+            .replace(/\{\{ID\}\}/g, () => prodData.id)
+            .replace(/\{\{TYPE\}\}/g, () => prodData.type || 'Bán')
+            .replace(/\{\{CAT\}\}/g, () => prodData.cat || '')
+            .replace(/\{\{LOC\}\}/g, () => prodData.loc ? prodData.loc.replace(/"/g, '\\"') : '')
+            .replace(/\{\{PRICE\}\}/g, () => prodData.price || '')
+            .replace(/\{\{AREA\}\}/g, () => prodData.area || '')
+            .replace(/\{\{DIR\}\}/g, () => prodData.dir || '')
+            .replace(/\{\{FLOOR\}\}/g, () => prodData.floor || '')
+            .replace(/\{\{BED\}\}/g, () => prodData.bed || '')
+            .replace(/\{\{WC\}\}/g, () => prodData.wc || '')
+            .replace(/\{\{FRONT\}\}/g, () => prodData.front || '')
+            .replace(/\{\{LEGAL\}\}/g, () => prodData.legal || '')
+            .replace(/\{\{IMG\}\}/g, () => prodData.img || '')
+            .replace(/\{\{GALLERY_JSON\}\}/g, () => JSON.stringify(prodData.gallery || []))
+            .replace(/\{\{VIDEO\}\}/g, () => prodData.video || '')
+            .replace(/\{\{MAP_JSON\}\}/g, () => prodData.map ? prodData.map.replace(/"/g, '\\"').replace(/\n/g, '') : '')
+            .replace(/\{\{CONTENT_JSON\}\}/g, () => prodData.content ? prodData.content.replace(/\\/g, '\\\\').replace(/\`/g, '\\`').replace(/\$/g, '\\$') : '');
+
+        return await createGithubFile(path, finalHtml, `Đăng/Sửa SP: ${prodData.title}`);
+    }
+
+    async function autoCreateNewsFolder(newsData) {
+        let catSlug = newsData.cat ? slugify(newsData.cat) : 'tin-tuc';
+        const path = `tin-tuc/${catSlug}/${newsData.slug}/index.html`;
+        let templateHtml = await getTemplateFile('chi-tiet-tt.html'); // Nếu bác có file này, không thì thay tên
+        if (!templateHtml) return false;
+
+        let finalHtml = templateHtml
+            .replace(/\{\{TITLE\}\}/g, () => newsData.seoTitle || newsData.title)
+            .replace(/\{\{TITLE_JSON\}\}/g, () => (newsData.title || "").replace(/"/g, '\\"'))
+            .replace(/\{\{DESC\}\}/g, () => newsData.seoDesc || '')
+            .replace(/\{\{KEYWORDS\}\}/g, () => newsData.seoKeywords || `${newsData.title}, greenia homes`)
+            .replace(/\{\{CAT_SLUG\}\}/g, () => catSlug)
+            .replace(/\{\{SLUG\}\}/g, () => newsData.slug)
+            .replace(/\{\{CAT\}\}/g, () => newsData.cat || '')
+            .replace(/\{\{DATE\}\}/g, () => newsData.date || '')
+            .replace(/\{\{AUTHOR\}\}/g, () => newsData.author || '')
+            .replace(/\{\{CONTENT_JSON\}\}/g, () => newsData.content ? newsData.content.replace(/\\/g, '\\\\').replace(/\`/g, '\\`').replace(/\$/g, '\\$') : '');
+
+        return await createGithubFile(path, finalHtml, `Đăng tin: ${newsData.title}`);
+    }
+
+    async function autoCreateProjectFolder(projData) {
+        const path = `du-an/${projData.slug}/index.html`;
+        let templateHtml = await getTemplateFile('chi-tiet-da.html'); // Nếu bác có file chi-tiet-da.html
+        if (!templateHtml) return false;
+
+        let finalHtml = templateHtml
+            .replace(/\{\{TITLE\}\}/g, () => projData.seoTitle || projData.title)
+            .replace(/\{\{TITLE_JSON\}\}/g, () => (projData.title || "").replace(/"/g, '\\"'))
+            .replace(/\{\{DESC\}\}/g, () => projData.seoDesc || '')
+            .replace(/\{\{KEYWORDS\}\}/g, () => projData.seoKeywords || `${projData.title}, greenia homes`)
+            .replace(/\{\{SLUG\}\}/g, () => projData.slug)
+            .replace(/\{\{STATUS\}\}/g, () => projData.status || '')
+            .replace(/\{\{LOC\}\}/g, () => projData.loc ? projData.loc.replace(/"/g, '\\"') : '')
+            .replace(/\{\{PRICE\}\}/g, () => projData.price || '')
+            .replace(/\{\{IMG\}\}/g, () => projData.img || '');
+
+        return await createGithubFile(path, finalHtml, `Đăng dự án: ${projData.title}`);
+    }
+
+    /* =================================================================
+       9. PUSHDATA TỔNG HỢP: LƯU FIREBASE VÀ ĐÚC GITHUB ĐỒNG BỘ
+    ================================================================= */
+    async function pushData(type) {
+        const collectionMap = { 'prod': 'products', 'news': 'posts', 'proj': 'projects', 'cat': 'categories' };
+        const colName = collectionMap[type];
         
-        window.clearLucSearch = function() { 
-            document.getElementById('luc-keyword').value = '';
-            filterState.keyword = '';
-            document.getElementById('luc-grid-main-container').style.display = 'none';
-            document.getElementById('luc-search-status').style.display = 'none';
-            document.getElementById('luc-intro-section').style.display = 'flex';
-            document.querySelector('.gr-breadcrumbs').style.display = 'flex';
+        let titleVal, slugVal, contentVal, rawDesc, autoDesc, newData;
+        const btn = document.getElementById(`btn-submit-${type}`);
+        const originalBtnText = btn.innerHTML;
+
+        if (type === 'prod') {
+            titleVal = document.getElementById('p-title').value; if(!titleVal) { alert("Tiêu đề Sản phẩm là bắt buộc!"); return; }
+            slugVal = document.getElementById('p-slug').value || slugify(titleVal); contentVal = CKEDITOR.instances['p-content'].getData(); rawDesc = document.getElementById('p-seo-desc').value; autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+            newData = { id: parseInt(document.getElementById('p-id').value) || Date.now(), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal, cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value, price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, dir: document.getElementById('p-dir').value || "", floor: document.getElementById('p-floor').value || "", bed: document.getElementById('p-bed').value || "", wc: document.getElementById('p-wc').value || "", front: document.getElementById('p-front').value || "", legal: document.getElementById('p-legal').value || "", map: document.getElementById('p-map').value || "", img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal, seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản` };
+        } else if (type === 'news') {
+            titleVal = document.getElementById('n-title').value; if(!titleVal) { alert("Tiêu đề Tin tức là bắt buộc!"); return; }
+            slugVal = document.getElementById('n-slug').value || slugify(titleVal); contentVal = CKEDITOR.instances['n-content'].getData(); rawDesc = document.getElementById('n-seo-desc').value; autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
+            newData = { id: parseInt(document.getElementById('n-id').value) || Date.now(), title: titleVal, slug: slugVal, cat: document.getElementById('n-cat').value, date: document.getElementById('n-date').value, author: document.getElementById('n-author').value, thumb: uploadedFiles.newsThumb, content: contentVal, seoTitle: document.getElementById('n-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('n-seo-key').value || `${document.getElementById('n-cat').value}, tin tức` };
+        } else if (type === 'proj') {
+            titleVal = document.getElementById('pj-title').value; if(!titleVal) { alert("Tên Dự án là bắt buộc!"); return; }
+            slugVal = document.getElementById('pj-slug').value || slugify(titleVal);
+            newData = { id: parseInt(document.getElementById('pj-id').value) || Date.now(), title: titleVal, slug: slugVal, status: document.getElementById('pj-status').value, loc: document.getElementById('pj-loc').value, price: document.getElementById('pj-price').value, img: uploadedFiles.projMain, link: `${GITHUB_PAGES_DOMAIN}/du-an/${slugVal}/`, seoTitle: document.getElementById('pj-seo-title').value || titleVal, seoDesc: document.getElementById('pj-seo-desc').value || `Dự án ${titleVal}`, seoKeywords: document.getElementById('pj-seo-key').value || `dự án ${titleVal}, bất động sản` };
+        } else if (type === 'cat') {
+            titleVal = document.getElementById('c-title').value; if(!titleVal) { alert("Tên Danh mục là bắt buộc!"); return; }
+            slugVal = document.getElementById('c-slug').value || slugify(titleVal); rawDesc = document.getElementById('c-seo-desc').value;
+            newData = { id: parseInt(document.getElementById('c-id').value) || Date.now(), type: document.getElementById('c-type').value, title: titleVal, slug: slugVal, desc: document.getElementById('c-desc').value, seoTitle: document.getElementById('c-seo-title').value || titleVal, seoDesc: rawDesc || document.getElementById('c-desc').value, seoKeywords: document.getElementById('c-seo-key').value || `${titleVal}, bất động sản` };
         }
 
-        // ================= GALLERY SCRIPT CHUẨN =================
-        function initGallery() {
-            const galMain = document.getElementById('gal-main');
-            if(!galMain) return;
+        try {
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ĐANG LƯU VÀO FIREBASE...'; btn.disabled = true;
+            await db.collection(colName).doc(String(newData.id)).set(newData);
+            
+            // Cập nhật Data nội bộ ngay để Danh mục lấy được sản phẩm vừa lưu
+            let targetArray = currentData[collectionMap[type] === 'posts' ? 'posts' : colName];
+            const idx = targetArray.findIndex(item => item.id === newData.id);
+            if (idx !== -1) targetArray[idx] = newData; else targetArray.push(newData);
 
-            galMain.addEventListener('scroll', function() {
-                if (!isScrolling) {
-                    window.requestAnimationFrame(function() {
-                        const w = galMain.clientWidth;
-                        const newIdx = Math.round(galMain.scrollLeft / w);
-                        if (newIdx !== currentIdx && newIdx >= 0 && newIdx < mediaList.length) {
-                            updateActiveThumb(newIdx);
-                        }
-                        isScrolling = false;
-                    });
-                    isScrolling = true;
+            btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG TẠO TRANG CHI TIẾT...';
+            let gitSuccess = false;
+            
+            if (type === 'cat') gitSuccess = await autoCreateCategoryFolder(newData);
+            else if (type === 'prod') {
+                gitSuccess = await autoCreateProductFolder(newData);
+                // ĐỒNG BỘ: Cập nhật lại trang Danh Mục chứa sản phẩm này
+                if(newData.cat && gitSuccess) {
+                    btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG CẬP NHẬT DANH MỤC...';
+                    let matchedCat = currentData.categories.find(c => c.title === newData.cat || c.slug === slugify(newData.cat));
+                    if (matchedCat) await autoCreateCategoryFolder(matchedCat);
                 }
-            });
-
-            startAutoPlay();
-            const galContainer = document.querySelector('.v261-gallery-container');
-            if(galContainer) {
-                galContainer.addEventListener('mouseenter', stopAutoPlay);
-                galContainer.addEventListener('mouseleave', startAutoPlay);
             }
-        }
+            else if (type === 'news') {
+                gitSuccess = await autoCreateNewsFolder(newData);
+                // ĐỒNG BỘ: Cập nhật lại trang Danh Mục chứa tin tức này
+                if(newData.cat && gitSuccess) {
+                    btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG CẬP NHẬT DANH MỤC...';
+                    let matchedCat = currentData.categories.find(c => c.title === newData.cat || c.slug === slugify(newData.cat));
+                    if (matchedCat) await autoCreateCategoryFolder(matchedCat);
+                }
+            }
+            else if (type === 'proj') gitSuccess = await autoCreateProjectFolder(newData);
 
-        function startAutoPlay() {
-            stopAutoPlay();
-            autoPlayInterval = setInterval(() => {
-                let nextIdx = currentIdx + 1;
-                if (nextIdx >= mediaList.length) nextIdx = 0;
-                v261GoTo(nextIdx); 
-            }, 4000); 
-        }
-
-        function stopAutoPlay() { if (autoPlayInterval) clearInterval(autoPlayInterval); }
-
-        window.v261Move = function(d) {
-            const galMain = document.getElementById('gal-main');
-            if(!galMain) return;
-            const w = galMain.clientWidth;
-            galMain.scrollBy({left: w * d, behavior:'smooth'});
-        };
-        
-        window.v261Slide = function(d) { v261Move(d); };
-
-        window.v261GoTo = function(i) {
-            const galMain = document.getElementById('gal-main');
-            if(!galMain) return;
-            const w = galMain.clientWidth;
-            galMain.scrollTo({left: w * i, behavior:'smooth'});
-        };
-
-        function updateActiveThumb(i) {
-            currentIdx = i;
-            const thumbsContainer = document.getElementById('gal-thumbs');
-            const thumbs = thumbsContainer.querySelectorAll('.v261-thumb-item');
-            if(!thumbs.length) return;
-
-            thumbs.forEach((el, idx) => {
-                if(idx === i) {
-                    el.classList.add('active');
-                    const leftPos = el.offsetLeft - (thumbsContainer.clientWidth / 2) + (el.clientWidth / 2);
-                    thumbsContainer.scrollTo({ left: leftPos, behavior: 'smooth' });
-                } else { el.classList.remove('active'); }
-            });
-        }
-
-        // ================= LIGHTBOX SCRIPT CHUẨN =================
-        window.v261OpenLB = function(i) {
-            const lb = document.getElementById('v261-lb');
-            currentIdx = i;
-            renderLBContent();
-            lb.style.display = 'flex';
-            setTimeout(() => { lb.style.opacity = '1'; }, 10);
-            document.addEventListener('keydown', lbKeyHandler);
-            stopAutoPlay();
-        };
-
-        window.v261CloseLB = function() {
-            const lb = document.getElementById('v261-lb');
-            const lbBody = document.getElementById('v261-lb-body');
-            lb.style.opacity = '0';
-            setTimeout(() => { lb.style.display = 'none'; lbBody.innerHTML = ''; }, 300);
-            document.removeEventListener('keydown', lbKeyHandler);
-            startAutoPlay();
-        };
-
-        window.v261LBSlide = function(d) {
-            currentIdx += d;
-            if(currentIdx < 0) currentIdx = mediaList.length - 1;
-            if(currentIdx >= mediaList.length) currentIdx = 0;
-            renderLBContent();
-        };
-
-        function lbKeyHandler(e) {
-            if(e.key === "Escape") v261CloseLB();
-            if(e.key === "ArrowLeft") v261LBSlide(-1);
-            if(e.key === "ArrowRight") v261LBSlide(1);
-        }
-
-        function renderLBContent() {
-            const lbBody = document.getElementById('v261-lb-body');
-            const lbCount = document.getElementById('v261-lb-counter');
-            const item = mediaList[currentIdx];
-            let html = '';
-            if(item.type === 'video') {
-                 if(item.url.indexOf('<iframe') !== -1) html = item.url;
-                 else html = '<video controls autoplay src="'+item.url+'"></video>';
-            } else { html = '<img src="'+item.url+'">'; }
-            lbBody.innerHTML = html;
-            lbCount.innerText = (currentIdx + 1) + ' / ' + mediaList.length;
-        }
-
-        // ================= TABS SCRIPT CHUẨN =================
-        window.v261Tab = function(k, b) {
-            document.querySelectorAll('.v261-tb').forEach(x=>x.classList.remove('active'));
-            b.classList.add('active');
-            document.querySelectorAll('.v261-pane').forEach(x=>x.classList.remove('active'));
-            document.getElementById('v261-'+k).classList.add('active');
-        };
-
-        // CAROUSEL VUỐT NGANG
-        window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.s2-card') || el.querySelector('.gr-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
-
-    </script>
+            if (gitSuccess) {
+                alert(`Xuất bản thành công! Đã đồng bộ Database và đúc trang GitHub.`);
+                cancelEdit(); buildLinkLibrary(); 
+            }
+        } catch(e) { alert("LỖI:\n" + e.message); }
+        btn.innerHTML = originalBtnText; btn.disabled = false;
+    }
+</script>
 </body>
 </html>
