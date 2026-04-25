@@ -37,7 +37,7 @@
             position: -webkit-sticky; 
             position: sticky; 
             top: 0px; 
-            z-index: 10 !important; /* ĐÃ SỬA: Hạ từ 100 xuống 10 để không đè Popup */
+            z-index: 10 !important; 
             background-color: #05080f; 
             padding: 5px 0; 
             margin-bottom: 0px; 
@@ -51,7 +51,6 @@
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
         .luc-nav-right-group { display: flex; align-items: center; }
         
-        /* LỚP CSS DIỆT GẠCH CHÂN CỦA CÁC TAB VÀ ĐIỀU CHỈNH PADDING/FONT SIZE */
         .luc-nav-item { cursor: pointer; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 20px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
         .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
         
@@ -260,7 +259,6 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-
         // Băm nhỏ API Key để vượt mặt hệ thống quét mã của GitHub
         const k1 = "AIzaSyDiO";
         const k2 = "EzM9rNAfj";
@@ -282,9 +280,9 @@
         }
         const db = firebase.firestore();
 
-        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG]
+        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG TỪ ADMIN]
         window.GREENIA_CURRENT_PRODUCT = {
-            id: {{ID}},
+            id: "{{ID}}",
             title: "{{TITLE_JSON}}",
             slug: "{{SLUG}}",
             type: "{{TYPE}}",
@@ -299,7 +297,7 @@
             front: "{{FRONT}}",
             legal: "{{LEGAL}}",
             img: "{{IMG}}",
-            gallery: {{GALLERY_JSON}},
+            gallery: '{{GALLERY_JSON}}' === '{{' + 'GALLERY_JSON}}' ? [] : {{GALLERY_JSON}},
             video: "{{VIDEO}}",
             map: "{{MAP_JSON}}",
             content: `{{CONTENT_JSON}}`
@@ -385,7 +383,7 @@
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
             // NẾU KHÔNG CÓ DỮ LIỆU ĐƯỢC BƠM VÀO THÌ CHUYỂN HƯỚNG VỀ TRANG DANH MỤC SẢN PHẨM
-            if (!prod || !prod.id) { 
+            if (!prod || prod.id === "{{ID}}" || prod.id === "") { 
                 window.location.replace(safeBaseUrl + 'san-pham.html'); 
                 return; 
             }
@@ -542,7 +540,7 @@
 
                 // 5. MAP
                 let mapHTML = '<div style="padding:20px;text-align:center;color:#888;">Đang cập nhật vị trí.</div>';
-                if(prod.map) {
+                if(prod.map && prod.map !== "{{MAP_JSON}}") {
                     if(prod.map.includes('<iframe')) mapHTML = prod.map;
                     else mapHTML = `<iframe width="100%" height="450" frameborder="0" style="border:0" src="${prod.map}"></iframe>`;
                 }
