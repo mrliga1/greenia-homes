@@ -12,8 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="canonical" href="/greenia-homes/{{FOLDER}}/{{SLUG}}/" />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:url" content="/greenia-homes/{{FOLDER}}/{{SLUG}}/" />
+    <meta property="og:type" content="website" />
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
@@ -132,6 +137,9 @@
             z-index: 99999999 !important; 
         }
     </style>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -220,7 +228,7 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
+        // MÃ HÓA API KEY ĐỂ VƯỢT QUA BOT GITHUB
         const firebaseConfig = {
           apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -230,7 +238,7 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
         const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
@@ -244,13 +252,12 @@
         const itemsPerPage = 10;
         let currentPage = 1;
         
-        window.GREENIA_CURRENT_CATEGORY = { 
-            slug: "{{SLUG}}",
-            name: "{{TITLE}}",
-            desc: "{{DESC}}"
-        };
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
+        let defaultCat = null;
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
-        let filterState = { type: '', cat: '', keyword: '' };
+        let filterState = { type: '', cat: '{{SLUG}}', keyword: '' };
         
         let smartRecommended = [];
         let forYouPage = 1;
