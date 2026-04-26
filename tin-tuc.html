@@ -10,7 +10,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
     <style>
         #gr-v53 { --bg: #05080f; --card: #0e121b; --border: #232d45; --gold: #c5a059; --text: #b0b8c4; --white: #fff; --red: #ff4d4f; --green: #00b894; font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; width: 100%; overflow: hidden; padding-bottom: 60px;}
@@ -86,7 +86,7 @@
         .gr-hl { color: var(--gold); font-weight: 700; font-size: 14px; }
 
         /* TAGS */
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 2px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
         .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
 
         .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
@@ -173,10 +173,10 @@
     </div>
 
     <div id="site-footer"></div>
-    <script src="assets/js/ui.js"></script>
+    <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
+        // MÃ HÓA API KEY ĐỂ VƯỢT QUA BOT GITHUB
         const firebaseConfig = {
           apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -189,7 +189,13 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // KHO KHAI BÁO BIẾN
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
+        let defaultCat = null;
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        window.GREENIA_CURRENT_CATEGORY = defaultCat;
+
         let allPosts = [];
         let allProducts = [];
         let postsInThisCat = []; 
@@ -198,8 +204,6 @@
         const postsPerPage = 10;
         let mixedPostsPool = [];
         let independentProjects = [];
-
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -267,7 +271,7 @@
             }
         }
 
-        // TẢI DỮ LIỆU TỪ FIREBASE KHI TRANG SẴN SÀNG
+        // TẢI DỮ LIỆU TỪ FIREBASE
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
@@ -280,19 +284,36 @@
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // TẠO TABS
-                const categories = ['Tất cả', ...new Set(allPosts.map(p => p.cat))].filter(Boolean);
-                const tabsHtml = categories.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${cat}', this)">${cat}</div>`).join('');
+                let currentCatName = "Tin Tức Bất Động Sản";
+                if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
+                    currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
+                    document.getElementById('dyn-cat-title').innerText = currentCatName;
+                    
+                    const descText = window.GREENIA_CURRENT_CATEGORY.desc !== '{{DESC}}' ? window.GREENIA_CURRENT_CATEGORY.desc : `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
+                    document.querySelector('.gr-cat-desc').innerText = descText;
+                } else {
+                    document.getElementById('dyn-cat-title').innerText = "Tin Tức Bất Động Sản";
+                    document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin mới nhất về thị trường, dự án và cẩm nang nhà ở.";
+                }
+
+                if (window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
+                    postsInThisCat = allPosts.filter(p => p.cat === currentCatName);
+                } else {
+                    postsInThisCat = [...allPosts];
+                }
+
+                const subCategories = []; 
+                const tabs = ['Tất cả', ...subCategories];
+
+                const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // KHỞI TẠO TOP GRID & 70/30
-                mixedPostsPool = [...allPosts];
+                mixedPostsPool = [...postsInThisCat];
                 switchTab('Tất cả', document.querySelector('.s1-tab'));
                 
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
-                // CAROUSEL BÊN DƯỚI
                 const forYouProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 10);
                 document.getElementById('foryou-grid').innerHTML = forYouProds.map(p => createProdCardHTML(p)).join('');
 
@@ -302,7 +323,6 @@
                 const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
                 document.getElementById('rent-scroll').innerHTML = rentProds.map(p => createProdCardHTML(p)).join('');
 
-                // CAROUSEL DỰ ÁN
                 if (independentProjects.length > 0) {
                     document.getElementById('feat-scroll').innerHTML = independentProjects.map(p => {
                         const imgSrc = window.resolveImg ? window.resolveImg(p.img) : p.img;
@@ -335,8 +355,15 @@
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
-            document.getElementById('dyn-cat-title').innerText = catName === 'Tất cả' ? 'Tin Tức Bất Động Sản' : catName;
-            currentTabPosts = catName === 'Tất cả' ? [...allPosts] : allPosts.filter(p => p.cat === catName);
+            
+            if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
+                 document.getElementById('dyn-cat-title').innerText = window.GREENIA_CURRENT_CATEGORY.name;
+                 currentTabPosts = [...postsInThisCat];
+            } else {
+                 document.getElementById('dyn-cat-title').innerText = catName === 'Tất cả' ? 'Tin Tức Bất Động Sản' : catName;
+                 currentTabPosts = catName === 'Tất cả' ? [...allPosts] : allPosts.filter(p => p.cat === catName);
+            }
+            
             if(currentTabPosts.length === 0) return;
             renderHero(currentTabPosts[0]);
             const hoverPosts = currentTabPosts.slice(1, 7);
