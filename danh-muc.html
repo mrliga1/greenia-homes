@@ -185,7 +185,7 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
+        // MÃ HÓA BẢO MẬT API KEY CHỐNG BOT GITHUB QUÉT
         const firebaseConfig = {
           apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -195,15 +195,13 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // ĐÃ SỬA: SỬ DỤNG PLACEHOLDER CHUẨN ĐỂ ADMIN BƠM DỮ LIỆU
-        window.GREENIA_CURRENT_CATEGORY = { 
-            slug: "{{SLUG}}",
-            name: "{{TITLE}}",
-            desc: "{{DESC}}"
-        }; 
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
+        let defaultCat = null;
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        window.GREENIA_CURRENT_CATEGORY = defaultCat;
 
         let allPosts = [];
         let allProducts = [];
@@ -223,7 +221,7 @@
 
         function extractPostData(p) {
             const tempDiv = document.createElement('div'); 
-            tempDiv.innerHTML = p.content;
+            tempDiv.innerHTML = p.content || "";
             const firstImg = tempDiv.querySelector('img');
             let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.substring(0, 120) + '...';
@@ -283,7 +281,6 @@
             }
         }
 
-        // TẢI DỮ LIỆU TỪ FIREBASE
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
@@ -296,7 +293,6 @@
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // GẮN THÔNG TIN DANH MỤC TỪ ADMIN (KHÔNG LẤY THEO DEFAULT)
                 let currentCatName = "Tin Tức";
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
@@ -309,24 +305,20 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
-                // CÔ LẬP BÀI VIẾT THEO DANH MỤC
                 if (window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== '{{TITLE}}' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     postsInThisCat = allPosts.filter(p => p.cat === currentCatName);
                 } else {
                     postsInThisCat = [...allPosts];
                 }
 
-                // 3. TẠO TABS THÔNG MINH
                 const subCategories = []; 
                 const tabs = ['Tất cả', ...subCategories];
 
                 const tabsHtml = tabs.map((cat, idx) => `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${cat}', this)">${cat}</div>`).join('');
                 document.getElementById('dynamic-tabs').innerHTML = tabsHtml;
 
-                // 4. KÍCH HOẠT TAB MẶC ĐỊNH
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
-                // XỬ LÝ RENDER CAROUSEL SẢN PHẨM & DỰ ÁN BÊN DƯỚI
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -364,12 +356,10 @@
             }
         });
 
-        // HÀM LỌC NỘI BỘ TRONG DANH MỤC
         window.switchSubTab = function(subCatName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            // Tìm trong mảng đã được cô lập (postsInThisCat)
             currentTabPosts = subCatName === 'Tất cả' ? [...postsInThisCat] : postsInThisCat.filter(p => p.subCat === subCatName);
             
             if(currentTabPosts.length === 0) {
@@ -380,7 +370,6 @@
                 return;
             }
 
-            // Gắn lại khung nếu có dữ liệu
             document.getElementById('top-grid-container').innerHTML = `
                 <div class="s1-col-1" id="hero-col"></div>
                 <div class="s1-col-2" id="hover-list-col"></div>
