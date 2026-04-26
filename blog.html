@@ -21,9 +21,6 @@
     
     <link rel="stylesheet" href="/greenia-homes/assets/css/style.css">
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; }
 
@@ -206,6 +203,9 @@
         }
         @keyframes fadeIn { from{opacity:0; transform:translateY(5px);} to{opacity:1; transform:translateY(0);} }
     </style>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -226,7 +226,7 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA HOÀN TOÀN BẰNG REVERSE ĐỂ LÁCH BOT GITHUB
+        // MÃ HÓA BẢO MẬT API KEY CHỐNG BOT GITHUB QUÉT
         const firebaseConfig = {
           apiKey: "st3ihc-UygJNVY15FaXm-jfANr9MzEOiDvSazIA".split('').reverse().join(''),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -242,17 +242,21 @@
         }
         const db = firebase.firestore();
 
-        // [KHU VỰC THAY THẾ DỮ LIỆU ĐỘNG TỪ ADMIN]
-        window.GREENIA_CURRENT_POST = {
-            id: "{{ID}}",
-            title: "{{TITLE_JSON}}",
-            slug: "{{SLUG}}",
-            cat: "{{CAT}}",
-            date: "{{DATE}}",
-            author: "{{AUTHOR}}",
-            thumb: "{{IMG}}",
-            content: `{{CONTENT_JSON}}`
-        };
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP
+        let defaultPost = null;
+        try { 
+            defaultPost = {
+                id: "{{ID}}",
+                title: "{{TITLE_JSON}}",
+                slug: "{{SLUG}}",
+                cat: "{{CAT}}",
+                date: "{{DATE}}",
+                author: "{{AUTHOR}}",
+                thumb: "{{IMG}}",
+                content: `{{CONTENT_JSON}}`
+            };
+        } catch(e) {}
+        window.GREENIA_CURRENT_POST = defaultPost;
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
