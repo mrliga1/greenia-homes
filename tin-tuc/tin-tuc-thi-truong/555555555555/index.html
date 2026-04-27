@@ -84,30 +84,6 @@
         .gr-cat-l a { display: flex; justify-content: space-between; padding: 10px 12px; color: #b0b8c4; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .gr-cat-l a:hover { color: var(--gold); background: rgba(197, 160, 89, 0.1); }
 
-        /* RỔ HÀNG & CAROUSEL */
-        .gr-ro-hang-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
-        .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s;}
-        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .s2-thumb-box { height: 160px; overflow: hidden; }
-        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-        .s2-body { padding: 12px; flex: 1; }
-        .s2-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-        .gr-carousel-wrapper { position: relative; }
-        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
-        .gr-carousel::-webkit-scrollbar { display: none; }
-        .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; text-decoration: none !important; }
-        .gr-nc-thumb { height: 160px; overflow: hidden; }
-        .gr-nc-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        .gr-nc-body { padding: 15px; }
-        .gr-nc-tit { font-size: 13px !important; font-weight: 600; color: #fff; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-        /* FORM CTA */
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; margin-bottom: 30px; }
-        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; outline: none; margin-bottom: 10px; }
-        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: 0.3s; }
-        .v15-ver-btn:hover { background: var(--gold); color: #000; }
-
         /* DANH SÁCH SẢN PHẨM Ở CỘT BÊN */
         .gr-prod-list { display: flex; flex-direction: column; gap: 0; }
         .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none !important; align-items: flex-start; }
@@ -120,13 +96,84 @@
         .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
         .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
         .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
-        .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
-        .gr-hl { color: var(--gold); font-weight: 700; }
+        .gr-hl { color: var(--gold); font-weight: 700; font-size: 12px; }
+
+        /* FORM CTA NHẬN BẢNG GIÁ */
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--gold); padding: 25px 15px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; margin-bottom: 30px; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .v15-ver-stars { font-size: 12px; letter-spacing: 1px; } .v15-ver-count { font-size: 11px; color: #aaa; font-weight: 400; }
+        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 15px; font-size: 12px; border-radius: 50px; outline: none; margin-bottom: 10px; }
+        .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .v15-ver-btn:hover { background: var(--gold); color: #000; }
+
+        /* REVIEWS (THẢO LUẬN 5 SAO) */
+        :root { --rev-bg: #05080f; --rev-gold: #c5a059; --rev-border: rgba(255, 255, 255, 0.08); --rev-text: #d1d5db; --rev-glass: rgba(255, 255, 255, 0.02); }
+        #vhgp-reviews-ip { background-color: var(--rev-bg); padding: 0px 20px; font-family: 'Manrope', sans-serif; color: #fff; font-size: 14px; margin-top: 40px; border-radius: 8px; border: 1px solid var(--border);}
+        .rev-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--rev-border); padding-bottom: 5px; margin-bottom: 10px; padding-top: 20px; }
+        .rev-title h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0; color: #fff; }
+        .rev-stats { display: flex; align-items: center; gap: 15px; }
+        .rs-score { font-size: 32px; font-weight: 700; color: var(--rev-gold); font-family: 'Playfair Display', serif; }
+        .rs-meta { text-align: right; } 
+        .rs-stars { color: var(--rev-gold); font-size: 12px; letter-spacing: 1px; }
+        .rs-count { font-size: 10px; color: #666; text-transform: uppercase; }
+        .rev-intro { margin-bottom: 35px; font-size: 13px; color: #9ca3af; line-height: 1.6; border-left: 2px solid var(--rev-gold); padding-left: 15px; }
+        .rev-layout { display: flex; flex-direction: column; gap: 40px; }
+        .rev-form-box { background: var(--rev-glass); border: 1px solid var(--rev-border); padding: 15px; border-radius: 4px; }
+        .rev-row-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-lbl { font-size: 10px; text-transform: uppercase; color: #888; margin-bottom: 10px; display: block; }
+        .rate-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; margin-bottom: 15px; }
+        .rate-input input { display: none; } 
+        .rate-input label { font-size: 22px; color: #444; cursor: pointer; transition: 0.2s; }
+        .rate-input label:hover, .rate-input label:hover ~ label, .rate-input input:checked ~ label { color: var(--rev-gold); }
+        .rev-input, .rev-textarea { width: 100%; background: transparent; border: 1px solid var(--rev-border); border-left: 2px solid var(--rev-border); padding: 10px 12px; color: #fff; border-radius: 4px; }
+        .rev-textarea { height: 80px; resize: none; margin-bottom: 10px; }
+        .rev-btn { width: 200px; background: transparent; color: var(--rev-gold); border: 1px solid var(--rev-border); padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .rev-btn:hover { background: rgba(197, 160, 89, 0.1); color: #fff; border-color: #c5a059; }
+        .rev-list { display: flex; flex-direction: column; gap: 20px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
+        .rev-item { display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+
+        /* CAROUSELS CHUẨN MỰC BÊN DƯỚI */
+        .gr-related-section { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
+        .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 20px; margin-top: 50px; }
+        .s-tit { font-size: 20px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--gold); padding-left: 15px; margin: 0; line-height: 1; }
+        
+        .gr-carousel-wrapper { position: relative; }
+        .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-behavior: smooth; scrollbar-width: none;}
+        .gr-carousel::-webkit-scrollbar { display: none; }
+        
+        .s2-card { background: #0b1120; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: 0.3s; flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
+        .s2-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .s2-thumb-box { height: 180px; overflow: hidden; position: relative;}
+        .s2-thumb-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
+        .s2-card:hover .s2-thumb-box img { transform: scale(1.1); }
+        .s2-body { padding: 15px; flex: 1; display: flex; flex-direction: column;}
+        .gr-tit { font-size: 13px !important; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s;}
+        .s2-card:hover .gr-tit { color: var(--gold); }
+        .gr-loc { font-size: 11px; color: #999; margin-bottom: 5px; }
+        .gr-meta { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; }
+        
+        /* News Carousel Card */
+        .gr-news-card-v { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; text-decoration: none !important; }
+        .gr-news-card-v:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .gr-nc-thumb { height: 160px; overflow: hidden; }
+        .gr-nc-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; } .gr-news-card-v:hover .gr-nc-thumb img { transform: scale(1.1); }
+        .gr-nc-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .gr-nc-tit { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-news-card-v:hover .gr-nc-tit { color: var(--gold); }
+        .gr-nc-desc { font-size: 12px; color: #888; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .gr-nc-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .gr-nc-date { color: #666; }
+        .gr-nc-more { color: var(--gold); font-weight: 700; transition: 0.3s; } .gr-news-card-v:hover .gr-nc-more { text-decoration: underline; }
+
+        .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--border); background: rgba(14, 18, 27, 0.8); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .gr-nav-btn:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+        .gr-prev { left: -15px; } .gr-next { right: -15px; }
 
         @media (max-width: 900px) {
             .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; } .gr-sp-sidebar { position: static; }
-            .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
-            .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
+            .gr-news-card-v, .s2-card { flex: 0 0 85%; max-width: 85%; } .gr-nav-btn { display: none; }
+            .rev-row-inputs { grid-template-columns: 1fr; } .rev-btn { width: 100%; }
         }
     </style>
     
@@ -168,7 +215,7 @@
         try { 
             defaultPost = {
                 id: "17",
-                title: "9999999",
+                title: "888888888888",
                 slug: "555555555555",
                 cat: "Tin tức thị trường",
                 date: "28/4/2026",
@@ -187,12 +234,45 @@
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
+        function createProdCardHTML(p) {
+            const catSlug = createSafeSlug(p.cat || 'san-pham');
+            const pSlug = p.slug || createSafeSlug(p.title);
+            const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+            const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
+            const link = `/greenia-homes/san-pham/${catSlug}/${pSlug}/`;
+
+            let areaBedHtml = "";
+            if (p.area || p.bed) {
+                let areaPart = p.area ? `<span style="color: #c5a059; font-size:12px;">${p.area} m²</span>` : "";
+                let bedPart = p.bed ? `<span style="color: #c5a059; font-size:12px;">${p.bed} PN</span>` : "";
+                let divider = (p.area && p.bed) ? `<span style="color:#555; margin: 0 6px;">|</span>` : "";
+                areaBedHtml = `<div style="display:flex; align-items:center;">${areaPart}${divider}${bedPart}</div>`;
+            }
+
+            return `<a href="${link}" class="s2-card">
+                        <div class="s2-thumb-box">
+                            <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                            <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                        </div>
+                        <div class="s2-body">
+                            <h3 class="gr-tit">${p.title}</h3>
+                            <div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div>
+                            <div class="gr-meta">
+                                <span class="gr-hl">${p.price || 'Liên hệ'}</span>
+                                ${areaBedHtml}
+                            </div>
+                        </div>
+                    </a>`;
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            // GIAO DIỆN CẢNH BÁO LỖI THAY CHO LỆNH ĐÁ VĂNG
+            // ĐÃ XÓA BỎ LỆNH ĐÁ VĂNG
             if (!post || String(post.id).includes("{{") || post.id === "") { 
                 container.innerHTML = `
                     <div style="text-align:center; padding: 100px 20px;">
@@ -208,28 +288,42 @@
             }
 
             try {
-                const [postSnap, prodSnap] = await Promise.all([
+                const [postSnap, prodSnap, projSnap] = await Promise.all([
                     db.collection('posts').get(),
-                    db.collection('products').get()
+                    db.collection('products').get(),
+                    db.collection('projects').get()
                 ]);
                 
                 let posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 let prods = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // 1. Sidebar - Danh mục Sản Phẩm
+                // 1. Lọc Danh mục chuẩn (Không trùng lặp)
                 let otherCats = {}; let countBan = 0, countThue = 0;
                 prods.forEach(p => {
-                    if(p.type === 'Bán') countBan++; else if(p.type === 'Thuê') countThue++;
-                    if(p.cat) { let c = p.cat.trim(); otherCats[c] = (otherCats[c] || 0) + 1; }
+                    if(p.type === 'Bán') countBan++; 
+                    else if(p.type === 'Thuê') countThue++;
+                    
+                    if(p.cat) { 
+                        let cList = Array.isArray(p.cat) ? p.cat : p.cat.split(',');
+                        cList.forEach(c => {
+                            let cTrim = c.trim();
+                            let cSlug = createSafeSlug(cTrim);
+                            // Chặn cứng các hệ phái Bán/Thuê/Sản phẩm để không bị lọt vào đây
+                            if(cSlug !== '' && cSlug !== 'ban' && cSlug !== 'cho-thue' && cSlug !== 'chuyen-nhuong' && cSlug !== 'san-pham') {
+                                otherCats[cTrim] = (otherCats[cTrim] || 0) + 1; 
+                            }
+                        });
+                    }
                 });
                 let catLines = [];
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span style="color:#666;font-size:10px;">(${countBan})</span></a>`);
-                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span style="color:#666;font-size:10px;">(${countThue})</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
                 Object.keys(otherCats).forEach(c => {
-                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span style="color:#666;font-size:10px;">(${otherCats[c]})</span></a>`);
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${otherCats[c]})</span></a>`);
                 });
 
-                // 2. Sidebar - Tin mới và Sản phẩm nổi bật
+                // 2. Tin mới & BĐS Nổi bật (Sidebar)
                 let latestNewsHTML = posts.filter(p => p.id != post.id).slice(0, 5).map(p => {
                     let thumbUrl = p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
                     return `
@@ -245,15 +339,98 @@
                         <div class="gr-prod-info"><h4 class="gr-tit-mini">${p.title}</h4><div class="gr-hl">${p.price}</div></div>
                     </a>`).join('');
 
-                // 3. Rổ hàng (Nếu bài viết là về Dự án)
-                const projectProds = prods.filter(p => p.projectCode && p.projectCode.toLowerCase() === createSafeSlug(post.title));
-                let roHangHTML = projectProds.length > 0 ? `
-                    <div style="margin-top:50px; border-top:1px dashed #333; padding-top:30px; margin-bottom:40px;">
-                        <h2 style="color:#c5a059; font-size:20px; margin-bottom:20px; font-weight:700;">SẢN PHẨM NỔI BẬT TẠI DỰ ÁN</h2>
-                        <div class="gr-ro-hang-grid">${projectProds.slice(0,3).map(p => `<a href="${safeBaseUrl}san-pham/${createSafeSlug(p.cat)}/${p.slug}/" class="s2-card"><div class="s2-thumb-box"><img src="${p.img}"></div><div class="s2-body"><h3 class="s2-tit">${p.title}</h3><div style="color:#c5a059;font-weight:bold; font-size:14px;">${p.price}</div></div></a>`).join('')}</div>
+                // 3. Tin tức liên quan
+                const relatedPosts = posts.filter(p => p.cat === post.cat && p.id != post.id);
+                let relatedPostsHTML = '';
+                if(relatedPosts.length > 0) {
+                    relatedPostsHTML = `
+                    <div class="gr-related-section">
+                        <h3 class="gr-w-title" style="margin-bottom:20px;">Bài viết cùng danh mục</h3>
+                        <div class="gr-carousel-wrapper">
+                            <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('gr-news-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                            <div id="gr-news-scroll" class="gr-carousel">
+                                ${relatedPosts.map(p => {
+                                    let thumbUrl = p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
+                                    const excerpt = (p.content || '').replace(/<[^>]*>?/gm, '').substring(0, 100) + '...';
+                                    return `
+                                    <a href="${safeBaseUrl}tin-tuc/${createSafeSlug(p.cat)}/${p.slug}/" class="gr-news-card-v">
+                                        <div class="gr-nc-thumb"><img src="${thumbUrl}"></div>
+                                        <div class="gr-nc-body">
+                                            <h4 class="gr-nc-tit">${p.title}</h4>
+                                            <div class="gr-nc-desc">${excerpt}</div>
+                                            <div class="gr-nc-footer"><div class="gr-nc-date"><i class="far fa-clock"></i> ${p.date}</div><div class="gr-nc-more">Chi tiết <i class="fas fa-arrow-right" style="font-size:10px;"></i></div></div>
+                                        </div>
+                                    </a>`;
+                                }).join('')}
+                            </div>
+                            <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('gr-news-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>`;
+                }
+
+                // 4. Bất động sản dành cho bạn (Smart Recommended)
+                let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
+                let smartRecommended = [];
+                if (viewedHistory.cats.length > 0) {
+                    let matchedByCat = prods.filter(p => {
+                        let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
+                        return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
+                    });
+                    smartRecommended = matchedByCat.sort(() => 0.5 - Math.random()).slice(0, 10);
+                }
+                if (smartRecommended.length < 10) {
+                    let fallbackProds = prods.sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
+                    smartRecommended = [...new Set([...smartRecommended, ...fallbackProds])];
+                }
+                let forYouHTML = smartRecommended.length > 0 ? `
+                    <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('foryou-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                        <div id="foryou-scroll" class="gr-carousel">${smartRecommended.map(p => createProdCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('foryou-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
                     </div>` : '';
 
-                // BƠM GIAO DIỆN
+                // 5. Bán & Thuê mới nhất
+                const saleProds = prods.filter(p => p.type === 'Bán').slice(0, 10);
+                let saleHTML = saleProds.length > 0 ? `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('sale-scroll-latest', -1)"><i class="fas fa-chevron-left"></i></button>
+                        <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => createProdCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('sale-scroll-latest', 1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>` : '';
+
+                const rentProds = prods.filter(p => p.type === 'Thuê').slice(0, 10);
+                let rentHTML = rentProds.length > 0 ? `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('rent-scroll-latest', -1)"><i class="fas fa-chevron-left"></i></button>
+                        <div id="rent-scroll-latest" class="gr-carousel">${rentProds.map(p => createProdCardHTML(p)).join('')}</div>
+                        <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('rent-scroll-latest', 1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>` : '';
+
+                // 6. Dự án nổi bật
+                let projHTML = '';
+                if (independentProjects && independentProjects.length > 0) {
+                    projHTML = `
+                    <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Dự án nổi bật</h2></div>
+                    <div class="gr-carousel-wrapper">
+                        <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('feat-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                        <div id="feat-scroll" class="gr-carousel">
+                            ${independentProjects.slice(0, 10).map(p => {
+                                const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
+                                return `<a href="${p.link}" class="s2-card">
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div>
+                                    <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div></div>
+                                </a>`;
+                            }).join('')}
+                        </div>
+                        <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('feat-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>`;
+                }
+
+
+                // LẮP RÁP GIAO DIỆN
                 const shareLink = encodeURIComponent(window.location.href);
                 const zaloIconUrl = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
 
@@ -282,11 +459,50 @@
                                     <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="gr-s-btn" style="background:transparent;"><img src="${zaloIconUrl}" style="width:25px; object-fit:contain;" referrerpolicy="no-referrer"></a>
                                 </div>
                             </div>
-                            ${roHangHTML}
+                            
+                            <section id="vhgp-reviews-ip">
+                                <div class="rev-container">
+                                    <div class="rev-head">
+                                        <div class="rev-title"><h2>Tham Gia Thảo Luận</h2></div>
+                                        <div class="rev-stats">
+                                            <div class="rs-score" id="avg-score">5.0</div>
+                                            <div class="rs-meta">
+                                                <div class="rs-stars" id="avg-stars">★★★★★</div>
+                                                <div class="rs-count" id="total-reviews">0 ĐÁNH GIÁ</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rev-intro">🔒 Thông tin cá nhân của bạn được <strong>cam kết bảo mật tuyệt đối</strong>.</div>
+                                    <div class="rev-layout">
+                                        <div class="rev-form-box">
+                                            <span class="form-lbl">Đánh giá để tham gia thảo luận</span>
+                                            <form id="mainForm">
+                                                <div class="rate-input">
+                                                    <input type="radio" id="c-st5" name="rate" value="5" required checked/><label for="c-st5">★</label>
+                                                    <input type="radio" id="c-st4" name="rate" value="4" /><label for="c-st4">★</label>
+                                                    <input type="radio" id="c-st3" name="rate" value="3" /><label for="c-st3">★</label>
+                                                    <input type="radio" id="c-st2" name="rate" value="2" /><label for="c-st2">★</label>
+                                                    <input type="radio" id="c-st1" name="rate" value="1" /><label for="c-st1">★</label>
+                                                </div>
+                                                <div class="rev-row-inputs">
+                                                    <input type="text" id="c-name" class="rev-input" placeholder="Họ tên *" required>
+                                                    <input type="tel" id="c-phone" class="rev-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                                    <input type="email" id="c-email" class="rev-input" placeholder="Email (Để nhận thông báo)" required>
+                                                </div>
+                                                <textarea id="c-comment" class="rev-textarea" placeholder="Nội dung thảo luận của bạn..." required></textarea>
+                                                <button type="submit" id="c-btn-submit" class="rev-btn">Gửi Đánh Giá</button>
+                                            </form>
+                                        </div>
+                                        <div class="rev-list" id="rev-list-container"><div style="font-size:12px; color:#666;">Đang kết nối dữ liệu...</div></div>
+                                    </div>
+                                </div>
+                            </section>
+
                         </div>
                         <div class="gr-sp-sidebar">
                             <section id="vhgp-final-v15-vertical">
                                 <h3 class="v15-ver-title">Nhận Bảng Giá</h3>
+                                <div class="v15-ver-rating-box"><span class="v15-ver-stars">★★★★★</span><span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span></div>
                                 <form id="leadForm" class="v15-ver-form">
                                     <input type="text" id="l-name" class="v15-ver-input" placeholder="Họ tên *" required>
                                     <input type="tel" id="l-phone" class="v15-ver-input" placeholder="Số điện thoại *" required>
@@ -298,9 +514,19 @@
                             <div style="margin-top: 10px;"><div class="gr-w-title">Tin mới nhất</div><div style="display:flex; flex-direction:column;">${latestNewsHTML}</div></div>
                         </div>
                     </div>
+                    
+                    ${relatedPostsHTML}
+                    ${forYouHTML}
+                    ${saleHTML}
+                    ${rentHTML}
+                    ${projHTML}
                 `;
 
-                initTOC();
+                setTimeout(() => {
+                    initTOC();
+                    initReviewsAndCTA();
+                }, 500);
+
             } catch (e) { console.error(e); }
         });
 
@@ -320,6 +546,88 @@
             }
         }
         function toggleTOC() { const l = document.getElementById('gr-toc-list'); l.style.display = l.style.display==='none'?'block':'none'; document.getElementById('gr-toc-icon').classList.toggle('rotate'); }
+
+        function initReviewsAndCTA() {
+            const PAGE_ID = window.location.pathname;
+            const API_REVIEWS = 'https://script.google.com/macros/s/AKfycbyLqotNzi0pN1-trXxNhNvjF-1lqGSXhRUL5JMKz5J-j9mfe-QESaqTFR-pHeaFHvZTsA/exec'; 
+            const API_LEAD = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec'; 
+            
+            let currentCountVer = 186; 
+            fetch(API_LEAD + "?action=count")
+                .then(res => res.json())
+                .then(data => {
+                    if(data.count !== undefined) {
+                        currentCountVer = parseInt(data.count);
+                        if(currentCountVer < 5) currentCountVer = 186;
+                        const countEl = document.getElementById('count-v15-ver');
+                        if(countEl) countEl.innerText = `(5.0/5 - ${currentCountVer} đánh giá)`;
+                    }
+                }).catch(err => {
+                    const countEl = document.getElementById('count-v15-ver');
+                    if(countEl) countEl.innerText = `(5.0/5 - 186 đánh giá)`;
+                });
+
+            document.getElementById('leadForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.querySelector('.v15-ver-btn');
+                btn.innerText = "ĐANG GỬI..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("project", window.GREENIA_CURRENT_POST.title);
+                fd.append("name", document.getElementById('l-name').value);
+                fd.append("phone", document.getElementById('l-phone').value);
+                fd.append("url", window.location.href);
+                fd.append("rating", 5);
+                
+                fetch(API_LEAD, { method: 'POST', body: fd }).then(res => {
+                    alert("Cảm ơn bạn! Hệ thống đang xử lý và sẽ gửi bảng giá cho bạn.");
+                    btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false;
+                }).catch(() => { alert("Lỗi mạng!"); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
+            });
+
+            fetch(API_REVIEWS + "?action=get").then(res => res.json()).then(data => {
+                const container = document.getElementById('rev-list-container');
+                const pageReviews = data.filter(item => item.pageId === PAGE_ID);
+                if(pageReviews.length === 0) { container.innerHTML = '<div style="font-size:12px; color:#666;">Chưa có thảo luận nào. Hãy là người đầu tiên!</div>'; return; }
+                
+                document.getElementById('total-reviews').innerText = pageReviews.length + " ĐÁNH GIÁ";
+                container.innerHTML = pageReviews.map(p => `
+                    <div class="rev-item">
+                        <div class="rev-main-content">
+                            <div class="rev-avatar">${(p.name || 'U').charAt(0).toUpperCase()}</div>
+                            <div class="rev-content">
+                                <div class="rev-top-row"><span class="rev-name">${p.name}</span><span class="rev-date">${p.date}</span></div>
+                                <span class="rev-stars-small">${"★".repeat(p.rating)}${"☆".repeat(5-p.rating)}</span>
+                                <p class="rev-text">${p.comment}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }).catch(() => { document.getElementById('rev-list-container').innerHTML = '<div style="font-size:12px; color:#666;">Chưa tải được bình luận.</div>'; });
+
+            document.getElementById('mainForm').addEventListener('submit', e => {
+                e.preventDefault();
+                const btn = document.getElementById('c-btn-submit');
+                btn.innerText = "Đang gửi..."; btn.disabled = true;
+                let fd = new FormData();
+                fd.append("name", document.getElementById('c-name').value);
+                fd.append("phone", document.getElementById('c-phone').value);
+                fd.append("email", document.getElementById('c-email').value);
+                fd.append("comment", document.getElementById('c-comment').value);
+                fd.append("rating", document.querySelector('input[name="rate"]:checked').value);
+                fd.append("pageId", PAGE_ID);
+                fetch(API_REVIEWS, { method: 'POST', body: fd }).then(() => {
+                    alert("Cảm ơn bạn đã đánh giá!");
+                    document.getElementById('mainForm').reset();
+                    btn.innerText = "Gửi Đánh Giá"; btn.disabled = false;
+                });
+            });
+        }
+
+        window.grScrollHorizontal = function(id, dir) {
+            var el = document.getElementById(id); if(!el) return;
+            var item = el.querySelector(".s2-card") || el.querySelector(".gr-news-card-v"); if(!item) return;
+            var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
+        };
     </script>
 </body>
 </html>
