@@ -292,14 +292,15 @@
                     db.collection('posts').get(),
                     db.collection('products').get(),
                     db.collection('projects').get(),
-                    db.collection('categories').get() // Tải thêm Categories từ DB
+                    db.collection('categories').get()
                 ]);
 
                 allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                allCategories = catSnap.docs.map(doc => doc.data());
+                allCategories = catSnap ? catSnap.docs.map(doc => doc.data()) : [];
 
+                // ĐỌC URL ĐỂ TÌM DANH MỤC HIỆN TẠI (DÀNH CHO FILE DANH-MUC.HTML)
                 let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
                 
@@ -322,6 +323,7 @@
                     }
                 }
 
+                // CẬP NHẬT HEADER
                 if(activeCatSlug) {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
@@ -330,6 +332,7 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
+                // LỌC BÀI VIẾT THEO DANH MỤC
                 if (activeCatSlug) {
                     postsInThisCat = allPosts.filter(p => {
                         let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
@@ -339,6 +342,7 @@
                     postsInThisCat = [...allPosts];
                 }
 
+                // TẠO TABS DANH MỤC TỪ DATABASE VÀ BÀI VIẾT
                 let newsCatSet = new Set();
                 
                 if (allCategories && allCategories.length > 0) {
@@ -369,8 +373,10 @@
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this)">${cat}</div>`
                 ).join('');
 
+                // GỌI HÀM RENDER BAN ĐẦU
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
+                // SIDEBAR SẢN PHẨM & DƯỚI CÙNG
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -389,7 +395,10 @@
                         const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
                                     <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
-                                    <div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div></div>
+                                    <div class="s2-body">
+                                        <h3 class="gr-tit">${p.title}</h3>
+                                        <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div>
+                                    </div>
                                 </a>`;
                     }).join('');
                 } else {
