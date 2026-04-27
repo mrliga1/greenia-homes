@@ -287,7 +287,7 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // ĐÃ XÓA GỌI BẢNG CATEGORIES ĐỂ TRÁNH LỖI PHÂN QUYỀN
+                // Tách riêng Database để quét 100% hoàn chỉnh, không bị sập
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
                     db.collection('posts').get(),
                     db.collection('products').get(),
@@ -301,6 +301,7 @@
                 let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
                 
+                // Đọc URL siêu thông minh để lấy đúng Danh mục hiện tại
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     activeCatSlug = createSafeSlug(currentCatName);
@@ -313,18 +314,19 @@
 
                 if (activeCatSlug) {
                     let matchedPost = allPosts.find(p => {
-                        let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
-                        return cats.some(c => createSafeSlug(c.trim()) === activeCatSlug);
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        return catsArr.some(c => createSafeSlug(c.replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
                     });
                     if (matchedPost) {
-                        let cats = Array.isArray(matchedPost.cat) ? matchedPost.cat : String(matchedPost.cat).split(',');
-                        let exactCat = cats.find(c => createSafeSlug(c.trim()) === activeCatSlug);
-                        if (exactCat) currentCatName = exactCat.trim();
+                        let catsArr = typeof matchedPost.cat === 'string' ? matchedPost.cat.split(',') : (Array.isArray(matchedPost.cat) ? matchedPost.cat : []);
+                        let exactCat = catsArr.find(c => createSafeSlug(c.replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
+                        if (exactCat) currentCatName = exactCat.replace(/['"\[\]{}]/g, '').trim();
                     } else {
                         currentCatName = beautifyCatName(activeCatSlug);
                     }
                 }
 
+                // Chèn đúng Tiêu đề cho trang Danh mục
                 if(activeCatSlug) {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
@@ -333,33 +335,38 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
+                // Lọc bài viết chỉ thuộc Danh mục hiện tại
                 if (activeCatSlug) {
                     postsInThisCat = allPosts.filter(p => {
-                        let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
-                        return pCats.some(c => createSafeSlug(c.trim()) === activeCatSlug);
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        return catsArr.some(c => createSafeSlug(c.replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
                     });
                 } else {
                     postsInThisCat = [...allPosts];
                 }
 
                 // ========================================================
-                // BỘ TẠO TAB "TẤT CẢ" VÀ DANH MỤC CON
+                // ĐÚC TABS DANH MỤC CON THEO ĐÚNG YÊU CẦU:
+                // Tab đầu tiên: "Tất cả" (Thay thế cho tên danh mục hiện tại)
+                // Các tab tiếp theo: Bóc tách danh mục con từ các bài viết bên trong
                 // ========================================================
                 let subCatSet = new Set();
+                
                 postsInThisCat.forEach(p => {
                     if (p.cat) {
-                        let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
-                        cats.forEach(c => {
-                            let cTrim = c.trim();
-                            if (cTrim && createSafeSlug(cTrim) !== activeCatSlug) {
-                                subCatSet.add(cTrim);
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        catsArr.forEach(c => {
+                            let cClean = c.replace(/['"\[\]{}]/g, '').trim();
+                            // Chỉ lấy các Danh mục con (bỏ qua Danh mục gốc và rỗng)
+                            if (cClean !== '' && createSafeSlug(cClean) !== activeCatSlug && cClean.toLowerCase() !== 'tin tức') {
+                                subCatSet.add(cClean);
                             }
                         });
                     }
                 });
 
                 let finalSubCats = Array.from(subCatSet);
-                // Cấu trúc Tabs: [Tất cả, Danh mục con 1, Danh mục con 2...]
+                // Bác yêu cầu Tab đầu tiên hiện chữ "Tất cả"
                 const tabs = ['Tất cả', ...finalSubCats];
                 
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
@@ -368,8 +375,10 @@
                 // ========================================================
 
                 mixedPostsPool = [...postsInThisCat];
+                // Gọi hàm load "Tất cả" lúc mới vào trang
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'), currentCatName);
 
+                // Load sản phẩm cột phải
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -406,12 +415,14 @@
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            if(clickedCatName === 'Tất cả' || clickedCatName === mainCatName) {
+            // Nếu bấm "Tất cả", nạp lại toàn bộ bài của Danh mục đang đứng
+            if(clickedCatName === 'Tất cả') {
                 currentTabPosts = [...postsInThisCat];
             } else {
+                // Nếu bấm vào 1 Danh mục con
                 currentTabPosts = postsInThisCat.filter(p => {
-                    let cats = Array.isArray(p.cat) ? p.cat : (p.cat ? String(p.cat).split(',') : []);
-                    return cats.some(c => c.trim().toLowerCase() === clickedCatName.toLowerCase());
+                    let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                    return catsArr.some(c => c.replace(/['"\[\]{}]/g, '').trim().toLowerCase() === clickedCatName.toLowerCase());
                 });
             }
             
