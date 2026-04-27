@@ -202,16 +202,25 @@
 
         let allPosts = [];
         let allProducts = [];
-        let allCategories = [];
         let postsInThisCat = []; 
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
         let mixedPostsPool = [];
+        let independentProjects = [];
+
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+
+        function beautifyCatName(slug) {
+            if (!slug) return '';
+            const words = String(slug).split('-');
+            const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
+            return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
         function extractPostData(p) {
@@ -278,22 +287,21 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                const [postSnap, prodSnap, projSnap, catSnap] = await Promise.all([
+                // XÓA BỎ LỆNH GỌI BẢNG CATEGORIES CHỐNG SẬP DATABASE
+                const [postSnap, prodSnap, projSnap] = await Promise.all([
                     db.collection('posts').get(),
                     db.collection('products').get(),
-                    db.collection('projects').get(),
-                    db.collection('categories').get()
+                    db.collection('projects').get()
                 ]);
 
                 allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                allCategories = catSnap ? catSnap.docs.map(doc => doc.data()) : [];
+                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                let currentCatName = "Tin Tức Bất Động Sản";
+                let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
                 
-                // Xác định danh mục hiện tại dựa vào URL (hoặc GREENIA_CURRENT_CATEGORY)
+                // ĐỌC URL ĐỂ TÌM DANH MỤC HIỆN TẠI
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     activeCatSlug = createSafeSlug(currentCatName);
@@ -304,14 +312,22 @@
                     }
                 }
 
-                if (activeCatSlug && allCategories.length > 0) {
-                    let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name || c.title) === activeCatSlug);
-                    if (matchedCat) {
-                        currentCatName = matchedCat.name || matchedCat.title || currentCatName;
+                // TÌM TÊN DANH MỤC GỐC CHÍNH XÁC TỪ BÀI VIẾT NẾU CÓ
+                if (activeCatSlug) {
+                    let matchedPost = allPosts.find(p => {
+                        let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
+                        return cats.some(c => createSafeSlug(c.trim()) === activeCatSlug);
+                    });
+                    if (matchedPost) {
+                        let cats = Array.isArray(matchedPost.cat) ? matchedPost.cat : String(matchedPost.cat).split(',');
+                        let exactCat = cats.find(c => createSafeSlug(c.trim()) === activeCatSlug);
+                        if (exactCat) currentCatName = exactCat.trim();
+                    } else {
+                        currentCatName = beautifyCatName(activeCatSlug);
                     }
                 }
 
-                // CẬP NHẬT HEADER
+                // CẬP NHẬT TIÊU ĐỀ
                 if(activeCatSlug) {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
@@ -320,7 +336,7 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
-                // LỌC BÀI VIẾT CỦA DANH MỤC NÀY
+                // LỌC BÀI VIẾT THEO DANH MỤC GỐC
                 if (activeCatSlug) {
                     postsInThisCat = allPosts.filter(p => {
                         let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
@@ -330,22 +346,15 @@
                     postsInThisCat = [...allPosts];
                 }
 
-                // ========================================================
-                // BỘ QUÉT TABS TỰ ĐỘNG THEO YÊU CẦU:
-                // Tab đầu tiên là Danh mục hiện tại (VD: Tin Thị Trường)
-                // Các tab sau là danh mục con (được tìm thấy trong các bài viết thuộc danh mục này)
-                // ========================================================
-                
+                // TẠO TABS DANH MỤC CON
                 let subCatSet = new Set();
-                
-                // Quét toàn bộ bài viết đang có trong danh mục này để tìm danh mục phụ
                 postsInThisCat.forEach(p => {
                     if (p.cat) {
                         let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
                         cats.forEach(c => {
                             let cTrim = c.trim();
-                            // Chỉ thêm vào nếu không phải là rỗng, không phải 'Tin tức' và KHÔNG PHẢI CHÍNH NÓ
-                            if (cTrim && cTrim.toLowerCase() !== 'tin tức' && cTrim.toLowerCase() !== currentCatName.toLowerCase()) {
+                            // Chỉ lấy các danh mục Khác với danh mục gốc làm Tab con
+                            if (cTrim && createSafeSlug(cTrim) !== activeCatSlug) {
                                 subCatSet.add(cTrim);
                             }
                         });
@@ -353,20 +362,18 @@
                 });
 
                 let finalSubCats = Array.from(subCatSet);
-                
                 // Cấu trúc Tabs: [Tên Danh Mục Gốc, Danh mục con 1, Danh mục con 2...]
                 const tabs = [currentCatName, ...finalSubCats];
                 
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this, '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
                 ).join('');
-                // ========================================================
 
-                // KHỞI TẠO TAB MẶC ĐỊNH
+                // GỌI HÀM RENDER MẶC ĐỊNH
                 mixedPostsPool = [...postsInThisCat];
                 switchSubTab(currentCatName, document.querySelector('.s1-tab'), currentCatName);
 
-                // SIDEBAR SẢN PHẨM & DƯỚI CÙNG
+                // SIDEBAR & CAROUSEL SẢN PHẨM
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -385,7 +392,10 @@
                         const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
                                     <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
-                                    <div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div></div>
+                                    <div class="s2-body">
+                                        <h3 class="gr-tit">${p.title}</h3>
+                                        <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div>
+                                    </div>
                                 </a>`;
                     }).join('');
                 } else {
@@ -399,16 +409,15 @@
             }
         });
 
-        // HÀM CHUYỂN TAB ĐƯỢC CẬP NHẬT
         window.switchSubTab = function(clickedCatName, btnEl, mainCatName) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
             // Nếu bấm vào Tab đầu tiên (Tab danh mục gốc)
-            if(clickedCatName === mainCatName) {
+            if(clickedCatName === mainCatName || clickedCatName === 'Tất cả') {
                 currentTabPosts = [...postsInThisCat];
             } else {
-                // Nếu bấm vào các Tab danh mục con
+                // Nếu bấm vào các Tab con
                 currentTabPosts = postsInThisCat.filter(p => {
                     let cats = Array.isArray(p.cat) ? p.cat : (p.cat ? String(p.cat).split(',') : []);
                     return cats.some(c => c.trim().toLowerCase() === clickedCatName.toLowerCase());
@@ -474,7 +483,9 @@
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             document.getElementById('hero-col').innerHTML = `
                 <div class="s1-hero-img-box">
-                    <a href="${link}" id="hero-link"><img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img"></a>
+                    <a href="${link}" id="hero-link">
+                        <img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img">
+                    </a>
                 </div>
                 <div class="s1-hero-body">
                     <a href="${link}"><h3 class="s1-hero-tit" id="hero-tit">${tit}</h3></a>
