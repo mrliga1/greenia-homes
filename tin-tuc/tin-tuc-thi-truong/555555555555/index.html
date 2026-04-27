@@ -39,7 +39,7 @@
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
+        /* MAIN LAYOUT */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
         .gr-sp-main { width: 75%; } 
         .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
@@ -66,7 +66,7 @@
         .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
         .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
         .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
-        .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0;} 
+        .gr-entry-content li { margin-bottom: 8px; display: list-item; } 
         .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
 
         /* BOTTOM BAR */
@@ -152,7 +152,6 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA BẢO MẬT API KEY BẰNG BASE64 CHỐNG BOT GITHUB
         const firebaseConfig = {
           apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -165,16 +164,15 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        // DỮ LIỆU ĐƯỢC BƠM TỪ ADMIN
         let defaultPost = null;
         try { 
             defaultPost = {
                 id: "17",
-                title: "555555555555",
+                title: "9999999",
                 slug: "555555555555",
                 cat: "Tin tức thị trường",
-                date: "",
-                author: "",
+                date: "28/4/2026",
+                author: "Chuyên gia Greenia",
                 thumb: "",
                 content: `<p>&lt;div class=&quot;gr-related-item&quot;&gt;&lt;span class=&quot;gr-hot-icon&quot;&gt;👉&lt;/span&gt; &lt;a href=&quot;https://mrliga1.github.io/greenia-homes/san-pham/nha-pho/pppppppppppp/&quot; class=&quot;gr-related-link&quot; target=&quot;_blank&quot;&gt;Cập Nhật Mới11&lt;/a&gt;&lt;/div&gt;</p>
 
@@ -194,9 +192,18 @@
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            // LỆNH BẢO VỆ ĐÃ VÁ LỖI LOGIC ĐỂ TRÁNH ĐÁ VĂNG OAN UỔNG
+            // GIAO DIỆN CẢNH BÁO LỖI THAY CHO LỆNH ĐÁ VĂNG
             if (!post || String(post.id).includes("{{") || post.id === "") { 
-                window.location.replace(safeBaseUrl + 'tin-tuc.html'); 
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 100px 20px;">
+                        <i class="fas fa-tools fa-4x" style="color:#c5a059; margin-bottom:20px;"></i>
+                        <h2 style="color:#fff; font-size:24px;">BÀI VIẾT ĐANG ĐƯỢC CẬP NHẬT</h2>
+                        <p style="color:#b0b8c4; font-size:15px; margin-bottom: 30px;">
+                            Dữ liệu của bài viết này chưa được đồng bộ hoàn chỉnh hoặc đang bảo trì.<br>
+                            <b>Dành cho Admin:</b> Hãy vào trang Quản trị, chọn bài viết này và bấm <b>LƯU CẬP NHẬT</b> để đúc lại file.
+                        </p>
+                        <a href="${safeBaseUrl}tin-tuc.html" style="padding:10px 20px; background:#c5a059; color:#000; font-weight:bold; border-radius:5px; text-decoration:none;">Quay lại danh sách</a>
+                    </div>`;
                 return; 
             }
 
@@ -216,10 +223,10 @@
                     if(p.cat) { let c = p.cat.trim(); otherCats[c] = (otherCats[c] || 0) + 1; }
                 });
                 let catLines = [];
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
-                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span style="color:#666;font-size:10px;">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span style="color:#666;font-size:10px;">(${countThue})</span></a>`);
                 Object.keys(otherCats).forEach(c => {
-                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${otherCats[c]})</span></a>`);
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span style="color:#666;font-size:10px;">(${otherCats[c]})</span></a>`);
                 });
 
                 // 2. Sidebar - Tin mới và Sản phẩm nổi bật
