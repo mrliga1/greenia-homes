@@ -28,7 +28,7 @@
         
         .s1-head-row { border-bottom: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: flex-end; }
         .s1-tabs-wrap { display: flex; gap: 25px; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 5px;} .s1-tabs-wrap::-webkit-scrollbar { display: none; }
-        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block;}
+        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block; text-transform: capitalize;}
         .s1-tab:hover { color: #c5a059; } .s1-tab.active { color: #c5a059 !important; border-bottom: 2px solid #c5a059 !important; }
         
         .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 2px; border-bottom: 1px dashed var(--border); }
@@ -188,14 +188,16 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        
         window.safeHTMLAttr = function(str) {
             if(!str) return '';
             return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
         };
-
+        
         let defaultCat = null;
         try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "aaaaaavvvvvvvv" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
@@ -207,25 +209,14 @@
         let loadedCount = 0;
         const postsPerPage = 10;
         let mixedPostsPool = [];
-        let independentProjects = [];
-
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        function beautifyCatName(slug) {
-            if (!slug) return '';
-            const words = String(slug).split('-');
-            const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
-            return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
-        }
-
         function extractPostData(p) {
-            const tempDiv = document.createElement('div'); 
-            tempDiv.innerHTML = p.content || "";
+            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content || "";
             const firstImg = tempDiv.querySelector('img');
             let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 120) + '...';
@@ -288,15 +279,22 @@
         document.addEventListener("DOMContentLoaded", async function() {
             try {
                 // Tách riêng Database để quét 100% hoàn chỉnh, không bị sập
-                const [postSnap, prodSnap, projSnap] = await Promise.all([
-                    db.collection('posts').get(),
-                    db.collection('products').get(),
-                    db.collection('projects').get()
-                ]);
+                let postSnap, prodSnap, projSnap, catSnap;
+                try {
+                    [postSnap, prodSnap, projSnap] = await Promise.all([
+                        db.collection('posts').get(),
+                        db.collection('products').get(),
+                        db.collection('projects').get()
+                    ]);
+                } catch(e) { throw e; }
+                
+                try {
+                    catSnap = await db.collection('categories').get();
+                } catch(e) { console.log("Bỏ qua Categories do phân quyền."); }
 
                 allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
                 let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
@@ -322,11 +320,12 @@
                         let exactCat = catsArr.find(c => createSafeSlug(c.replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
                         if (exactCat) currentCatName = exactCat.replace(/['"\[\]{}]/g, '').trim();
                     } else {
-                        currentCatName = beautifyCatName(activeCatSlug);
+                        // Chữa cháy nếu trên URL có mà không có bài viết nào
+                        currentCatName = activeCatSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
                     }
                 }
 
-                // Chèn đúng Tiêu đề cho trang Danh mục
+                // CẬP NHẬT HEADER
                 if(activeCatSlug) {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
@@ -347,8 +346,7 @@
 
                 // ========================================================
                 // ĐÚC TABS DANH MỤC CON THEO ĐÚNG YÊU CẦU:
-                // Tab đầu tiên: "Tất cả" (Thay thế cho tên danh mục hiện tại)
-                // Các tab tiếp theo: Bóc tách danh mục con từ các bài viết bên trong
+                // Tab đầu tiên luôn luôn là chữ: "Tất cả"
                 // ========================================================
                 let subCatSet = new Set();
                 
@@ -357,8 +355,8 @@
                         let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
                         catsArr.forEach(c => {
                             let cClean = c.replace(/['"\[\]{}]/g, '').trim();
-                            // Chỉ lấy các Danh mục con (bỏ qua Danh mục gốc và rỗng)
-                            if (cClean !== '' && createSafeSlug(cClean) !== activeCatSlug && cClean.toLowerCase() !== 'tin tức') {
+                            // Chỉ lấy Danh mục con (bỏ qua Danh mục gốc và rỗng)
+                            if (cClean !== '' && cClean.toLowerCase() !== 'tất cả' && createSafeSlug(cClean) !== activeCatSlug) {
                                 subCatSet.add(cClean);
                             }
                         });
