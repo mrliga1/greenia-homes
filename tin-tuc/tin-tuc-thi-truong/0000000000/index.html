@@ -247,7 +247,7 @@
         try { 
             defaultPost = {
                 id: "15",
-                title: "0000000000",
+                title: "1101010010101",
                 slug: "0000000000",
                 cat: "Tin tức thị trường",
                 date: "27/4/2026",
@@ -271,8 +271,8 @@
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            // Lệnh bảo vệ: Nếu là file template trắng thì chuyển về trang danh mục
-            if (!post || post.id === "15" || post.id === "") { 
+            // Lệnh bảo vệ: Tránh mở trực tiếp file khuôn rỗng
+            if (!post || String(post.id).includes("{{") || post.id === "") { 
                 window.location.replace(safeBaseUrl + 'tin-tuc.html'); 
                 return; 
             }
