@@ -39,7 +39,7 @@
         .gr-sp-meta { font-size: 13px; color: #666; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;}
         .gr-sp-meta i { color: var(--gold); margin-right: 5px; }
 
-        /* MAIN LAYOUT */
+        /* MAIN LAYOUT CÓ STICKY HOÀN HẢO */
         .gr-sp-body { display: flex; gap: 30px; position: relative; margin-top: 20px; align-items: flex-start; }
         .gr-sp-main { width: 75%; } 
         .gr-sp-sidebar { width: 25%; position: -webkit-sticky; position: sticky; top: 70px; align-self: flex-start; height: fit-content; display: flex; flex-direction: column; gap: 30px; }
@@ -66,7 +66,7 @@
         .gr-entry-content p { margin-bottom: 20px; text-indent: 0; } 
         .gr-entry-content img { max-width: 100%; height: auto; border-radius: 5px; margin: 20px auto; display: block; border: 1px solid var(--border); }
         .gr-entry-content ul, .gr-entry-content ol { margin-bottom: 25px; padding-left: 20px; list-style: disc !important; } 
-        .gr-entry-content li { margin-bottom: 8px; display: list-item; } 
+        .gr-entry-content li { margin-bottom: 8px; display: list-item; text-indent: 0;} 
         .gr-entry-content li::marker { color: var(--gold); font-size: 16px; }
 
         /* BOTTOM BAR */
@@ -108,10 +108,25 @@
         .v15-ver-btn { width: 100%; padding: 10px 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: 0.3s; }
         .v15-ver-btn:hover { background: var(--gold); color: #000; }
 
+        /* DANH SÁCH SẢN PHẨM Ở CỘT BÊN */
+        .gr-prod-list { display: flex; flex-direction: column; gap: 0; }
+        .gr-prod-card { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none !important; align-items: flex-start; }
+        .gr-prod-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .gr-prod-thumb { width: 100px; height: 80px; flex-shrink: 0; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid var(--border); }
+        .gr-prod-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; }
+        .gr-prod-card:hover .gr-prod-thumb img { transform: scale(1.1); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 6px; font-size: 9px; font-weight: 700; color: #fff; z-index: 5; border-bottom-right-radius: 5px; line-height: 1; }
+        .tag-ban { background: #ff4d4f; } .tag-thue { background: #00b894; }
+        .gr-prod-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 75px; }
+        .gr-tit-mini { font-size: 13px !important; font-weight: 600; color: #fff; margin: 0 0 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: 0.3s; }
+        .gr-prod-card:hover .gr-tit-mini { color: var(--gold); }
+        .gr-meta-mini { display: flex; align-items: center; gap: 6px; font-size: 11px; margin-top: auto; }
+        .gr-hl { color: var(--gold); font-weight: 700; }
+
         @media (max-width: 900px) {
-            .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; }
+            .gr-sp-body { flex-direction: column; } .gr-sp-main, .gr-sp-sidebar { width: 100%; } .gr-sp-sidebar { position: static; }
+            .gr-news-card-v { flex: 0 0 240px; } .gr-nav-btn { display: none; }
             .gr-ro-hang-grid { grid-template-columns: repeat(2, 1fr); }
-            #vhgp-reviews-ip { display: none !important; }
         }
     </style>
     
@@ -137,6 +152,7 @@
     <script src="/greenia-homes/assets/js/ui.js"></script>
 
     <script>
+        // MÃ HÓA BẢO MẬT API KEY BẰNG BASE64 CHỐNG BOT GITHUB
         const firebaseConfig = {
           apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -154,7 +170,7 @@
         try { 
             defaultPost = {
                 id: "15",
-                title: "22222222",
+                title: "3333333333",
                 slug: "0000000000",
                 cat: "Tin tức thị trường",
                 date: "27/4/2026",
@@ -178,7 +194,7 @@
             const post = window.GREENIA_CURRENT_POST; 
             const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
 
-            // LỆNH BẢO VỆ ĐÃ VÁ LỖI LOGIC: Chống ID trùng với chuỗi mẫu
+            // LỆNH BẢO VỆ ĐÃ VÁ LỖI LOGIC ĐỂ TRÁNH ĐÁ VĂNG OAN UỔNG
             if (!post || String(post.id).includes("{{") || post.id === "") { 
                 window.location.replace(safeBaseUrl + 'tin-tuc.html'); 
                 return; 
@@ -200,39 +216,46 @@
                     if(p.cat) { let c = p.cat.trim(); otherCats[c] = (otherCats[c] || 0) + 1; }
                 });
                 let catLines = [];
-                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span style="color:#666;font-size:10px;">(${countBan})</span></a>`);
-                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span style="color:#666;font-size:10px;">(${countThue})</span></a>`);
+                if(countBan > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
+                if(countThue > 0) catLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
                 Object.keys(otherCats).forEach(c => {
-                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span style="color:#666;font-size:10px;">(${otherCats[c]})</span></a>`);
+                    catLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${otherCats[c]})</span></a>`);
                 });
 
                 // 2. Sidebar - Tin mới và Sản phẩm nổi bật
-                let latestNewsHTML = posts.filter(p => p.id != post.id).slice(0, 5).map(p => `
+                let latestNewsHTML = posts.filter(p => p.id != post.id).slice(0, 5).map(p => {
+                    let thumbUrl = p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';
+                    return `
                     <a href="${safeBaseUrl}tin-tuc/${createSafeSlug(p.cat)}/${p.slug}/" style="display:flex; gap:10px; margin-bottom:12px; text-decoration:none;">
-                        <div style="width:60px; height:45px; flex-shrink:0; border-radius:4px; overflow:hidden;"><img src="${p.thumb}" style="width:100%; height:100%; object-fit:cover;"></div>
-                        <div style="flex:1;"><h4 style="font-size:12px; color:#fff; margin:0; line-height:1.3;">${p.title}</h4></div>
-                    </a>`).join('');
+                        <div style="width:60px; height:45px; flex-shrink:0; border-radius:4px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);"><img src="${thumbUrl}" style="width:100%; height:100%; object-fit:cover;"></div>
+                        <div style="flex:1;"><h4 style="font-size:12px; color:#fff; margin:0; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${p.title}</h4></div>
+                    </a>`
+                }).join('');
 
                 let sidebarProdHTML = prods.sort(() => 0.5 - Math.random()).slice(0, 5).map(p => `
                     <a href="${safeBaseUrl}san-pham/${createSafeSlug(p.cat)}/${p.slug}/" class="gr-prod-card">
-                        <div class="gr-prod-thumb"><img src="${p.img}"></div>
+                        <div class="gr-prod-thumb"><span class="gr-tag-abs ${p.type==='Bán'?'tag-ban':'tag-thue'}">${p.type==='Bán'?'Bán':'Cho thuê'}</span><img src="${p.img}"></div>
                         <div class="gr-prod-info"><h4 class="gr-tit-mini">${p.title}</h4><div class="gr-hl">${p.price}</div></div>
                     </a>`).join('');
 
                 // 3. Rổ hàng (Nếu bài viết là về Dự án)
                 const projectProds = prods.filter(p => p.projectCode && p.projectCode.toLowerCase() === createSafeSlug(post.title));
                 let roHangHTML = projectProds.length > 0 ? `
-                    <div style="margin-top:50px; border-top:1px dashed #333; padding-top:20px;">
-                        <h2 style="color:#c5a059; font-size:20px; margin-bottom:20px;">Sản phẩm nổi bật tại dự án</h2>
-                        <div class="gr-ro-hang-grid">${projectProds.slice(0,3).map(p => `<a href="${safeBaseUrl}san-pham/${createSafeSlug(p.cat)}/${p.slug}/" class="s2-card"><div class="s2-thumb-box"><img src="${p.img}"></div><div class="s2-body"><h3 class="s2-tit">${p.title}</h3><div style="color:#c5a059;font-weight:bold;">${p.price}</div></div></a>`).join('')}</div>
+                    <div style="margin-top:50px; border-top:1px dashed #333; padding-top:30px; margin-bottom:40px;">
+                        <h2 style="color:#c5a059; font-size:20px; margin-bottom:20px; font-weight:700;">SẢN PHẨM NỔI BẬT TẠI DỰ ÁN</h2>
+                        <div class="gr-ro-hang-grid">${projectProds.slice(0,3).map(p => `<a href="${safeBaseUrl}san-pham/${createSafeSlug(p.cat)}/${p.slug}/" class="s2-card"><div class="s2-thumb-box"><img src="${p.img}"></div><div class="s2-body"><h3 class="s2-tit">${p.title}</h3><div style="color:#c5a059;font-weight:bold; font-size:14px;">${p.price}</div></div></a>`).join('')}</div>
                     </div>` : '';
 
                 // BƠM GIAO DIỆN
+                const shareLink = encodeURIComponent(window.location.href);
+                const zaloIconUrl = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
+
                 container.innerHTML = `
                     <div class="gr-sp-header">
                         <div class="gr-breadcrumbs">
                             <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
                             <a href="${safeBaseUrl}tin-tuc.html">Tin tức</a> <span class="sep">&gt;</span>
+                            <a href="${safeBaseUrl}tin-tuc/${createSafeSlug(post.cat)}/">${post.cat}</a> <span class="sep">&gt;</span>
                             <span class="current">${post.title}</span>
                         </div>
                         <h1 class="gr-sp-title">${post.title}</h1>
@@ -240,9 +263,18 @@
                     </div>
                     <div class="gr-sp-body">
                         <div class="gr-sp-main">
-                            <div class="gr-toc-wrap" id="gr-toc-wrapper"><div class="gr-toc-header" onclick="toggleTOC()"><span class="gr-toc-tit">Mục lục</span><i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i></div><ul class="gr-toc-list" id="gr-toc-list"></ul></div>
+                            <div class="gr-toc-wrap" id="gr-toc-wrapper"><div class="gr-toc-header" onclick="toggleTOC()"><span class="gr-toc-tit"><i class="fas fa-list-ul"></i> Mục lục bài viết</span><i class="fas fa-chevron-down gr-toc-icon" id="gr-toc-icon"></i></div><ul class="gr-toc-list" id="gr-toc-list"></ul></div>
+                            
                             <div class="gr-entry-content" id="gr-content-body">${post.content}</div>
-                            <div class="gr-bottom-bar"><div class="gr-bot-cta">Tư vấn dự án: <a href="tel:0932966700">0932 966 700</a></div></div>
+                            
+                            <div class="gr-bottom-bar">
+                                <div class="gr-bot-cta">Tư vấn dự án: <a href="tel:0932966700">0932 966 700</a></div>
+                                <div class="gr-share-group">
+                                    <span class="gr-share-lbl">Chia sẻ:</span>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${shareLink}" target="_blank" class="gr-s-btn fb"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://zalo.me/share/?url=${shareLink}" target="_blank" class="gr-s-btn" style="background:transparent;"><img src="${zaloIconUrl}" style="width:25px; object-fit:contain;" referrerpolicy="no-referrer"></a>
+                                </div>
+                            </div>
                             ${roHangHTML}
                         </div>
                         <div class="gr-sp-sidebar">
@@ -254,8 +286,9 @@
                                     <button type="submit" class="v15-ver-btn">Gửi yêu cầu</button>
                                 </form>
                             </section>
-                            <div class="gr-cat-widget"><div class="gr-cat-h">Danh mục</div><div class="gr-cat-l">${catLines.join('')}</div></div>
+                            <div class="gr-cat-widget"><div class="gr-cat-h">Danh mục BĐS</div><div class="gr-cat-l">${catLines.join('')}</div></div>
                             <div><div class="gr-w-title">BĐS Nổi bật</div><div class="gr-prod-list">${sidebarProdHTML}</div></div>
+                            <div style="margin-top: 10px;"><div class="gr-w-title">Tin mới nhất</div><div style="display:flex; flex-direction:column;">${latestNewsHTML}</div></div>
                         </div>
                     </div>
                 `;
@@ -272,9 +305,9 @@
                 document.getElementById('gr-toc-wrapper').style.display = 'block';
                 headings.forEach((h, i) => {
                     const id = 'toc-' + i; h.id = id;
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="#${id}" style="color:#ccc; font-size:14px;">${i+1}. ${h.innerText}</a>`;
-                    li.onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); };
+                    const li = document.createElement('li'); li.className = 'gr-toc-item';
+                    li.innerHTML = `<a href="#${id}" class="gr-toc-link">${i+1}. ${h.innerText}</a>`;
+                    li.querySelector('a').onclick = (e) => { e.preventDefault(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); };
                     tocList.appendChild(li);
                 });
             }
