@@ -89,7 +89,7 @@
         .s2-body .gr-meta { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
         .gr-hl { color: var(--gold); font-weight: 700; font-size: 14px; }
 
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 2px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
         .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
 
         .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
@@ -198,7 +198,6 @@
             return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
         };
 
-        // Hàm bóc tách dữ liệu bọc thép
         function extractCats(catData) {
             if (!catData) return [];
             let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
@@ -260,34 +259,20 @@
             }
 
             if(isList) {
-                return `<a href="${link}" class="gr-list-prod">
-                            <div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div>
-                            <div class="gr-lprod-info">
-                                <h4 class="gr-lprod-tit">${p.title}</h4>
-                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div>
-                                <div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;"><span class="gr-lprod-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div>
-                            </div>
-                        </a>`;
+                return `<a href="${link}" class="gr-list-prod"><div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div><div class="gr-lprod-info"><h4 class="gr-lprod-tit">${p.title}</h4><div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div><div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;"><span class="gr-lprod-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div></div></a>`;
             } else {
-                return `<a href="${link}" class="s2-card">
-                            <div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div>
-                            <div class="s2-body">
-                                <h3 class="gr-tit">${p.title}</h3>
-                                <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div>
-                                <div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;"><span class="gr-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div>
-                            </div>
-                        </a>`;
+                return `<a href="${link}" class="s2-card"><div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div><div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div><div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;"><span class="gr-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div></div></a>`;
             }
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // Tải dữ liệu an toàn
+                // Tách riêng luồng gọi DB để chống sập nếu lỗi Rule
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
                     db.collection('posts').get(),
                     db.collection('products').get(),
                     db.collection('projects').get()
-                ]);
+                ]).catch(e => { throw e; });
 
                 allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
@@ -296,12 +281,13 @@
                 let currentCatName = "Tin Tức Bất Động Sản";
                 let activeCatSlug = "";
 
-                // BỘ DÒ URL SIÊU CHÍNH XÁC CHO FILE DANH-MUC.HTML
+                // DÒ TÌM URL DÀNH CHO DANH-MUC.HTML (Tin-tuc.html sẽ bỏ qua)
+                let isDanhMucPage = window.location.pathname.includes('/tin-tuc/') && !window.location.pathname.endsWith('tin-tuc.html');
+                
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     activeCatSlug = createSafeSlug(currentCatName);
-                } else {
-                    // Dò tìm chính xác folder dù có index.html hay không
+                } else if (isDanhMucPage) {
                     const paths = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
                     const tinTucIdx = paths.indexOf('tin-tuc');
                     if (tinTucIdx !== -1 && tinTucIdx < paths.length - 1) {
@@ -342,30 +328,46 @@
                 }
 
                 // ========================================================
-                // ĐÚC TABS: Danh mục đầu tiên ghi "Tất cả", theo sau là danh mục con
+                // BỘ QUÉT TABS HOÀN HẢO (CHUNG CHO CẢ 2 FILE)
                 // ========================================================
                 let subCatSet = new Set();
                 
-                postsInThisCat.forEach(p => {
-                    extractCats(p.cat).forEach(c => {
-                        // Loại bỏ chữ rỗng, chữ "Tất cả", và chính cái tên Danh mục gốc
-                        if (c !== '' && c.toLowerCase() !== 'tất cả' && createSafeSlug(c) !== activeCatSlug) {
-                            subCatSet.add(c);
-                        }
+                if (activeCatSlug) {
+                    // Nếu ở danh-muc.html -> Các Tab là danh mục con (Trừ danh mục gốc)
+                    postsInThisCat.forEach(p => {
+                        extractCats(p.cat).forEach(c => {
+                            if (c !== '' && c.toLowerCase() !== 'tất cả' && createSafeSlug(c) !== activeCatSlug) {
+                                subCatSet.add(c);
+                            }
+                        });
                     });
-                });
+                } else {
+                    // Nếu ở tin-tuc.html -> Các Tab là TẤT CẢ danh mục tin tức hiện có
+                    allPosts.forEach(p => {
+                        extractCats(p.cat).forEach(c => {
+                            if (c !== '' && c.toLowerCase() !== 'tất cả') {
+                                subCatSet.add(c);
+                            }
+                        });
+                    });
+                }
 
-                // Tab đầu tiên hiển thị chữ "Tất cả"
+                // FAILSAFE CHỐNG TRỐNG TABS Ở TIN-TUC.HTML
+                if (subCatSet.size === 0 && !activeCatSlug) {
+                    subCatSet.add("Tin Thị Trường");
+                    subCatSet.add("Tin Dự Án");
+                    subCatSet.add("Cẩm Nang");
+                }
+
                 const tabs = ['Tất cả', ...Array.from(subCatSet)];
                 
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
-                    `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this, '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
+                    `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${safeHTMLAttr(cat)}', this, '${activeCatSlug}', '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
                 ).join('');
                 // ========================================================
 
                 mixedPostsPool = [...postsInThisCat];
-                // Gọi load tab "Tất cả" lúc mới vào trang
-                switchSubTab('Tất cả', document.querySelector('.s1-tab'), currentCatName);
+                switchTab('Tất cả', document.querySelector('.s1-tab'), activeCatSlug, currentCatName);
 
                 // Load sản phẩm cột phải & dưới cùng
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -400,23 +402,32 @@
             }
         });
 
-        // Hàm chuyển Tab cho danh-muc.html
-        window.switchSubTab = function(clickedCatName, btnEl, mainCatName) {
+        window.switchTab = function(clickedTab, btnEl, baseActiveSlug, baseCatName) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            // Bấm "Tất cả" -> nạp toàn bộ bài của Danh mục đang đứng
-            if(clickedCatName === 'Tất cả' || clickedCatName === mainCatName) {
-                currentTabPosts = [...postsInThisCat];
+            let targetPosts = [];
+            
+            // Xử lý logic chung cho cả danh-muc và tin-tuc
+            if (clickedTab === 'Tất cả') {
+                document.getElementById('dyn-cat-title').innerText = baseCatName;
+                if (baseActiveSlug) {
+                    targetPosts = allPosts.filter(p => {
+                        let cleanCats = extractCats(p.cat);
+                        return cleanCats.some(c => createSafeSlug(c) === baseActiveSlug);
+                    });
+                } else {
+                    targetPosts = [...allPosts];
+                }
             } else {
-                // Bấm vào Danh mục con
-                currentTabPosts = postsInThisCat.filter(p => {
+                document.getElementById('dyn-cat-title').innerText = clickedTab;
+                targetPosts = allPosts.filter(p => {
                     let cleanCats = extractCats(p.cat);
-                    return cleanCats.some(c => c.toLowerCase() === clickedCatName.toLowerCase());
+                    return cleanCats.some(c => c.toLowerCase() === clickedTab.toLowerCase());
                 });
             }
             
-            if(currentTabPosts.length === 0) {
+            if(targetPosts.length === 0) {
                 document.getElementById('top-grid-container').style.opacity = 1;
                 document.getElementById('top-grid-container').innerHTML = "<div style='grid-column: 1/-1; color:#888; padding:50px; text-align:center;'>Chưa có bài viết nào trong mục này.</div>";
                 document.getElementById('main-post-grid').innerHTML = '';
@@ -430,28 +441,30 @@
                 <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>
             `;
 
-            const hoverPosts = currentTabPosts.slice(1, 7);
+            const hoverPosts = targetPosts.slice(1, 7);
             document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
                 const pd = extractPostData(p);
                 return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" 
                             onmouseenter="updateHero(this)" 
-                            data-link="${encodeURIComponent(pd.link)}" 
-                            data-img="${encodeURIComponent(pd.img)}" 
-                            data-tit="${encodeURIComponent(pd.title)}" 
-                            data-desc="${encodeURIComponent(pd.excerpt)}" 
-                            data-date="${encodeURIComponent(pd.date)}" 
+                            data-link="${safeHTMLAttr(pd.link)}" 
+                            data-img="${safeHTMLAttr(pd.img)}" 
+                            data-tit="${safeHTMLAttr(pd.title)}" 
+                            data-desc="${safeHTMLAttr(pd.excerpt)}" 
+                            data-date="${safeHTMLAttr(pd.date)}" 
                             onclick="window.location.href='${pd.link}'">${pd.title}</div>`;
             }).join('');
             
-            const firstPost = extractPostData(currentTabPosts[0]);
+            const firstPost = extractPostData(targetPosts[0]);
             renderHeroSafely(firstPost.link, firstPost.img, firstPost.title, firstPost.excerpt, firstPost.date);
             
-            const relatedPosts = currentTabPosts.slice(7, 12);
+            const relatedPosts = targetPosts.slice(7, 12);
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            
             document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
                 const pd = extractPostData(p);
                 return `<a href="${pd.link}" class="gr-prod-card" style="align-items: center; display:flex; gap:10px; margin-bottom:15px;">
                             <div class="gr-img-col3" style="width:70px; height:50px; flex-shrink:0; border-radius:4px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
-                                <img src="${pd.img}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';" style="width:100%; height:100%; object-fit:cover;">
+                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';" style="width:100%; height:100%; object-fit:cover;">
                             </div>
                             <div class="gr-prod-info" style="flex:1;">
                                 <h4 class="gr-tit" style="font-size:12px !important; margin:0 0 4px !important;">${pd.title}</h4>
@@ -462,7 +475,7 @@
             
             document.getElementById('top-grid-container').style.opacity = 1;
             
-            mixedPostsPool = [...currentTabPosts]; 
+            mixedPostsPool = [...targetPosts]; 
             loadedCount = 0;
             document.getElementById('main-post-grid').innerHTML = ''; 
             document.getElementById('load-more-wrap').style.display = 'block';
@@ -470,8 +483,9 @@
         };
 
         function renderHeroSafely(link, img, tit, desc, date) {
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             document.getElementById('hero-col').innerHTML = `
-                <div class="s1-hero-img-box"><a href="${link}" id="hero-link"><img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';" id="hero-img" class="s1-hero-img"></a></div>
+                <div class="s1-hero-img-box"><a href="${link}" id="hero-link"><img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img"></a></div>
                 <div class="s1-hero-body"><a href="${link}"><h3 class="s1-hero-tit" id="hero-tit">${tit}</h3></a><div class="s1-hero-desc" id="hero-desc">${desc}</div><div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${date}</div></div>`;
         }
 
@@ -482,22 +496,36 @@
             const desc = decodeURIComponent(el.getAttribute('data-desc'));
             const date = decodeURIComponent(el.getAttribute('data-date'));
             
-            document.getElementById('hero-link').href = link; document.querySelector('.s1-hero-body a').href = link;
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            document.getElementById('hero-link').href = link; 
+            document.querySelector('.s1-hero-body a').href = link;
+            
             const heroImgEl = document.getElementById('hero-img');
-            heroImgEl.src = img; heroImgEl.onerror = function() { this.src = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'; };
+            heroImgEl.src = img; heroImgEl.onerror = function() { this.src = fallbackImg; };
+            
             document.getElementById('hero-tit').innerText = tit;
-            document.getElementById('hero-desc').innerText = desc; document.getElementById('hero-date').innerHTML = `<i class="far fa-clock"></i> ${date}`;
-            document.querySelectorAll('.s1-news-item').forEach(item => item.classList.remove('active')); el.classList.add('active');
+            document.getElementById('hero-desc').innerText = desc; 
+            document.getElementById('hero-date').innerHTML = `<i class="far fa-clock"></i> ${date}`;
+            
+            document.querySelectorAll('.s1-news-item').forEach(item => item.classList.remove('active')); 
+            el.classList.add('active');
         }
 
         window.loadMorePosts = function() {
             const grid = document.getElementById('main-post-grid');
             const batch = mixedPostsPool.slice(loadedCount, loadedCount + postsPerPage);
             if(batch.length === 0) return;
+            
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
+            
             let html = batch.map(p => {
                 const pd = extractPostData(p);
-                return `<a href="${pd.link}" class="gr-list-post"><div class="gr-list-thumb"><img src="${pd.img}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';"></div><div class="gr-list-info"><h4 class="gr-list-tit">${pd.title}</h4><div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div></div></a>`;
+                return `<a href="${pd.link}" class="gr-list-post">
+                            <div class="gr-list-thumb"><img src="${pd.img}" onerror="this.src='${fallbackImg}';"></div>
+                            <div class="gr-list-info"><h4 class="gr-list-tit">${pd.title}</h4><div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div></div>
+                        </a>`;
             }).join('');
+            
             grid.insertAdjacentHTML('beforeend', html);
             loadedCount += batch.length;
             if(loadedCount >= mixedPostsPool.length) document.getElementById('load-more-wrap').style.display = 'none';
@@ -505,7 +533,7 @@
 
         window.grScrollHorizontal = function(id, dir) {
             var el = document.getElementById(id); if(!el) return;
-            var item = el.querySelector(".s2-card"); if(!item) return;
+            var item = el.querySelector(".s2-card") || el.querySelector(".gr-news-card-v"); if(!item) return;
             var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
         };
     </script>
