@@ -287,7 +287,7 @@
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // XÓA BỎ LỆNH GỌI BẢNG CATEGORIES CHỐNG SẬP DATABASE
+                // ĐÃ XÓA GỌI BẢNG CATEGORIES ĐỂ TRÁNH LỖI PHÂN QUYỀN
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
                     db.collection('posts').get(),
                     db.collection('products').get(),
@@ -301,7 +301,6 @@
                 let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
                 
-                // ĐỌC URL ĐỂ TÌM DANH MỤC HIỆN TẠI
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     activeCatSlug = createSafeSlug(currentCatName);
@@ -312,7 +311,6 @@
                     }
                 }
 
-                // TÌM TÊN DANH MỤC GỐC CHÍNH XÁC TỪ BÀI VIẾT NẾU CÓ
                 if (activeCatSlug) {
                     let matchedPost = allPosts.find(p => {
                         let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
@@ -327,7 +325,6 @@
                     }
                 }
 
-                // CẬP NHẬT TIÊU ĐỀ
                 if(activeCatSlug) {
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     document.querySelector('.gr-cat-desc').innerText = `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
@@ -336,7 +333,6 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
-                // LỌC BÀI VIẾT THEO DANH MỤC GỐC
                 if (activeCatSlug) {
                     postsInThisCat = allPosts.filter(p => {
                         let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
@@ -346,14 +342,15 @@
                     postsInThisCat = [...allPosts];
                 }
 
-                // TẠO TABS DANH MỤC CON
+                // ========================================================
+                // BỘ TẠO TAB "TẤT CẢ" VÀ DANH MỤC CON
+                // ========================================================
                 let subCatSet = new Set();
                 postsInThisCat.forEach(p => {
                     if (p.cat) {
                         let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
                         cats.forEach(c => {
                             let cTrim = c.trim();
-                            // Chỉ lấy các danh mục Khác với danh mục gốc làm Tab con
                             if (cTrim && createSafeSlug(cTrim) !== activeCatSlug) {
                                 subCatSet.add(cTrim);
                             }
@@ -362,18 +359,17 @@
                 });
 
                 let finalSubCats = Array.from(subCatSet);
-                // Cấu trúc Tabs: [Tên Danh Mục Gốc, Danh mục con 1, Danh mục con 2...]
-                const tabs = [currentCatName, ...finalSubCats];
+                // Cấu trúc Tabs: [Tất cả, Danh mục con 1, Danh mục con 2...]
+                const tabs = ['Tất cả', ...finalSubCats];
                 
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this, '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
                 ).join('');
+                // ========================================================
 
-                // GỌI HÀM RENDER MẶC ĐỊNH
                 mixedPostsPool = [...postsInThisCat];
-                switchSubTab(currentCatName, document.querySelector('.s1-tab'), currentCatName);
+                switchSubTab('Tất cả', document.querySelector('.s1-tab'), currentCatName);
 
-                // SIDEBAR & CAROUSEL SẢN PHẨM
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -392,10 +388,7 @@
                         const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
                                     <div class="s2-thumb-box"><span class="gr-tag-abs" style="background:#ff4d4f;">Dự án</span><img src="${imgSrc}" onerror="this.src='${fallbackImg}';"></div>
-                                    <div class="s2-body">
-                                        <h3 class="gr-tit">${p.title}</h3>
-                                        <div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div>
-                                    </div>
+                                    <div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-meta" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; display: flex; align-items: center; color: #888; font-size: 11px;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div></div>
                                 </a>`;
                     }).join('');
                 } else {
@@ -413,11 +406,9 @@
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            // Nếu bấm vào Tab đầu tiên (Tab danh mục gốc)
-            if(clickedCatName === mainCatName || clickedCatName === 'Tất cả') {
+            if(clickedCatName === 'Tất cả' || clickedCatName === mainCatName) {
                 currentTabPosts = [...postsInThisCat];
             } else {
-                // Nếu bấm vào các Tab con
                 currentTabPosts = postsInThisCat.filter(p => {
                     let cats = Array.isArray(p.cat) ? p.cat : (p.cat ? String(p.cat).split(',') : []);
                     return cats.some(c => c.trim().toLowerCase() === clickedCatName.toLowerCase());
@@ -483,9 +474,7 @@
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             document.getElementById('hero-col').innerHTML = `
                 <div class="s1-hero-img-box">
-                    <a href="${link}" id="hero-link">
-                        <img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img">
-                    </a>
+                    <a href="${link}" id="hero-link"><img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img"></a>
                 </div>
                 <div class="s1-hero-body">
                     <a href="${link}"><h3 class="s1-hero-tit" id="hero-tit">${tit}</h3></a>
@@ -527,13 +516,8 @@
             let html = batch.map(p => {
                 const pd = extractPostData(p);
                 return `<a href="${pd.link}" class="gr-list-post">
-                            <div class="gr-list-thumb">
-                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';">
-                            </div>
-                            <div class="gr-list-info">
-                                <h4 class="gr-list-tit">${pd.title}</h4>
-                                <div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div>
-                            </div>
+                            <div class="gr-list-thumb"><img src="${pd.img}" onerror="this.src='${fallbackImg}';"></div>
+                            <div class="gr-list-info"><h4 class="gr-list-tit">${pd.title}</h4><div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div></div>
                         </a>`;
             }).join('');
             
