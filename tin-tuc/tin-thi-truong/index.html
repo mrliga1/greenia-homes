@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tin Thị Trường | Greenia Homes</title>
-    <meta name="description" content="" />
+    <meta name="description" content="aaaaaa" />
     <meta name="keywords" content="Tin Thị Trường, bất động sản" />
     <link rel="canonical" href="/greenia-homes/tin-tuc/tin-thi-truong/" />
     <meta property="og:title" content="Tin Thị Trường" />
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="aaaaaa" />
     <meta property="og:url" content="/greenia-homes/tin-tuc/tin-thi-truong/" />
     <meta property="og:type" content="website" />
 
@@ -208,7 +208,7 @@
 
         // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
         let defaultCat = null;
-        try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "" }; } catch(e) {}
+        try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "aaaaaa" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
 
         let allPosts = [];
@@ -305,7 +305,7 @@
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     document.getElementById('dyn-cat-title').innerText = currentCatName;
                     
-                    const descText = window.GREENIA_CURRENT_CATEGORY.desc !== '' ? window.GREENIA_CURRENT_CATEGORY.desc : `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
+                    const descText = window.GREENIA_CURRENT_CATEGORY.desc !== 'aaaaaa' ? window.GREENIA_CURRENT_CATEGORY.desc : `Cập nhật những bài viết mới nhất thuộc chuyên mục ${currentCatName}.`;
                     document.querySelector('.gr-cat-desc').innerText = descText;
                 } else {
                     document.getElementById('dyn-cat-title').innerText = "Tất cả Tin Tức";
