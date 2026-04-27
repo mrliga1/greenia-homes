@@ -28,7 +28,7 @@
         
         .s1-head-row { border-bottom: 1px solid var(--border); margin-bottom: 20px; display: flex; align-items: flex-end; }
         .s1-tabs-wrap { display: flex; gap: 25px; overflow-x: auto; width: 100%; scrollbar-width: none; padding-bottom: 5px;} .s1-tabs-wrap::-webkit-scrollbar { display: none; }
-        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block; text-transform: capitalize;}
+        .s1-tab { font-size: 16px; font-weight: 600; color: #888; cursor: pointer; margin-bottom: -1px; padding-bottom: 1px; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.3s; display: block;}
         .s1-tab:hover { color: #c5a059; } .s1-tab.active { color: #c5a059 !important; border-bottom: 2px solid #c5a059 !important; }
         
         .gr-cat-header-layer { margin-bottom: 25px; padding-bottom: 2px; border-bottom: 1px dashed var(--border); }
@@ -89,7 +89,7 @@
         .s2-body .gr-meta { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
         .gr-hl { color: var(--gold); font-weight: 700; font-size: 14px; }
 
-        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 3px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
+        .gr-tag-abs { position: absolute; top: 0; left: 0; padding: 2px 5px; font-size: 10px; font-weight: 600; color: #fff; z-index: 5; border-bottom-right-radius: 5px; background: var(--gold); }
         .tag-ban { background: var(--red); } .tag-thue { background: var(--green); }
 
         .s1-btn-wrap { width: 100%; text-align: center; margin-top: 25px; }
@@ -188,21 +188,8 @@
           appId: "1:24027695632:web:13a23aa156e864f7d55895",
           measurementId: "G-YRK63BNPP0"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
-
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
-        
-        window.safeHTMLAttr = function(str) {
-            if(!str) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
-        };
-
-        function extractCats(catData) {
-            if (!catData) return [];
-            let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
-            return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
-        }
 
         let defaultCat = null;
         try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "aaaaaavvvvvvvv" }; } catch(e) {}
@@ -210,11 +197,20 @@
 
         let allPosts = [];
         let allProducts = [];
+        let allCategories = [];
         let postsInThisCat = []; 
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
         let mixedPostsPool = [];
+        let independentProjects = [];
+
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+
+        window.safeHTMLAttr = function(str) {
+            if(!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
+        };
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
@@ -229,13 +225,12 @@
         }
 
         function extractPostData(p) {
-            const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content || "";
+            const tempDiv = document.createElement('div'); 
+            tempDiv.innerHTML = p.content || "";
             const firstImg = tempDiv.querySelector('img');
             let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 120) + '...';
-            const cleanCats = extractCats(p.cat);
-            const primaryCat = cleanCats.length > 0 ? cleanCats[0] : 'Tin tức';
-            const catSlug = createSafeSlug(primaryCat);
+            const catSlug = createSafeSlug(p.cat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const link = `${safeBaseUrl}tin-tuc/${catSlug}/${pSlug}/`;
             return { img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
@@ -247,7 +242,7 @@
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
+            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
             let areaBedHtml = "";
@@ -259,52 +254,70 @@
             }
 
             if(isList) {
-                return `<a href="${link}" class="gr-list-prod"><div class="gr-lprod-thumb"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div><div class="gr-lprod-info"><h4 class="gr-lprod-tit">${p.title}</h4><div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div><div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;"><span class="gr-lprod-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div></div></a>`;
+                return `<a href="${link}" class="gr-list-prod">
+                            <div class="gr-lprod-thumb">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
+                            <div class="gr-lprod-info">
+                                <h4 class="gr-lprod-tit">${p.title}</h4>
+                                <div class="gr-lprod-loc"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div>
+                                <div class="gr-lprod-meta" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <span class="gr-lprod-hl">${p.price || 'Liên hệ'}</span>
+                                    ${areaBedHtml}
+                                </div>
+                            </div>
+                        </a>`;
             } else {
-                return `<a href="${link}" class="s2-card"><div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagText}</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div><div class="s2-body"><h3 class="gr-tit">${p.title}</h3><div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div><div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;"><span class="gr-hl">${p.price || 'Liên hệ'}</span>${areaBedHtml}</div></div></a>`;
+                return `<a href="${link}" class="s2-card">
+                            <div class="s2-thumb-box">
+                                <span class="gr-tag-abs ${tagClass}">${tagText}</span>
+                                <img src="${imgUrl}" onerror="this.src='${fallbackImg}';">
+                            </div>
+                            <div class="s2-body">
+                                <h3 class="gr-tit">${p.title}</h3>
+                                <div class="gr-loc" style="font-size: 11px; color: #999; margin-bottom: 6px;"><i class="fas fa-map-marker-alt"></i> ${p.loc || ''}</div>
+                                <div class="gr-meta" style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span class="gr-hl">${p.price || 'Liên hệ'}</span>
+                                    ${areaBedHtml}
+                                </div>
+                            </div>
+                        </a>`;
             }
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // Tách riêng luồng gọi DB để chống sập nếu lỗi Rule
-                const [postSnap, prodSnap, projSnap] = await Promise.all([
+                const [postSnap, prodSnap, projSnap, catSnap] = await Promise.all([
                     db.collection('posts').get(),
                     db.collection('products').get(),
-                    db.collection('projects').get()
-                ]).catch(e => { throw e; });
+                    db.collection('projects').get(),
+                    db.collection('categories').get() // Tải thêm Categories từ DB
+                ]);
 
                 allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allCategories = catSnap.docs.map(doc => doc.data());
 
-                let currentCatName = "Tin Tức Bất Động Sản";
+                let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
-
-                // DÒ TÌM URL DÀNH CHO DANH-MUC.HTML (Tin-tuc.html sẽ bỏ qua)
-                let isDanhMucPage = window.location.pathname.includes('/tin-tuc/') && !window.location.pathname.endsWith('tin-tuc.html');
                 
                 if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
                     currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
                     activeCatSlug = createSafeSlug(currentCatName);
-                } else if (isDanhMucPage) {
-                    const paths = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
-                    const tinTucIdx = paths.indexOf('tin-tuc');
-                    if (tinTucIdx !== -1 && tinTucIdx < paths.length - 1) {
-                        activeCatSlug = paths[tinTucIdx + 1];
+                } else {
+                    const paths = window.location.pathname.split('/').filter(Boolean);
+                    if (paths.length >= 2 && paths[paths.length - 2] === 'tin-tuc') {
+                        activeCatSlug = paths[paths.length - 1];
                     }
                 }
 
-                if (activeCatSlug) {
-                    let matchedPost = allPosts.find(p => {
-                        let cleanCats = extractCats(p.cat);
-                        return cleanCats.some(c => createSafeSlug(c) === activeCatSlug);
-                    });
-                    if (matchedPost) {
-                        let cleanCats = extractCats(matchedPost.cat);
-                        let exactCat = cleanCats.find(c => createSafeSlug(c) === activeCatSlug);
-                        if (exactCat) currentCatName = exactCat;
-                    } else {
+                if (activeCatSlug && allCategories.length > 0) {
+                    let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name || c.title) === activeCatSlug);
+                    if (matchedCat) {
+                        currentCatName = matchedCat.name || matchedCat.title || currentCatName;
+                    } else if(activeCatSlug) {
                         currentCatName = beautifyCatName(activeCatSlug);
                     }
                 }
@@ -317,59 +330,47 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
-                // Lọc bài viết
                 if (activeCatSlug) {
                     postsInThisCat = allPosts.filter(p => {
-                        let cleanCats = extractCats(p.cat);
-                        return cleanCats.some(c => createSafeSlug(c) === activeCatSlug);
+                        let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
+                        return pCats.some(c => createSafeSlug(c.trim()) === activeCatSlug);
                     });
                 } else {
                     postsInThisCat = [...allPosts];
                 }
 
-                // ========================================================
-                // BỘ QUÉT TABS HOÀN HẢO (CHUNG CHO CẢ 2 FILE)
-                // ========================================================
-                let subCatSet = new Set();
+                let newsCatSet = new Set();
                 
-                if (activeCatSlug) {
-                    // Nếu ở danh-muc.html -> Các Tab là danh mục con (Trừ danh mục gốc)
-                    postsInThisCat.forEach(p => {
-                        extractCats(p.cat).forEach(c => {
-                            if (c !== '' && c.toLowerCase() !== 'tất cả' && createSafeSlug(c) !== activeCatSlug) {
-                                subCatSet.add(c);
-                            }
-                        });
-                    });
-                } else {
-                    // Nếu ở tin-tuc.html -> Các Tab là TẤT CẢ danh mục tin tức hiện có
-                    allPosts.forEach(p => {
-                        extractCats(p.cat).forEach(c => {
-                            if (c !== '' && c.toLowerCase() !== 'tất cả') {
-                                subCatSet.add(c);
-                            }
-                        });
+                if (allCategories && allCategories.length > 0) {
+                    allCategories.forEach(c => {
+                        if (c.type === 'news' || (c.slug && String(c.slug).includes('tin'))) {
+                            let cName = c.name || c.title;
+                            if (cName) newsCatSet.add(cName.trim());
+                        }
                     });
                 }
 
-                // FAILSAFE CHỐNG TRỐNG TABS Ở TIN-TUC.HTML
-                if (subCatSet.size === 0 && !activeCatSlug) {
-                    subCatSet.add("Tin Thị Trường");
-                    subCatSet.add("Tin Dự Án");
-                    subCatSet.add("Cẩm Nang");
-                }
+                allPosts.forEach(p => {
+                    if (p.cat) {
+                        let cats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
+                        cats.forEach(c => {
+                            let cTrim = c.trim();
+                            if (cTrim && cTrim !== '') { 
+                                newsCatSet.add(cTrim);
+                            }
+                        });
+                    }
+                });
 
-                const tabs = ['Tất cả', ...Array.from(subCatSet)];
+                let finalCats = Array.from(newsCatSet).filter(c => c.toLowerCase() !== 'tin tức');
+                const tabs = ['Tất cả', ...finalCats];
                 
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
-                    `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${safeHTMLAttr(cat)}', this, '${activeCatSlug}', '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
+                    `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this)">${cat}</div>`
                 ).join('');
-                // ========================================================
 
-                mixedPostsPool = [...postsInThisCat];
-                switchTab('Tất cả', document.querySelector('.s1-tab'), activeCatSlug, currentCatName);
+                switchSubTab('Tất cả', document.querySelector('.s1-tab'));
 
-                // Load sản phẩm cột phải & dưới cùng
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -402,32 +403,20 @@
             }
         });
 
-        window.switchTab = function(clickedTab, btnEl, baseActiveSlug, baseCatName) {
+        window.switchSubTab = function(subCatName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            let targetPosts = [];
-            
-            // Xử lý logic chung cho cả danh-muc và tin-tuc
-            if (clickedTab === 'Tất cả') {
-                document.getElementById('dyn-cat-title').innerText = baseCatName;
-                if (baseActiveSlug) {
-                    targetPosts = allPosts.filter(p => {
-                        let cleanCats = extractCats(p.cat);
-                        return cleanCats.some(c => createSafeSlug(c) === baseActiveSlug);
-                    });
-                } else {
-                    targetPosts = [...allPosts];
-                }
+            if(subCatName === 'Tất cả') {
+                currentTabPosts = [...postsInThisCat];
             } else {
-                document.getElementById('dyn-cat-title').innerText = clickedTab;
-                targetPosts = allPosts.filter(p => {
-                    let cleanCats = extractCats(p.cat);
-                    return cleanCats.some(c => c.toLowerCase() === clickedTab.toLowerCase());
+                currentTabPosts = postsInThisCat.filter(p => {
+                    let cats = Array.isArray(p.cat) ? p.cat : (p.cat ? String(p.cat).split(',') : []);
+                    return cats.some(c => c.trim().toLowerCase() === subCatName.toLowerCase());
                 });
             }
             
-            if(targetPosts.length === 0) {
+            if(currentTabPosts.length === 0) {
                 document.getElementById('top-grid-container').style.opacity = 1;
                 document.getElementById('top-grid-container').innerHTML = "<div style='grid-column: 1/-1; color:#888; padding:50px; text-align:center;'>Chưa có bài viết nào trong mục này.</div>";
                 document.getElementById('main-post-grid').innerHTML = '';
@@ -441,7 +430,7 @@
                 <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>
             `;
 
-            const hoverPosts = targetPosts.slice(1, 7);
+            const hoverPosts = currentTabPosts.slice(1, 7);
             document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
                 const pd = extractPostData(p);
                 return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" 
@@ -454,10 +443,10 @@
                             onclick="window.location.href='${pd.link}'">${pd.title}</div>`;
             }).join('');
             
-            const firstPost = extractPostData(targetPosts[0]);
+            const firstPost = extractPostData(currentTabPosts[0]);
             renderHeroSafely(firstPost.link, firstPost.img, firstPost.title, firstPost.excerpt, firstPost.date);
             
-            const relatedPosts = targetPosts.slice(7, 12);
+            const relatedPosts = currentTabPosts.slice(7, 12);
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             
             document.getElementById('related-col').innerHTML = relatedPosts.map(p => {
@@ -475,7 +464,7 @@
             
             document.getElementById('top-grid-container').style.opacity = 1;
             
-            mixedPostsPool = [...targetPosts]; 
+            mixedPostsPool = [...currentTabPosts]; 
             loadedCount = 0;
             document.getElementById('main-post-grid').innerHTML = ''; 
             document.getElementById('load-more-wrap').style.display = 'block';
@@ -485,23 +474,32 @@
         function renderHeroSafely(link, img, tit, desc, date) {
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             document.getElementById('hero-col').innerHTML = `
-                <div class="s1-hero-img-box"><a href="${link}" id="hero-link"><img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img"></a></div>
-                <div class="s1-hero-body"><a href="${link}"><h3 class="s1-hero-tit" id="hero-tit">${tit}</h3></a><div class="s1-hero-desc" id="hero-desc">${desc}</div><div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${date}</div></div>`;
+                <div class="s1-hero-img-box">
+                    <a href="${link}" id="hero-link">
+                        <img src="${img}" onerror="this.src='${fallbackImg}';" id="hero-img" class="s1-hero-img">
+                    </a>
+                </div>
+                <div class="s1-hero-body">
+                    <a href="${link}"><h3 class="s1-hero-tit" id="hero-tit">${tit}</h3></a>
+                    <div class="s1-hero-desc" id="hero-desc">${desc}</div>
+                    <div class="s1-hero-date" id="hero-date"><i class="far fa-clock"></i> ${date}</div>
+                </div>`;
         }
 
         window.updateHero = function(el) {
-            const link = decodeURIComponent(el.getAttribute('data-link'));
-            const img = decodeURIComponent(el.getAttribute('data-img'));
-            const tit = decodeURIComponent(el.getAttribute('data-tit'));
-            const desc = decodeURIComponent(el.getAttribute('data-desc'));
-            const date = decodeURIComponent(el.getAttribute('data-date'));
+            const link = el.getAttribute('data-link');
+            const img = el.getAttribute('data-img');
+            const tit = el.getAttribute('data-tit');
+            const desc = el.getAttribute('data-desc');
+            const date = el.getAttribute('data-date');
             
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
             document.getElementById('hero-link').href = link; 
             document.querySelector('.s1-hero-body a').href = link;
             
             const heroImgEl = document.getElementById('hero-img');
-            heroImgEl.src = img; heroImgEl.onerror = function() { this.src = fallbackImg; };
+            heroImgEl.src = img;
+            heroImgEl.onerror = function() { this.src = fallbackImg; };
             
             document.getElementById('hero-tit').innerText = tit;
             document.getElementById('hero-desc').innerText = desc; 
@@ -521,8 +519,13 @@
             let html = batch.map(p => {
                 const pd = extractPostData(p);
                 return `<a href="${pd.link}" class="gr-list-post">
-                            <div class="gr-list-thumb"><img src="${pd.img}" onerror="this.src='${fallbackImg}';"></div>
-                            <div class="gr-list-info"><h4 class="gr-list-tit">${pd.title}</h4><div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div></div>
+                            <div class="gr-list-thumb">
+                                <img src="${pd.img}" onerror="this.src='${fallbackImg}';">
+                            </div>
+                            <div class="gr-list-info">
+                                <h4 class="gr-list-tit">${pd.title}</h4>
+                                <div class="gr-list-date"><i class="far fa-clock"></i> ${pd.date}</div>
+                            </div>
                         </a>`;
             }).join('');
             
