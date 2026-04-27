@@ -264,7 +264,7 @@
         try { 
             defaultProduct = {
                 id: "53",
-                title: "Cập Nhật Mới Nhất",
+                title: "Cập Nhật",
                 slug: "noi-dung",
                 type: "Bán",
                 cat: "Nhà Phố",
@@ -369,7 +369,21 @@
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
             if (!prod || prod.id === "53" || prod.id === "") { 
-                window.location.replace(safeBaseUrl + 'san-pham.html'); 
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 100px 20px; background:#05080f; border: 1px solid #c5a059; border-radius: 8px; max-width: 800px; margin: 0 auto;">
+                        <i class="fas fa-radar fa-4x" style="color:#ff4d4f; margin-bottom:20px;"></i>
+                        <h2 style="color:#fff; font-size:24px; text-transform:uppercase;">Chế độ Chẩn đoán Lỗi</h2>
+                        <p style="color:#b0b8c4; font-size:15px; margin-bottom: 20px;">
+                            Hệ thống đã chặn lệnh đá văng để hiển thị nguyên nhân gốc.<br>
+                            Bác hãy chụp toàn bộ màn hình này gửi lại cho tớ nhé!
+                        </p>
+                        <div style="background:#1a1f2b; padding:20px; border-radius:8px; color:#c5a059; text-align:left; display:inline-block; font-size: 14px;">
+                            <b>1. Môi trường:</b> ${window.location.hostname} <br>
+                            <b>2. URL Hiện tại:</b> ${window.location.href} <br>
+                            <b>3. Tình trạng Khuôn:</b> ${prod ? (prod.id === '53' ? 'Khuôn rỗng (Chưa được đúc)' : 'Khuôn bị mất data') : 'Lỗi xé code (Syntax Error)'} <br>
+                            <b>4. Giá trị ID:</b> ${prod ? prod.id : 'NULL'}
+                        </div>
+                    </div>`;
                 return; 
             }
 
