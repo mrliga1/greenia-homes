@@ -198,26 +198,6 @@
             return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
         };
 
-        // Hàm bóc tách dữ liệu danh mục "bọc thép"
-        function extractCats(catData) {
-            if (!catData) return [];
-            let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
-            return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
-        }
-
-        let defaultCat = null;
-        try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "aaaaaavvvvvvvv" }; } catch(e) {}
-        window.GREENIA_CURRENT_CATEGORY = defaultCat;
-
-        let allPosts = [];
-        let allProducts = [];
-        let postsInThisCat = []; 
-        let currentTabPosts = [];
-        let loadedCount = 0;
-        const postsPerPage = 10;
-        let mixedPostsPool = [];
-        let independentProjects = [];
-
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
@@ -236,8 +216,13 @@
             const firstImg = tempDiv.querySelector('img');
             let img = firstImg ? firstImg.src : (p.thumb || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'); 
             const excerpt = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 120) + '...';
-            const cleanCats = extractCats(p.cat);
-            const primaryCat = cleanCats.length > 0 ? cleanCats[0] : 'Tin tức';
+            
+            let primaryCat = 'Tin tức';
+            if (p.cat) {
+                let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                if (catsArr.length > 0) primaryCat = String(catsArr[0]).replace(/['"\[\]{}]/g, '').trim();
+            }
+            
             const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const link = `${safeBaseUrl}tin-tuc/${catSlug}/${pSlug}/`;
@@ -294,47 +279,52 @@
             }
         }
 
+        let allPosts = [];
+        let currentTabPosts = [];
+        let loadedCount = 0;
+        const postsPerPage = 10;
+        let mixedPostsPool = [];
+
         document.addEventListener("DOMContentLoaded", async function() {
             try {
-                // Tách riêng luồng Database để không bị sập (KHÔNG gọi Categories)
-                const [postSnap, prodSnap, projSnap] = await Promise.all([
-                    db.collection('posts').get(),
-                    db.collection('products').get(),
-                    db.collection('projects').get()
-                ]).catch(e => { throw e; });
+                // Tách riêng từng luồng lấy dữ liệu. Bảng nào sập kệ nó.
+                let postDocs = [], prodDocs = [], projDocs = [];
+                
+                await Promise.all([
+                    db.collection('posts').get().then(s => postDocs = s.docs.map(d=>d.data())).catch(e => console.log("Lỗi Posts")),
+                    db.collection('products').get().then(s => prodDocs = s.docs.map(d=>d.data())).catch(e => console.log("Lỗi Products")),
+                    db.collection('projects').get().then(s => projDocs = s.docs.map(d=>d.data())).catch(e => console.log("Lỗi Projects"))
+                ]);
 
-                allPosts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                allProducts = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
-                independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
+                allPosts = postDocs.sort((a,b) => b.id - a.id);
+                let allProducts = prodDocs.sort((a,b) => b.id - a.id);
+                let independentProjects = projDocs.sort((a,b) => b.id - a.id);
 
                 let currentCatName = "Tin Tức";
                 let activeCatSlug = "";
-
-                // Dò URL để xác định danh mục hiện tại (Chỉ chạy cho trang danh-muc)
-                const paths = window.location.pathname.split('/').filter(p => p && p !== 'index.html');
-                const tinTucIdx = paths.indexOf('tin-tuc');
                 
-                if (tinTucIdx !== -1 && tinTucIdx < paths.length - 1) {
-                    activeCatSlug = paths[tinTucIdx + 1];
-                } else if (window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.slug !== 'tin-thi-truong') {
-                    activeCatSlug = window.GREENIA_CURRENT_CATEGORY.slug;
-                }
-
-                // Lọc bài viết theo danh mục (nếu có)
-                if (activeCatSlug) {
-                    postsInThisCat = allPosts.filter(p => {
-                        return extractCats(p.cat).some(c => createSafeSlug(c) === activeCatSlug);
-                    });
+                if(window.GREENIA_CURRENT_CATEGORY && window.GREENIA_CURRENT_CATEGORY.name !== 'Tin Thị Trường' && window.GREENIA_CURRENT_CATEGORY.name !== '') {
+                    currentCatName = window.GREENIA_CURRENT_CATEGORY.name;
+                    activeCatSlug = createSafeSlug(currentCatName);
                 } else {
-                    postsInThisCat = [...allPosts];
+                    const paths = window.location.pathname.split('/').filter(Boolean);
+                    if (paths.length >= 2 && paths[paths.length - 2] === 'tin-tuc') {
+                        activeCatSlug = paths[paths.length - 1];
+                    }
                 }
 
-                // Xác định tên danh mục để in ra tiêu đề H1
-                if (postsInThisCat.length > 0 && activeCatSlug) {
-                    let exactCat = extractCats(postsInThisCat[0].cat).find(c => createSafeSlug(c) === activeCatSlug);
-                    if (exactCat) currentCatName = exactCat;
-                } else if (activeCatSlug) {
-                    currentCatName = beautifyCatName(activeCatSlug);
+                if (activeCatSlug) {
+                    let matchedPost = allPosts.find(p => {
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        return catsArr.some(c => createSafeSlug(String(c).replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
+                    });
+                    if (matchedPost) {
+                        let catsArr = typeof matchedPost.cat === 'string' ? matchedPost.cat.split(',') : (Array.isArray(matchedPost.cat) ? matchedPost.cat : []);
+                        let exactCat = catsArr.find(c => createSafeSlug(String(c).replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
+                        if (exactCat) currentCatName = String(exactCat).replace(/['"\[\]{}]/g, '').trim();
+                    } else {
+                        currentCatName = beautifyCatName(activeCatSlug);
+                    }
                 }
 
                 if(activeCatSlug) {
@@ -345,34 +335,41 @@
                     document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin dự án, thị trường bất động sản mới nhất.";
                 }
 
-                // ========================================================
-                // BỘ QUÉT TABS: Danh mục đầu tiên ghi "Tất cả", theo sau là danh mục con
-                // ========================================================
+                let postsInThisCat = [];
+                if (activeCatSlug) {
+                    postsInThisCat = allPosts.filter(p => {
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        return catsArr.some(c => createSafeSlug(String(c).replace(/['"\[\]{}]/g, '').trim()) === activeCatSlug);
+                    });
+                } else {
+                    postsInThisCat = [...allPosts];
+                }
+
+                // TẠO TAB CHO DANH MỤC
                 let subCatSet = new Set();
                 
                 postsInThisCat.forEach(p => {
-                    extractCats(p.cat).forEach(c => {
-                        // Loại bỏ chữ rỗng, chữ "Tất cả", và chính cái tên Danh mục gốc
-                        if (c !== '' && c.toLowerCase() !== 'tất cả' && createSafeSlug(c) !== activeCatSlug) {
-                            subCatSet.add(c);
-                        }
-                    });
+                    if (p.cat) {
+                        let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                        catsArr.forEach(c => {
+                            let cleanCat = String(c).replace(/['"\[\]{}]/g, '').trim();
+                            // Loại bỏ rỗng, loại bỏ "Tất cả", loại bỏ chính nó
+                            if (cleanCat !== '' && cleanCat.toLowerCase() !== 'tất cả' && createSafeSlug(cleanCat) !== activeCatSlug) { 
+                                subCatSet.add(cleanCat);
+                            }
+                        });
+                    }
                 });
 
-                // Tab đầu tiên hiển thị chữ "Tất cả"
                 const tabs = ['Tất cả', ...Array.from(subCatSet)];
-                
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchSubTab('${safeHTMLAttr(cat)}', this, '${safeHTMLAttr(currentCatName)}')">${cat}</div>`
                 ).join('');
-                // ========================================================
 
                 mixedPostsPool = [...postsInThisCat];
-                
-                // Kích hoạt Tab "Tất cả" đầu tiên khi vừa vào trang
                 switchSubTab('Tất cả', document.querySelector('.s1-tab'), currentCatName);
 
-                // Load sản phẩm cột phải & dưới cùng
+                // Render Carousel Sản phẩm
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
@@ -400,26 +397,25 @@
 
             } catch(e) {
                 console.error("Lỗi kết nối Firebase:", e);
-                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Hệ thống đang kết nối cơ sở dữ liệu. Vui lòng tải lại trang.</div>";
+                document.getElementById('top-grid-container').innerHTML = "<div style='color:#ff4d4f; padding:50px; text-align:center;'>Đang tải dữ liệu...</div>";
                 document.getElementById('top-grid-container').style.opacity = 1;
             }
         });
 
-        // Hàm chuyển Tab cho danh-muc.html
         window.switchSubTab = function(clickedCatName, btnEl, mainCatName) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
             
-            // Bấm "Tất cả" -> nạp toàn bộ bài của Danh mục đang đứng và đổi tiêu đề về danh mục gốc
+            // Nếu bấm "Tất cả", nạp lại toàn bộ bài của Danh mục đang đứng và đổi tiêu đề về danh mục gốc
             if(clickedCatName === 'Tất cả' || clickedCatName === mainCatName) {
-                currentTabPosts = [...postsInThisCat];
+                currentTabPosts = mixedPostsPool.filter(p => true); // Lấy bản sao danh sách bài của chuyên mục
                 document.getElementById('dyn-cat-title').innerText = mainCatName || "Tất cả Tin Tức";
             } else {
                 // Bấm vào Danh mục con -> Đổi tiêu đề và lọc
                 document.getElementById('dyn-cat-title').innerText = clickedCatName;
-                currentTabPosts = postsInThisCat.filter(p => {
-                    let cleanCats = extractCats(p.cat);
-                    return cleanCats.some(c => c.toLowerCase() === clickedCatName.toLowerCase());
+                currentTabPosts = mixedPostsPool.filter(p => {
+                    let catsArr = typeof p.cat === 'string' ? p.cat.split(',') : (Array.isArray(p.cat) ? p.cat : []);
+                    return catsArr.some(c => String(c).replace(/['"\[\]{}]/g, '').trim().toLowerCase() === clickedCatName.toLowerCase());
                 });
             }
             
@@ -471,11 +467,10 @@
             
             document.getElementById('top-grid-container').style.opacity = 1;
             
-            mixedPostsPool = [...currentTabPosts]; 
             loadedCount = 0;
             document.getElementById('main-post-grid').innerHTML = ''; 
             document.getElementById('load-more-wrap').style.display = 'block';
-            loadMorePosts();
+            loadMorePosts(); // Render danh sách lưới dưới
         };
 
         function renderHeroSafely(link, img, tit, desc, date) {
@@ -518,11 +513,10 @@
 
         window.loadMorePosts = function() {
             const grid = document.getElementById('main-post-grid');
-            const batch = mixedPostsPool.slice(loadedCount, loadedCount + postsPerPage);
+            const batch = currentTabPosts.slice(loadedCount, loadedCount + postsPerPage); // Sử dụng mảng đang lọc
             if(batch.length === 0) return;
             
             const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800";
-            
             let html = batch.map(p => {
                 const pd = extractPostData(p);
                 return `<a href="${pd.link}" class="gr-list-post">
@@ -538,7 +532,7 @@
             
             grid.insertAdjacentHTML('beforeend', html);
             loadedCount += batch.length;
-            if(loadedCount >= mixedPostsPool.length) document.getElementById('load-more-wrap').style.display = 'none';
+            if(loadedCount >= currentTabPosts.length) document.getElementById('load-more-wrap').style.display = 'none';
         }
 
         window.grScrollHorizontal = function(id, dir) {
