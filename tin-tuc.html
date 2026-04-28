@@ -384,7 +384,7 @@
                 <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>`;
             
             // ĐÃ SỬA: slice(0, 6) ĐỂ LẤY BÀI ĐẦU TIÊN VÀO CỘT 2
-            const hoverPosts = currentTabPosts.slice(0, 6);
+            const hoverPosts = currentTabPosts.slice(0, 10);
             document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
                 const pd = extractPostData(p);
                 return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" 
