@@ -203,7 +203,6 @@
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
-            // normalize('NFC') để đồng bộ các ký tự tiếng Việt ghép và dựng sẵn khi tạo slug
             return title.toString().normalize('NFC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
@@ -294,23 +293,19 @@
                 document.getElementById('dyn-cat-title').innerText = "Tin Tức Bất Động Sản";
                 document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin mới nhất về thị trường, dự án và cẩm nang nhà ở.";
 
-                // KHÔNG GHIM CỨNG NỮA - CHỈ QUÉT ĐỘNG VÀ ĐỒNG NHẤT TIẾNG VIỆT
                 let newsCatSet = new Set();
                 
                 allPosts.forEach(p => {
                     extractCatsSafely(p.cat).forEach(c => {
-                        // Dùng normalize('NFC') để xóa triệt để lỗi gõ dấu tiếng Việt khác nhau
                         let cleanCat = c.normalize('NFC');
                         let cLower = cleanCat.toLowerCase();
                         
-                        // Bỏ các từ khóa không mong muốn
                         if (cLower !== '' && cLower !== 'tất cả' && cLower !== 'tin tức' && cLower !== 'tin tức bất động sản') {
                             newsCatSet.add(cleanCat);
                         }
                     });
                 });
 
-                // Chỉ bơm 2 Tab phụ này vào nếu thực sự Admin của bác KHÔNG CÓ BẤT KỲ DANH MỤC NÀO
                 if (newsCatSet.size === 0) {
                     newsCatSet.add("Tin Thị Trường");
                     newsCatSet.add("Tin Dự Án");
@@ -373,7 +368,6 @@
                  document.getElementById('dyn-cat-title').innerText = catName;
                  currentTabPosts = allPosts.filter(p => {
                     let cleanCats = extractCatsSafely(p.cat);
-                    // Dùng normalize('NFC') để lọc cho chuẩn xác nhất
                     return cleanCats.some(c => c.normalize('NFC').toLowerCase() === catName.normalize('NFC').toLowerCase());
                  });
             }
@@ -389,7 +383,8 @@
                 <div class="s1-col-2" id="hover-list-col"></div>
                 <div class="s1-col-3"><h3 class="s1-col3-title">Tin nổi bật</h3><div id="related-col"></div></div>`;
             
-            const hoverPosts = currentTabPosts.slice(1, 7);
+            // ĐÃ SỬA: slice(0, 6) ĐỂ LẤY BÀI ĐẦU TIÊN VÀO CỘT 2
+            const hoverPosts = currentTabPosts.slice(0, 6);
             document.getElementById('hover-list-col').innerHTML = hoverPosts.map((p, idx) => {
                 const pd = extractPostData(p);
                 return `<div class="s1-news-item ${idx === 0 ? 'active' : ''}" 
