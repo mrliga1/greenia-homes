@@ -189,25 +189,22 @@
             return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/(\r\n|\n|\r)/gm, " ");
         };
 
-        // BỘ LỌC AN TOÀN - DAO PHAY JSON
         function extractCatsSafely(catData) {
             if (!catData) return [];
-            
-            // Xử lý chuỗi JSON nếu nó bị bọc
             if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
                 try {
                     let parsed = JSON.parse(catData);
                     return parsed.map(c => String(c).trim()).filter(c => c !== '');
-                } catch(e) {} // Bỏ qua nếu lỗi
+                } catch(e) {}
             }
-
             let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
             return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
         }
 
         function createSafeSlug(title) {
             if(!title) return 'tin-tuc';
-            return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+            // normalize('NFC') để đồng bộ các ký tự tiếng Việt ghép và dựng sẵn khi tạo slug
+            return title.toString().normalize('NFC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
         function extractPostData(p) {
@@ -231,7 +228,7 @@
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
+            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
 
             let areaBedHtml = "";
@@ -275,13 +272,8 @@
             }
         }
 
-        let defaultCat = null;
-        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
-        window.GREENIA_CURRENT_CATEGORY = defaultCat;
-
         let allPosts = [];
         let allProducts = [];
-        let postsInThisCat = []; 
         let currentTabPosts = [];
         let loadedCount = 0;
         const postsPerPage = 10;
@@ -302,26 +294,32 @@
                 document.getElementById('dyn-cat-title').innerText = "Tin Tức Bất Động Sản";
                 document.querySelector('.gr-cat-desc').innerText = "Cập nhật những thông tin mới nhất về thị trường, dự án và cẩm nang nhà ở.";
 
-                // ========================================================
-                // 1. GHIM CỨNG 3 DANH MỤC CƠ BẢN NHẤT
-                let newsCatSet = new Set(["Tin Thị Trường", "Tin Dự Án", "Cẩm Nang", "Tin Tức Thị Trường"]);
+                // KHÔNG GHIM CỨNG NỮA - CHỈ QUÉT ĐỘNG VÀ ĐỒNG NHẤT TIẾNG VIỆT
+                let newsCatSet = new Set();
                 
-                // 2. TÌM THÊM TỪ BÀI VIẾT ĐỂ BỔ SUNG
                 allPosts.forEach(p => {
                     extractCatsSafely(p.cat).forEach(c => {
-                        let cLower = c.toLowerCase();
-                        // Tránh lọc bậy bạ, chỉ bỏ những chữ gây trùng lặp
+                        // Dùng normalize('NFC') để xóa triệt để lỗi gõ dấu tiếng Việt khác nhau
+                        let cleanCat = c.normalize('NFC');
+                        let cLower = cleanCat.toLowerCase();
+                        
+                        // Bỏ các từ khóa không mong muốn
                         if (cLower !== '' && cLower !== 'tất cả' && cLower !== 'tin tức' && cLower !== 'tin tức bất động sản') {
-                            newsCatSet.add(c);
+                            newsCatSet.add(cleanCat);
                         }
                     });
                 });
+
+                // Chỉ bơm 2 Tab phụ này vào nếu thực sự Admin của bác KHÔNG CÓ BẤT KỲ DANH MỤC NÀO
+                if (newsCatSet.size === 0) {
+                    newsCatSet.add("Tin Thị Trường");
+                    newsCatSet.add("Tin Dự Án");
+                }
 
                 const tabs = ['Tất cả', ...Array.from(newsCatSet)];
                 document.getElementById('dynamic-tabs').innerHTML = tabs.map((cat, idx) => 
                     `<div class="s1-tab ${idx === 0 ? 'active' : ''}" onclick="switchTab('${safeHTMLAttr(cat)}', this)">${cat}</div>`
                 ).join('');
-                // ========================================================
 
                 mixedPostsPool = [...allPosts];
                 switchTab('Tất cả', document.querySelector('.s1-tab'));
@@ -375,7 +373,8 @@
                  document.getElementById('dyn-cat-title').innerText = catName;
                  currentTabPosts = allPosts.filter(p => {
                     let cleanCats = extractCatsSafely(p.cat);
-                    return cleanCats.some(c => c.toLowerCase() === catName.toLowerCase());
+                    // Dùng normalize('NFC') để lọc cho chuẩn xác nhất
+                    return cleanCats.some(c => c.normalize('NFC').toLowerCase() === catName.normalize('NFC').toLowerCase());
                  });
             }
             
