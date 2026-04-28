@@ -386,7 +386,59 @@
                 document.getElementById('top-grid-container').style.opacity = 1;
             }
         });
+		
+		// ==========================================
+        // HỆ THỐNG AUTO SCHEMA - DANH MỤC TIN TỨC
+        // ==========================================
+        function autoGenerateCategorySchema(catName, posts) {
+            // 1. Xóa Schema cũ (nếu có) để tránh rác khi chuyển Tab
+            const oldSchema = document.getElementById('gr-dynamic-schema');
+            if (oldSchema) oldSchema.remove();
 
+            // 2. Lấy tối đa 15 bài viết đầu tiên để báo cáo cho Google
+            const listItems = posts.slice(0, 15).map((p, index) => {
+                const pd = extractPostData(p);
+                return {
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "url": pd.link,
+                    "name": pd.title
+                };
+            });
+
+            // 3. Xây dựng cấu trúc chuẩn: CollectionPage + ItemList
+            const schemaObj = {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "CollectionPage",
+                        "@id": window.location.href + "#webpage",
+                        "url": window.location.href,
+                        "name": (catName === 'Tất cả' ? 'Tin Tức Bất Động Sản' : catName) + " | Greenia Homes",
+                        "description": "Cập nhật những thông tin mới nhất về thị trường, dự án và cẩm nang nhà ở thuộc chủ đề " + catName,
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Greenia Homes",
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png"
+                            }
+                        }
+                    },
+                    {
+                        "@type": "ItemList",
+                        "itemListElement": listItems
+                    }
+                ]
+            };
+
+            // 4. Bơm ngầm vào thẻ <head>
+            const script = document.createElement('script');
+            script.id = 'gr-dynamic-schema';
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schemaObj);
+            document.head.appendChild(script);
+        }
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
@@ -402,6 +454,9 @@
                  });
             }
             
+			// Kích hoạt sinh Schema tự động cho Tab hiện tại
+            autoGenerateCategorySchema(catName, currentTabPosts);
+			
             if(currentTabPosts.length === 0) {
                 document.getElementById('top-grid-container').innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#888;">Chưa có bài viết.</div>`;
                 document.getElementById('top-grid-container').style.opacity = 1;
