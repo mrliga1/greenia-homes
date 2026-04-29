@@ -20,6 +20,14 @@
     <meta property="og:url" content="/san-pham/nha-pho/ban-nha-pho-quan-2/" />
     <meta property="og:type" content="website" />
 
+    <script>
+        window.BASE_URL = '/';
+        var checkId = "54";
+        if (checkId.includes("{{") || checkId === "") {
+            window.location.replace(window.BASE_URL + 'san-pham.html');
+        }
+    </script>
+
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -28,7 +36,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <style>
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: hidden !important;}
         
         #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 35px 0 35px 0 !important; width: 100%; box-sizing: border-box; overflow: visible !important;}
         #lux-uni-catalog * { box-sizing: border-box; }
@@ -272,7 +280,7 @@
         try { 
             defaultProduct = {
                 id: "54",
-                title: "Bán nhà phố  quận 2",
+                title: "Bán nhà phố  quận",
                 slug: "ban-nha-pho-quan-2",
                 type: "Bán",
                 cat: "Nhà Phố",
@@ -301,9 +309,9 @@
         } catch(e) {}
         window.GREENIA_CURRENT_PRODUCT = defaultProduct;
 
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        const safeBaseUrl = window.BASE_URL;
         
-        const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo-greenia-homes.png'; 
+        const u_logo = '/assets/images/logo-greenia-homes.png'; 
         const zalo_img = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
         const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
         
@@ -439,12 +447,6 @@
 
             const container = document.getElementById('sp-container');
             const prod = window.GREENIA_CURRENT_PRODUCT; 
-
-            // Lệnh bảo vệ: Tránh mở trực tiếp file khuôn rỗng
-            if (!prod || String(prod.id).includes("{{") || prod.id === "") { 
-                window.location.replace(safeBaseUrl + 'san-pham.html'); 
-                return; 
-            }
 
             // Kích hoạt sinh Schema Sản phẩm
             autoGenerateSingleProductSchema(prod);
