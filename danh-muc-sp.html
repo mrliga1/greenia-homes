@@ -457,6 +457,65 @@
             }
         });
 
+        // ==========================================
+        // HỆ THỐNG AUTO SCHEMA - DANH MỤC SẢN PHẨM CON
+        // ==========================================
+        function autoGenerateProductCategorySchema(currentData) {
+            const oldSchema = document.getElementById('gr-dynamic-schema-product');
+            if (oldSchema) oldSchema.remove();
+
+            let schemaName = "Danh mục Bất Động Sản | Greenia Homes";
+            let schemaDesc = "Danh sách các bất động sản đang bán và cho thuê giá tốt nhất tại Greenia Homes.";
+            
+            const seoTitleEl = document.getElementById('luc-seo-title');
+            if (seoTitleEl && seoTitleEl.innerText.trim() !== "") {
+                schemaName = seoTitleEl.innerText;
+            }
+
+            const listItems = currentData.slice(0, 20).map((p, index) => {
+                const catSlug = createSafeSlug(p.cat || 'san-pham');
+                const pSlug = p.slug || createSafeSlug(p.title);
+                const link = `${window.location.origin}${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+                return {
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "url": link,
+                    "name": p.title
+                };
+            });
+
+            const schemaObj = {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "CollectionPage",
+                        "@id": window.location.href + "#webpage",
+                        "url": window.location.href,
+                        "name": schemaName,
+                        "description": schemaDesc,
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "Greenia Homes",
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png"
+                            }
+                        }
+                    },
+                    {
+                        "@type": "ItemList",
+                        "itemListElement": listItems
+                    }
+                ]
+            };
+
+            const script = document.createElement('script');
+            script.id = 'gr-dynamic-schema-product';
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schemaObj);
+            document.head.appendChild(script);
+        }
+
         function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
             
@@ -495,6 +554,9 @@
             } else {
                 grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
             }
+
+            // Kích hoạt sinh Schema
+            autoGenerateProductCategorySchema(paginatedData);
 
             const loadBtnWrap = document.querySelector('.luc-load-wrap');
             if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
