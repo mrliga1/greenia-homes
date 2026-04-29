@@ -6,7 +6,7 @@
     
     <title>qqqqqqq | Greenia Homes</title>
     <meta name="description" content="aaaaaaaaaa" />
-    <meta name="keywords" content="aaaaaa" />
+    <meta name="keywords" content="aaaa" />
     <link rel="canonical" href="/tin-tuc/text/kiem-tra-danh-muc-moi/" />
     <meta property="og:title" content="qqqqqqq" />
     <meta property="og:description" content="aaaaaaaaaa" />
@@ -305,6 +305,55 @@
                     </a>`;
         }
 
+        // ==========================================
+        // HỆ THỐNG AUTO SCHEMA - BÀI VIẾT (ARTICLE)
+        // ==========================================
+        function autoGenerateArticleSchema(postData) {
+            const oldSchema = document.getElementById('gr-dynamic-schema-article');
+            if (oldSchema) oldSchema.remove();
+
+            const pTitle = postData.title || "Bài viết Bất động sản";
+            const pImage = window.resolveImg ? window.resolveImg(postData.thumb) : (postData.thumb || "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png");
+            
+            let cleanDesc = "Đang cập nhật nội dung.";
+            if(postData.content) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = postData.content;
+                cleanDesc = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 200) + '...';
+            }
+
+            const schemaObj = {
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": window.location.href
+                },
+                "headline": pTitle,
+                "image": [pImage],
+                "datePublished": postData.date ? postData.date : new Date().toISOString(),
+                "author": {
+                    "@type": "Person",
+                    "name": postData.author || "Ban Biên Tập Greenia Homes"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Greenia Homes",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png"
+                    }
+                },
+                "description": cleanDesc
+            };
+
+            const script = document.createElement('script');
+            script.id = 'gr-dynamic-schema-article';
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schemaObj);
+            document.head.appendChild(script);
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('post-container');
             const post = window.GREENIA_CURRENT_POST; 
@@ -323,6 +372,9 @@
                     </div>`;
                 return; 
             }
+
+            // Kích hoạt sinh Schema Bài Viết
+            autoGenerateArticleSchema(post);
 
             try {
                 const [postSnap, prodSnap, projSnap] = await Promise.all([
