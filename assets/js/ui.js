@@ -33,7 +33,6 @@ window.resolveImg = (src) => {
 // --------------------------------------------------------------
 async function loadComponent(elementId, filePath) {
     try {
-        // Luôn luôn gọi file từ thư mục gốc (VD: /greenia-homes/components/header.html)
         const response = await fetch(BASE_URL + filePath);
         if (!response.ok) throw new Error('Không tìm thấy file ' + filePath);
         const html = await response.text();
@@ -60,7 +59,8 @@ async function loadComponent(elementId, filePath) {
 
 async function loadSpecificMenu(containerId, menuId) {
     try {
-        const response = await fetch(BASE_URL + 'components/sub-menus.html');
+        // Đã bỏ chữ 'components/' vì hệ thống lấy trực tiếp
+        const response = await fetch(BASE_URL + 'sub-menus.html');
         if (!response.ok) throw new Error('Không tìm thấy kho menu');
         const html = await response.text();
         const tempDiv = document.createElement('div');
@@ -84,7 +84,8 @@ async function loadSpecificMenu(containerId, menuId) {
 
 async function loadSpecificForm(containerId, templateId, projectName) {
     try {
-        const response = await fetch(BASE_URL + 'components/forms.html');
+        // Đã bỏ chữ 'components/'
+        const response = await fetch(BASE_URL + 'forms.html');
         if (!response.ok) throw new Error('Không tìm thấy kho form');
         const html = await response.text();
         const tempDiv = document.createElement('div');
@@ -346,7 +347,7 @@ function initMasterFormsAndPopup() {
 // PHẦN 5: ĐIỂM KHỞI ĐỘNG (IGNITION SWITCH)
 // --------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    // NƠI GỌI HEADER / FOOTER
+    // TỚ ĐÃ SỬA CHỖ NÀY: Gọi thẳng file header.html, footer.html ở thư mục gốc
     await loadComponent('site-header', 'components/header.html');
     await loadComponent('site-footer', 'components/footer.html');
     
