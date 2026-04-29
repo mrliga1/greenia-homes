@@ -1,55 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Không tìm thấy trang | Greenia Homes</title>
-
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="/assets/css/style.css">
-
-    <style>
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Be Vietnam Pro', sans-serif;}
-        .error-container { text-align: center; padding: 120px 20px; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .error-code { font-size: 100px; font-weight: 800; color: #c5a059; line-height: 1; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(197, 160, 89, 0.2); }
-        .error-title { font-size: 24px; color: #fff; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; }
-        .error-desc { font-size: 15px; color: #888; margin-bottom: 30px; max-width: 500px; line-height: 1.6; }
-        .btn-home { display: inline-block; padding: 12px 35px; background: #c5a059; color: #000; font-weight: 700; border-radius: 4px; text-decoration: none; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
-        .btn-home:hover { background: #d4b886; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2); }
-        .countdown { font-weight: bold; color: #fff; }
-    </style>
+    <meta charset="utf-8">
+    <title>Đang xử lý dữ liệu | Greenia Homes</title>
 </head>
-<body>
-
-    <div id="site-header"></div>
-    <div id="sub-menu" class="sub-header"></div>
-
-    <main class="error-container">
-        <div class="error-code">404</div>
-        <h1 class="error-title">Trang không tồn tại hoặc đã được dời đi</h1>
-        <p class="error-desc">Rất xin lỗi, đường dẫn bạn đang truy cập không còn tồn tại trên hệ thống Greenia Homes.<br>Hệ thống sẽ tự động đưa bạn về Trang chủ sau <span id="time-count" class="countdown">3</span> giây.</p>
-        <a href="/" class="btn-home">Về Trang Chủ Ngay</a>
-    </main>
-
-    <div id="site-footer"></div>
-    
-    <script src="/assets/js/ui.js"></script>
-
-    <script>
-        let timeLeft = 3;
-        const countdownEl = document.getElementById('time-count');
-        
-        const timer = setInterval(() => {
-            timeLeft--;
-            countdownEl.innerText = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                window.location.replace("/");
-            }
-        }, 1000);
-    </script>
+<body style="background:#05080f; color:#c5a059; text-align:center; padding-top:100px; font-family:sans-serif;">
+    <h1>Đang cập nhật bài viết...</h1>
+    <p>Hệ thống đang đồng bộ dữ liệu. Vui lòng bấm F5 lại sau 1-2 phút!</p>
 </body>
 </html>
