@@ -272,7 +272,7 @@
         try { 
             defaultProduct = {
                 id: "54",
-                title: "Bán nhà phố  quận 2",
+                title: "Bán nhà phố  quận thủ đức",
                 slug: "ban-nha-pho-quan-2",
                 type: "Bán",
                 cat: "Nhà Phố",
@@ -292,8 +292,11 @@
                 content: `<p>b&agrave;i viết kiểm tra sản ph&acirc;m</p>
 
 <p>&nbsp;</p>
-<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a href="https://mrliga1.github.io/greenia-homes/san-pham/nha-pho/pppppppppppp/" class="gr-related-link" target="_blank">Cập Nhật Mới11</a></div>
-<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a href="https://mrliga1.github.io/greenia-homes/san-pham/nha-pho/pppppppppppp/" class="gr-related-link" target="_blank">Cập Nhật Mới11</a></div>`
+
+<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a class="gr-related-link" href="https://mrliga1.github.io/greenia-homes/san-pham/nha-pho/pppppppppppp/" target="_blank">Cập Nhật Mới11</a></div>
+
+<div class="gr-related-item"><span class="gr-hot-icon">👉</span> <a class="gr-related-link" href="https://mrliga1.github.io/greenia-homes/san-pham/nha-pho/pppppppppppp/" target="_blank">Cập Nhật Mới11</a></div>
+`
             };
         } catch(e) {}
         window.GREENIA_CURRENT_PRODUCT = defaultProduct;
@@ -365,6 +368,66 @@
             </a>`;
         }
 
+        // ==========================================
+        // HỆ THỐNG AUTO SCHEMA - CHI TIẾT SẢN PHẨM BĐS
+        // ==========================================
+        function autoGenerateSingleProductSchema(prodData) {
+            const oldSchema = document.getElementById('gr-dynamic-schema-single');
+            if (oldSchema) oldSchema.remove();
+
+            const pTitle = prodData.title || "Sản phẩm Bất động sản";
+            const pImage = window.resolveImg ? window.resolveImg(prodData.img) : (prodData.img || "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png");
+            
+            let rawPrice = 0;
+            if(prodData.price) {
+                let priceStr = String(prodData.price).toLowerCase();
+                let numPart = parseFloat(priceStr.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                if (!isNaN(numPart)) {
+                    if(priceStr.includes('tỷ')) rawPrice = numPart * 1000000000;
+                    else if (priceStr.includes('triệu')) rawPrice = numPart * 1000000;
+                    else rawPrice = numPart;
+                }
+            }
+
+            let cleanDesc = "Đang cập nhật mô tả.";
+            if(prodData.content) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = prodData.content;
+                cleanDesc = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 200) + '...';
+            }
+
+            const schemaObj = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": pTitle,
+                "image": pImage,
+                "description": cleanDesc,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "Greenia Homes"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "VND",
+                    "price": rawPrice,
+                    "availability": "https://schema.org/InStock",
+                    "itemCondition": "https://schema.org/NewCondition"
+                },
+                "additionalProperty": []
+            };
+
+            if(prodData.area) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Diện tích", "value": prodData.area + " m2"});
+            if(prodData.bed) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Phòng ngủ", "value": prodData.bed});
+            if(prodData.loc) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Vị trí", "value": prodData.loc});
+
+            const script = document.createElement('script');
+            script.id = 'gr-dynamic-schema-single';
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schemaObj);
+            document.head.appendChild(script);
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             const filterBar = document.getElementById('luc-filter-bar');
             if(filterBar) {
@@ -382,6 +445,9 @@
                 window.location.replace(safeBaseUrl + 'san-pham.html'); 
                 return; 
             }
+
+            // Kích hoạt sinh Schema Sản phẩm
+            autoGenerateSingleProductSchema(prod);
 
             try {
                 const [prodSnap, catSnap, projSnap] = await Promise.all([
