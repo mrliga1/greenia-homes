@@ -3,35 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Không tìm thấy trang | Greenia Homes</title>
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <title>Không tìm thấy trang | Greenia Homes</title>
 
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/assets/css/style.css">
+
     <style>
-        .error-container { text-align: center; padding: 100px 20px; min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .error-code { font-size: 120px; color: var(--gold); font-weight: 900; margin: 0; line-height: 1; text-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .error-container h1 { color: #fff; margin: 20px 0; text-transform: uppercase; }
-        .error-container p { color: var(--text); margin-bottom: 30px; font-size: 16px; }
-        .btn-home { background: linear-gradient(135deg, #c5a059 0%, #e8c783 100%); color: #000; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 5px; text-transform: uppercase; transition: 0.3s; }
-        .btn-home:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197,160,89,0.3); }
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Be Vietnam Pro', sans-serif;}
+        .error-container { text-align: center; padding: 120px 20px; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .error-code { font-size: 100px; font-weight: 800; color: #c5a059; line-height: 1; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(197, 160, 89, 0.2); }
+        .error-title { font-size: 24px; color: #fff; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; }
+        .error-desc { font-size: 15px; color: #888; margin-bottom: 30px; max-width: 500px; line-height: 1.6; }
+        .btn-home { display: inline-block; padding: 12px 35px; background: #c5a059; color: #000; font-weight: 700; border-radius: 4px; text-decoration: none; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        .btn-home:hover { background: #d4b886; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2); }
+        .countdown { font-weight: bold; color: #fff; }
     </style>
 </head>
 <body>
 
-    <header id="site-header"></header>
-    <nav id="sub-menus"></nav>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
 
     <main class="error-container">
-        <p class="error-code">404</p>
-        <h1>Đường dẫn không tồn tại</h1>
-        <p>Rất tiếc, trang bạn đang tìm kiếm đã được di chuyển, bị xóa hoặc không chính xác.</p>
-        <a href="/" class="btn-home">VỀ TRANG CHỦ</a>
+        <div class="error-code">404</div>
+        <h1 class="error-title">Trang không tồn tại hoặc đã được dời đi</h1>
+        <p class="error-desc">Rất xin lỗi, đường dẫn bạn đang truy cập không còn tồn tại trên hệ thống Greenia Homes.<br>Hệ thống sẽ tự động đưa bạn về Trang chủ sau <span id="time-count" class="countdown">3</span> giây.</p>
+        <a href="/" class="btn-home">Về Trang Chủ Ngay</a>
     </main>
 
-    <footer id="site-footer"></footer>
+    <div id="site-footer"></div>
+    
+    <script src="/assets/js/ui.js"></script>
 
-    <script src="assets/js/ui.js"></script>
+    <script>
+        let timeLeft = 3;
+        const countdownEl = document.getElementById('time-count');
+        
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownEl.innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                window.location.replace("/");
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

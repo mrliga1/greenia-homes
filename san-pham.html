@@ -241,7 +241,7 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/';
         const defaultSeoTitle = "Greenia Homes - Mua bán, cho thuê Nhà phố, Biệt thự, Căn hộ giá tốt";
         const defaultSeoDesc = "Cập nhật các sản phẩm bán, cho thuê giá tốt được phân phối tại Greenia Homes. Các sản phẩm: Nhà phố, căn hộ, biệt thự riêng lẻ và các khu đô thị tại Tp HCM và khu vực lân cận.";
         
@@ -252,7 +252,6 @@
         const itemsPerPage = 10;
         let currentPage = 1;
         
-        // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
         let defaultCat = null;
         try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
@@ -439,7 +438,7 @@
                         const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
                         return `<a href="${p.link}" class="s2-card">
                                     <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}" onerror="this.src='${fallbackImg}';"></div>
-                                    <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
+                                    <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="margin-right:5px; color:#c5a059;"></i> ${p.status || 'Đang mở bán'}</div></div>
                                 </a>`;
                     }).join('');
                 }
@@ -455,21 +454,17 @@
         // HỆ THỐNG AUTO SCHEMA - DANH MỤC SẢN PHẨM
         // ==========================================
         function autoGenerateProductCategorySchema(currentData) {
-            // 1. Dọn dẹp Schema cũ
             const oldSchema = document.getElementById('gr-dynamic-schema-product');
             if (oldSchema) oldSchema.remove();
 
-            // 2. Xác định Tiêu đề Schema dựa trên bộ lọc hiện tại
             let schemaName = "Danh mục Bất Động Sản | Greenia Homes";
             let schemaDesc = "Danh sách các bất động sản đang bán và cho thuê giá tốt nhất tại Greenia Homes.";
             
-            // Lấy tiêu đề SEO hiện tại đang hiển thị trên web
             const seoTitleEl = document.getElementById('luc-seo-title');
             if (seoTitleEl && seoTitleEl.innerText.trim() !== "") {
                 schemaName = seoTitleEl.innerText;
             }
 
-            // 3. Trích xuất tối đa 20 sản phẩm trên trang hiện tại để tạo danh sách
             const listItems = currentData.slice(0, 20).map((p, index) => {
                 const catSlug = createSafeSlug(p.cat || 'san-pham');
                 const pSlug = p.slug || createSafeSlug(p.title);
@@ -482,7 +477,6 @@
                 };
             });
 
-            // 4. Xây dựng cấu trúc Schema
             const schemaObj = {
                 "@context": "https://schema.org",
                 "@graph": [
@@ -508,7 +502,6 @@
                 ]
             };
 
-            // 5. Gắn vào trang
             const script = document.createElement('script');
             script.id = 'gr-dynamic-schema-product';
             script.type = "application/ld+json";
@@ -554,7 +547,6 @@
                 grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
             }
             
-            // Kích hoạt sinh Schema tự động mỗi khi bộ lọc thay đổi
             autoGenerateProductCategorySchema(paginatedData);
             
             const loadBtnWrap = document.querySelector('.luc-load-wrap');
@@ -633,8 +625,6 @@
 
         document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
         
-        document.getElementById('foryou-load-btn-v67').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; forYouPage++; setTimeout(() => renderForYouGrid(), 300); });
-
         window.clearLucSearch = function(doRun = true) { 
             filterState.keyword = ''; document.getElementById('luc-keyword').value = ''; 
             updateSeoUI(filterState.cat, filterState.type);
