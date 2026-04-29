@@ -13,10 +13,10 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/greenia-homes/",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#c5a059",
   "background_color": "#05080f",
-  "scope": "/greenia-homes/",
+  "scope": "/",
   "description": "Chuyên gia tư vấn và phân phối các dự án bất động sản hàng đầu."
 }
