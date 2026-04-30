@@ -262,6 +262,55 @@ if (prodTemplate) {
 }
 
 // ==========================================
+// QUÉT VÀ BƠM SEO CHO CÁC TRANG MICROSITE TỰ CODE TAY
+// ==========================================
+const duAnDir = path.join(__dirname, 'du-an');
+
+if (fs.existsSync(duAnDir)) {
+    // 1. Quét tất cả các thư mục dự án bác đã tạo (VD: vinhomes, novaworld...)
+    const projectFolders = fs.readdirSync(duAnDir).filter(f => fs.statSync(path.join(duAnDir, f)).isDirectory());
+
+    projectFolders.forEach(slug => {
+        // Tìm Data SEO của dự án này từ Admin (để lấy Tên, Mô tả gốc)
+        const projData = projects.find(p => (p.slug || makeSafeSlug(p.title)) === slug) || {};
+        const projFolder = path.join(duAnDir, slug);
+
+        // 2. Quét tất cả các file .html bác tự viết trong thư mục dự án này
+        const htmlFiles = fs.readdirSync(projFolder).filter(file => file.endsWith('.html'));
+
+        htmlFiles.forEach(file => {
+            const filePath = path.join(projFolder, file);
+            let html = fs.readFileSync(filePath, 'utf8');
+
+            // 3. Tự động nội suy Tiêu đề SEO dựa vào tên file
+            const pageCode = file.replace('.html', ''); // vd: vi-tri
+            let prefixName = pageCode.replace(/-/g, ' ').toUpperCase(); // vd: VI TRI
+            
+            // Xử lý link sitemap sạch (bỏ đuôi .html, index thì lấy link thư mục)
+            const cleanUrl = file === 'index.html' ? `${DOMAIN}/du-an/${slug}/` : `${DOMAIN}/du-an/${slug}/${pageCode}`;
+            
+            // Bộ SEO tự động bơm vào
+            const seoInfo = {
+                title: `${prefixName} - Dự án ${projData.seoTitle || projData.title || slug} | Greenia Homes`,
+                seoDesc: `Khám phá thông tin chi tiết về ${prefixName.toLowerCase()} của dự án ${projData.title || slug}. ${projData.seoDesc || ''}`,
+                seoKeywords: `${pageCode.replace(/-/g, ' ')} ${projData.title || slug}`
+            };
+
+            // 4. Bơm thẻ Meta SEO vào file HTML (Nếu bác chưa tự viết thẻ description)
+            if (!html.includes('<meta name="description"')) {
+                html = injectSeoTags(html, seoInfo, cleanUrl);
+                fs.writeFileSync(filePath, html); // Lưu đè lại file HTML với bộ SEO xịn
+            }
+
+            // 5. Thêm ngay vào Sitemap cho Google Bot đọc
+            if (!sitemapUrls.includes(cleanUrl)) {
+                sitemapUrls.push(cleanUrl);
+            }
+        });
+    });
+}
+
+// ==========================================
 // BƯỚC 4: XUẤT BẢN FILE SITEMAP.XML
 // ==========================================
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
