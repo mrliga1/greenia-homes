@@ -405,7 +405,7 @@
             currentData.projects = pjSnap.docs.map(d => d.data());
             currentData.categories = cSnap.docs.map(d => d.data());
 
-            resetFormCalculations(); buildLinkLibrary();
+            resetFormCalculations(); buildLinkLibrary(); buildMediaLibrary();
             status.innerHTML = '<i class="fas fa-check-circle"></i> Đã đồng bộ Firebase';
             status.style.color = "#00b894";
         } catch (e) { 
@@ -662,26 +662,74 @@
     }
 
     function addToMediaLibrary(url, name) {
-        document.getElementById('media-placeholder').style.display = 'none';
-        const imgHtmlCode = `<img src="${url}" alt="${name}" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`;
+        const placeholder = document.getElementById('media-placeholder');
+        if(placeholder) placeholder.style.display = 'none';
+        
+        const imgHtmlCode = `<img src="${url}" alt="Greenia Homes" style="max-width:100%; height:auto; display:block; margin: 15px auto; border-radius:8px;">`;
         const encodedHtml = btoa(unescape(encodeURIComponent(imgHtmlCode)));
         const item = document.createElement('div'); item.className = 'media-item';
-        item.innerHTML = `<img src="${url}" class="media-thumb-large"><div class="media-url">${name}</div><div class="btn-group"><button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-link"></i> Link</button><button class="btn-action" onclick="copyDecodedHTML('${encodedHtml}')" style="background:#00b894; border-color:#00b894;"><i class="fas fa-code"></i> HTML</button></div>`;
+        
+        // Tự động trích xuất tên file gọn gàng
+        let displayName = url.split('/').pop().split('?')[0] || name;
+        
+        item.innerHTML = `
+            <img src="${url}" class="media-thumb-large" loading="lazy">
+            <div class="media-url">${displayName}</div>
+            <div class="btn-group">
+                <button class="btn-action" onclick="copyToClip('${url}')"><i class="fas fa-link"></i> Link</button>
+                <button class="btn-action" onclick="copyDecodedHTML('${encodedHtml}')" style="background:#00b894; border-color:#00b894;"><i class="fas fa-code"></i> HTML</button>
+            </div>
+            <div class="btn-group">
+                <button class="btn-action" onclick="useImageFor('main', '${url}')" style="background:rgba(197,160,89,0.2); color:var(--gold); border-color:var(--gold); font-size:10px;"><i class="fas fa-image"></i> Làm Ảnh Bìa</button>
+                <button class="btn-action" onclick="useImageFor('gallery', '${url}')" style="background:rgba(197,160,89,0.2); color:var(--gold); border-color:var(--gold); font-size:10px;"><i class="fas fa-images"></i> Thêm Album</button>
+            </div>`;
         document.getElementById('list-media').prepend(item);
     }
-    function copyDecodedHTML(encodedStr) { navigator.clipboard.writeText(decodeURIComponent(escape(atob(encodedStr)))); alert("ĐÃ COPY MÃ HTML!\n\nDán vào chế độ NGUỒN của Nội dung chi tiết."); }
-    async function handleSingleUpload(input, previewId, targetObj = 'main') {
-        if(!input.files[0]) return;
-        document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#fff; padding:10px;"></i> Đang tải...';
-        const url = await uploadToCloud(input.files[0]);
-        if(url) { uploadedFiles[targetObj] = url; document.getElementById(previewId).innerHTML = `<img src="${url}" class="preview-item">`; } else { document.getElementById(previewId).innerHTML = ''; }
+    // HÀM QUÉT TOÀN BỘ ẢNH TRONG DATABASE ĐỂ HIỂN THỊ LẠI
+    function buildMediaLibrary() {
+        let allImages = new Set();
+        
+        // Cào ảnh từ Sản phẩm (Ảnh bìa + Album)
+        currentData.products.forEach(p => { 
+            if(p.img) allImages.add(p.img); 
+            if(p.gallery && Array.isArray(p.gallery)) p.gallery.forEach(i => allImages.add(i)); 
+        });
+        // Cào ảnh từ Tin tức và Dự án
+        currentData.posts.forEach(p => { if(p.thumb) allImages.add(p.thumb); });
+        currentData.projects.forEach(p => { if(p.img) allImages.add(p.img); });
+
+        document.getElementById('list-media').innerHTML = '<div id="media-placeholder" style="display:none;"></div>';
+        
+        if(allImages.size === 0) {
+            document.getElementById('media-placeholder').style.display = 'block';
+            document.getElementById('media-placeholder').innerText = 'Chưa có ảnh nào trên hệ thống.';
+        } else {
+            let imgArray = Array.from(allImages);
+            imgArray.forEach((url, i) => addToMediaLibrary(url, 'Lịch sử ảnh'));
+        }
     }
-    async function handleMultiUpload(input, previewId) {
-        document.getElementById(previewId).innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#fff; padding:10px;"></i> Đang tải...';
-        uploadedFiles.gallery = []; 
-        for(let file of input.files) { const url = await uploadToCloud(file); if(url) uploadedFiles.gallery.push(url); }
-        document.getElementById(previewId).innerHTML = uploadedFiles.gallery.map(url => `<img src="${url}" class="preview-item">`).join('');
+
+    // HÀM GẮN ẢNH VÀO FORM ĐANG MỞ
+    function useImageFor(target, url) {
+        const isProd = document.getElementById('section-prod').classList.contains('active');
+        const isNews = document.getElementById('section-news').classList.contains('active');
+        const isProj = document.getElementById('section-proj').classList.contains('active');
+
+        if (target === 'main') {
+            if (isProd) { uploadedFiles.main = url; document.getElementById('p-main-preview').innerHTML = `<img src="${url}" class="preview-item">`; }
+            else if (isNews) { uploadedFiles.newsThumb = url; document.getElementById('n-thumb-preview').innerHTML = `<img src="${url}" class="preview-item">`; }
+            else if (isProj) { uploadedFiles.projMain = url; document.getElementById('pj-main-preview').innerHTML = `<img src="${url}" class="preview-item">`; }
+            else { alert("Vui lòng mở tab Sản phẩm, Tin tức hoặc Dự án trước khi chọn ảnh!"); return; }
+        } else if (target === 'gallery') {
+            if (isProd) {
+                if (!uploadedFiles.gallery.includes(url)) {
+                    uploadedFiles.gallery.push(url);
+                    document.getElementById('p-gallery-preview').innerHTML += `<img src="${url}" class="preview-item">`;
+                } else { alert("Ảnh này đã có trong Album rồi!"); return; }
+            } else { alert("Chức năng Album ảnh chỉ áp dụng cho tab Sản Phẩm!"); return; }
+        }
     }
+    
 
     /* =================================================================
         🔥 MÀNG LỌC CƯỠNG CHẾ: XÓA SẠCH VẾT TÍCH BẢO MẬT (ANTI-CACHE) 🔥
