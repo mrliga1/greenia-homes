@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Mục Sản Phẩm | Greenia Homes</title>
+    <title>Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp | Greenia Homes</title>
     
     <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -12,12 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
-    <link rel="canonical" href="/san-pham/chuyen-nhuong/" />
-    <meta name="description" content="Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn)." />
-    <meta name="keywords" content="Chuyển nhượng, mua bán, nhà phố, căn hộ, biệt thự, greenia homes" />
-    <meta property="og:title" content="Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp" />
-    <meta property="og:description" content="Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn)." />
-    <meta property="og:url" content="/san-pham/chuyen-nhuong/" />
+    <link rel="canonical" href="/{{FOLDER}}/{{SLUG}}/" />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:url" content="/{{FOLDER}}/{{SLUG}}/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -140,6 +140,24 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/chuyen-nhuong/" />
+    <meta name="description" content="Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn)." />
+    <meta name="keywords" content="Chuyển nhượng, mua bán, nhà phố, căn hộ, biệt thự, greenia homes" />
+    <meta property="og:title" content="Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp" />
+    <meta property="og:description" content="Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn)." />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/chuyen-nhuong/" />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp",
+      "description": "Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn).",
+      "url": "https://greeniahomes.vn/san-pham/chuyen-nhuong/"
+    }
+    </script>
+    
 </head>
 <body>
 
@@ -257,7 +275,7 @@
         
         // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
         let defaultCat = null;
-        try { defaultCat = { slug: "chuyen-nhuong", name: "Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp", desc: "Tổng hợp các sản phẩm nhà phố, biệt thự, căn hộ đang có nhu cầu chuyển nhượng với giá tốt nhất thị trường, pháp lý sạch, giao dịch nhanh chống, thủ tục đơn giãn với sự hỗ trợ chuyên nghiệp tự độ ngũ Greenia Homes (greeniahomes.vn)." }; } catch(e) {}
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { type: '', cat: '', keyword: '' };
@@ -314,7 +332,7 @@
             let displayDesc = defaultSeoDesc;
             let searchSlug = targetCatSlug;
             
-            if (targetCatSlug === '' || targetCatSlug === 'chuyen-nhuong') {
+            if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
                 else searchSlug = '';
@@ -363,7 +381,7 @@
                 let activeCatSlug = '';
 
                 // BẢO VỆ AN TOÀN TUYỆT ĐỐI CHO BIẾN currCat
-                if (currCat && currCat.slug && currCat.slug !== 'chuyen-nhuong' && currCat.slug !== 'tat-ca-san-pham') {
+                if (currCat && currCat.slug && currCat.slug !== '{{SLUG}}' && currCat.slug !== 'tat-ca-san-pham') {
                     activeCatSlug = currCat.slug;
                     if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'chuyen-nhuong'; } 
                     else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; activeCatSlug = 'cho-thue'; }
@@ -383,7 +401,7 @@
                 document.querySelectorAll('.luc-nav-item').forEach(t => t.classList.remove('active'));
                 if (filterState.type === 'Bán') { document.getElementById('tab-ban').classList.add('active'); }
                 else if (filterState.type === 'Thuê') { document.getElementById('tab-thue').classList.add('active'); }
-                else if (filterState.cat !== '' && filterState.cat !== 'chuyen-nhuong') { /* handled by dropdown */ }
+                else if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') { /* handled by dropdown */ }
                 else { document.getElementById('tab-all').classList.add('active'); }
 
                 updateSeoUI(activeCatSlug, filterState.type);
@@ -532,8 +550,8 @@
                 else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
                 
                 let matchCat = true;
-                // BẢO VỆ: Không lọc nếu biến cat là rỗng hoặc bị dính placeholder chuyen-nhuong
-                if (filterState.cat !== '' && filterState.cat !== 'chuyen-nhuong') {
+                // BẢO VỆ: Không lọc nếu biến cat là rỗng hoặc bị dính placeholder {{SLUG}}
+                if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') {
                     matchCat = isCatMatch(p, filterState.cat);
                 }
                 
