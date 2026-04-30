@@ -2,4 +2,4 @@
 
 **⚠️ BẠN ĐANG Ở TRONG KHO CHỨA MÃ NGUỒN (SOURCE CODE).**
 
-👉 **[BẤM VÀO ĐÂY ĐỂ TRUY CẬP TRANG WEB THỰC TẾ: GREENIA HOMES](https://greeniahomes.vn/)** 👈
+👉 **[BẤM VÀO ĐÂY ĐỂ TRUY CẬP TRANG WEB THỰC TẾ: GREENIA HOMES](https://greeniahomes.vn)** 👈
