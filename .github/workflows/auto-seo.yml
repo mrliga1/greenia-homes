@@ -6,6 +6,7 @@ on:
       - 'assets/data/products.json'
       - 'assets/data/projects.json'
       - 'assets/data/categories.json'
+      - '*.html'
       - 'build.js'
   workflow_dispatch:
 
