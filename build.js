@@ -4,7 +4,7 @@ const path = require('path');
 // ==========================================
 // CẤU HÌNH DOMAIN SEO
 // ==========================================
-const DOMAIN = 'https://mrliga1.github.io/greenia-homes';
+const DOMAIN = 'https://greeniahomes.vn';
 
 const postsPath = path.join(__dirname, 'assets', 'data', 'posts.json');
 const prodsPath = path.join(__dirname, 'assets', 'data', 'products.json');
@@ -58,8 +58,9 @@ function makeSafeSlug(t) {
 // ==========================================
 let sitemapUrls = [
     `${DOMAIN}/`,
-    `${DOMAIN}/tin-tuc.html`,
-    `${DOMAIN}/san-pham.html`
+    `${DOMAIN}/tin-tuc/`,
+    `${DOMAIN}/san-pham/`,
+    `${DOMAIN}/du-an/`
 ];
 
 // Thêm Dự án vào Sitemap chỉ khi có tên hợp lệ
