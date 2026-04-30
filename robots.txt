@@ -3,4 +3,10 @@ Allow: /
 Disallow: /admin.html
 Disallow: /assets/data/
 
+# Tấm khiên bảo vệ hạ tầng (Chặn Bot tò mò mã nguồn)
+Disallow: /build.js
+Disallow: /firebase.json
+Disallow: /.github/
+Disallow: /*.json$
+
 Sitemap: https://greeniahomes.vn/sitemap.xml
