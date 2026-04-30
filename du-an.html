@@ -207,6 +207,15 @@
             document.querySelectorAll('.luc-nav-item').forEach(el => el.classList.remove('active'));
             event.target.classList.add('active');
             runFilter();
+
+            // Hiệu ứng tự động cuộn lên thanh Tab cực mượt
+            const anchor = document.getElementById('luc-filter-placeholder');
+            if(anchor) {
+                window.scrollTo({ 
+                    top: anchor.getBoundingClientRect().top + window.scrollY - 50, 
+                    behavior: 'smooth' 
+                });
+            }
         }
 
         // Lọc và render dữ liệu
