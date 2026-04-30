@@ -39,8 +39,8 @@
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
         .luc-sticky-wrapper { background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: all 0.3s ease; z-index: 99999 !important; width: 100%; }
-		.luc-sticky-wrapper.is-stuck { position: fixed; top: 0; left: 0; right: 0; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); animation: luxSlideDown 0.4s ease; }
-		@keyframes luxSlideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        .luc-sticky-wrapper.is-stuck { position: fixed; top: 0; left: 0; right: 0; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); animation: luxSlideDown 0.4s ease; }
+        @keyframes luxSlideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
@@ -57,7 +57,7 @@
         .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
         .luc-dropdown { position: absolute !important; top: 100% !important; left: 0 !important; min-width: 180px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 1000; margin-top: 10px !important; }
         .luc-nav-group.active-drop .luc-dropdown { display: block; animation: luxFadeIn 0.3s; }
-        .luc-drop-item { padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
+        .luc-drop-item { display: block; padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
         .luc-drop-item:hover { background: rgba(197, 160, 89, 0.1); color: #c5a059; }
         .luc-drop-item.selected { color: #c5a059; font-weight: 700; background: rgba(197, 160, 89, 0.1); }
         @keyframes luxFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -426,20 +426,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            const filterBar = document.getElementById('luc-filter-bar');
-			if(filterBar) {
-				const placeholder = document.getElementById('luc-filter-placeholder');
-				window.addEventListener('scroll', () => {
-					if (window.scrollY > 120) {
-						filterBar.classList.add('is-stuck');
-						if(placeholder) placeholder.style.height = filterBar.offsetHeight + 'px';
-					} else {
-						filterBar.classList.remove('is-stuck');
-						if(placeholder) placeholder.style.height = '0px';
-					}
-				});
-			}
-
             const container = document.getElementById('sp-container');
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
@@ -649,7 +635,7 @@
                 }
 
                 container.innerHTML = `
-					<div id="luc-filter-placeholder"></div>
+                    <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
@@ -785,6 +771,20 @@
                 `;
 
                 setTimeout(initGallery, 300);
+                
+                const filterBar = document.getElementById('luc-filter-bar');
+                if(filterBar) {
+                    const placeholder = document.getElementById('luc-filter-placeholder');
+                    window.addEventListener('scroll', () => {
+                        if (window.scrollY > 120) {
+                            filterBar.classList.add('is-stuck');
+                            if(placeholder) placeholder.style.height = filterBar.offsetHeight + 'px';
+                        } else {
+                            filterBar.classList.remove('is-stuck');
+                            if(placeholder) placeholder.style.height = '0px';
+                        }
+                    });
+                }
                 
                 const searchForm = document.getElementById('luc-search-form');
                 if(searchForm) {
