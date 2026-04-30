@@ -1,0 +1,22 @@
+name: Auto Deploy Firebase
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tải mã nguồn từ Github
+        uses: actions/checkout@v3
+
+      - name: Cài đặt Firebase
+        run: npm install -g firebase-tools
+
+      - name: Tạo cấu hình kết nối
+        run: |
+          echo '{"projects":{"default":"greenia-homes"}}' > .firebaserc
+          echo '{"hosting":{"public":".","ignore":["firebase.json","**/.*","**/node_modules/**"]}}' > firebase.json
+
+      - name: Bắn dữ liệu lên web Live
+        run: firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
