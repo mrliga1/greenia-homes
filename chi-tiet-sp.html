@@ -36,7 +36,7 @@
         .luc-clearfix { clear: both; display: block; width: 100%; height: 1px; }
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
-        .luc-sticky-wrapper { background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: all 0.3s ease; z-index: 99999 !important; width: 100%; }
+        .luc-sticky-wrapper { background-color: #05080f; padding: 0px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: all 0.3s ease; z-index: 99999 !important; width: 100%; }
         .luc-sticky-wrapper.is-stuck { position: fixed; top: 0; left: 0; right: 0; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); animation: luxSlideDown 0.4s ease; }
         @keyframes luxSlideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         
@@ -44,12 +44,12 @@
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
         .luc-nav-right-group { display: flex; align-items: center; }
         
-        .luc-nav-item { cursor: pointer; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 20px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
+        .luc-nav-item { cursor: pointer; padding: 2px 8px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 10px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
         .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
         
         #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
-        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 34px; }
-        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 13px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 5px 10px; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 25px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 12px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
         
         .luc-nav-group { position: relative; display: inline-block; }
         .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
@@ -202,7 +202,7 @@
             .v261-c1, .v261-c2, .v261-c3 { width: 100%; position: relative !important; top: 0 !important;} 
             .v261-specs { grid-template-columns: 1fr 1fr; } 
             .v261-lb-nav { width:40px; height:40px; font-size:16px; } .v261-lb-nav.prev { left:10px; } .v261-lb-nav.next { right:10px; } .v261-lb-close { right:10px; top:10px; } .v261-lb-body { padding:0; }
-            .luc-nav-bar { flex-direction: column; align-items: flex-start; gap: 10px; } 
+            .luc-nav-bar { flex-direction: column; align-items: flex-start; gap: 0px; } 
             .luc-nav-left-group { width: 100%; overflow-x: auto; flex-wrap: nowrap; } 
             .luc-nav-right-group { width: 100%; } 
             #luc-search-form { width: 100%; }
