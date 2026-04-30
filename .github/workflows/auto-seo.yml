@@ -4,6 +4,8 @@ on:
     paths:
       - 'assets/data/posts.json'
       - 'assets/data/products.json'
+      - 'assets/data/projects.json'
+      - 'assets/data/categories.json'
       - 'build.js'
   workflow_dispatch:
 
