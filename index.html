@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
-    <!-- SEO CƠ BẢN -->
+    <!-- SEO CƠ BẢN ĐÃ LỌC SẠCH DẤU VẾT WORDPRESS -->
     <meta name="description" content="Tư vấn, phân tích và phân phối Bất động sản hạng sang tại TP.HCM. Greenia Homes mang đến giải pháp đầu tư và an cư chiến lược." />
     <meta name="keywords" content="Greenia homes, bất động sản cao cấp, biệt thự, nhà phố, môi giới bất động sản" />
     <link rel="canonical" href="https://greeniahomes.vn/" />
@@ -24,7 +24,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#c5a059">
 
-    <!-- SCHEMA JSON-LD ĐÃ SỬA LỖI LOCALHOST -->
+    <!-- SCHEMA JSON-LD CHUẨN TỪ BẢN GỐC -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -63,10 +63,27 @@
             "postalCode": "700000",
             "addressCountry": "VN"
           },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 10.801600, 
+            "longitude": 106.745400
+          },
           "sameAs": [
             "https://www.facebook.com/greeniahomes", 
             "https://zalo.me/0932966700"
           ]
+        },
+        {
+          "@type": "Service",
+          "serviceType": "Tư vấn và phân phối Bất động sản cao cấp",
+          "provider": {
+            "@id": "https://greeniahomes.vn/#organization"
+          },
+          "areaServed": {
+            "@type": "City",
+            "name": "TP. Hồ Chí Minh và khu vực lân cận"
+          },
+          "description": "Chuyên phân phối: Nhà phố, Căn hộ, Biệt thự cao cấp có pháp lý minh bạch."
         }
       ]
     }
@@ -129,7 +146,7 @@
         /* =========================================
            3. THƯƠNG HIỆU CÁ NHÂN (VỀ CHÚNG TÔI)
            ========================================= */
-        .personal-brand-section { padding: 100px 0; position: relative; }
+        .personal-brand-section { padding: 100px 0; position: relative; border-bottom: 1px solid rgba(197, 160, 89, 0.05);}
         .container-brand { width: 90%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 80px; }
         .brand-visual { flex: 1; position: relative; min-height: 500px; display: flex; align-items: center; animation: fadeInUp 1s forwards; }
         .deco-pattern { position: absolute; top: -30px; left: -30px; width: 200px; height: 200px; background-image: radial-gradient(var(--lux-gold) 1.5px, transparent 1.5px); background-size: 15px 15px; opacity: 0.2; }
@@ -161,7 +178,7 @@
         /* =========================================
            4. GIÁ TRỊ CỐT LÕI 
            ========================================= */
-        .luxury-values-dark-wrapper { width: 100%; position: relative; padding: 0px 0; background-color: var(--lux-dark); overflow: hidden; border-top: 1px solid rgba(197, 160, 89, 0.05); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        .luxury-values-dark-wrapper { width: 100%; position: relative; padding: 80px 0; background-color: var(--lux-dark); overflow: hidden; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
         .values-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(197, 160, 89, 0.1) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.5; pointer-events: none; z-index: 0; }
         .values-inner { max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         .values-header { text-align: center; margin-bottom: 60px; opacity: 0; animation: fadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
@@ -183,7 +200,7 @@
         /* =========================================
            5. QUY TRÌNH LÀM VIỆC VIP 
            ========================================= */
-        .process-section { padding: 100px 0; background: var(--lux-dark); border-top: 1px solid rgba(197,160,89,0.05); position: relative; }
+        .process-section { padding: 80px 0; background: var(--lux-dark); border-bottom: 1px solid rgba(197,160,89,0.05); position: relative; }
         .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 50px; }
         .process-card { background: rgba(11, 17, 32, 0.5); border: 1px solid rgba(255,255,255,0.05); padding: 40px 25px; position: relative; overflow: hidden; border-radius: 8px; transition: 0.4s; z-index: 1; }
         .process-card:hover { transform: translateY(-10px); border-color: rgba(197,160,89,0.4); box-shadow: 0 10px 30px rgba(197,160,89,0.1); background: rgba(11, 17, 32, 0.8); }
@@ -196,15 +213,18 @@
         /* =========================================
            6. THỐNG KÊ TỰ HÀO (MILESTONES)
            ========================================= */
-        .milestone-section { padding: 80px 0; background: linear-gradient(rgba(5,8,15,0.95), rgba(5,8,15,0.95)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-attachment: fixed; background-position: center; border-top: 1px solid rgba(197,160,89,0.1); border-bottom: 1px solid rgba(197,160,89,0.1); }
+        .milestone-section { padding: 80px 0; background: linear-gradient(rgba(5,8,15,0.95), rgba(5,8,15,0.95)), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-attachment: fixed; background-position: center; border-bottom: 1px solid rgba(197,160,89,0.1); }
         .milestone-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 30px; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .milestone-item { padding: 20px; }
         .milestone-num-wrap { font-family: 'Cinzel', serif; font-size: 55px; font-weight: 700; color: var(--lux-gold); margin-bottom: 10px; display: flex; justify-content: center; align-items: center; text-shadow: 0 5px 15px rgba(197,160,89,0.3); }
         .milestone-text { font-family: 'Manrope', sans-serif; font-size: 13px; color: var(--lux-white); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
         /* =========================================
-           7. CAROUSEL CHUẨN CỦA DỰ ÁN, SẢN PHẨM & TIN TỨC
+           7. CẤU HÌNH HIỂN THỊ CÁC CAROUSEL BĐS
            ========================================= */
+        .shortcode-wrapper { padding: 80px 20px 60px 20px; background: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        .news-section { padding: 80px 20px 60px 20px; background: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 8px; margin-bottom: 30px; max-width: 1200px; margin-left: auto; margin-right: auto;}
         .s-tit { font-size: 24px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--lux-gold); padding-left: 15px; margin: 0; line-height: 1; font-family: 'Cinzel', serif;}
         
@@ -377,10 +397,9 @@
 
     <main class="greenia-luxury-theme">
         
-        <!-- KHỐI 1: HERO MỞ MÀN (CÓ FORM V15 STAR ĐÚNG Ý BÁC CHỈ ĐỊNH) -->
+        <!-- 1. HERO SECTION -->
         <section class="hero-section">
             <div class="hero-slider">
-                <!-- TẤT CẢ ẢNH NÀY BÁC NHỚ PHẢI UPLOAD LÊN GITHUB RỒI SỬA LẠI ĐƯỜNG DẪN Ở ĐÂY NHÉ -->
                 <div class="slide-item active">
                     <img src="/assets/images/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
@@ -436,12 +455,26 @@
             </div>
         </section>
 
-        <!-- KHỐI 2: VỀ CHÚNG TÔI (Thương hiệu cá nhân) -->
+        <!-- 2. SHORTCODE 1: DỰ ÁN NỔI BẬT -->
+        <div class="shortcode-wrapper">
+            <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Dự Án Đang Mở Bán</h2></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-proj-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="home-proj-scroll" class="gr-carousel">
+                    <div style="color:#c5a059; padding:20px; text-align:center; width:100%;"><i class="fas fa-circle-notch fa-spin"></i> Đang tải dự án...</div>
+                </div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('home-proj-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div style="text-align:center; margin-top: 30px;">
+                <a href="/du-an/" class="s1-btn">Xem Tất Cả Dự Án</a>
+            </div>
+        </div>
+
+        <!-- 3. THƯƠNG HIỆU CÁ NHÂN (VỀ CHÚNG TÔI) -->
         <section class="personal-brand-section" id="gioi-thieu">
             <div class="container-brand">
                 <div class="brand-visual">
                     <div class="deco-pattern"></div><div class="deco-block"></div>
-                    <!-- ẢNH GIAO DIỆN BÁC PHẢI UPLOAD LÊN GITHUB -->
                     <div class="img-bg-wrapper"><img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
                     <img src="/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
                     <div class="partner-badge">Đối tác Chiến Lược</div>
@@ -462,7 +495,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 3: GIÁ TRỊ CỐT LÕI -->
+        <!-- 4. GIÁ TRỊ CỐT LÕI -->
         <div class="luxury-values-dark-wrapper">
             <div class="values-bg-pattern"></div>
             <div class="values-inner" style="padding-top: 80px; padding-bottom: 80px;">
@@ -475,37 +508,7 @@
             </div>
         </div>
 
-        <!-- KHỐI 4: DỰ ÁN NỔI BẬT (API FIREBASE) -->
-        <section style="padding: 100px 20px 80px 20px;">
-            <div class="s-head"><h2 class="s-tit">Dự Án Đang Mở Bán</h2></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-proj-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                <div id="home-proj-scroll" class="gr-carousel">
-                    <div style="color:#c5a059; padding:20px; text-align:center; width:100%;"><i class="fas fa-circle-notch fa-spin"></i> Đang tải dự án...</div>
-                </div>
-                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('home-proj-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div style="text-align:center; margin-top: 30px;">
-                <a href="/du-an/" class="s1-btn">Xem Tất Cả Dự Án</a>
-            </div>
-        </section>
-
-        <!-- KHỐI 5: SẢN PHẨM BÁN MỚI NHẤT (API FIREBASE) -->
-        <section style="padding: 0 20px 80px 20px;">
-            <div class="s-head"><h2 class="s-tit">Giỏ Hàng Chuyển Nhượng</h2></div>
-            <div class="gr-carousel-wrapper">
-                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-sale-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
-                <div id="home-sale-scroll" class="gr-carousel">
-                    <div style="color:#c5a059; padding:20px; text-align:center; width:100%;"><i class="fas fa-circle-notch fa-spin"></i> Đang tải giỏ hàng...</div>
-                </div>
-                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('home-sale-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div style="text-align:center; margin-top: 30px;">
-                <a href="/san-pham/chuyen-nhuong/" class="s1-btn">Xem Tất Cả Rổ Hàng Bán</a>
-            </div>
-        </section>
-
-        <!-- KHỐI 6: QUY TRÌNH GIAO DỊCH -->
+        <!-- 5. QUY TRÌNH LÀM VIỆC VIP -->
         <section class="process-section">
             <div class="values-inner">
                 <div class="values-header">
@@ -521,7 +524,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 7: THỐNG KÊ (MILESTONES) -->
+        <!-- 6. THỐNG KÊ TỰ HÀO (MILESTONES) -->
         <section class="milestone-section">
             <div class="milestone-grid">
                 <div class="milestone-item"><div class="milestone-num-wrap"><span class="count-up" data-target="10">0</span>+</div><div class="milestone-text">Năm Kinh Nghiệm</div></div>
@@ -531,9 +534,24 @@
             </div>
         </section>
 
-        <!-- KHỐI 8: TIN TỨC MỚI NHẤT (API FIREBASE) -->
-        <section style="padding: 80px 20px; background-color: var(--lux-dark);">
-            <div class="s-head"><h2 class="s-tit">Góc Nhìn Chuyên Gia & Tin Tức</h2></div>
+        <!-- 7. SHORTCODE 2: SẢN PHẨM NỔI BẬT -->
+        <div class="shortcode-wrapper">
+            <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Giỏ Hàng Chuyển Nhượng</h2></div>
+            <div class="gr-carousel-wrapper">
+                <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-sale-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
+                <div id="home-sale-scroll" class="gr-carousel">
+                    <div style="color:#c5a059; padding:20px; text-align:center; width:100%;"><i class="fas fa-circle-notch fa-spin"></i> Đang tải giỏ hàng...</div>
+                </div>
+                <button class="gr-nav-btn gr-next" onclick="grScrollHorizontal('home-sale-scroll', 1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div style="text-align:center; margin-top: 30px;">
+                <a href="/san-pham/chuyen-nhuong/" class="s1-btn">Xem Tất Cả Rổ Hàng Bán</a>
+            </div>
+        </div>
+
+        <!-- 8. SHORTCODE 3: TIN TỨC GÓC NHÌN CHUYÊN GIA -->
+        <section class="news-section">
+            <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Góc Nhìn Chuyên Gia & Tin Tức</h2></div>
             <div class="gr-carousel-wrapper">
                 <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-news-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
                 <div id="home-news-scroll" class="gr-carousel">
@@ -546,12 +564,11 @@
             </div>
         </section>
 
-        <!-- KHỐI 9: ĐỐI TÁC CHIẾN LƯỢC ĐÃ SỬA CHUẨN ĐƯỜNG DẪN -->
+        <!-- 9. ĐỐI TÁC CHIẾN LƯỢC ĐÃ SỬA CHUẨN ĐƯỜNG DẪN -->
         <div class="lux-partner-wrapper">
             <div class="lux-partner-header"><span class="lph-line"></span><h3 class="lph-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="lph-line"></span></div>
             <div class="lux-slider-container">
                 <div class="lux-slide-track">
-                    <!-- LOGO NÀY BÁC CŨNG PHẢI ĐẨY LÊN GITHUB /ASSETS/IMAGES/ -->
                     <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
                     <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
                     <div class="lux-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
@@ -569,7 +586,7 @@
             </div>
         </div>
 
-        <!-- KHỐI 10: CTA CUỐI TRANG -->
+        <!-- 10. CTA CUỐI TRANG -->
         <section id="lux-cta-v118">
             <div class="cta-bg-glow"></div>
             <div class="cta-content">
@@ -631,7 +648,7 @@
 
     <script>
         // ==========================================
-        // 1. KHỞI TẠO FIREBASE (ĐÃ FIX LỖI)
+        // 1. KHỞI TẠO FIREBASE
         // ==========================================
         const firebaseConfig = {
           apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
