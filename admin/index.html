@@ -873,26 +873,6 @@
         await createGithubFile(path, finalHtml, `Đăng Tin tức: ${newsData.title}`);
     }
 
-    async function autoCreateProjectFolder(projData) {
-        const path = `du-an/${projData.slug}/index.html`;
-        let templateHtml = await getTemplateFile('chi-tiet-da.html');
-        if (!templateHtml) return;
-
-        // ĐÃ FIX 4: Cập nhật biến link với MAIN_DOMAIN mới
-        let finalHtml = templateHtml
-            .replace(/\{\{TITLE\}\}/g, () => safeHTML(projData.seoTitle || projData.title))
-            .replace(/\{\{TITLE_JSON\}\}/g, () => safeJS(projData.title))
-            .replace(/\{\{DESC\}\}/g, () => safeHTML(projData.seoDesc || ''))
-            .replace(/\{\{KEYWORDS\}\}/g, () => safeHTML(projData.seoKeywords || `${projData.title}, greenia homes`))
-            .replace(/\{\{SLUG\}\}/g, () => projData.slug)
-            .replace(/\{\{STATUS\}\}/g, () => safeJS(projData.status))
-            .replace(/\{\{LOC\}\}/g, () => safeJS(projData.loc))
-            .replace(/\{\{PRICE\}\}/g, () => safeJS(projData.price))
-            .replace(/\{\{IMG\}\}/g, () => safeJS(projData.img));
-            
-        await createGithubFile(path, finalHtml, `Đăng Dự án: ${projData.title}`);
-    }
-
     async function pushData(type) {
         const collectionMap = { 'prod': 'products', 'news': 'posts', 'proj': 'projects', 'cat': 'categories' };
         const colName = collectionMap[type];
@@ -960,7 +940,10 @@
                     if (matchedCat) await autoCreateCategoryFolder(matchedCat);
                 }
             }
-            else if (type === 'proj') await autoCreateProjectFolder(newData);
+            else if (type === 'proj') {
+                // Đã lưu xong Database. Bỏ qua việc ép khuôn HTML vì Admin tự code tay dự án.
+                console.log("Đã lưu Data dự án. Bỏ qua tạo giao diện.");
+            }
 
             alert(`Xuất bản thành công! Đã đồng bộ Database và cập nhật các file liên quan trên GitHub.`);
             cancelEdit(); buildLinkLibrary(); 
