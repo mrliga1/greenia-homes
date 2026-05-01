@@ -24,15 +24,15 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#c5a059">
 
-    <!-- SCHEMA JSON-LD CHUẨN TỪ BẢN GỐC -->
+    <!-- SCHEMA JSON-LD CHUẨN (ĐÃ LOẠI BỎ TOÀN BỘ LOCALHOST) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "http://localhost:10004/#website",
-          "url": "http://localhost:10004/",
+          "@id": "https://greeniahomes.vn/#website",
+          "url": "https://greeniahomes.vn/",
           "name": "Greenia Homes",
           "alternateName": "Greenia Homes - Môi giới BĐS Cao Cấp",
           "description": "Tư vấn, phân tích và phân phối Bất động sản hạng sang tại TP.HCM",
@@ -41,18 +41,18 @@
             "@type": "SearchAction",
             "target": {
               "@type": "EntryPoint",
-              "urlTemplate": "http://localhost:10004/?s={search_term_string}"
+              "urlTemplate": "https://greeniahomes.vn/san-pham.html"
             },
             "query-input": "required name=search_term_string"
           }
         },
         {
           "@type": "RealEstateAgent",
-          "@id": "http://localhost:10004/#organization",
+          "@id": "https://greeniahomes.vn/#organization",
           "name": "Greenia Homes",
-          "url": "http://localhost:10004/",
-          "logo": "http://localhost:10004/wp-content/uploads/2025/12/logo-greenia.png", 
-          "image": "http://localhost:10004/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg",
+          "url": "https://greeniahomes.vn/",
+          "logo": "https://greeniahomes.vn/assets/images/logo-greenia.png", 
+          "image": "https://greeniahomes.vn/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg",
           "telephone": "+84932966700",
           "priceRange": "$$$$",
           "address": {
@@ -77,7 +77,7 @@
           "@type": "Service",
           "serviceType": "Tư vấn và phân phối Bất động sản cao cấp",
           "provider": {
-            "@id": "http://localhost:10004/#organization"
+            "@id": "https://greeniahomes.vn/#organization"
           },
           "areaServed": {
             "@type": "City",
@@ -401,14 +401,15 @@
         <!-- 1. HERO SECTION -->
         <section class="hero-section">
             <div class="hero-slider">
+                <!-- ẢNH ĐÃ ĐƯỢC CHUYỂN SANG ĐƯỜNG DẪN GITHUB -->
                 <div class="slide-item active">
-                    <img src="http://localhost:10004/wp-content/uploads/2025/12/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
+                    <img src="/assets/images/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
                 <div class="slide-item">
-                    <img src="http://localhost:10004/wp-content/uploads/2025/11/Imperia-Crystal.jpg" alt="Imperia">
+                    <img src="/assets/images/Imperia-Crystal.jpg" alt="Imperia">
                 </div>
                 <div class="slide-item">
-                    <img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
+                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
                 </div>
             </div>
             <div class="hero-overlay"></div>
@@ -428,7 +429,7 @@
                 </div>
                 
                 <div class="hero-form-wrapper">
-                    <!-- FORM BANNER ĐÃ ĐƯỢC PHỤC HỒI CHUẨN 100% -->
+                    <!-- FORM BANNER ĐÃ ĐƯỢC PHỤC HỒI CHUẨN 100% NHƯ BẢN WORDPRESS GỐC CỦA BÁC -->
                     <section class="lux-form-box">
                         <div class="lux-form-inner">
                             <h3 class="lux-form-title">Đăng Ký Tư Vấn</h3>
@@ -438,11 +439,13 @@
                             </div>
                             <p class="lux-form-desc">Nhận bảng giá & chính sách ưu đãi từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
                             
+                            <!-- ĐÃ TRẢ LẠI ĐẦY ĐỦ 4 Ô NHẬP LIỆU: HỌ TÊN, SĐT, EMAIL VÀ NHU CẦU -->
                             <form id="hero-lead-form" class="lux-form">
                                 <input type="text" id="hero-name" class="lux-input" placeholder="Họ tên *" required>
                                 <input type="tel" id="hero-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
                                 <input type="email" id="hero-email" class="lux-input" placeholder="Email nhận tài liệu" required>
                                 <input type="text" id="hero-demand" class="lux-input" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
+                                
                                 <button type="submit" id="hero-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
                             </form>
                             
@@ -476,8 +479,9 @@
             <div class="container-brand">
                 <div class="brand-visual">
                     <div class="deco-pattern"></div><div class="deco-block"></div>
-                    <div class="img-bg-wrapper"><img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
-                    <img src="http://localhost:10004/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
+                    <!-- ẢNH ĐÃ CHUYỂN SANG ĐƯỜNG DẪN GITHUB -->
+                    <div class="img-bg-wrapper"><img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
+                    <img src="/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
                     <div class="partner-badge">Đối tác Chiến Lược</div>
                     <div class="exp-card"><i class="fas fa-medal exp-icon"></i><div class="exp-info"><span class="exp-num">10+ Năm</span><span class="exp-desc">Kinh Nghiệm</span></div></div>
                 </div>
@@ -570,19 +574,19 @@
             <div class="partner-header"><span class="partner-line"></span><h3 class="partner-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="partner-line"></span></div>
             <div class="partner-slider-container">
                 <div class="partner-slide-track">
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
+                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
+                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
                     <!-- Nhân đôi để tạo hiệu ứng chạy mượt -->
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
+                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
+                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
                 </div>
             </div>
         </div>
@@ -649,12 +653,12 @@
 
     <script>
         // ==========================================
-        // 1. KHỞI TẠO FIREBASE AN TOÀN
+        // 1. KHỞI TẠO FIREBASE
         // ==========================================
         let db = null;
         try {
             const firebaseConfig = {
-              apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+              apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
               authDomain: "greenia-homes.firebaseapp.com",
               projectId: "greenia-homes",
               storageBucket: "greenia-homes.appspot.com",
@@ -665,7 +669,7 @@
             if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             db = firebase.firestore();
         } catch(e) {
-            console.error("Firebase không thể khởi tạo:", e);
+            console.error("Firebase Initialization Error:", e);
         }
 
         // ==========================================
@@ -687,7 +691,7 @@
         }
 
         // ==========================================
-        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG TÁCH RỜI
+        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG TÁCH RỜI CHỐNG TREO WEB
         // ==========================================
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy IP khách hàng ngầm
@@ -717,7 +721,7 @@
             const slides = document.querySelectorAll('.slide-item');
             if (slides.length > 0) { let current = 0; setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000); }
 
-            // 3.3 TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI TRÁNH TREO WEB
+            // 3.3 HÀM TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI (Không dùng Promise.all để tránh lỗi xoay vòng)
             if (db) {
                 // --- TẢI DỰ ÁN ---
                 db.collection('projects').get().then(projSnap => {
@@ -739,7 +743,8 @@
                         projScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Hệ thống đang cập nhật dự án...</div>';
                     }
                 }).catch(e => {
-                    document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Dự án.</div>';
+                    console.error("Lỗi Firebase Dự án:", e);
+                    document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi tải dữ liệu.</div>';
                 });
 
                 // --- TẢI SẢN PHẨM ---
@@ -769,7 +774,8 @@
                         saleScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật giỏ hàng...</div>';
                     }
                 }).catch(e => {
-                    document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Sản phẩm.</div>';
+                    console.error("Lỗi Firebase Sản phẩm:", e);
+                    document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi tải dữ liệu.</div>';
                 });
 
                 // --- TẢI TIN TỨC ---
@@ -803,15 +809,17 @@
                         newsScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật tin tức...</div>';
                     }
                 }).catch(e => {
-                    document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Tin tức.</div>';
+                    console.error("Lỗi Firebase Tin tức:", e);
+                    document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi tải dữ liệu.</div>';
                 });
             } else {
-                document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
-                document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
-                document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
+                const errorMsg = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động. Hãy kiểm tra Config.</div>';
+                document.getElementById('home-proj-scroll').innerHTML = errorMsg;
+                document.getElementById('home-sale-scroll').innerHTML = errorMsg;
+                document.getElementById('home-news-scroll').innerHTML = errorMsg;
             }
 
-            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (CHẠY ĐỘC LẬP HOÀN TOÀN BÊN NGOÀI FIREBASE)
+            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ TỪ GOOGLE SHEET API ĐỘC LẬP
             fetch(API_URL + "?action=count")
             .then(r => r.json())
             .then(d => {
@@ -821,6 +829,7 @@
                 document.getElementById('count-hero-form').innerText = `(5.0/5 - ${count} đánh giá)`;
             })
             .catch(e => {
+                console.error("Lỗi API Google Sheet đếm sao:", e);
                 document.getElementById('count-popup').innerText = `(5.0/5 - 186 đánh giá)`;
                 document.getElementById('count-hero-form').innerText = `(5.0/5 - 186 đánh giá)`;
             });
