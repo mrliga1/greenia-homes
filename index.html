@@ -144,7 +144,7 @@
         .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
 
         /* FORM TƯ VẤN HERO ĐÃ SỬA CẤU TRÚC CHUẨN 100% */
-        .lux-form-box { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--lux-gold); padding: 25px 30px !important; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
+        .lux-form-box { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--lux-gold); padding: 25px 30px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
         .lux-form-inner { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .lux-form-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .lux-form-rating { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
@@ -295,8 +295,8 @@
         .partner-slider-container::after { right: 0; top: 0; transform: rotate(180deg); }
         .partner-slide-track { display: flex; width: calc(180px * 12); animation: scrollPartners 25s linear infinite; }
         .partner-slide { height: 100px; width: 180px; display: flex; align-items: center; justify-content: center; padding: 0 20px; }
-        .partner-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; }
-        .partner-slide img:hover { transform: scale(1.1); }
+        .partner-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; filter: grayscale(100%) opacity(0.7);}
+        .partner-slide img:hover { transform: scale(1.1); filter: grayscale(0%) opacity(1);}
         .partner-slider-container:hover .partner-slide-track { animation-play-state: paused; }
 
         /* =========================================
@@ -313,26 +313,26 @@
         .btn-gold:hover, .btn-outline:hover { background: rgba(197, 160, 89, 0.1); border-color: var(--lux-gold); color: var(--lux-white); }
 
         /* =========================================
-           10. POPUP STYLE 
+           10. POPUP STYLE (ĐÃ ĐỔI TÊN ĐỂ TRÁNH XUNG ĐỘT FOOTER)
            ========================================= */
-        .success-overlay { display: none; padding: 20px; margin-top: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 12px; animation: fadeIn 0.5s ease forwards; width: 100%; }
-        .success-title { color: #2ecc71; font-size: 16px; font-weight: 700; margin-bottom: 5px; }
-        .success-text { color: #ddd; font-size: 13px; }
+        .home-success-overlay { display: none; padding: 20px; margin-top: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 12px; animation: fadeIn 0.5s ease forwards; width: 100%; }
+        .home-success-title { color: #2ecc71; font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .home-success-text { color: #ddd; font-size: 13px; }
 
-        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
-        .popup-overlay.active { opacity: 1; visibility: visible; }
-        .popup-container { position: relative; width: 95%; max-width: 460px; background-color: #080c17; border: 1px solid #c5a059; border-radius: 6px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
-        .popup-overlay.active .popup-container { transform: scale(1); }
-        .popup-close { position: absolute; top: 12px; right: 15px; font-size: 24px; color: #666; cursor: pointer; transition: 0.3s; }
-        .popup-close:hover { color: #ff4757; transform: rotate(90deg); }
-        .popup-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-        .popup-subtitle { font-family: 'Manrope', sans-serif; font-size: 13px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
-        .popup-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
-        .popup-tag-item { font-family: 'Manrope', sans-serif; font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 5px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
-        .popup-check-icon { color: #dbb35e; font-weight: bold; font-size: 10px; }
-        .popup-footer { margin-top: 15px; font-size: 10px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
-        .popup-link { color: #777; text-decoration: none; transition: 0.3s; }
-        .popup-link:hover { color: #b48c40; text-decoration: underline; }
+        .popup-home-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
+        .popup-home-overlay.active { opacity: 1; visibility: visible; }
+        .popup-home-container { position: relative; width: 95%; max-width: 460px; background-color: #080c17; border: 1px solid #c5a059; border-radius: 6px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
+        .popup-home-overlay.active .popup-home-container { transform: scale(1); }
+        .popup-home-close { position: absolute; top: 12px; right: 15px; font-size: 24px; color: #666; cursor: pointer; transition: 0.3s; }
+        .popup-home-close:hover { color: #ff4757; transform: rotate(90deg); }
+        .popup-home-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .popup-home-subtitle { font-family: 'Manrope', sans-serif; font-size: 13px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
+        .popup-home-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
+        .popup-home-tag-item { font-family: 'Manrope', sans-serif; font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 5px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
+        .popup-home-check-icon { color: #dbb35e; font-weight: bold; font-size: 10px; }
+        .popup-home-footer { margin-top: 15px; font-size: 10px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
+        .popup-home-link { color: #777; text-decoration: none; transition: 0.3s; }
+        .popup-home-link:hover { color: #b48c40; text-decoration: underline; }
 
         /* ANIMATIONS & RESPONSIVE */
         @keyframes scrollPartners { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-180px * 6)); } }
@@ -402,13 +402,13 @@
         <section class="hero-section">
             <div class="hero-slider">
                 <div class="slide-item active">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Global City">
+                    <img src="/assets/images/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
                 <div class="slide-item">
                     <img src="/assets/images/Imperia-Crystal.jpg" alt="Imperia">
                 </div>
                 <div class="slide-item">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg" alt="Vinhomes">
+                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
                 </div>
             </div>
             <div class="hero-overlay"></div>
@@ -447,9 +447,9 @@
                                 <button type="submit" id="hero-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
                             </form>
                             
-                            <div id="hero-success-msg" class="success-overlay" style="text-align: left;">
-                                <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
-                                <div class="success-text">Hệ thống đang gửi tài liệu cho quý khách.</div>
+                            <div id="hero-success-msg" class="home-success-overlay" style="text-align: left;">
+                                <div class="home-success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                                <div class="home-success-text">Hệ thống đang gửi tài liệu cho quý khách.</div>
                             </div>
                         </div>
                     </section>
@@ -477,8 +477,8 @@
             <div class="container-brand">
                 <div class="brand-visual">
                     <div class="deco-pattern"></div><div class="deco-block"></div>
-                    <div class="img-bg-wrapper"><img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg" class="img-bg-brand"></div>
-                    <img src="/assets/images/greenia-homes.jpg" class="img-front-brand">
+                    <div class="img-bg-wrapper"><img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
+                    <img src="/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
                     <div class="partner-badge">Đối tác Chiến Lược</div>
                     <div class="exp-card"><i class="fas fa-medal exp-icon"></i><div class="exp-info"><span class="exp-num">10+ Năm</span><span class="exp-desc">Kinh Nghiệm</span></div></div>
                 </div>
@@ -492,7 +492,8 @@
                         <div class="bf-item"><div class="bf-icon"><i class="fas fa-user-shield"></i></div><div class="bf-text"><h4>Bảo Mật & Riêng Tư</h4><p>Quy trình tư vấn 1-1 Private.</p></div></div>
                         <div class="bf-item"><div class="bf-icon"><i class="fas fa-infinity"></i></div><div class="bf-text"><h4>Đồng Hành Trọn Đời</h4><p>Hỗ trợ pháp lý & khai thác tài sản.</p></div></div>
                     </div>
-                    <a href="javascript:void(0)" onclick="openPopup()" class="btn-brand-pro">Nhận Phân Tích Ngay <i class="fas fa-arrow-right"></i></a>
+                    <!-- ĐÃ ĐỔI TÊN HÀM ĐỂ TRÁNH ĐỤNG VỚI FOOTER -->
+                    <a href="javascript:void(0)" onclick="openPopupHome()" class="btn-brand-pro">Nhận Phân Tích Ngay <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -566,22 +567,24 @@
             </div>
         </section>
 
-        <!-- 9. ĐỐI TÁC CHIẾN LƯỢC TỰ ĐỘNG CHÈN LINK ẢNH GỐC TỪ CDN CHUYÊN NGHIỆP -->
+        <!-- 9. ĐỐI TÁC CHIẾN LƯỢC -->
         <div class="partner-section">
             <div class="partner-header"><span class="partner-line"></span><h3 class="partner-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="partner-line"></span></div>
             <div class="partner-slider-container">
                 <div class="partner-slide-track">
-                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland"></div>
-                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="partner-slide"><img src="/assets/images/masteri-homes.png" alt="Masterise"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Novaland.png" alt="Novaland"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Tap-Doan-Hung-Thinh.png" alt="Hung Thinh"></div>
+                    <div class="partner-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Vinhomes_logo.svg" alt="Vinhomes"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Masterise-Group.png" alt="Masterise"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Dat-Xanh-Group.png" alt="Dat Xanh"></div>
                     <!-- Nhân đôi để tạo hiệu ứng chạy mượt -->
-                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland"></div>
-                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="partner-slide"><img src="/assets/images/masteri-homes.png" alt="Masterise"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Novaland.png" alt="Novaland"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Tap-Doan-Hung-Thinh.png" alt="Hung Thinh"></div>
+                    <div class="partner-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Vinhomes_logo.svg" alt="Vinhomes"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Masterise-Group.png" alt="Masterise"></div>
+                    <div class="partner-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Dat-Xanh-Group.png" alt="Dat Xanh"></div>
                 </div>
             </div>
         </div>
@@ -594,7 +597,8 @@
                 <h2 class="cta-title">Bạn Chưa Tìm Được Bất Động Sản Ưng Ý?</h2>
                 <p class="cta-desc">Để lại thông tin, đội ngũ chuyên gia của chúng tôi sẽ liên hệ lại trong vòng 15 phút để cung cấp bảng phân tích dòng tiền và rổ hàng "Private" chưa công bố.</p>
                 <div class="cta-actions">
-                    <a href="javascript:void(0);" onclick="openPopup()" class="btn-gold"><i class="far fa-calendar-check"></i> Đặt Lịch Tư Vấn 1-1</a>
+                    <!-- ĐÃ ĐỔI TÊN HÀM ĐỂ TRÁNH ĐỤNG VỚI FOOTER -->
+                    <a href="javascript:void(0);" onclick="openPopupHome()" class="btn-gold"><i class="far fa-calendar-check"></i> Đặt Lịch Tư Vấn 1-1</a>
                     <a href="tel:0932966700" class="btn-outline" onclick="triggerTracking('Phone')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
                 </div>
             </div>
@@ -602,42 +606,42 @@
 
     </main>
 
-    <!-- POPUP TƯ VẤN (SẠCH CODE) -->
-    <div id="contact-popup-overlay" class="popup-overlay" style="display:none;">
-        <div class="popup-container">
-            <span class="popup-close" onclick="closePopup()">&times;</span>
+    <!-- POPUP TƯ VẤN (ĐÃ ĐỔI HẾT CLASS/ID THÀNH -HOME ĐỂ TRÁNH BỊ CSS CỦA FOOTER GHI ĐÈ) -->
+    <div id="contact-popup-home-overlay" class="popup-home-overlay" style="display:none;">
+        <div class="popup-home-container">
+            <span class="popup-home-close" onclick="closePopupHome()">&times;</span>
             <div class="popup-content-wrap">
-                <h3 class="popup-title">TẢI TÀI LIỆU & BẢNG GIÁ</h3>
-                <div class="popup-subtitle">Nhận trọn bộ thông tin dự án qua Email/Zalo ngay.</div>
+                <h3 class="popup-home-title">TẢI TÀI LIỆU & BẢNG GIÁ</h3>
+                <div class="popup-home-subtitle">Nhận trọn bộ thông tin dự án qua Email/Zalo ngay.</div>
                 
                 <div class="lux-form-rating" style="margin-bottom: 20px; padding-bottom: 5px;">
                     <span class="lux-form-stars">★★★★★</span>
-                    <span class="lux-form-count" id="count-popup">(Đang tải...)</span>
+                    <span class="lux-form-count" id="count-popup-home">(Đang tải...)</span>
                 </div>
 
-                <div class="popup-tags">
-                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Bảng giá gốc đợt 1</div>
-                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Pháp lý 1/500</div>
-                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Bài toán dòng tiền</div>
+                <div class="popup-home-tags">
+                    <div class="popup-home-tag-item"><span class="popup-home-check-icon">✔</span> Bảng giá gốc đợt 1</div>
+                    <div class="popup-home-tag-item"><span class="popup-home-check-icon">✔</span> Pháp lý 1/500</div>
+                    <div class="popup-home-tag-item"><span class="popup-home-check-icon">✔</span> Bài toán dòng tiền</div>
                 </div>
 
-                <form id="popup-form" class="lux-form">
-                    <input type="text" id="popup-name" class="lux-input" placeholder="Họ tên *" required>
-                    <input type="tel" id="popup-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                    <input type="email" id="popup-email" class="lux-input" placeholder="Email" required>
-                    <input type="text" id="popup-demand" class="lux-input" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
-                    <button type="submit" id="popup-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ</button>
+                <form id="popup-home-form" class="lux-form">
+                    <input type="text" id="popup-home-name" class="lux-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="popup-home-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="popup-home-email" class="lux-input" placeholder="Email" required>
+                    <input type="text" id="popup-home-demand" class="lux-input" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
+                    <button type="submit" id="popup-home-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ</button>
                 </form>
                 
-                <div class="popup-footer">
+                <div class="popup-home-footer">
                     <span style="font-size: 10px; margin-right: 3px;">🔒</span> Thông tin bảo mật tuyệt đối theo 
-                    <a href="/chinh-sach-bao-mat/" target="_blank" class="popup-link">Chính sách riêng tư</a>.
+                    <a href="/chinh-sach-bao-mat/" target="_blank" class="popup-home-link">Chính sách riêng tư</a>.
                 </div>
                 
-                <div id="popup-success-msg" class="success-overlay" style="text-align: center;">
+                <div id="popup-home-success-msg" class="home-success-overlay" style="text-align: center;">
                     <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
-                    <div style="color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px;">ĐĂNG KÝ THÀNH CÔNG!</div>
-                    <div style="color: #ddd; font-size: 13px;">Hệ thống đang gửi tài liệu cho bạn.</div>
+                    <div class="home-success-title">ĐĂNG KÝ THÀNH CÔNG!</div>
+                    <div class="home-success-text">Hệ thống đang gửi tài liệu cho bạn.</div>
                 </div>
             </div>
         </div>
@@ -648,7 +652,7 @@
 
     <script>
         // ==========================================
-        // 1. KHỞI TẠO FIREBASE (TRẢ LẠI API KEY GỐC ĐỂ TRÁNH LỖI KẾT NỐI)
+        // 1. KHỞI TẠO FIREBASE AN TOÀN
         // ==========================================
         let db = null;
         try {
@@ -686,9 +690,10 @@
         }
 
         // ==========================================
-        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG ĐỘC LẬP TỪNG KHỐI
+        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG TÁCH RỜI CHỐNG TREO WEB
         // ==========================================
         document.addEventListener("DOMContentLoaded", function() {
+            // Lấy IP khách hàng ngầm
             fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIP=d.ip}).catch(e=>{});
 
             // 3.1 CHẠY ANIMATION CÁC KHỐI SỐ
@@ -715,9 +720,9 @@
             const slides = document.querySelectorAll('.slide-item');
             if (slides.length > 0) { let current = 0; setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000); }
 
-            // 3.3 HÀM TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI (Không gộp chung để tránh treo web)
+            // 3.3 HÀM TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI
             if (db) {
-                // TẢI DỰ ÁN
+                // --- TẢI DỰ ÁN ---
                 db.collection('projects').get().then(projSnap => {
                     const projects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const projScroll = document.getElementById('home-proj-scroll');
@@ -740,7 +745,7 @@
                     document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối CSDL Dự án.</div>';
                 });
 
-                // TẢI SẢN PHẨM BÁN
+                // --- TẢI SẢN PHẨM ---
                 db.collection('products').get().then(prodSnap => {
                     const products = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const saleScroll = document.getElementById('home-sale-scroll');
@@ -770,7 +775,7 @@
                     document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối CSDL Sản phẩm.</div>';
                 });
 
-                // TẢI TIN TỨC
+                // --- TẢI TIN TỨC ---
                 db.collection('posts').get().then(postSnap => {
                     const posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const newsScroll = document.getElementById('home-news-scroll');
@@ -798,7 +803,7 @@
                                     </a>`;
                         }).join('');
                     } else {
-                        newsScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật bài viết...</div>';
+                        newsScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật tin tức...</div>';
                     }
                 }).catch(e => {
                     document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối CSDL Tin tức.</div>';
@@ -810,7 +815,7 @@
                 document.getElementById('home-news-scroll').innerHTML = errorMsg;
             }
 
-            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (CHẠY ĐỘC LẬP TỪ API GOOGLE SHEET, KHÔNG BỊ PHỤ THUỘC FIREBASE)
+            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (CHẠY ĐỘC LẬP TỪ API GOOGLE SHEET)
             fetch(API_URL + "?action=count")
             .then(r => r.text())
             .then(text => {
@@ -818,15 +823,15 @@
                     let d = JSON.parse(text);
                     let count = d.count ? parseInt(d.count) : 186;
                     if(count < 5) count = 186;
-                    document.getElementById('count-popup').innerText = `(5.0/5 - ${count} đánh giá)`;
+                    document.getElementById('count-popup-home').innerText = `(5.0/5 - ${count} đánh giá)`;
                     document.getElementById('count-hero-form').innerText = `(5.0/5 - ${count} đánh giá)`;
                 } catch(err) {
-                    document.getElementById('count-popup').innerText = `(5.0/5 - 186 đánh giá)`;
+                    document.getElementById('count-popup-home').innerText = `(5.0/5 - 186 đánh giá)`;
                     document.getElementById('count-hero-form').innerText = `(5.0/5 - 186 đánh giá)`;
                 }
             })
             .catch(e => {
-                document.getElementById('count-popup').innerText = `(5.0/5 - 186 đánh giá)`;
+                document.getElementById('count-popup-home').innerText = `(5.0/5 - 186 đánh giá)`;
                 document.getElementById('count-hero-form').innerText = `(5.0/5 - 186 đánh giá)`;
             });
 
@@ -870,28 +875,28 @@
                 });
             });
 
-            // 3.6 XỬ LÝ FORM POPUP
-            document.getElementById('popup-form').addEventListener('submit', function(e) {
+            // 3.6 XỬ LÝ FORM POPUP MỚI (CỦA TRANG CHỦ)
+            document.getElementById('popup-home-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const btn = document.getElementById('popup-submit-btn');
+                const btn = document.getElementById('popup-home-submit-btn');
                 const originalText = btn.innerText;
                 btn.innerText = "ĐANG XỬ LÝ..."; btn.disabled = true;
 
                 let fd = new FormData();
-                fd.append("name", document.getElementById('popup-name').value);
-                fd.append("phone", document.getElementById('popup-phone').value);
-                fd.append("email", document.getElementById('popup-email').value);
-                fd.append("demand", document.getElementById('popup-demand').value);
+                fd.append("name", document.getElementById('popup-home-name').value);
+                fd.append("phone", document.getElementById('popup-home-phone').value);
+                fd.append("email", document.getElementById('popup-home-email').value);
+                fd.append("demand", document.getElementById('popup-home-demand').value);
                 fd.append("project", SITE_NAME + " (Popup CTA)");
                 fd.append("url", window.location.href);
                 fd.append("ip", clientIP);
                 fd.append("rating", 5);
 
                 fetch(API_URL, { method: 'POST', body: fd }).then(res => {
-                    document.getElementById('popup-form').style.setProperty('display', 'none', 'important'); 
-                    document.getElementById('popup-success-msg').style.display = 'block';
+                    document.getElementById('popup-home-form').style.setProperty('display', 'none', 'important'); 
+                    document.getElementById('popup-home-success-msg').style.display = 'block';
                     if(typeof fbq === 'function') fbq('track', 'Lead');
-                    setTimeout(() => closePopup(), 4000);
+                    setTimeout(() => closePopupHome(), 4000);
                 }).catch(err => {
                     alert("Có lỗi xảy ra, vui lòng gọi Hotline.");
                     btn.innerText = originalText; btn.disabled = false;
@@ -911,13 +916,13 @@
             var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
         };
 
-        // Hàm bật/tắt Popup CTA
-        window.openPopup = function() { 
-            const overlay = document.getElementById('contact-popup-overlay'); 
+        // HÀM MỞ POPUP TRANG CHỦ (ĐÃ ĐỔI TÊN CHỐNG XUNG ĐỘT FOOTER)
+        window.openPopupHome = function() { 
+            const overlay = document.getElementById('contact-popup-home-overlay'); 
             if(overlay) { overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('active'), 10); } 
         };
-        window.closePopup = function() { 
-            const overlay = document.getElementById('contact-popup-overlay'); 
+        window.closePopupHome = function() { 
+            const overlay = document.getElementById('contact-popup-home-overlay'); 
             if(overlay) { overlay.classList.remove('active'); setTimeout(() => overlay.style.display = 'none', 300); } 
         };
         
