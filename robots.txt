@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
+Disallow: /admin/
 Disallow: /assets/data/
 
 # Tấm khiên bảo vệ hạ tầng (Chặn Bot tò mò mã nguồn)
