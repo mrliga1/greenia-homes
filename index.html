@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
-    <!-- SEO CƠ BẢN ĐÃ LỌC SẠCH DẤU VẾT WORDPRESS -->
+    <!-- SEO CƠ BẢN -->
     <meta name="description" content="Tư vấn, phân tích và phân phối Bất động sản hạng sang tại TP.HCM. Greenia Homes mang đến giải pháp đầu tư và an cư chiến lược." />
     <meta name="keywords" content="Greenia homes, bất động sản cao cấp, biệt thự, nhà phố, môi giới bất động sản" />
     <link rel="canonical" href="https://greeniahomes.vn/" />
@@ -31,8 +31,8 @@
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "https://greeniahomes.vn/#website",
-          "url": "https://greeniahomes.vn/",
+          "@id": "http://localhost:10004/#website",
+          "url": "http://localhost:10004/",
           "name": "Greenia Homes",
           "alternateName": "Greenia Homes - Môi giới BĐS Cao Cấp",
           "description": "Tư vấn, phân tích và phân phối Bất động sản hạng sang tại TP.HCM",
@@ -41,18 +41,18 @@
             "@type": "SearchAction",
             "target": {
               "@type": "EntryPoint",
-              "urlTemplate": "https://greeniahomes.vn/san-pham.html"
+              "urlTemplate": "http://localhost:10004/?s={search_term_string}"
             },
             "query-input": "required name=search_term_string"
           }
         },
         {
           "@type": "RealEstateAgent",
-          "@id": "https://greeniahomes.vn/#organization",
+          "@id": "http://localhost:10004/#organization",
           "name": "Greenia Homes",
-          "url": "https://greeniahomes.vn/",
-          "logo": "/assets/images/logo-greenia.png", 
-          "image": "/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg",
+          "url": "http://localhost:10004/",
+          "logo": "http://localhost:10004/wp-content/uploads/2025/12/logo-greenia.png", 
+          "image": "http://localhost:10004/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg",
           "telephone": "+84932966700",
           "priceRange": "$$$$",
           "address": {
@@ -77,7 +77,7 @@
           "@type": "Service",
           "serviceType": "Tư vấn và phân phối Bất động sản cao cấp",
           "provider": {
-            "@id": "https://greeniahomes.vn/#organization"
+            "@id": "http://localhost:10004/#organization"
           },
           "areaServed": {
             "@type": "City",
@@ -141,21 +141,21 @@
         .cta-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .cta-phone { font-size: 18px; font-weight: 800; letter-spacing: 1px; font-family: 'Cinzel', serif; }
 
-        .hero-form-wrapper { flex: 0 0 420px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
+        .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
 
-        /* FORM TƯ VẤN (SẠCH CODE WORDPRESS) */
-        .lux-form-box { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
+        /* FORM TƯ VẤN HERO (SẠCH CODE WORDPRESS & CHUẨN Ô NHẬP LIỆU) */
+        .lux-form-box { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border: 1px solid var(--lux-gold); padding: 40px 30px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
         .lux-form-inner { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .lux-form-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .lux-form-rating { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
         .lux-form-stars { font-size: 14px; letter-spacing: 1px; }
         .lux-form-count { font-size: 12px; color: #aaa; font-weight: 400; }
-        .lux-form-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        .lux-form-desc { font-size: 13px; color: #ccc; margin-bottom: 25px; max-width: 100%; line-height: 1.5; }
         
-        .lux-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
-        .lux-input { width: 100%; background: var(--lux-input); border: 1px solid var(--lux-border); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .lux-form { display: flex; flex-direction: column; width: 100%; gap: 15px; justify-content: center; align-items: center; }
+        .lux-input { width: 100%; background: var(--lux-input); border: 1px solid var(--lux-border); color: #fff; padding: 14px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; font-family: 'Manrope', sans-serif;}
         .lux-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-        .lux-submit-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
+        .lux-submit-btn { width: 100%; padding: 14px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; font-family: 'Playfair Display', serif;}
         .lux-submit-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
 
         /* =========================================
@@ -295,8 +295,8 @@
         .partner-slider-container::after { right: 0; top: 0; transform: rotate(180deg); }
         .partner-slide-track { display: flex; width: calc(180px * 12); animation: scrollPartners 25s linear infinite; }
         .partner-slide { height: 100px; width: 180px; display: flex; align-items: center; justify-content: center; padding: 0 20px; }
-        .partner-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; filter: grayscale(100%) opacity(0.7);}
-        .partner-slide img:hover { transform: scale(1.1); filter: grayscale(0%) opacity(1);}
+        .partner-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; }
+        .partner-slide img:hover { transform: scale(1.1); }
         .partner-slider-container:hover .partner-slide-track { animation-play-state: paused; }
 
         /* =========================================
@@ -402,13 +402,13 @@
         <section class="hero-section">
             <div class="hero-slider">
                 <div class="slide-item active">
-                    <img src="/assets/images/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/12/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
                 <div class="slide-item">
-                    <img src="/assets/images/Imperia-Crystal.jpg" alt="Imperia">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/11/Imperia-Crystal.jpg" alt="Imperia">
                 </div>
                 <div class="slide-item">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
                 </div>
             </div>
             <div class="hero-overlay"></div>
@@ -439,13 +439,10 @@
                             <p class="lux-form-desc">Nhận bảng giá & chính sách ưu đãi từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
                             
                             <form id="hero-lead-form" class="lux-form">
-                                <div style="display: flex; gap: 10px; width: 100%;">
-                                    <input type="text" id="hero-name" class="lux-input" placeholder="Họ tên *" required>
-                                    <input type="tel" id="hero-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                                </div>
-                                <select id="hero-project" class="lux-input" required style="color:#b0b8c4;">
-                                    <option value="">-- Đang tải dự án... --</option>
-                                </select>
+                                <input type="text" id="hero-name" class="lux-input" placeholder="Họ tên *" required>
+                                <input type="tel" id="hero-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                <input type="email" id="hero-email" class="lux-input" placeholder="Email nhận tài liệu" required>
+                                <input type="text" id="hero-demand" class="lux-input" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
                                 <button type="submit" id="hero-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
                             </form>
                             
@@ -479,8 +476,8 @@
             <div class="container-brand">
                 <div class="brand-visual">
                     <div class="deco-pattern"></div><div class="deco-block"></div>
-                    <div class="img-bg-wrapper"><img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
-                    <img src="/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
+                    <div class="img-bg-wrapper"><img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
+                    <img src="http://localhost:10004/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
                     <div class="partner-badge">Đối tác Chiến Lược</div>
                     <div class="exp-card"><i class="fas fa-medal exp-icon"></i><div class="exp-info"><span class="exp-num">10+ Năm</span><span class="exp-desc">Kinh Nghiệm</span></div></div>
                 </div>
@@ -573,19 +570,19 @@
             <div class="partner-header"><span class="partner-line"></span><h3 class="partner-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="partner-line"></span></div>
             <div class="partner-slider-container">
                 <div class="partner-slide-track">
-                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
-                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
-                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
                     <!-- Nhân đôi để tạo hiệu ứng chạy mượt -->
-                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
-                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
-                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
-                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="partner-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
                 </div>
             </div>
         </div>
@@ -652,19 +649,24 @@
 
     <script>
         // ==========================================
-        // 1. KHỞI TẠO FIREBASE
+        // 1. KHỞI TẠO FIREBASE AN TOÀN
         // ==========================================
-        const firebaseConfig = {
-          apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
-          authDomain: "greenia-homes.firebaseapp.com",
-          projectId: "greenia-homes",
-          storageBucket: "greenia-homes.appspot.com",
-          messagingSenderId: "24027695632",
-          appId: "1:24027695632:web:13a23aa156e864f7d55895",
-          measurementId: "G-YRK63BNPP0"
-        };
-        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-        const db = firebase.firestore();
+        let db = null;
+        try {
+            const firebaseConfig = {
+              apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+              authDomain: "greenia-homes.firebaseapp.com",
+              projectId: "greenia-homes",
+              storageBucket: "greenia-homes.appspot.com",
+              messagingSenderId: "24027695632",
+              appId: "1:24027695632:web:13a23aa156e864f7d55895",
+              measurementId: "G-YRK63BNPP0"
+            };
+            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+            db = firebase.firestore();
+        } catch(e) {
+            console.error("Firebase không thể khởi tạo:", e);
+        }
 
         // ==========================================
         // 2. CẤU HÌNH API VÀ CÁC HÀM TIỆN ÍCH
@@ -715,15 +717,12 @@
             const slides = document.querySelectorAll('.slide-item');
             if (slides.length > 0) { let current = 0; setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000); }
 
-            // 3.3 HÀM TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI
-            const loadFirebaseData = async () => {
-                
+            // 3.3 TẢI DỮ LIỆU ĐỘC LẬP TỪNG KHỐI TRÁNH TREO WEB
+            if (db) {
                 // --- TẢI DỰ ÁN ---
-                try {
-                    const projSnap = await db.collection('projects').get();
+                db.collection('projects').get().then(projSnap => {
                     const projects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const projScroll = document.getElementById('home-proj-scroll');
-                    const selectContainer = document.getElementById('hero-project');
                     
                     if (projects.length > 0) {
                         projScroll.innerHTML = projects.slice(0, 10).map(p => {
@@ -736,22 +735,15 @@
                                         </div>
                                     </a>`;
                         }).join('');
-
-                        let optionsHtml = '<option value="" style="color:#222;">-- Chọn dự án quan tâm --</option>';
-                        optionsHtml += projects.map(p => `<option value="${p.title}" style="color:#222;">${p.title}</option>`).join('');
-                        optionsHtml += '<option value="Khác" style="color:#222;">Cần tư vấn BĐS khác</option>';
-                        selectContainer.innerHTML = optionsHtml;
                     } else {
                         projScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Hệ thống đang cập nhật dự án...</div>';
-                        selectContainer.innerHTML = '<option value="Khác" style="color:#222;">Cần tư vấn BĐS</option>';
                     }
-                } catch(e) {
-                    document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
-                }
+                }).catch(e => {
+                    document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Dự án.</div>';
+                });
 
                 // --- TẢI SẢN PHẨM ---
-                try {
-                    const prodSnap = await db.collection('products').get();
+                db.collection('products').get().then(prodSnap => {
                     const products = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const saleScroll = document.getElementById('home-sale-scroll');
                     const saleProds = products.filter(p => p.type === 'Bán').slice(0, 10);
@@ -776,13 +768,12 @@
                     } else {
                         saleScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật giỏ hàng...</div>';
                     }
-                } catch(e) {
-                    document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
-                }
+                }).catch(e => {
+                    document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Sản phẩm.</div>';
+                });
 
                 // --- TẢI TIN TỨC ---
-                try {
-                    const postSnap = await db.collection('posts').get();
+                db.collection('posts').get().then(postSnap => {
                     const posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const newsScroll = document.getElementById('home-news-scroll');
                     
@@ -811,21 +802,25 @@
                     } else {
                         newsScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật tin tức...</div>';
                     }
-                } catch(e) {
-                    document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
-                }
-            };
-            
-            // Kích hoạt chạy tải dữ liệu
-            loadFirebaseData();
+                }).catch(e => {
+                    document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu Tin tức.</div>';
+                });
+            } else {
+                document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
+                document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
+                document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Firebase không hoạt động.</div>';
+            }
 
-            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (RATING TỪ GOOGLE SHEET API)
-            fetch(API_URL + "?action=count").then(r=>r.json()).then(d=>{
+            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (CHẠY ĐỘC LẬP HOÀN TOÀN BÊN NGOÀI FIREBASE)
+            fetch(API_URL + "?action=count")
+            .then(r => r.json())
+            .then(d => {
                 let count = d.count ? parseInt(d.count) : 186;
                 if(count < 100) count = 186;
                 document.getElementById('count-popup').innerText = `(5.0/5 - ${count} đánh giá)`;
                 document.getElementById('count-hero-form').innerText = `(5.0/5 - ${count} đánh giá)`;
-            }).catch(e=>{
+            })
+            .catch(e => {
                 document.getElementById('count-popup').innerText = `(5.0/5 - 186 đánh giá)`;
                 document.getElementById('count-hero-form').innerText = `(5.0/5 - 186 đánh giá)`;
             });
@@ -838,11 +833,11 @@
                 btn.innerText = "ĐANG XỬ LÝ..."; btn.disabled = true;
 
                 let fd = new FormData();
-                fd.append("project", document.getElementById('hero-project').value);
                 fd.append("name", document.getElementById('hero-name').value);
                 fd.append("phone", document.getElementById('hero-phone').value);
-                fd.append("email", "Chưa cung cấp");
-                fd.append("demand", "Đăng ký từ Hero Banner Trang Chủ");
+                fd.append("email", document.getElementById('hero-email').value);
+                fd.append("demand", document.getElementById('hero-demand').value);
+                fd.append("project", SITE_NAME + " (Hero Banner)");
                 fd.append("url", window.location.href);
                 fd.append("ip", clientIP);
                 fd.append("rating", 5);
@@ -865,11 +860,11 @@
                 btn.innerText = "ĐANG XỬ LÝ..."; btn.disabled = true;
 
                 let fd = new FormData();
-                fd.append("project", SITE_NAME + " (Popup CTA)");
                 fd.append("name", document.getElementById('popup-name').value);
                 fd.append("phone", document.getElementById('popup-phone').value);
                 fd.append("email", document.getElementById('popup-email').value);
                 fd.append("demand", document.getElementById('popup-demand').value);
+                fd.append("project", SITE_NAME + " (Popup CTA)");
                 fd.append("url", window.location.href);
                 fd.append("ip", clientIP);
                 fd.append("rating", 5);
