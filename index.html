@@ -107,8 +107,8 @@
             --lux-dark: #05080f;     
             --lux-text: #b0b8c4;     
             --lux-white: #ffffff;
-            --v15-input: rgba(255,255,255,0.05); 
-            --v15-border: rgba(255,255,255,0.2);
+            --lux-input: rgba(255,255,255,0.05); 
+            --lux-border: rgba(255,255,255,0.2);
             font-family: 'Manrope', sans-serif;
             background-color: var(--lux-dark); color: var(--lux-text);
             width: 100%; overflow: hidden; position: relative; z-index: 0; 
@@ -117,7 +117,7 @@
         .greenia-luxury-theme strong { color: var(--lux-gold); }
 
         /* =========================================
-           2. HERO SECTION & FORM API HERO
+           2. HERO SECTION
            ========================================= */
         .hero-section { position: relative; height: 85vh; min-height: 650px; display: flex; align-items: center; justify-content: center; padding-top: 80px; }
         .hero-slider { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
@@ -141,24 +141,25 @@
         .cta-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .cta-phone { font-size: 18px; font-weight: 800; letter-spacing: 1px; font-family: 'Cinzel', serif; }
 
-        .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
+        .hero-form-wrapper { flex: 0 0 420px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
 
-        /* Form Banner theo ĐÚNG CHUẨN WordPress */
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
-        .v15-ver-container { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
-        .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
-        .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
-        .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
-        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
-        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
-        .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-        .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
-        .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        /* FORM TƯ VẤN (SẠCH CODE WORDPRESS) */
+        .lux-form-box { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
+        .lux-form-inner { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .lux-form-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .lux-form-rating { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .lux-form-stars { font-size: 14px; letter-spacing: 1px; }
+        .lux-form-count { font-size: 12px; color: #aaa; font-weight: 400; }
+        .lux-form-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        
+        .lux-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
+        .lux-input { width: 100%; background: var(--lux-input); border: 1px solid var(--lux-border); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .lux-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .lux-submit-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
+        .lux-submit-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
 
         /* =========================================
-           3. THƯƠNG HIỆU CÁ NHÂN (VỀ CHÚNG TÔI)
+           3. THƯƠNG HIỆU CÁ NHÂN
            ========================================= */
         .personal-brand-section { padding: 100px 0; position: relative; border-bottom: 1px solid rgba(197, 160, 89, 0.05);}
         .container-brand { width: 90%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 80px; }
@@ -192,7 +193,7 @@
         /* =========================================
            4. GIÁ TRỊ CỐT LÕI 
            ========================================= */
-        .luxury-values-dark-wrapper { width: 100%; position: relative; padding: 80px 0; background-color: var(--lux-dark); overflow: hidden; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        .core-values-section { width: 100%; position: relative; padding: 80px 0; background-color: var(--lux-dark); overflow: hidden; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
         .values-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(197, 160, 89, 0.1) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.5; pointer-events: none; z-index: 0; }
         .values-inner { max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         .values-header { text-align: center; margin-bottom: 60px; opacity: 0; animation: fadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
@@ -234,10 +235,9 @@
         .milestone-text { font-family: 'Manrope', sans-serif; font-size: 13px; color: var(--lux-white); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
         /* =========================================
-           7. CẤU HÌNH HIỂN THỊ CÁC CAROUSEL BĐS
+           7. CẤU HÌNH CÁC CAROUSEL BĐS & TIN TỨC
            ========================================= */
-        .shortcode-wrapper { padding: 80px 20px 60px 20px; background: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
-        .news-section { padding: 80px 20px 60px 20px; background: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        .carousel-section { padding: 80px 20px 60px 20px; background: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
         
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 8px; margin-bottom: 30px; max-width: 1200px; margin-left: auto; margin-right: auto;}
         .s-tit { font-size: 24px; font-weight: 700; color: #fff; text-transform: uppercase; border-left: 4px solid var(--lux-gold); padding-left: 15px; margin: 0; line-height: 1; font-family: 'Cinzel', serif;}
@@ -285,25 +285,25 @@
         /* =========================================
            8. ĐỐI TÁC CHIẾN LƯỢC
            ========================================= */
-        .lux-partner-wrapper { width: 100%; background-color: #05080f; padding: 60px 0; position: relative; z-index: 10; border-top: 1px solid rgba(197, 160, 89, 0.1); }
-        .lux-partner-header { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 40px; }
-        .lph-title { color: #c5a059; font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-weight: 700; }
-        .lph-line { height: 1px; width: 80px; background: linear-gradient(90deg, transparent, #c5a059, transparent); }
-        .lux-slider-container { height: 100px; margin: auto; overflow: hidden; position: relative; width: 100%; max-width: 1200px; }
-        .lux-slider-container::before, .lux-slider-container::after { background: linear-gradient(to right, #05080f 0%, rgba(5, 8, 15, 0) 100%); content: ""; height: 100%; position: absolute; width: 150px; z-index: 2; pointer-events: none; }
-        .lux-slider-container::before { left: 0; top: 0; }
-        .lux-slider-container::after { right: 0; top: 0; transform: rotate(180deg); }
-        .lux-slide-track { display: flex; width: calc(180px * 12); animation: scrollPartners 25s linear infinite; }
-        .lux-slide { height: 100px; width: 180px; display: flex; align-items: center; justify-content: center; padding: 0 20px; }
-        .lux-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; filter: grayscale(100%) opacity(0.7);}
-        .lux-slide img:hover { transform: scale(1.1); filter: grayscale(0%) opacity(1);}
-        .lux-slider-container:hover .lux-slide-track { animation-play-state: paused; }
+        .partner-section { width: 100%; background-color: #05080f; padding: 60px 0; position: relative; z-index: 10; border-top: 1px solid rgba(197, 160, 89, 0.1); }
+        .partner-header { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 40px; }
+        .partner-title { color: #c5a059; font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 4px; text-transform: uppercase; margin: 0; font-weight: 700; }
+        .partner-line { height: 1px; width: 80px; background: linear-gradient(90deg, transparent, #c5a059, transparent); }
+        .partner-slider-container { height: 100px; margin: auto; overflow: hidden; position: relative; width: 100%; max-width: 1200px; }
+        .partner-slider-container::before, .partner-slider-container::after { background: linear-gradient(to right, #05080f 0%, rgba(5, 8, 15, 0) 100%); content: ""; height: 100%; position: absolute; width: 150px; z-index: 2; pointer-events: none; }
+        .partner-slider-container::before { left: 0; top: 0; }
+        .partner-slider-container::after { right: 0; top: 0; transform: rotate(180deg); }
+        .partner-slide-track { display: flex; width: calc(180px * 12); animation: scrollPartners 25s linear infinite; }
+        .partner-slide { height: 100px; width: 180px; display: flex; align-items: center; justify-content: center; padding: 0 20px; }
+        .partner-slide img { width: 100%; height: 100%; object-fit: contain; max-height: 60px; opacity: 1; transition: all 0.4s ease; filter: grayscale(100%) opacity(0.7);}
+        .partner-slide img:hover { transform: scale(1.1); filter: grayscale(0%) opacity(1);}
+        .partner-slider-container:hover .partner-slide-track { animation-play-state: paused; }
 
         /* =========================================
            9. KHỐI CTA CUỐI TRANG
            ========================================= */
-        #lux-cta-v118 { width: 100%; position: relative; padding: 100px 20px; background: linear-gradient(rgba(5, 8, 15, 0.85), rgba(5, 8, 15, 0.95)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; border-top: 1px solid rgba(197, 160, 89, 0.2); border-bottom: 1px solid rgba(197, 160, 89, 0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #lux-cta-v118 .cta-bg-glow { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.1), transparent); transform: skewX(-25deg); animation: shineMove 8s infinite; pointer-events: none; }
+        .cta-section { width: 100%; position: relative; padding: 100px 20px; background: linear-gradient(rgba(5, 8, 15, 0.85), rgba(5, 8, 15, 0.95)), url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; background-attachment: fixed; border-top: 1px solid rgba(197, 160, 89, 0.2); border-bottom: 1px solid rgba(197, 160, 89, 0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .cta-section .cta-bg-glow { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.1), transparent); transform: skewX(-25deg); animation: shineMove 8s infinite; pointer-events: none; }
         .cta-content { max-width: 900px; width: 100%; text-align: center; position: relative; z-index: 2; }
         .cta-sub { color: var(--lux-gold); font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 4px; display: block; margin-bottom: 20px; opacity: 0; animation: fadeUp 1s forwards; }
         .cta-title { color: var(--lux-white); font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; line-height: 1.3; margin: 0 0 25px 0; opacity: 0; animation: fadeUp 1s 0.2s forwards; }
@@ -313,29 +313,26 @@
         .btn-gold:hover, .btn-outline:hover { background: rgba(197, 160, 89, 0.1); border-color: var(--lux-gold); color: var(--lux-white); }
 
         /* =========================================
-           10. POPUP STYLE & FORM V15
+           10. POPUP STYLE 
            ========================================= */
         .success-overlay { display: none; padding: 20px; margin-top: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 12px; animation: fadeIn 0.5s ease forwards; width: 100%; }
         .success-title { color: #2ecc71; font-size: 16px; font-weight: 700; margin-bottom: 5px; }
         .success-text { color: #ddd; font-size: 13px; }
 
-        .popup-overlay-new { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
-        .popup-overlay-new.active { opacity: 1; visibility: visible; }
-        .popup-container-new { position: relative; width: 95%; max-width: 460px; background-color: #080c17; border: 1px solid #c5a059; border-radius: 6px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
-        .popup-overlay-new.active .popup-container-new { transform: scale(1); }
-        .popup-close-new { position: absolute; top: 12px; right: 15px; font-size: 24px; color: #666; cursor: pointer; transition: 0.3s; }
-        .popup-close-new:hover { color: #ff4757; transform: rotate(90deg); }
-        .pp-title-new { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-        .pp-sub-new { font-family: 'Manrope', sans-serif; font-size: 13px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
-        .pp-rating-box-new { margin-bottom: 20px; display: inline-block; border-bottom: 1px solid rgba(180, 140, 64, 0.3); padding-bottom: 5px; }
-        .pp-stars-new { color: #dbb35e; font-size: 13px; letter-spacing: 1px; }
-        .pp-count-new { font-size: 11px; color: #888; font-family: 'Manrope', sans-serif; margin-left: 5px;}
-        .pp-tags-new { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
-        .pp-tag-item-new { font-family: 'Manrope', sans-serif; font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 5px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
-        .pp-check-new { color: #dbb35e; font-weight: bold; font-size: 10px; }
-        .pp-footer-new { margin-top: 15px; font-size: 10px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
-        .pp-link-new { color: #777; text-decoration: none; transition: 0.3s; }
-        .pp-link-new:hover { color: #b48c40; text-decoration: underline; }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
+        .popup-overlay.active { opacity: 1; visibility: visible; }
+        .popup-container { position: relative; width: 95%; max-width: 460px; background-color: #080c17; border: 1px solid #c5a059; border-radius: 6px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
+        .popup-overlay.active .popup-container { transform: scale(1); }
+        .popup-close { position: absolute; top: 12px; right: 15px; font-size: 24px; color: #666; cursor: pointer; transition: 0.3s; }
+        .popup-close:hover { color: #ff4757; transform: rotate(90deg); }
+        .popup-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+        .popup-subtitle { font-family: 'Manrope', sans-serif; font-size: 13px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
+        .popup-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
+        .popup-tag-item { font-family: 'Manrope', sans-serif; font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 5px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
+        .popup-check-icon { color: #dbb35e; font-weight: bold; font-size: 10px; }
+        .popup-footer { margin-top: 15px; font-size: 10px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
+        .popup-link { color: #777; text-decoration: none; transition: 0.3s; }
+        .popup-link:hover { color: #b48c40; text-decoration: underline; }
 
         /* ANIMATIONS & RESPONSIVE */
         @keyframes scrollPartners { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-180px * 6)); } }
@@ -383,8 +380,8 @@
             .cta-actions { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
             .btn-gold, .btn-outline { width: 100%; justify-content: center; }
             
-            .lux-slide { width: 140px; padding: 0 15px; }
-            .lux-slide-track { width: calc(140px * 12); }
+            .partner-slide { width: 140px; padding: 0 15px; }
+            .partner-slide-track { width: calc(140px * 12); }
             @keyframes scrollPartners { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-140px * 6)); } }
         }
         @media (max-width: 600px) {
@@ -404,7 +401,6 @@
         <!-- 1. HERO SECTION -->
         <section class="hero-section">
             <div class="hero-slider">
-                <!-- ẢNH ĐÃ ĐƯỢC CHUYỂN SANG ĐƯỜNG DẪN GITHUB -->
                 <div class="slide-item active">
                     <img src="/assets/images/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
@@ -424,7 +420,7 @@
                         <strong>Greenia Homes</strong> (greeniahomes.vn) là thương hiệu chuyên gia với nhiều năm kinh nghiệm. Chúng tôi chuyên phân phối: Nhà phố, Biệt thự, Căn hộ cao cấp tại TP. HCM và vùng lân cận.
                     </p>
                     <div class="cta-group">
-                        <a href="tel:0932966700" class="btn-cta-luxury" onclick="triggerTrackingNew('Phone')">
+                        <a href="tel:0932966700" class="btn-cta-luxury" onclick="triggerTracking('Phone')">
                             <div class="cta-icon-box"><i class="fas fa-phone-alt"></i></div>
                             <div class="cta-text-box"><span class="cta-label">Hotline 24/7</span><span class="cta-phone">0932 966 700</span></div>
                         </a>
@@ -432,23 +428,25 @@
                 </div>
                 
                 <div class="hero-form-wrapper">
-                    <!-- FORM BANNER ĐÃ ĐƯỢC PHỤC HỒI CHUẨN 100% NHƯ WORDPRESS -->
-                    <section id="vhgp-final-v15-vertical">
-                        <div class="v15-ver-container">
-                            <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
-                            <div class="v15-ver-rating-box">
-                                <span class="v15-ver-stars">★★★★★</span>
-                                <span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span>
+                    <!-- FORM BANNER ĐÃ ĐƯỢC PHỤC HỒI CHUẨN 100% -->
+                    <section class="lux-form-box">
+                        <div class="lux-form-inner">
+                            <h3 class="lux-form-title">Đăng Ký Tư Vấn</h3>
+                            <div class="lux-form-rating">
+                                <span class="lux-form-stars">★★★★★</span>
+                                <span class="lux-form-count" id="count-hero-form">(Đang tải...)</span>
                             </div>
-                            <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
+                            <p class="lux-form-desc">Nhận bảng giá & chính sách ưu đãi từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
                             
-                            <form id="hero-lead-form" class="v15-ver-form">
-                                <input type="text" id="hero-name" class="v15-ver-input" placeholder="Họ tên *" required>
-                                <input type="tel" id="hero-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                                <select id="hero-project" class="v15-ver-input" required style="color:#b0b8c4;">
+                            <form id="hero-lead-form" class="lux-form">
+                                <div style="display: flex; gap: 10px; width: 100%;">
+                                    <input type="text" id="hero-name" class="lux-input" placeholder="Họ tên *" required>
+                                    <input type="tel" id="hero-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                </div>
+                                <select id="hero-project" class="lux-input" required style="color:#b0b8c4;">
                                     <option value="">-- Đang tải dự án... --</option>
                                 </select>
-                                <button type="submit" id="hero-submit-btn" class="v15-ver-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
+                                <button type="submit" id="hero-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
                             </form>
                             
                             <div id="hero-success-msg" class="success-overlay" style="text-align: left;">
@@ -461,8 +459,8 @@
             </div>
         </section>
 
-        <!-- 2. SHORTCODE 1: DỰ ÁN NỔI BẬT -->
-        <div class="shortcode-wrapper">
+        <!-- 2. DỰ ÁN NỔI BẬT -->
+        <div class="carousel-section">
             <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Dự Án Đang Mở Bán</h2></div>
             <div class="gr-carousel-wrapper">
                 <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-proj-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
@@ -496,15 +494,15 @@
                         <div class="bf-item"><div class="bf-icon"><i class="fas fa-user-shield"></i></div><div class="bf-text"><h4>Bảo Mật & Riêng Tư</h4><p>Quy trình tư vấn 1-1 Private.</p></div></div>
                         <div class="bf-item"><div class="bf-icon"><i class="fas fa-infinity"></i></div><div class="bf-text"><h4>Đồng Hành Trọn Đời</h4><p>Hỗ trợ pháp lý & khai thác tài sản.</p></div></div>
                     </div>
-                    <a href="javascript:void(0)" onclick="openPopupNew()" class="btn-brand-pro">Nhận Phân Tích Ngay <i class="fas fa-arrow-right"></i></a>
+                    <a href="javascript:void(0)" onclick="openPopup()" class="btn-brand-pro">Nhận Phân Tích Ngay <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
 
         <!-- 4. GIÁ TRỊ CỐT LÕI -->
-        <div class="luxury-values-dark-wrapper">
+        <div class="core-values-section">
             <div class="values-bg-pattern"></div>
-            <div class="values-inner" style="padding-top: 80px; padding-bottom: 80px;">
+            <div class="values-inner">
                 <div class="values-header"><span class="values-sub">GIÁ TRỊ CỐT LÕI</span><h2 class="values-title">Đặc Quyền 3 Lớp Bảo Vệ</h2></div>
                 <div class="values-grid">
                     <div class="values-card"><div class="values-icon-wrapper"><i class="fas fa-search-dollar"></i></div><h3>Thẩm Định Giá</h3><p>Phân tích thị trường chuyên sâu.</p></div>
@@ -540,8 +538,8 @@
             </div>
         </section>
 
-        <!-- 7. SHORTCODE 2: SẢN PHẨM NỔI BẬT -->
-        <div class="shortcode-wrapper">
+        <!-- 7. SẢN PHẨM NỔI BẬT -->
+        <div class="carousel-section">
             <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Giỏ Hàng Chuyển Nhượng</h2></div>
             <div class="gr-carousel-wrapper">
                 <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-sale-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
@@ -555,7 +553,7 @@
             </div>
         </div>
 
-        <!-- 8. SHORTCODE 3: TIN TỨC GÓC NHÌN CHUYÊN GIA -->
+        <!-- 8. TIN TỨC GÓC NHÌN CHUYÊN GIA -->
         <section class="news-section">
             <div class="s-head" style="margin-top: 0;"><h2 class="s-tit">Góc Nhìn Chuyên Gia & Tin Tức</h2></div>
             <div class="gr-carousel-wrapper">
@@ -570,82 +568,82 @@
             </div>
         </section>
 
-        <!-- 9. ĐỐI TÁC CHIẾN LƯỢC ĐÃ SỬA CHUẨN ĐƯỜNG DẪN -->
-        <div class="lux-partner-wrapper">
-            <div class="lux-partner-header"><span class="lph-line"></span><h3 class="lph-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="lph-line"></span></div>
-            <div class="lux-slider-container">
-                <div class="lux-slide-track">
-                    <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
-                    <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
-                    <div class="lux-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+        <!-- 9. ĐỐI TÁC CHIẾN LƯỢC -->
+        <div class="partner-section">
+            <div class="partner-header"><span class="partner-line"></span><h3 class="partner-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="partner-line"></span></div>
+            <div class="partner-slider-container">
+                <div class="partner-slide-track">
+                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
+                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
+                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
                     <!-- Nhân đôi để tạo hiệu ứng chạy mượt -->
-                    <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
-                    <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
-                    <div class="lux-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland" onerror="this.src='https://via.placeholder.com/150?text=Novaland'"></div>
+                    <div class="partner-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh" onerror="this.src='https://via.placeholder.com/150?text=Hung+Thinh'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-header-red.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes" onerror="this.src='https://via.placeholder.com/150?text=Vinhomes'"></div>
+                    <div class="partner-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien" onerror="this.src='https://via.placeholder.com/150?text=Khang+Dien'"></div>
+                    <div class="partner-slide"><img src="/assets/images/700x700.png" alt="Partner" onerror="this.src='https://via.placeholder.com/150?text=Logo'"></div>
                 </div>
             </div>
         </div>
 
         <!-- 10. CTA CUỐI TRANG -->
-        <section id="lux-cta-v118">
+        <section class="cta-section">
             <div class="cta-bg-glow"></div>
             <div class="cta-content">
                 <span class="cta-sub">Dịch Vụ Tư Vấn Độc Quyền</span>
                 <h2 class="cta-title">Bạn Chưa Tìm Được Bất Động Sản Ưng Ý?</h2>
                 <p class="cta-desc">Để lại thông tin, đội ngũ chuyên gia của chúng tôi sẽ liên hệ lại trong vòng 15 phút để cung cấp bảng phân tích dòng tiền và rổ hàng "Private" chưa công bố.</p>
                 <div class="cta-actions">
-                    <a href="javascript:void(0);" onclick="openPopupNew()" class="btn-gold"><i class="far fa-calendar-check"></i> Đặt Lịch Tư Vấn 1-1</a>
-                    <a href="tel:0932966700" class="btn-outline" onclick="triggerTrackingNew('Phone')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
+                    <a href="javascript:void(0);" onclick="openPopup()" class="btn-gold"><i class="far fa-calendar-check"></i> Đặt Lịch Tư Vấn 1-1</a>
+                    <a href="tel:0932966700" class="btn-outline" onclick="triggerTracking('Phone')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- POPUP NGUYÊN BẢN TỪ WORDPRESS -->
-    <div id="vhgp-popup-overlay-new" class="popup-overlay-new" style="display:none;">
-        <div class="popup-container-new">
-            <span class="popup-close-new" onclick="closePopupNew()">&times;</span>
-            <section id="vhgp-final-popup-new" class="popup-content-new">
-                <h3 class="pp-title-new">TẢI TÀI LIỆU & BẢNG GIÁ</h3>
-                <div class="pp-sub-new">Nhận trọn bộ thông tin dự án qua Email/Zalo ngay.</div>
+    <!-- POPUP TƯ VẤN (SẠCH CODE) -->
+    <div id="contact-popup-overlay" class="popup-overlay" style="display:none;">
+        <div class="popup-container">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <div class="popup-content-wrap">
+                <h3 class="popup-title">TẢI TÀI LIỆU & BẢNG GIÁ</h3>
+                <div class="popup-subtitle">Nhận trọn bộ thông tin dự án qua Email/Zalo ngay.</div>
                 
-                <div class="pp-rating-box-new">
-                    <span class="pp-stars-new">★★★★★</span>
-                    <span class="pp-count-new" id="count-popup-new">(Đang tải...)</span>
+                <div class="lux-form-rating" style="margin-bottom: 20px; padding-bottom: 5px;">
+                    <span class="lux-form-stars">★★★★★</span>
+                    <span class="lux-form-count" id="count-popup">(Đang tải...)</span>
                 </div>
 
-                <div class="pp-tags-new">
-                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Bảng giá gốc đợt 1</div>
-                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Pháp lý 1/500</div>
-                    <div class="pp-tag-item-new"><span class="pp-check-new">✔</span> Bài toán dòng tiền</div>
+                <div class="popup-tags">
+                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Bảng giá gốc đợt 1</div>
+                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Pháp lý 1/500</div>
+                    <div class="popup-tag-item"><span class="popup-check-icon">✔</span> Bài toán dòng tiền</div>
                 </div>
 
-                <form id="leadFormV15New" class="v15-form-new" style="display:flex !important;">
-                    <input type="text" id="v15-name-new" class="v15-input-new" placeholder="Họ tên *" required>
-                    <input type="tel" id="v15-phone-new" class="v15-input-new" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                    <input type="email" id="v15-email-new" class="v15-input-new" placeholder="Email" required>
-                    <input type="text" id="v15-demand-new" class="v15-input-new" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
-                    <button type="submit" id="btn-v15-submit-new" class="v15-btn-new">NHẬN BÁO GIÁ</button>
+                <form id="popup-form" class="lux-form">
+                    <input type="text" id="popup-name" class="lux-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="popup-phone" class="lux-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="popup-email" class="lux-input" placeholder="Email" required>
+                    <input type="text" id="popup-demand" class="lux-input" placeholder="Nhu cầu (VD: Căn 2PN...)" required>
+                    <button type="submit" id="popup-submit-btn" class="lux-submit-btn">NHẬN BÁO GIÁ</button>
                 </form>
                 
-                <div class="pp-footer-new">
+                <div class="popup-footer">
                     <span style="font-size: 10px; margin-right: 3px;">🔒</span> Thông tin bảo mật tuyệt đối theo 
-                    <a href="/chinh-sach-bao-mat/" target="_blank" class="pp-link-new">Chính sách riêng tư</a>.
+                    <a href="/chinh-sach-bao-mat/" target="_blank" class="popup-link">Chính sách riêng tư</a>.
                 </div>
                 
-                <div id="v15-success-new" class="pp-success-new" style="display:none;">
+                <div id="popup-success-msg" class="success-overlay" style="text-align: center;">
                     <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
                     <div style="color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px;">ĐĂNG KÝ THÀNH CÔNG!</div>
                     <div style="color: #ddd; font-size: 13px;">Hệ thống đang gửi tài liệu cho bạn.</div>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 
@@ -671,9 +669,9 @@
         // ==========================================
         // 2. CẤU HÌNH API VÀ CÁC HÀM TIỆN ÍCH
         // ==========================================
-        const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-        const PROJECT_NAME_NEW = "Greenia Homes (Trang chủ)";
-        let clientIPNew = "";
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+        const SITE_NAME = "Greenia Homes (Trang chủ)";
+        let clientIP = "";
 
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
@@ -687,11 +685,11 @@
         }
 
         // ==========================================
-        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG TÁCH RỜI (FIX LỖI XOAY VÔ TẬN)
+        // 3. XỬ LÝ GIAO DIỆN & TẢI DỮ LIỆU ĐỘNG TÁCH RỜI
         // ==========================================
         document.addEventListener("DOMContentLoaded", function() {
             // Lấy IP khách hàng ngầm
-            fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
+            fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIP=d.ip}).catch(e=>{});
 
             // 3.1 CHẠY ANIMATION CÁC KHỐI SỐ
             const counters = document.querySelectorAll('.count-up');
@@ -748,7 +746,6 @@
                         selectContainer.innerHTML = '<option value="Khác" style="color:#222;">Cần tư vấn BĐS</option>';
                     }
                 } catch(e) {
-                    console.error("Lỗi tải Dự án:", e);
                     document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
                 }
 
@@ -780,7 +777,6 @@
                         saleScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật giỏ hàng...</div>';
                     }
                 } catch(e) {
-                    console.error("Lỗi tải Sản phẩm:", e);
                     document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
                 }
 
@@ -816,7 +812,6 @@
                         newsScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật tin tức...</div>';
                     }
                 } catch(e) {
-                    console.error("Lỗi tải Tin tức:", e);
                     document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
                 }
             };
@@ -825,14 +820,14 @@
             loadFirebaseData();
 
             // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (RATING TỪ GOOGLE SHEET API)
-            fetch(API_LEAD_NEW + "?action=count").then(r=>r.json()).then(d=>{
+            fetch(API_URL + "?action=count").then(r=>r.json()).then(d=>{
                 let count = d.count ? parseInt(d.count) : 186;
                 if(count < 100) count = 186;
-                document.getElementById('count-popup-new').innerText = `(5.0/5 - ${count} đánh giá)`;
-                document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${count} đánh giá)`;
+                document.getElementById('count-popup').innerText = `(5.0/5 - ${count} đánh giá)`;
+                document.getElementById('count-hero-form').innerText = `(5.0/5 - ${count} đánh giá)`;
             }).catch(e=>{
-                document.getElementById('count-popup-new').innerText = `(5.0/5 - 186 đánh giá)`;
-                document.getElementById('count-v15-ver').innerText = `(5.0/5 - 186 đánh giá)`;
+                document.getElementById('count-popup').innerText = `(5.0/5 - 186 đánh giá)`;
+                document.getElementById('count-hero-form').innerText = `(5.0/5 - 186 đánh giá)`;
             });
 
             // 3.5 XỬ LÝ FORM ĐĂNG KÝ Ở HERO SECTION
@@ -849,10 +844,10 @@
                 fd.append("email", "Chưa cung cấp");
                 fd.append("demand", "Đăng ký từ Hero Banner Trang Chủ");
                 fd.append("url", window.location.href);
-                fd.append("ip", clientIPNew);
+                fd.append("ip", clientIP);
                 fd.append("rating", 5);
 
-                fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
+                fetch(API_URL, { method: 'POST', body: fd }).then(res => {
                     document.getElementById('hero-lead-form').style.display = 'none';
                     document.getElementById('hero-success-msg').style.display = 'block';
                     if(typeof fbq === 'function') fbq('track', 'Lead');
@@ -863,27 +858,27 @@
             });
 
             // 3.6 XỬ LÝ FORM POPUP
-            document.getElementById('leadFormV15New').addEventListener('submit', function(e) {
+            document.getElementById('popup-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const btn = document.getElementById('btn-v15-submit-new');
+                const btn = document.getElementById('popup-submit-btn');
                 const originalText = btn.innerText;
                 btn.innerText = "ĐANG XỬ LÝ..."; btn.disabled = true;
 
                 let fd = new FormData();
-                fd.append("project", PROJECT_NAME_NEW + " (Popup CTA)");
-                fd.append("name", document.getElementById('v15-name-new').value);
-                fd.append("phone", document.getElementById('v15-phone-new').value);
-                fd.append("email", document.getElementById('v15-email-new').value);
-                fd.append("demand", document.getElementById('v15-demand-new').value);
+                fd.append("project", SITE_NAME + " (Popup CTA)");
+                fd.append("name", document.getElementById('popup-name').value);
+                fd.append("phone", document.getElementById('popup-phone').value);
+                fd.append("email", document.getElementById('popup-email').value);
+                fd.append("demand", document.getElementById('popup-demand').value);
                 fd.append("url", window.location.href);
-                fd.append("ip", clientIPNew);
+                fd.append("ip", clientIP);
                 fd.append("rating", 5);
 
-                fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
-                    document.getElementById('leadFormV15New').style.setProperty('display', 'none', 'important'); 
-                    document.getElementById('v15-success-new').style.display = 'block';
+                fetch(API_URL, { method: 'POST', body: fd }).then(res => {
+                    document.getElementById('popup-form').style.setProperty('display', 'none', 'important'); 
+                    document.getElementById('popup-success-msg').style.display = 'block';
                     if(typeof fbq === 'function') fbq('track', 'Lead');
-                    setTimeout(() => closePopupNew(), 4000);
+                    setTimeout(() => closePopup(), 4000);
                 }).catch(err => {
                     alert("Có lỗi xảy ra, vui lòng gọi Hotline.");
                     btn.innerText = originalText; btn.disabled = false;
@@ -904,17 +899,17 @@
         };
 
         // Hàm bật/tắt Popup CTA
-        window.openPopupNew = function() { 
-            const overlay = document.getElementById('vhgp-popup-overlay-new'); 
+        window.openPopup = function() { 
+            const overlay = document.getElementById('contact-popup-overlay'); 
             if(overlay) { overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('active'), 10); } 
         };
-        window.closePopupNew = function() { 
-            const overlay = document.getElementById('vhgp-popup-overlay-new'); 
+        window.closePopup = function() { 
+            const overlay = document.getElementById('contact-popup-overlay'); 
             if(overlay) { overlay.classList.remove('active'); setTimeout(() => overlay.style.display = 'none', 300); } 
         };
         
         // Theo dõi Tracking Click Điện thoại
-        window.triggerTrackingNew = function(channel) {
+        window.triggerTracking = function(channel) {
             if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: channel });
         };
     </script>
