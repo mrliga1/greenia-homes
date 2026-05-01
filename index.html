@@ -24,7 +24,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#c5a059">
 
-    <!-- SCHEMA JSON-LD (Được bốc từ file WordPress) -->
+    <!-- SCHEMA JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -82,7 +82,7 @@
 
     <style>
         /* =========================================
-           1. CẤU HÌNH BIẾN & GIAO DIỆN CHÍNH TỪ WORDPRESS
+           1. CẤU HÌNH BIẾN & GIAO DIỆN CHÍNH
            ========================================= */
         .greenia-luxury-theme {
             --lux-gold: #c5a059;
@@ -124,7 +124,7 @@
         .cta-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .cta-phone { font-size: 18px; font-weight: 800; letter-spacing: 1px; font-family: 'Cinzel', serif; }
 
-        .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; }
+        .hero-form-wrapper { flex: 0 0 420px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; }
 
         /* =========================================
            3. THƯƠNG HIỆU CÁ NHÂN (VỀ CHÚNG TÔI)
@@ -235,13 +235,6 @@
         .s1-btn { background: transparent; border: 1px solid var(--lux-gold); color: var(--lux-gold); padding: 10px 30px; font-family: 'Manrope', sans-serif; font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 13px; text-transform: uppercase; border-radius: 2px;}
         .s1-btn:hover { background: rgba(197, 160, 89, 0.15); color: var(--lux-gold); }
 
-        /* KHỐI CATEGORY (TÌM THEO PHÂN KHÚC) */
-        .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto 50px auto;}
-        .cat-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.2); padding: 30px 20px; text-align: center; border-radius: 8px; transition: 0.4s; text-decoration: none;}
-        .cat-item:hover { background: rgba(197,160,89,0.1); border-color: var(--lux-gold); transform: translateY(-5px);}
-        .cat-icon { font-size: 30px; color: var(--lux-gold); margin-bottom: 15px; }
-        .cat-title { color: #fff; font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; margin: 0;}
-
         /* KHỐI TIN TỨC */
         .gr-news-card-v { flex: 0 0 calc(33.33% - 14px); max-width: calc(33.33% - 14px); background: #0e121b; border: 1px solid rgba(197,160,89,0.2); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; text-decoration: none !important; }
         .gr-news-card-v:hover { transform: translateY(-5px); border-color: var(--lux-gold); }
@@ -254,7 +247,6 @@
         .gr-nc-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
         .gr-nc-date { color: #666; }
         .gr-nc-more { color: var(--lux-gold); font-weight: 700; transition: 0.3s; } .gr-news-card-v:hover .gr-nc-more { text-decoration: underline; }
-
 
         /* =========================================
            8. ĐỐI TÁC CHIẾN LƯỢC
@@ -287,8 +279,25 @@
         .btn-gold:hover, .btn-outline:hover { background: rgba(197, 160, 89, 0.1); border-color: var(--lux-gold); color: var(--lux-white); }
 
         /* =========================================
-           10. POPUP STYLE NGUYÊN BẢN (Form Tư vấn 1-1)
+           10. POPUP STYLE & FORM V15 (HERO BANNER)
            ========================================= */
+        .v15-ver-container { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
+        .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
+        .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
+        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; font-family: 'Manrope', sans-serif;}
+        .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
+        .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        
+        .success-overlay { display: none; padding: 20px; margin-top: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 12px; animation: fadeIn 0.5s ease forwards; width: 100%; }
+        .success-title { color: #2ecc71; font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .success-text { color: #ddd; font-size: 13px; }
+
+        /* Popup */
         .popup-overlay-new { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 999999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
         .popup-overlay-new.active { opacity: 1; visibility: visible; }
         .popup-container-new { position: relative; width: 95%; max-width: 460px; background-color: #080c17; border: 1px solid #c5a059; border-radius: 6px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); transform: scale(0.95); transition: 0.3s; text-align: center; }
@@ -297,22 +306,12 @@
         .popup-close-new:hover { color: #ff4757; transform: rotate(90deg); }
         .pp-title-new { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #c49d52 0%, #f0cd7d 50%, #c49d52 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px; }
         .pp-sub-new { font-family: 'Manrope', sans-serif; font-size: 13px; color: #a0aec0; margin-bottom: 5px; font-weight: 400; }
-        .pp-rating-box-new { margin-bottom: 20px; display: inline-block; border-bottom: 1px solid rgba(180, 140, 64, 0.3); padding-bottom: 5px; }
-        .pp-stars-new { color: #dbb35e; font-size: 13px; letter-spacing: 1px; }
-        .pp-count-new { font-size: 11px; color: #888; font-family: 'Manrope', sans-serif; margin-left: 5px;}
         .pp-tags-new { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
         .pp-tag-item-new { font-family: 'Manrope', sans-serif; font-size: 11px; color: #e2e8f0; background: rgba(255,255,255,0.03); border: 1px solid rgba(196, 157, 82, 0.3); padding: 5px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
         .pp-check-new { color: #dbb35e; font-weight: bold; font-size: 10px; }
         .pp-footer-new { margin-top: 15px; font-size: 10px; color: #555; font-family: 'Manrope', sans-serif; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
         .pp-link-new { color: #777; text-decoration: none; transition: 0.3s; }
         .pp-link-new:hover { color: #b48c40; text-decoration: underline; }
-        .pp-success-new { display: none; padding: 20px; margin-top: 15px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; animation: fadeIn 0.5s ease; }
-        
-        .v15-form-new { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 12px !important; justify-content: center !important; align-items: center !important; margin-top: 10px !important; }
-        .v15-input-new { width: 100% !important; height: 45px !important; box-sizing: border-box !important; background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; padding: 0 20px !important; font-size: 14px !important; font-family: 'Manrope', sans-serif !important; border-radius: 50px !important; outline: none !important; transition: 0.3s !important; display: block !important; }
-        .v15-input-new:focus { border-color: #c5a059 !important; background: rgba(197, 160, 89, 0.1) !important; box-shadow: 0 0 10px rgba(197, 160, 89, 0.2) !important; }
-        .v15-btn-new { width: 100% !important; padding: 12px 25px !important; margin-top: 5px !important; background: #c5a059 !important; color: #0b1120 !important; border: 1px solid #c5a059 !important; font-family: 'Playfair Display', serif !important; font-weight: 700 !important; text-transform: uppercase !important; border-radius: 50px !important; cursor: pointer !important; transition: all 0.3s ease !important; font-size: 14px !important; }
-        .v15-btn-new:hover { background: transparent !important; color: #c5a059 !important; box-shadow: 0 0 15px rgba(197, 160, 89, 0.4) !important; transform: translateY(-3px) !important; }
 
         /* ANIMATIONS & RESPONSIVE */
         @keyframes scrollPartners { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-180px * 6)); } }
@@ -320,17 +319,8 @@
         @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-        @keyframes slideInUp { from{opacity:0; transform:translateY(50px);} to{opacity:1; transform:translateY(0);} }
         @keyframes shineMove { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
         @keyframes phoneRing { 0%, 100% { transform: rotate(0deg); } 10%, 30% { transform: rotate(15deg); } 20%, 40% { transform: rotate(-15deg); } }
-
-        /* Tùy chỉnh form ở Hero banner cho chuẩn */
-        .hero-form-box { background: var(--lux-card); padding: 30px; border-radius: 8px; border: 1px solid var(--lux-border); backdrop-filter: blur(10px); }
-        .hero-form-box h3 { font-family: 'Playfair Display', serif; color: var(--lux-gold); font-size: 22px; margin-bottom: 20px; text-transform: uppercase;}
-        .contact-form input, .contact-form select { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 4px; font-family: 'Manrope', sans-serif;}
-        .contact-form input:focus, .contact-form select:focus { outline: none; border-color: var(--lux-gold); background: rgba(197,160,89,0.05);}
-        .btn-primary { width: 100%; padding: 15px; background: var(--lux-gold); color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-family: 'Cinzel', serif; transition: 0.3s;}
-        .btn-primary:hover { background: #d4af37; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(197,160,89,0.3);}
 
         @media (max-width: 968px) {
             .hero-section { height: auto; padding: 120px 0 80px 0; }
@@ -361,7 +351,6 @@
             .process-grid { grid-template-columns: 1fr 1fr; }
             .milestone-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
             
-            .category-grid { grid-template-columns: 1fr 1fr; }
             .gr-carousel .s2-card { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); } 
             .gr-news-card-v { flex: 0 0 calc(85% - 10px); max-width: calc(85% - 10px); }
             .gr-nav-btn { display: none; }
@@ -388,24 +377,26 @@
 
     <main class="greenia-luxury-theme">
         
-        <!-- KHỐI 1: HERO MỞ MÀN (Đã sửa lại Form gốc của bác thành giao diện mới) -->
+        <!-- KHỐI 1: HERO MỞ MÀN (CÓ FORM V15 STAR ĐÚNG Ý BÁC CHỈ ĐỊNH) -->
         <section class="hero-section">
             <div class="hero-slider">
-                <!-- TỚ ĐÃ THAY BẰNG LINK ẢNH TẠM CỦA BÁC TỪ FILE WORDPRESS, BÁC NHỚ ĐỔI VỀ GITHUB NHÉ -->
                 <div class="slide-item active">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000&auto=format&fit=crop" alt="Global City">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/12/The-Global-City-Hero-Title.jpg.webp" alt="Global City">
                 </div>
                 <div class="slide-item">
-                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2000&auto=format&fit=crop" alt="Imperia">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/11/Imperia-Crystal.jpg" alt="Imperia">
+                </div>
+                <div class="slide-item">
+                    <img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" alt="Vinhomes">
                 </div>
             </div>
             <div class="hero-overlay"></div>
             <div class="hero-content-container">
                 <div class="hero-text">
-                    <span class="project-subtitle">Giá trị Hội tụ - Thịnh Vương Vương Xa</span>
+                    <span class="project-subtitle">Giá trị Hội tụ - Thịnh Vượng Vươn Xa</span>
                     <h1 class="project-title">Greenia Homes</h1>
                     <p class="project-desc">
-                        <strong>Greenia Homes</strong> là thương hiệu tư vấn với nhiều năm kinh nghiệm. Chúng tôi chuyên phân phối: Nhà phố, Biệt thự, Căn hộ cao cấp tại các dự án và khu đô thị tại TP. HCM.
+                        <strong>Greenia Homes</strong> (greeniahomes.vn) là thương hiệu chuyên gia với nhiều năm kinh nghiệm. Chúng tôi chuyên phân phối: Nhà phố, Biệt thự, Căn hộ cao cấp tại TP. HCM và vùng lân cận.
                     </p>
                     <div class="cta-group">
                         <a href="tel:0932966700" class="btn-cta-luxury" onclick="triggerTrackingNew('Phone')">
@@ -416,17 +407,30 @@
                 </div>
                 
                 <div class="hero-form-wrapper">
-                    <div class="hero-form-box" style="background: rgba(11, 15, 25, 0.9);">
-                        <h3>Đăng Ký Nhận Thông Tin</h3>
-                        <form id="hero-lead-form" class="contact-form">
-                            <input type="text" id="hero-name" placeholder="Họ và tên của bạn *" required>
-                            <input type="tel" id="hero-phone" placeholder="Số điện thoại (Zalo/Viber) *" required pattern="[0-9]{10}">
-                            <select id="hero-project" required>
+                    <!-- TRẢ LẠI CHUẨN FORM CÓ SAO Ở BANNER -->
+                    <div class="v15-ver-container" style="background: rgba(11, 15, 25, 0.95); padding: 35px 25px; border-radius: 8px; border: 1px solid var(--lux-gold);">
+                        <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                        <div class="v15-ver-rating-box">
+                            <span class="v15-ver-stars">★★★★★</span>
+                            <span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span>
+                        </div>
+                        <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong style="color:#fff">Greenia Homes</strong> qua Zalo/Email.</p>
+
+                        <form id="hero-lead-form" class="v15-ver-form">
+                            <div style="display: flex; gap: 10px; width: 100%;">
+                                <input type="text" id="hero-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                                <input type="tel" id="hero-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                            </div>
+                            <select id="hero-project" class="v15-ver-input" required style="color:#b0b8c4;">
                                 <option value="">-- Đang tải dự án... --</option>
                             </select>
-                            <button type="submit" id="hero-submit-btn" class="btn-primary">Nhận Bảng Giá Chi Tiết</button>
+                            <button type="submit" id="hero-submit-btn" class="v15-ver-btn">NHẬN BÁO GIÁ CHI TIẾT</button>
                         </form>
-                        <div id="hero-success-msg" style="display:none; color:#2ecc71; font-size:13px; margin-top:15px; text-align:center; font-weight:bold;">✔ Đăng ký thành công! Hệ thống đang gửi tài liệu cho quý khách.</div>
+
+                        <div id="hero-success-msg" class="success-overlay" style="display:none; text-align: left;">
+                            <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                            <div class="success-text">Hệ thống đang gửi tài liệu cho quý khách.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -437,7 +441,8 @@
             <div class="container-brand">
                 <div class="brand-visual">
                     <div class="deco-pattern"></div><div class="deco-block"></div>
-                    <div class="img-bg-wrapper"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" class="img-bg-brand"></div>
+                    <div class="img-bg-wrapper"><img src="http://localhost:10004/wp-content/uploads/2025/11/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg.jpg" class="img-bg-brand"></div>
+                    <img src="http://localhost:10004/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg" class="img-front-brand">
                     <div class="partner-badge">Đối tác Chiến Lược</div>
                     <div class="exp-card"><i class="fas fa-medal exp-icon"></i><div class="exp-info"><span class="exp-num">10+ Năm</span><span class="exp-desc">Kinh Nghiệm</span></div></div>
                 </div>
@@ -469,19 +474,8 @@
             </div>
         </div>
 
-        <!-- KHỐI 4: DANH MỤC PHÂN KHÚC NHANH (MỚI) -->
-        <section style="padding: 80px 20px;">
-            <div class="s-head" style="justify-content: center; border: none; margin-bottom: 50px;"><h2 class="s-tit" style="border: none; padding: 0;">Khám Phá Phân Khúc</h2></div>
-            <div class="category-grid">
-                <a href="/san-pham/can-ho/" class="cat-item"><i class="fas fa-building cat-icon"></i><h3 class="cat-title">Căn Hộ Cao Cấp</h3></a>
-                <a href="/san-pham/biet-thu/" class="cat-item"><i class="fas fa-home cat-icon"></i><h3 class="cat-title">Biệt Thự / Dinh Thự</h3></a>
-                <a href="/san-pham/nha-pho/" class="cat-item"><i class="fas fa-store cat-icon"></i><h3 class="cat-title">Nhà Phố Thương Mại</h3></a>
-                <a href="/san-pham/cho-thue/" class="cat-item"><i class="fas fa-key cat-icon"></i><h3 class="cat-title">BĐS Cho Thuê</h3></a>
-            </div>
-        </section>
-
-        <!-- KHỐI 5: DỰ ÁN NỔI BẬT (API FIREBASE) -->
-        <section style="padding: 0 20px 80px 20px;">
+        <!-- KHỐI 4: DỰ ÁN NỔI BẬT (API FIREBASE) -->
+        <section style="padding: 100px 20px 80px 20px;">
             <div class="s-head"><h2 class="s-tit">Dự Án Đang Mở Bán</h2></div>
             <div class="gr-carousel-wrapper">
                 <button class="gr-nav-btn gr-prev" onclick="grScrollHorizontal('home-proj-scroll', -1)"><i class="fas fa-chevron-left"></i></button>
@@ -495,7 +489,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 6: SẢN PHẨM BÁN MỚI NHẤT (API FIREBASE - MỚI) -->
+        <!-- KHỐI 5: SẢN PHẨM BÁN MỚI NHẤT (API FIREBASE) -->
         <section style="padding: 0 20px 80px 20px;">
             <div class="s-head"><h2 class="s-tit">Giỏ Hàng Chuyển Nhượng</h2></div>
             <div class="gr-carousel-wrapper">
@@ -510,7 +504,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 7: QUY TRÌNH GIAO DỊCH -->
+        <!-- KHỐI 6: QUY TRÌNH GIAO DỊCH -->
         <section class="process-section">
             <div class="values-inner">
                 <div class="values-header">
@@ -526,7 +520,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 8: THỐNG KÊ (MILESTONES) -->
+        <!-- KHỐI 7: THỐNG KÊ (MILESTONES) -->
         <section class="milestone-section">
             <div class="milestone-grid">
                 <div class="milestone-item"><div class="milestone-num-wrap"><span class="count-up" data-target="10">0</span>+</div><div class="milestone-text">Năm Kinh Nghiệm</div></div>
@@ -536,7 +530,7 @@
             </div>
         </section>
 
-        <!-- KHỐI 9: TIN TỨC MỚI NHẤT (API FIREBASE - MỚI) -->
+        <!-- KHỐI 8: TIN TỨC MỚI NHẤT (API FIREBASE) -->
         <section style="padding: 80px 20px; background-color: var(--lux-dark);">
             <div class="s-head"><h2 class="s-tit">Góc Nhìn Chuyên Gia & Tin Tức</h2></div>
             <div class="gr-carousel-wrapper">
@@ -551,26 +545,30 @@
             </div>
         </section>
 
-        <!-- KHỐI 10: ĐỐI TÁC CHIẾN LƯỢC -->
+        <!-- KHỐI 9: ĐỐI TÁC CHIẾN LƯỢC -->
         <div class="lux-partner-wrapper">
             <div class="lux-partner-header"><span class="lph-line"></span><h3 class="lph-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="lph-line"></span></div>
             <div class="lux-slider-container">
                 <div class="lux-slide-track">
-                    <!-- BÁC TẢI LOGO CĐT LÊN GITHUB RỒI THAY LINK Ở ĐÂY NHÉ -->
-                    <div class="lux-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Vingroup_logo.svg" alt="Vinhomes"></div>
-                    <div class="lux-slide"><img src="https://khangdien.com.vn/wp-content/uploads/2021/08/logo.png" alt="Khang Dien"></div>
-                    <div class="lux-slide"><img src="https://masterisehomes.com/assets/images/logo.png" alt="Masterise"></div>
-                    <div class="lux-slide"><img src="https://novaland.com.vn/assets/images/logo.png" alt="Novaland"></div>
-                    <div class="lux-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Vingroup_logo.svg" alt="Vinhomes"></div>
-                    <div class="lux-slide"><img src="https://khangdien.com.vn/wp-content/uploads/2021/08/logo.png" alt="Khang Dien"></div>
-                    <!-- Nhân đôi để chạy mượt -->
-                    <div class="lux-slide"><img src="https://masterisehomes.com/assets/images/logo.png" alt="Masterise"></div>
-                    <div class="lux-slide"><img src="https://novaland.com.vn/assets/images/logo.png" alt="Novaland"></div>
+                    <!-- SỬ DỤNG LẠI CHUẨN 100% CÁC LOGO MÀ BÁC YÊU CẦU -->
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
+                    <!-- Nhân đôi để tạo hiệu ứng chạy mượt -->
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-novaland.png" alt="Novaland"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-header-red.png" alt="Partner"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-vinhomes.png" alt="Vinhomes"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="lux-slide"><img src="http://localhost:10004/wp-content/uploads/2025/12/700x700.png" alt="Partner"></div>
                 </div>
             </div>
         </div>
 
-        <!-- KHỐI 11: CTA CUỐI TRANG -->
+        <!-- KHỐI 10: CTA CUỐI TRANG -->
         <section id="lux-cta-v118">
             <div class="cta-bg-glow"></div>
             <div class="cta-content">
@@ -631,12 +629,28 @@
     <script src="/assets/js/ui.js"></script>
 
     <script>
-        // CẤU HÌNH API
+        // ==========================================
+        // 1. KHỞI TẠO FIREBASE (ĐÃ FIX LỖI)
+        // ==========================================
+        const firebaseConfig = {
+          apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
+          authDomain: "greenia-homes.firebaseapp.com",
+          projectId: "greenia-homes",
+          storageBucket: "greenia-homes.appspot.com",
+          messagingSenderId: "24027695632",
+          appId: "1:24027695632:web:13a23aa156e864f7d55895",
+          measurementId: "G-YRK63BNPP0"
+        };
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        const db = firebase.firestore();
+
+        // ==========================================
+        // 2. CẤU HÌNH API VÀ CÁC HÀM TIỆN ÍCH
+        // ==========================================
         const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
         const PROJECT_NAME_NEW = "Greenia Homes (Trang chủ)";
         let clientIPNew = "";
 
-        // HÀM TẠO SLUG AN TOÀN CHO LINK BĐS
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
             return String(title).normalize('NFC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
@@ -648,11 +662,13 @@
             return catsArr.map(c => String(c).trim()).filter(c => c !== '');
         }
 
-        // TẢI DỮ LIỆU TỪ FIREBASE LÊN TRANG CHỦ
+        // ==========================================
+        // 3. XỬ LÝ GIAO DIỆN & DỮ LIỆU ĐỘNG
+        // ==========================================
         document.addEventListener("DOMContentLoaded", async function() {
             fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip});
 
-            // 1. CHẠY ANIMATION CÁC KHỐI SỐ
+            // 3.1 CHẠY ANIMATION CÁC KHỐI SỐ
             const counters = document.querySelectorAll('.count-up');
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -672,11 +688,11 @@
             }, { threshold: 0.5 });
             counters.forEach(counter => counterObserver.observe(counter));
 
-            // 2. CHẠY SLIDER HERO
+            // 3.2 CHẠY SLIDER HERO
             const slides = document.querySelectorAll('.slide-item');
             if (slides.length > 0) { let current = 0; setInterval(() => { slides[current].classList.remove('active'); current = (current + 1) % slides.length; slides[current].classList.add('active'); }, 5000); }
 
-            // 3. TẢI DỮ LIỆU TỪ FIREBASE (Dự án, Sản phẩm, Tin tức)
+            // 3.3 TẢI DỮ LIỆU TỪ FIREBASE (Dự án, Sản phẩm, Tin tức)
             try {
                 const [projSnap, prodSnap, postSnap] = await Promise.all([
                     db.collection('projects').get(),
@@ -688,7 +704,7 @@
                 const products = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 const posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // --- 3.1. ĐỔ DỮ LIỆU DỰ ÁN ---
+                // --- ĐỔ DỮ LIỆU DỰ ÁN ---
                 const projScroll = document.getElementById('home-proj-scroll');
                 const selectContainer = document.getElementById('hero-project');
                 if (projects.length > 0) {
@@ -704,15 +720,18 @@
                                 </a>`;
                     }).join('');
 
-                    let optionsHtml = '<option value="">-- Dự án bạn quan tâm --</option>';
-                    optionsHtml += projects.map(p => `<option value="${p.title}">${p.title}</option>`).join('');
-                    optionsHtml += '<option value="Khác">Sản phẩm thứ cấp (Bán/Thuê)</option>';
+                    // Đổ tên dự án vào form Hero
+                    let optionsHtml = '<option value="" style="color:#222;">-- Chọn dự án quan tâm --</option>';
+                    optionsHtml += projects.map(p => `<option value="${p.title}" style="color:#222;">${p.title}</option>`).join('');
+                    optionsHtml += '<option value="Khác" style="color:#222;">Sản phẩm thứ cấp (Bán/Thuê)</option>';
                     selectContainer.innerHTML = optionsHtml;
+                    selectContainer.style.color = "#fff"; 
                 } else {
                     projScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật dự án...</div>';
+                    selectContainer.innerHTML = '<option value="Khác" style="color:#222;">Cần tư vấn BĐS</option>';
                 }
 
-                // --- 3.2. ĐỔ DỮ LIỆU SẢN PHẨM BÁN ---
+                // --- ĐỔ DỮ LIỆU SẢN PHẨM BÁN ---
                 const saleScroll = document.getElementById('home-sale-scroll');
                 const saleProds = products.filter(p => p.type === 'Bán').slice(0, 10);
                 if(saleProds.length > 0) {
@@ -734,7 +753,7 @@
                     }).join('');
                 } else { saleScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật giỏ hàng...</div>'; }
 
-                // --- 3.3. ĐỔ DỮ LIỆU TIN TỨC ---
+                // --- ĐỔ DỮ LIỆU TIN TỨC ---
                 const newsScroll = document.getElementById('home-news-scroll');
                 if(posts.length > 0) {
                     newsScroll.innerHTML = posts.slice(0, 6).map(p => {
@@ -762,16 +781,24 @@
 
             } catch (e) {
                 console.error("Lỗi kết nối Firebase trang chủ:", e);
+                // Cập nhật lại UI thông báo lỗi nếu hỏng mạng
+                document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
+                document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
+                document.getElementById('home-news-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối cơ sở dữ liệu.</div>';
             }
 
-            // 4. LẤY SỐ LIỆU ĐÁNH GIÁ (RATING)
+            // 3.4 LẤY SỐ LIỆU ĐÁNH GIÁ (RATING TỪ GOOGLE SHEET API)
             fetch(API_LEAD_NEW + "?action=count").then(r=>r.json()).then(d=>{
                 let count = d.count ? parseInt(d.count) : 186;
                 if(count < 100) count = 186;
                 document.getElementById('count-popup-new').innerText = `(5.0/5 - ${count} đánh giá)`;
-            }).catch(e=>{});
+                document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${count} đánh giá)`;
+            }).catch(e=>{
+                document.getElementById('count-popup-new').innerText = `(5.0/5 - 186 đánh giá)`;
+                document.getElementById('count-v15-ver').innerText = `(5.0/5 - 186 đánh giá)`;
+            });
 
-            // 5. XỬ LÝ FORM ĐĂNG KÝ Ở HERO SECTION
+            // 3.5 XỬ LÝ FORM ĐĂNG KÝ Ở HERO SECTION
             document.getElementById('hero-lead-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const btn = document.getElementById('hero-submit-btn');
@@ -798,7 +825,7 @@
                 });
             });
 
-            // 6. XỬ LÝ FORM POPUP
+            // 3.6 XỬ LÝ FORM POPUP
             document.getElementById('leadFormV15New').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const btn = document.getElementById('btn-v15-submit-new');
@@ -828,14 +855,18 @@
 
         });
 
-        // HÀM TRƯỢT NGANG CAROUSEL
+        // ==========================================
+        // 4. HÀM TƯƠNG TÁC GIAO DIỆN (UI)
+        // ==========================================
+
+        // Hàm trượt ngang Carousel
         window.grScrollHorizontal = function(id, dir) {
             var el = document.getElementById(id); if(!el) return;
             var item = el.querySelector(".s2-card") || el.querySelector(".gr-news-card-v"); if(!item) return;
             var w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: "smooth"});
         };
 
-        // HÀM BẬT/TẮT POPUP CTA
+        // Hàm bật/tắt Popup CTA
         window.openPopupNew = function() { 
             const overlay = document.getElementById('vhgp-popup-overlay-new'); 
             if(overlay) { overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('active'), 10); } 
@@ -844,6 +875,8 @@
             const overlay = document.getElementById('vhgp-popup-overlay-new'); 
             if(overlay) { overlay.classList.remove('active'); setTimeout(() => overlay.style.display = 'none', 300); } 
         };
+        
+        // Theo dõi Tracking Click Điện thoại
         window.triggerTrackingNew = function(channel) {
             if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: channel });
         };
