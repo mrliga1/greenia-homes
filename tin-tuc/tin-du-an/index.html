@@ -267,26 +267,13 @@
         }
 
         function createProdCardHTML(p, isList = false) {
-            // --- BẮT ĐẦU SỬA LỖI DÍNH LINK ---
-            let primaryCat = 'san-pham';
-            if (p.cat) {
-                // Ép chỉ lấy 1 danh mục đầu tiên
-                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
-            }
-            const catSlug = createSafeSlug(primaryCat);
-            // --- KẾT THÚC SỬA LỖI ---
-
+            const catSlug = createSafeSlug(p.cat || 'san-pham');
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
-            
-            // Link mới siêu gọn gàng
+            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-
-            let areaBedHtml = "";
-            // ... (Phần code bên dưới giữ nguyên y hệt của bác)
 
             let areaBedHtml = "";
             if (p.area || p.bed) {
@@ -343,19 +330,6 @@
         let independentProjects = [];
 
         document.addEventListener("DOMContentLoaded", async function() {
-            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA TỪ URL ---
-        const urlParams = new URLSearchParams(window.location.search);
-        let keywordFromUrl = urlParams.get('keyword');
-        
-        if (keywordFromUrl) {
-            // filterState là biến chứa từ khóa tìm kiếm của bác (tên có thể khác tùy code gốc)
-            filterState.keyword = keywordFromUrl; 
-            
-            // Tự động điền vào ô tìm kiếm (Thay 'luc-keyword' bằng ID ô search của bác nếu cần)
-            let searchInput = document.getElementById('luc-keyword');
-            if (searchInput) searchInput.value = keywordFromUrl;
-        }
-        // --- KẾT THÚC ĐOẠN CHÈN THÊM ---
             try {
                 let postDocs = [], prodDocs = [], projDocs = [];
                 
