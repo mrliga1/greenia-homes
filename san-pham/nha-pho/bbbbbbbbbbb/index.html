@@ -518,20 +518,22 @@
                 }
 
                 // ===============================================
-                // 3. DANH MỤC Ở CỘT PHẢI (CHIA 3 KHỐI TỰ ĐỘNG)
+                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI (CHIA 3 KHỐI)
                 // ===============================================
                 let countBan = 0, countThue = 0;
                 let typeCats = {}, priceCats = {}, locCats = {};
 
                 function categorizeTag(tagName) {
                     let t = tagName.toLowerCase();
+                    // Nhóm Giá
                     if (t.includes('tỷ') || t.includes('triệu') || t.includes('giá') || t.includes('thỏa thuận')) return 'price';
-                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu')) return 'loc';
+                    // Nhóm Khu Vực
+                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu') || t.includes('vị trí')) return 'loc';
+                    // Loại Hình
                     return 'type';
                 }
 
-                let ddListHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
-
+                // Lịch sử người dùng (Gợi ý thông minh)
                 let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
                 if (prod) {
@@ -559,7 +561,8 @@
                         let catArray = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
                         catArray.forEach(c => {
                             let cleanCat = c.trim();
-                            if(cleanCat !== '' && cleanCat.toLowerCase() !== 'chuyển nhượng' && cleanCat.toLowerCase() !== 'cho thuê') {
+                            let cleanLower = cleanCat.toLowerCase();
+                            if(cleanCat !== '' && cleanLower !== 'bán' && cleanLower !== 'thuê' && cleanLower !== 'chuyển nhượng' && cleanLower !== 'cho thuê') {
                                 let group = categorizeTag(cleanCat);
                                 if (group === 'price') priceCats[cleanCat] = (priceCats[cleanCat] || 0) + 1;
                                 else if (group === 'loc') locCats[cleanCat] = (locCats[cleanCat] || 0) + 1;
@@ -568,12 +571,15 @@
                         });
                     }
                     
+                    // Nạp thêm trường vị trí vào mục Khu Vực (nếu có)
                     if (p.loc && p.loc.trim() !== '') {
                         let l = p.loc.trim();
                         locCats[l] = (locCats[l] || 0) + 1;
                     }
                 });
 
+                // Cập nhật thẻ Dropdown Header
+                let ddListHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 if (allCategories && allCategories.length > 0) {
                     allCategories.forEach(c => {
                         let catSlug = createSafeSlug(c.slug || c.name);
@@ -586,6 +592,7 @@
                     });
                 }
 
+                // Xây HTML 3 Khối
                 let typeLinesHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả sản phẩm</span></a>`;
                 if(countBan > 0) typeLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
                 if(countThue > 0) typeLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
@@ -604,28 +611,19 @@
                     priceLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${createSafeSlug(c)}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c)}</span><span style="color:#666; font-size:11px;">(${priceCats[c]})</span></a>`;
                 });
 
-                let rightSidebarCatHTML = '';
+                // Gộp chung thành 1 biến
+                let dynamicSidebarHTML = '';
                 if (typeLinesHTML !== '') {
-                    rightSidebarCatHTML += `
-                    <div class="v261-cat" style="margin-bottom: 20px;">
-                        <div class="h">LOẠI HÌNH BĐS</div>
-                        <div class="l">${typeLinesHTML}</div>
-                    </div>`;
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">LOẠI HÌNH BĐS</div><div class="l">${typeLinesHTML}</div></div>`;
                 }
                 if (locLinesHTML !== '') {
-                    rightSidebarCatHTML += `
-                    <div class="v261-cat" style="margin-bottom: 20px;">
-                        <div class="h">KHU VỰC / VỊ TRÍ</div>
-                        <div class="l">${locLinesHTML}</div>
-                    </div>`;
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">THEO KHU VỰC</div><div class="l">${locLinesHTML}</div></div>`;
                 }
                 if (priceLinesHTML !== '') {
-                    rightSidebarCatHTML += `
-                    <div class="v261-cat" style="margin-bottom: 20px;">
-                        <div class="h">KHOẢNG GIÁ</div>
-                        <div class="l">${priceLinesHTML}</div>
-                    </div>`;
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
                 }
+
+                // ===============================================
 
                 // BƠM KHỐI GỢI Ý THÀNH DẠNG GRID (CÓ LOAD MORE)
                 let smartRecommended = [];
@@ -829,7 +827,7 @@
                         </div>
 
                         <div class="v261-c3">
-                            ${rightSidebarCatHTML}
+                            ${dynamicSidebarHTML}
                         </div>
                     </div>
 
