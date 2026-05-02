@@ -541,7 +541,7 @@ sfsfs
                         readmoreCatHTML = `
                         <div class="v261-readmore-cat">
                             <span>Xem thêm sản phẩm cùng danh mục: </span>
-                            <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName} <span class="cat-count">(${relatedCount})</span></a>
+                            <a href="${safeBaseUrl}danh-muc-sp.html?keyword=${activeCatSlug}">${breadcrumbCatName} <span class="cat-count">(${relatedCount})</span></a>
                         </div>`;
                     }
                 }
@@ -568,16 +568,16 @@ sfsfs
                     localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
                 }
 
-                let rightSidebarCatHTML = `<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                let ddListHTML = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
+                let rightSidebarCatHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
+                let ddListHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
                 allProducts.forEach(p => {
                     if(p.type === 'Bán') countBan++;
                     else if(p.type === 'Thuê') countThue++;
                 });
 
-                if(countBan > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
-                if(countThue > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
+                if(countBan > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
+                if(countThue > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
                 
                 if (allCategories && allCategories.length > 0) {
                     allCategories.forEach(c => {
@@ -585,27 +585,23 @@ sfsfs
                         if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
                             let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
                             if (count > 0 || c.showEmpty) {
-                                rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c.name || c.slug)}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${beautifyCatName(c.name || c.slug)}"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                rightSidebarCatHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${catSlug}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c.name || c.slug)}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
+                                ddListHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${catSlug}" class="luc-drop-item" data-cat="${catSlug}" data-name="${beautifyCatName(c.name || c.slug)}"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                             }
                         }
                     });
                 }
 
-                // ===============================================
-                // BƠM KHỐI LỌC MỨC GIÁ VÀ VỊ TRÍ VÀO CỘT PHẢI
-                // ===============================================
-
-                // 3.1. Tạo Danh Mục Khoảng Giá
+                // 3.1. CẬP NHẬT KHOẢNG GIÁ VỀ DANH-MUC-SP.HTML
                 let rightSidebarPriceHTML = `
-                    <a href="${safeBaseUrl}san-pham.html?keyword=5+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Dưới 5 Tỷ</span></a>
-                    <a href="${safeBaseUrl}san-pham.html?keyword=10+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 5 - 10 Tỷ</span></a>
-                    <a href="${safeBaseUrl}san-pham.html?keyword=20+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 10 - 20 Tỷ</span></a>
-                    <a href="${safeBaseUrl}san-pham.html?keyword=tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Trên 20 Tỷ</span></a>
-                    <a href="${safeBaseUrl}san-pham.html?keyword=thỏa+thuận" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Giá thỏa thuận</span></a>
+                    <a href="${safeBaseUrl}danh-muc-sp.html?keyword=5+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Dưới 5 Tỷ</span></a>
+                    <a href="${safeBaseUrl}danh-muc-sp.html?keyword=10+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 5 - 10 Tỷ</span></a>
+                    <a href="${safeBaseUrl}danh-muc-sp.html?keyword=20+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 10 - 20 Tỷ</span></a>
+                    <a href="${safeBaseUrl}danh-muc-sp.html?keyword=tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Trên 20 Tỷ</span></a>
+                    <a href="${safeBaseUrl}danh-muc-sp.html?keyword=thỏa+thuận" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Giá thỏa thuận</span></a>
                 `;
 
-                // 3.2. Tạo Danh Mục Vị Trí (Bóc tự động từ kho sản phẩm)
+                // 3.2. CẬP NHẬT VỊ TRÍ VỀ DANH-MUC-SP.HTML
                 let locMap = {};
                 allProducts.forEach(p => {
                     if (p.loc && p.loc.trim() !== '') {
@@ -613,15 +609,12 @@ sfsfs
                         locMap[location] = (locMap[location] || 0) + 1;
                     }
                 });
-                // Sắp xếp các vị trí có nhiều sản phẩm nhất lên đầu
                 let sortedLocs = Object.keys(locMap).sort((a,b) => locMap[b] - locMap[a]);
                 let rightSidebarLocHTML = sortedLocs.map(loc => {
-                    return `<a href="${safeBaseUrl}san-pham.html?keyword=${encodeURIComponent(loc)}" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${loc}</span><span style="color:#666; font-size:11px;">(${locMap[loc]})</span></a>`;
+                    return `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${encodeURIComponent(loc)}" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${loc}</span><span style="color:#666; font-size:11px;">(${locMap[loc]})</span></a>`;
                 }).join('');
 
-                // ===============================================
                 // BƠM KHỐI GỢI Ý THÀNH DẠNG GRID (CÓ LOAD MORE)
-                // ===============================================
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
@@ -631,7 +624,7 @@ sfsfs
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
                     matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
-                    smartRecommended = matchedByCat.slice(0, 20); // Lấy tối đa 20 sản phẩm để load more
+                    smartRecommended = matchedByCat.slice(0, 20); 
                 }
                 
                 if (smartRecommended.length < 20) {
@@ -665,9 +658,7 @@ sfsfs
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
-                // ===============================================
                 // BƠM KHỐI BÁN/THUÊ THÀNH DẠNG GRID (CÓ LOAD MORE KÉP)
-                // ===============================================
                 const allSaleProds = allProducts.filter(p => p.type === 'Bán');
                 window.allSaleProdsData = allSaleProds;
                 let saleHTML = allSaleProds.length > 0 ? `
@@ -675,7 +666,7 @@ sfsfs
                     <div class="gr-grid" id="sale-grid">
                         ${allSaleProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
+                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
                 ` : '';
 
                 const allRentProds = allProducts.filter(p => p.type === 'Thuê');
@@ -685,10 +676,9 @@ sfsfs
                     <div class="gr-grid" id="rent-grid">
                         ${allRentProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
+                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
                 ` : '';
 
-                // Khối dự án vẫn giữ nguyên Carousel
                 let projHTML = '';
                 if (independentProjects && independentProjects.length > 0) {
                     projHTML = `
@@ -709,16 +699,16 @@ sfsfs
                     <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
                 }
 
-                // IN DỮ LIỆU RA GIAO DIỆN (ĐÃ THÊM 2 BOX GIÁ VÀ VỊ TRÍ VÀO CỘT 3)
+                // IN DỮ LIỆU RA GIAO DIỆN
                 container.innerHTML = `
                     <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
                                 <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
-                                <a href="${safeBaseUrl}san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
-                                <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
-                                <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
+                                <a href="${safeBaseUrl}danh-muc-sp.html" class="luc-nav-item" id="tab-all">Tất cả</a>
+                                <a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" class="luc-nav-item" id="tab-ban">Bán</a>
+                                <a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" class="luc-nav-item" id="tab-thue">Cho thuê</a>
                                 <div class="luc-nav-group" id="luc-cat-dropdown-group">
                                     <div class="luc-nav-item luc-dd-trigger"><span id="luc-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
                                     <div class="luc-dropdown">
@@ -727,7 +717,7 @@ sfsfs
                                 </div>
                             </div>
                             <div class="luc-nav-right-group">
-                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="return false;">
+                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="window.location.href='${safeBaseUrl}danh-muc-sp.html?keyword=' + document.getElementById('luc-keyword').value; return false;">
                                     <input type="text" id="luc-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
                                     <button type="submit" id="luc-search-btn"><i class="fas fa-search"></i></button>
                                 </form>
@@ -737,8 +727,8 @@ sfsfs
 
                     <div class="gr-breadcrumbs" style="padding: 0 15px;">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham/">Sản phẩm</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}danh-muc-sp.html">Sản phẩm</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}danh-muc-sp.html?keyword=${activeCatSlug}">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
 
@@ -872,24 +862,6 @@ sfsfs
                     });
                 }
                 
-                const searchForm = document.getElementById('luc-search-form');
-                if(searchForm) {
-                    searchForm.addEventListener('submit', function(e) {
-                        e.preventDefault(); 
-                        const val = document.getElementById('luc-keyword').value.trim();
-                        if(val !== '') { 
-                            filterState.keyword = val;
-                            document.getElementById('luc-intro-section').style.display = 'none';
-                            document.querySelector('.gr-breadcrumbs').style.display = 'none';
-                            document.getElementById('luc-grid-main-container').style.display = 'block';
-                            runFilter(); 
-                            window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
-                        }
-                    });
-                }
-
-                document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
-                
                 const ddGroup = document.getElementById('luc-cat-dropdown-group');
                 if(ddGroup) {
                     ddGroup.querySelector('.luc-dd-trigger').addEventListener('click', function(e) {
@@ -935,7 +907,6 @@ sfsfs
                     document.getElementById('sale-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
                     window.saleClickCount++;
                     
-                    // Nếu đã hết sản phẩm để load, chuyển nút thành xem tất cả
                     if(window.allSaleProdsData.length <= 20) {
                          btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
                     } else {
@@ -943,7 +914,7 @@ sfsfs
                     }
                 }, 400);
             } else {
-                window.location.href = window.BASE_URL + 'san-pham/chuyen-nhuong/';
+                window.location.href = window.BASE_URL + 'danh-muc-sp.html?keyword=bán';
             }
         };
 
@@ -965,52 +936,9 @@ sfsfs
                     }
                 }, 400);
             } else {
-                window.location.href = window.BASE_URL + 'san-pham/cho-thue/';
+                window.location.href = window.BASE_URL + 'danh-muc-sp.html?keyword=thuê';
             }
         };
-
-
-        function runFilter(isLoadMore = false) {
-            if(!isLoadMore) currentPage = 1;
-            
-            filteredData = allProducts.filter(p => {
-                if(filterState.keyword !== '') {
-                    const kw = filterState.keyword.toLowerCase();
-                    return (p.title && String(p.title).toLowerCase().includes(kw)) || 
-                           (p.loc && String(p.loc).toLowerCase().includes(kw)) || 
-                           (p.cat && String(p.cat).toLowerCase().includes(kw));
-                }
-                return true;
-            });
-
-            const statusDiv = document.getElementById('luc-search-status');
-            if(filterState.keyword !== '') {
-                statusDiv.style.display = 'flex';
-                statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearLucSearch()'>Xóa</span>`;
-            } else { statusDiv.style.display = 'none'; }
-
-            const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
-            const grid = document.getElementById('luc-grid-result');
-            
-            if(paginatedData.length > 0) {
-                grid.innerHTML = paginatedData.map(p => renderCardHTML(p)).join('');
-            } else {
-                grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
-            }
-
-            const loadBtnWrap = document.querySelector('.luc-load-wrap');
-            if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
-            else { loadBtnWrap.style.display = 'block'; document.getElementById('luc-load-more-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
-        }
-        
-        window.clearLucSearch = function() { 
-            document.getElementById('luc-keyword').value = '';
-            filterState.keyword = '';
-            document.getElementById('luc-grid-main-container').style.display = 'none';
-            document.getElementById('luc-search-status').style.display = 'none';
-            document.getElementById('luc-intro-section').style.display = 'flex';
-            document.querySelector('.gr-breadcrumbs').style.display = 'flex';
-        }
 
         function initGallery() {
             const galMain = document.getElementById('gal-main');
