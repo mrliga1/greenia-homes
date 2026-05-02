@@ -20,8 +20,9 @@
     <script>
         window.BASE_URL = '/';
         var checkId = "{{ID}}";
+        // Nếu file chưa được render bởi server, lập tức quay về trang sản phẩm
         if (checkId.includes("{{") || checkId === "") {
-            window.location.replace(window.BASE_URL + '/san-pham/');
+            window.location.replace(window.BASE_URL + 'san-pham.html');
         }
     </script>
 
@@ -32,7 +33,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
+    <!-- FIREBASE CHUẨN GỐC -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <style>
+        /* GIỮ NGUYÊN 100% CẤU TRÚC CSS BÁC GỬI */
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
         
         #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 35px 0 35px 0 !important; width: 100%; box-sizing: border-box; overflow: visible !important;}
@@ -224,9 +230,6 @@
             z-index: 99999999 !important; 
         }
     </style>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/sds/" />
     
         <meta name="description" content="affffffffcccccc" />
@@ -298,7 +301,7 @@
         }
         const db = firebase.firestore();
 
-        // BẢO VỆ CHỐNG LỖI CÚ PHÁP
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP TỪ TRÌNH BIÊN DỊCH
         let defaultProduct = null;
         try { 
             defaultProduct = {
@@ -362,6 +365,7 @@
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
+        // HÀM RENDER KHỐI SẢN PHẨM SỬA LẠI ĐỂ HOẠT ĐỘNG CHUẨN HTML
         function renderCardHTML(p) {
             const pCat = p.cat ? String(p.cat) : 'san-pham';
             const catSlug = createSafeSlug(pCat);
@@ -375,11 +379,12 @@
             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
 
+            // Thêm onerror để tránh ảnh lỗi
             return `
             <a href="${link}" class="s2-card">
                 <div class="s2-thumb-box">
                     <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                    <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
                 <div class="s2-body">
                     <h3 class="gr-tit s2-tit">${p.title}</h3>
@@ -549,8 +554,8 @@
                     localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
                 }
 
-                let rightSidebarCatHTML = `<a href="${safeBaseUrl}/san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                let ddListHTML = `<a href="${safeBaseUrl}/san-pham/" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
+                let rightSidebarCatHTML = `<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
+                let ddListHTML = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
                 allProducts.forEach(p => {
                     if(p.type === 'Bán') countBan++;
@@ -651,7 +656,7 @@
                             ${independentProjects.slice(0, 10).map(p => {
                                 const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
                                 return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div>
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>
                                     <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
                                 </a>`;
                             }).join('')}
@@ -661,13 +666,14 @@
                     <div class="s2-footer"><a href="${safeBaseUrl}du-an.html" class="s1-btn">Xem thêm Dự án</a></div>`;
                 }
 
+                // SỬA FIX ĐƯỜNG DẪN LINK ĐIỀU HƯỚNG TAB
                 container.innerHTML = `
                     <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
                                 <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
-                                <a href="${safeBaseUrl}/san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
+                                <a href="${safeBaseUrl}san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
                                 <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
                                 <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
                                 <div class="luc-nav-group" id="luc-cat-dropdown-group">
@@ -688,7 +694,7 @@
 
                     <div class="gr-breadcrumbs" style="padding: 0 15px;">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}/san-pham/">Sản phẩm</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}san-pham/">Sản phẩm</a> <span class="sep">&gt;</span>
                         <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
@@ -704,8 +710,8 @@
                                         ${mediaList.map((item, k) => `
                                             <div class="v261-gal-item" data-index="${k}">
                                                 ${item.type === 'video' ? 
-                                                    `<div class="v261-vid-wrap" onclick="v261OpenLB(${k})"><i class="fas fa-play-circle v261-play-icon"></i><div class="v261-vid-overlay"></div><img src="${item.thumb}" class="v261-vid-thumb"></div>` : 
-                                                    `<img src="${item.url}" onclick="v261OpenLB(${k})">`
+                                                    `<div class="v261-vid-wrap" onclick="v261OpenLB(${k})"><i class="fas fa-play-circle v261-play-icon"></i><div class="v261-vid-overlay"></div><img src="${item.thumb}" class="v261-vid-thumb" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>` : 
+                                                    `<img src="${item.url}" onclick="v261OpenLB(${k})" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';">`
                                                 }
                                             </div>
                                         `).join('')}
@@ -716,7 +722,7 @@
                                 <div class="v261-gal-thumbs" id="gal-thumbs">
                                     ${mediaList.map((item, k) => `
                                         <div class="v261-thumb-item ${k === 0 ? 'active' : ''}" onclick="v261GoTo(${k})">
-                                            ${item.type === 'video' ? `<i class="fas fa-video v261-th-icon"></i><img src="${item.thumb}">` : `<img src="${item.url}">`}
+                                            ${item.type === 'video' ? `<i class="fas fa-video v261-th-icon"></i><img src="${item.thumb}">` : `<img src="${item.url}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=150';">`}
                                         </div>
                                     `).join('')}
                                 </div>
@@ -995,7 +1001,7 @@
             if(item.type === 'video') {
                  if(item.url.indexOf('<iframe') !== -1) html = item.url;
                  else html = '<video controls autoplay src="'+item.url+'"></video>';
-            } else { html = '<img src="'+item.url+'">'; }
+            } else { html = '<img src="'+item.url+'" onerror="this.src=\'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800\'">'; }
             lbBody.innerHTML = html;
             lbCount.innerText = (currentIdx + 1) + ' / ' + mediaList.length;
         }
