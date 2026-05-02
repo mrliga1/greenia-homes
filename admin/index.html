@@ -113,7 +113,6 @@
         .select-edit-box { background: rgba(197,160,89,0.1); border: 1px dashed var(--gold); border-radius: 8px; padding: 15px; margin-bottom: 25px; }
         .select-edit-box select { background: #000; border-color: var(--gold); color: var(--gold); font-weight: bold; }
 
-        /* LƯỚI CHECKBOX DANH MỤC LÀM MỚI */
         .cat-checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -459,7 +458,6 @@
         document.getElementById(`list-${type}`).classList.add('active');
     }
 
-    // TẠO CHECKBOX DANH MỤC CHO SẢN PHẨM (VÁ LỖI AN TOÀN TUYỆT ĐỐI)
     function renderCategoryCheckboxes(selectedCats = []) {
         const catBox = document.getElementById('p-cat-checkboxes');
         if (!catBox) return;
@@ -477,7 +475,7 @@
             }
         });
         
-        allProductCats = [...new Set(allProductCats)]; // Lọc trùng lặp
+        allProductCats = [...new Set(allProductCats)]; 
         
         if (allProductCats.length === 0) {
             catBox.innerHTML = '<div style="color:#888; font-size:12px;">Bạn chưa tạo danh mục Sản phẩm nào. Hãy qua Tab DANH MỤC để tạo trước.</div>';
@@ -497,7 +495,6 @@
         catBox.innerHTML = html;
     }
 
-    // LẤY DANH SÁCH DANH MỤC ĐƯỢC CHỌN KHI LƯU
     function getSelectedCategories() {
         const checkboxes = document.querySelectorAll('input[name="prod-categories"]:checked');
         let selected = [];
@@ -520,7 +517,6 @@
                 }).join('');
         }
         
-        // Gọi hàm render lưới checkbox khi reset form
         renderCategoryCheckboxes();
         
         const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat));
@@ -586,7 +582,7 @@
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || ""; document.getElementById('p-seo-desc').value = item.seoDesc || ""; document.getElementById('p-seo-key').value = item.seoKeywords || "";
             
-            // Xử lý chuẩn hóa mảng danh mục cũ tránh gây lỗi
+            // Xử lý an toàn để hiển thị lại Checklist
             let itemCats = [];
             if (item.cat) {
                 if (Array.isArray(item.cat)) itemCats = item.cat;
@@ -669,6 +665,19 @@
         } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); }
     }
 
+    // VÁ LỖI AN TOÀN CHO HÀM LẤY PRIMARY CATEGORY
+    function getPrimaryCatSlug(catData, defaultSlug = 'san-pham') {
+        if (!catData) return defaultSlug;
+        let primaryCatStr = '';
+        if (Array.isArray(catData)) {
+            primaryCatStr = catData[0];
+        } else {
+            primaryCatStr = String(catData).split(',')[0];
+        }
+        if (!primaryCatStr || primaryCatStr.trim() === '') return defaultSlug;
+        return slugify(primaryCatStr.trim());
+    }
+
     function buildLinkLibrary() {
         const container = document.getElementById('list-links');
         let html = '';
@@ -687,9 +696,7 @@
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${item.slug}/`;
             } else {
                 const itemSlug = item.slug || slugify(item.title); 
-                // VÁ LỖI AN TOÀN TUYỆT ĐỐI CHO HÀM LẤY CATSLUG
-                let catData = Array.isArray(item.cat) ? item.cat[0] : item.cat;
-                const catSlug = catData ? slugify(catData) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
+                const catSlug = getPrimaryCatSlug(item.cat, item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${catSlug}/${itemSlug}/`;
             }
             
@@ -737,10 +744,23 @@
         alert("Đã copy MÃ GỢI Ý BÀI VIẾT LIÊN QUAN!\n\nDán vào chế độ NGUỒN của Nội dung chi tiết.");
     }
     
-    // VÁ LỖI AN TOÀN CHO HÀM SLUGIFY (Khắc phục lỗi treo không thể bấm nút LƯU)
+    // VÁ LỖI AN TOÀN CHO HÀM SLUGIFY (Tự động thay dấu phẩy thành dấu gạch ngang)
     function slugify(text) {
         if (!text) return 'chua-phan-loai';
-        return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        return text.toString().toLowerCase().trim()
+            .replace(/,/g, '-')
+            .replace(/\s+/g, '-')
+            .replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a')
+            .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
+            .replace(/[íìỉĩị]/g, 'i')
+            .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
+            .replace(/[úùủũụưứừửữự]/g, 'u')
+            .replace(/[ýỳỷỹỵ]/g, 'y')
+            .replace(/đ/g, 'd')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+/, '')
+            .replace(/-+$/, '');
     }
     
     function handleTitleInput(titleInput, slugInputId) {
@@ -940,8 +960,7 @@
     }
 
     async function autoCreateProductFolder(prodData) {
-        let primaryCat = Array.isArray(prodData.cat) ? prodData.cat[0] : prodData.cat;
-        let catSlug = primaryCat ? slugify(primaryCat) : 'san-pham';
+        let catSlug = getPrimaryCatSlug(prodData.cat, 'san-pham');
         const path = `san-pham/${catSlug}/${prodData.slug}/index.html`;
         
         let templateHtml = await getTemplateFile('chi-tiet-sp.html');
@@ -976,7 +995,7 @@
     }
 
     async function autoCreateNewsFolder(newsData) {
-        let catSlug = newsData.cat ? slugify(newsData.cat) : 'tin-tuc';
+        let catSlug = getPrimaryCatSlug(newsData.cat, 'tin-tuc');
         const path = `tin-tuc/${catSlug}/${newsData.slug}/index.html`;
         let templateHtml = await getTemplateFile('blog.html');
         if (!templateHtml) return;
@@ -1014,7 +1033,6 @@
             rawDesc = document.getElementById('p-seo-desc').value;
             autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
             
-            // LẤY DANH SÁCH DANH MỤC TỪ CHECKBOX & Ô NHẬP TAY
             let selectedCats = getSelectedCategories();
             let newCatsStr = document.getElementById('p-cat').value;
             if (newCatsStr) {
@@ -1030,7 +1048,7 @@
                 type: document.getElementById('p-type').value, 
                 title: titleVal, 
                 slug: slugVal, 
-                cat: selectedCats, // Ghi thẳng mảng danh mục vào Data
+                cat: selectedCats, 
                 projectCode: document.getElementById('p-projectCode').value || "", 
                 loc: document.getElementById('p-loc').value, 
                 price: document.getElementById('p-price').value, 
@@ -1087,7 +1105,7 @@
                 await autoCreateProductFolder(newData);
                 if(newData.cat && newData.cat.length > 0) {
                     btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG CẬP NHẬT DANH MỤC...';
-                    let primaryCatSlug = slugify(newData.cat[0]);
+                    let primaryCatSlug = getPrimaryCatSlug(newData.cat);
                     let matchedCat = currentData.categories.find(c => c.title === newData.cat[0] || c.slug === primaryCatSlug);
                     if (matchedCat) await autoCreateCategoryFolder(matchedCat);
                 }
