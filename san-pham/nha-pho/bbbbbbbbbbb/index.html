@@ -110,7 +110,8 @@
         .v261-btn.bl { background: linear-gradient(135deg, #0068ff 0%, #00a8ff 100%); box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); }
         .v261-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.15); filter: brightness(1.1); }
         
-        .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; height:100%; overflow:hidden; display:flex; flex-direction:column; }
+        /* CẬP NHẬT CSS CHO CATEGORY BOX ĐỂ CHỒNG NHAU ĐƯỢC NHIỀU KHỐI */
+        .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
         .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; }
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
         .v261-cat a { display:flex; justify-content:space-between; padding:10px; color:#b0b8c4; font-size:12px; text-decoration:none; border-bottom:1px solid #222; }
@@ -566,6 +567,33 @@
                 }
 
                 // ===============================================
+                // BƠM KHỐI LỌC MỨC GIÁ VÀ VỊ TRÍ VÀO CỘT PHẢI
+                // ===============================================
+
+                // 3.1. Tạo Danh Mục Khoảng Giá
+                let rightSidebarPriceHTML = `
+                    <a href="${safeBaseUrl}san-pham.html?keyword=5+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Dưới 5 Tỷ</span></a>
+                    <a href="${safeBaseUrl}san-pham.html?keyword=10+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 5 - 10 Tỷ</span></a>
+                    <a href="${safeBaseUrl}san-pham.html?keyword=20+tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Từ 10 - 20 Tỷ</span></a>
+                    <a href="${safeBaseUrl}san-pham.html?keyword=tỷ" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Trên 20 Tỷ</span></a>
+                    <a href="${safeBaseUrl}san-pham.html?keyword=thỏa+thuận" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Giá thỏa thuận</span></a>
+                `;
+
+                // 3.2. Tạo Danh Mục Vị Trí (Bóc tự động từ kho sản phẩm)
+                let locMap = {};
+                allProducts.forEach(p => {
+                    if (p.loc && p.loc.trim() !== '') {
+                        let location = p.loc.trim();
+                        locMap[location] = (locMap[location] || 0) + 1;
+                    }
+                });
+                // Sắp xếp các vị trí có nhiều sản phẩm nhất lên đầu
+                let sortedLocs = Object.keys(locMap).sort((a,b) => locMap[b] - locMap[a]);
+                let rightSidebarLocHTML = sortedLocs.map(loc => {
+                    return `<a href="${safeBaseUrl}san-pham.html?keyword=${encodeURIComponent(loc)}" style="display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${loc}</span><span style="color:#666; font-size:11px;">(${locMap[loc]})</span></a>`;
+                }).join('');
+
+                // ===============================================
                 // BƠM KHỐI GỢI Ý THÀNH DẠNG GRID (CÓ LOAD MORE)
                 // ===============================================
                 let smartRecommended = [];
@@ -655,7 +683,7 @@
                     <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
                 }
 
-                // IN DỮ LIỆU RA GIAO DIỆN
+                // IN DỮ LIỆU RA GIAO DIỆN (ĐÃ THÊM 2 BOX GIÁ VÀ VỊ TRÍ VÀO CỘT 3)
                 container.innerHTML = `
                     <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
@@ -775,6 +803,16 @@
                             <div class="v261-cat">
                                 <div class="h">DANH MỤC SẢN PHẨM</div>
                                 <div class="l">${rightSidebarCatHTML}</div>
+                            </div>
+                            
+                            <div class="v261-cat">
+                                <div class="h">KHOẢNG GIÁ</div>
+                                <div class="l">${rightSidebarPriceHTML}</div>
+                            </div>
+
+                            <div class="v261-cat">
+                                <div class="h">KHU VỰC / VỊ TRÍ</div>
+                                <div class="l">${rightSidebarLocHTML}</div>
                             </div>
                         </div>
                     </div>
