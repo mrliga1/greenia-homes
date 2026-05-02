@@ -108,7 +108,6 @@
         .v261-btn.bl { background: linear-gradient(135deg, #0068ff 0%, #00a8ff 100%); box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); }
         .v261-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.15); filter: brightness(1.1); }
         
-        /* CẬP NHẬT CSS CHO CATEGORY BOX ĐỂ CHỒNG NHAU ĐƯỢC NHIỀU KHỐI */
         .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
         .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; }
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
@@ -379,15 +378,23 @@ sfsfs
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
-        // HÀM RENDER KHỐI SẢN PHẨM SỬA LẠI ĐỂ HOẠT ĐỘNG CHUẨN HTML
+        // HÀM RENDER KHỐI SẢN PHẨM (ĐÃ VÁ LỖI DÍNH CHÙM LINK URL)
         function renderCardHTML(p) {
-            const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const catSlug = createSafeSlug(pCat);
+            // Chỉ bắt ĐÚNG danh mục đầu tiên (danh mục chính) để làm link
+            let primaryCat = 'san-pham';
+            if (p.cat) {
+                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+            }
+            
+            const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
+            
+            // Link đích bây giờ đã khớp 100% với cấu trúc thư mục trên GitHub
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+            
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
@@ -498,7 +505,7 @@ sfsfs
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI
+                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI ĐỂ HIỂN THỊ TRÊN BREADCRUMB
                 let activeCatSlug = '';
                 let breadcrumbCatName = 'Sản phẩm';
                 
