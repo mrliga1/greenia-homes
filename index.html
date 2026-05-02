@@ -13,7 +13,7 @@
     <meta name="keywords" content="Greenia homes, bất động sản cao cấp, biệt thự, nhà phố, môi giới bất động sản" />
     <link rel="canonical" href="https://greeniahomes.vn/" />
 
-    <!-- OPEN GRAPH -->
+    <!-- OPEN GRAPH (MẠNG XÃ HỘI) -->
     <meta property="og:site_name" content="Greenia Homes" />
     <meta property="og:title" content="Greenia Homes | Chuyên Gia Tư Vấn Bất Động Sản Cao Cấp" />
     <meta property="og:description" content="Tư vấn, phân tích và phân phối Bất động sản hạng sang tại TP.HCM." />
@@ -24,7 +24,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#c5a059">
 
-    <!-- SCHEMA JSON-LD CHUẨN GỐC -->
+    <!-- SCHEMA JSON-LD CHUẨN ĐÃ XÓA LOCALHOST -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -51,8 +51,8 @@
           "@id": "https://greeniahomes.vn/#organization",
           "name": "Greenia Homes",
           "url": "https://greeniahomes.vn/",
-          "logo": "https://greeniahomes.vn/assets/images/logo-greenia.png", 
-          "image": "https://greeniahomes.vn/assets/images/564522612_2705209146487347_4573715293933305417_n.jpg",
+          "logo": "https://greeniahomes.vn/wp-content/uploads/2025/12/logo-greenia.png", 
+          "image": "https://greeniahomes.vn/wp-content/uploads/2025/12/564522612_2705209146487347_4573715293933305417_n.jpg",
           "telephone": "+84932966700",
           "priceRange": "$$$$",
           "address": {
@@ -72,6 +72,18 @@
             "https://www.facebook.com/greeniahomes", 
             "https://zalo.me/0932966700"
           ]
+        },
+        {
+          "@type": "Service",
+          "serviceType": "Tư vấn và phân phối Bất động sản cao cấp",
+          "provider": {
+            "@id": "https://greeniahomes.vn/#organization"
+          },
+          "areaServed": {
+            "@type": "City",
+            "name": "TP. Hồ Chí Minh và khu vực lân cận"
+          },
+          "description": "Chuyên phân phối: Nhà phố, Căn hộ, Biệt thự cao cấp có pháp lý minh bạch."
         }
       ]
     }
@@ -81,7 +93,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
-    <!-- FIREBASE -->
+    <!-- FIREBASE CHUẨN GỐC -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -89,19 +101,14 @@
         /* =========================================
            1. CẤU HÌNH BIẾN & GIAO DIỆN CHÍNH
            ========================================= */
-        :root { 
-            --v15-bg: #0b0f19;        
-            --v15-gold: #c5a059;
-            --v15-gold-hover: #d4af37; 
-            --v15-input: rgba(255,255,255,0.05); 
-            --v15-border: rgba(255,255,255,0.2);
-        }
         .greenia-luxury-theme {
             --lux-gold: #c5a059;
             --lux-gold-hover: #d4af37; 
             --lux-dark: #05080f;     
             --lux-text: #b0b8c4;     
             --lux-white: #ffffff;
+            --v15-input: rgba(255,255,255,0.05); 
+            --v15-border: rgba(255,255,255,0.2);
             font-family: 'Manrope', sans-serif;
             background-color: var(--lux-dark); color: var(--lux-text);
             width: 100%; overflow: hidden; position: relative; z-index: 0; 
@@ -134,26 +141,27 @@
         .cta-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
         .cta-phone { font-size: 18px; font-weight: 800; letter-spacing: 1px; font-family: 'Cinzel', serif; }
 
-        .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; }
+        .hero-form-wrapper { flex: 0 0 400px; max-width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: fadeInRight 1s ease-out 0.5s forwards; opacity: 0; position: relative; z-index: 10; background: transparent; border: none; padding: 0; }
 
-        /* FORM BANNER */
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--v15-gold); border-bottom: 1px solid var(--v15-gold); padding: 25px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px;}
+        /* FORM TƯ VẤN HERO ĐÃ SỬA CẤU TRÚC CHUẨN 100% (GỐC BÁC) */
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; }
         .v15-ver-container { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--v15-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
         .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
         .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
         .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        
         .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
         .v15-ver-input { width: 100%; background: var(--v15-input); border: 1px solid var(--v15-border); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
-        .v15-ver-input:focus { border-color: var(--v15-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-        .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--v15-gold); border: 1px solid var(--v15-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
-        .v15-ver-btn:hover { background: var(--v15-gold-hover); color: #000; border-color: var(--v15-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
+        .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
 
         /* =========================================
            3. THƯƠNG HIỆU CÁ NHÂN
            ========================================= */
-        .personal-brand-section { padding: 100px 0; position: relative; }
+        .personal-brand-section { padding: 100px 0; position: relative; border-bottom: 1px solid rgba(197, 160, 89, 0.05);}
         .container-brand { width: 90%; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 80px; }
         .brand-visual { flex: 1; position: relative; min-height: 500px; display: flex; align-items: center; animation: fadeInUp 1s forwards; }
         .deco-pattern { position: absolute; top: -30px; left: -30px; width: 200px; height: 200px; background-image: radial-gradient(var(--lux-gold) 1.5px, transparent 1.5px); background-size: 15px 15px; opacity: 0.2; }
@@ -572,23 +580,23 @@
             </div>
         </section>
 
-        <!-- KHỐI 9: ĐỐI TÁC CHIẾN LƯỢC LINK GỐC CỦA BÁC -->
+        <!-- KHỐI 9: ĐỐI TÁC CHIẾN LƯỢC LINK CDN CHUYÊN NGHIỆP -->
         <div class="lux-partner-wrapper">
             <div class="lux-partner-header"><span class="lph-line"></span><h3 class="lph-title">ĐỐI TÁC CHIẾN LƯỢC</h3><span class="lph-line"></span></div>
             <div class="lux-slider-container">
                 <div class="lux-slide-track">
-                    <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland"></div>
-                    <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-header-red.png" alt="Partner"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="lux-slide"><img src="/assets/images/700x700.png" alt="Partner"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland"></div>
-                    <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-header-red.png" alt="Partner"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="lux-slide"><img src="/assets/images/700x700.png" alt="Partner"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Novaland.png" alt="Novaland"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Tap-Doan-Hung-Thinh.png" alt="Hung Thinh"></div>
+                    <div class="lux-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Vinhomes_logo.svg" alt="Vinhomes"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Masterise-Group.png" alt="Masterise"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Dat-Xanh-Group.png" alt="Dat Xanh"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Novaland.png" alt="Novaland"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-Tap-Doan-Hung-Thinh.png" alt="Hung Thinh"></div>
+                    <div class="lux-slide"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Vinhomes_logo.svg" alt="Vinhomes"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Masterise-Group.png" alt="Masterise"></div>
+                    <div class="lux-slide"><img src="https://cdn.haitrieu.com/wp-content/uploads/2021/11/Logo-Dat-Xanh-Group.png" alt="Dat Xanh"></div>
                 </div>
             </div>
         </div>
@@ -654,7 +662,7 @@
 
     <script>
         // ==========================================
-        // 1. KHỞI TẠO FIREBASE GỐC
+        // 1. KHỞI TẠO FIREBASE (MÃ KHÓA GỐC CHỐNG LỖI TREO KẾT NỐI)
         // ==========================================
         let db = null;
         try {
