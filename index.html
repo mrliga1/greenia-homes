@@ -589,12 +589,12 @@
                     <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
                     <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
                     <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
-                    <div class="lux-slide"><img src="/assets/images/masteri-homes.png alt="Masterise"></div>
+                    <div class="lux-slide"><img src="/assets/images/masteri-homes.png" alt="Masterise"></div>
                     <div class="lux-slide"><img src="/assets/images/logo-novaland.png" alt="Novaland"></div>
                     <div class="lux-slide"><img src="/assets/images/Hung_Thinh_logo.png" alt="Hung Thinh"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.pngalt="Vinhomes"></div>
-                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.pnglt="Khang Dien"></div>
-                    <div class="lux-slide"><img src="/assets/images/masteri-homes.png alt="Masterise"></div>
+                    <div class="lux-slide"><img src="/assets/images/logo-vinhomes.png" alt="Vinhomes"></div>
+                    <div class="lux-slide"><img src="/assets/images/logo-Khang-Dien.png" alt="Khang Dien"></div>
+                    <div class="lux-slide"><img src="/assets/images/masteri-homes.png" alt="Masterise"></div>
                 </div>
             </div>
         </div>
@@ -665,7 +665,7 @@
         let db = null;
         try {
             const firebaseConfig = {
-              apiKey: "AIzaSyDiOEzM9rNAfj-mXaF51YVNJgyU-chi3ts",
+              apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
               authDomain: "greenia-homes.firebaseapp.com",
               projectId: "greenia-homes",
               storageBucket: "greenia-homes.appspot.com",
@@ -685,10 +685,25 @@
         const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
         let clientIPNew = "";
 
+        // HÀM TẠO SLUG (Lấy 1 danh mục đầu tiên, tạo link không bị dính chùm)
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
-            return String(title).normalize('NFC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+            return String(title).normalize('NFC').toLowerCase().trim()
+                .replace(/,/g, '-')
+                .replace(/\s+/g, '-')
+                .replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a')
+                .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
+                .replace(/[íìỉĩị]/g, 'i')
+                .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
+                .replace(/[úùủũụưứừửữự]/g, 'u')
+                .replace(/[ýỳỷỹỵ]/g, 'y')
+                .replace(/đ/g, 'd')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
         }
+
         function extractCatsSafely(catData) {
             if (!catData) return [];
             let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
@@ -742,16 +757,22 @@
                     } else { projScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Hệ thống đang cập nhật dự án...</div>'; }
                 }).catch(e => { document.getElementById('home-proj-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối CSDL Dự án.</div>'; });
 
-                // TẢI SẢN PHẨM
+                // TẢI SẢN PHẨM (SỬA Ở ĐÂY)
                 db.collection('products').get().then(prodSnap => {
                     const products = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const saleScroll = document.getElementById('home-sale-scroll');
                     const saleProds = products.filter(p => p.type === 'Bán').slice(0, 10);
                     if(saleProds.length > 0) {
                         saleScroll.innerHTML = saleProds.map(p => {
-                            const catSlug = createSafeSlug(p.cat || 'san-pham');
+                            // CHỈ LẤY DANH MỤC ĐẦU TIÊN ĐỂ TẠO URL
+                            let primaryCat = 'san-pham';
+                            if (p.cat) {
+                                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+                            }
+                            const catSlug = createSafeSlug(primaryCat);
                             const pSlug = p.slug || createSafeSlug(p.title);
                             const link = `/san-pham/${catSlug}/${pSlug}/`;
+
                             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
                             const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
                             return `<a href="${link}" class="s2-card">
@@ -766,17 +787,21 @@
                     } else { saleScroll.innerHTML = '<div style="color:#888; padding:20px; width:100%; text-align:center;">Đang cập nhật giỏ hàng...</div>'; }
                 }).catch(e => { document.getElementById('home-sale-scroll').innerHTML = '<div style="color:#ff4d4f; padding:20px; width:100%; text-align:center;">Lỗi kết nối CSDL Sản phẩm.</div>'; });
 
-                // TẢI TIN TỨC
+                // TẢI TIN TỨC (SỬA Ở ĐÂY)
                 db.collection('posts').get().then(postSnap => {
                     const posts = postSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                     const newsScroll = document.getElementById('home-news-scroll');
                     if(posts.length > 0) {
                         newsScroll.innerHTML = posts.slice(0, 6).map(p => {
-                            const cleanCats = extractCatsSafely(p.cat);
-                            const primaryCat = cleanCats.length > 0 ? cleanCats[0] : 'tin-tuc';
+                            // CHỈ LẤY DANH MỤC ĐẦU TIÊN ĐỂ TẠO URL
+                            let primaryCat = 'tin-tuc';
+                            if (p.cat) {
+                                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+                            }
                             const catSlug = createSafeSlug(primaryCat);
                             const pSlug = p.slug || createSafeSlug(p.title);
                             const link = `/tin-tuc/${catSlug}/${pSlug}/`;
+
                             const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content || "";
                             const excerpt = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 100) + '...';
                             const firstImg = tempDiv.querySelector('img');

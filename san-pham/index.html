@@ -286,27 +286,43 @@
         }
 
         function renderCardHTML(p) {
-            const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const catSlug = createSafeSlug(pCat);
+            // --- BẮT ĐẦU ĐOẠN SỬA LỖI DÍNH LINK ---
+            let primaryCat = 'san-pham';
+            if (p.cat) {
+                // Nếu sản phẩm có nhiều danh mục, chỉ lấy đúng thằng đầu tiên để tạo URL
+                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+            }
+            const catSlug = createSafeSlug(primaryCat);
+            // --- KẾT THÚC ĐOẠN SỬA LỖI DÍNH LINK ---
+
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+            
+            // Link được tạo ra giờ sẽ cực kỳ gọn gàng
+            const link = `${window.BASE_URL || '/'}san-pham/${catSlug}/${pSlug}/`;
+            
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
-            
-            const metaHtml = `
-            <div class="gr-meta">
-                <span class="gr-hl">${p.price || 'Liên hệ'}</span>
-                <div style="display:flex; gap:10px;">
-                    <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area || '--'} m²</span>
-                    <span style="color:#444;">|</span> 
-                    <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed || '--'} PN</span>
+            const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
+            const bedHtml = p.bed ? `<span style="color:#444;">|</span> <span class="gr-hl" style="font-size:12px;font-weight:400;">${p.bed} PN</span>` : '';
+
+            return `
+            <a href="${link}" class="s2-card">
+                <div class="s2-thumb-box">
+                    <span class="gr-tag-abs ${tagClass}">${tagName}</span>
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
-            </div>`;
-            
-            return `<a href="${link}" class="s2-card"><div class="s2-thumb-box"><span class="gr-tag-abs ${tagClass}">${tagName}</span><img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div><div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3>${locHtml}${metaHtml}</div></a>`;
+                <div class="s2-body">
+                    <h3 class="gr-tit s2-tit">${p.title}</h3>
+                    ${locHtml}
+                    <div class="gr-meta">
+                        <span class="gr-hl">${p.price || 'Liên hệ'}</span>
+                        <div style="display:flex; gap:10px;">${areaHtml}${bedHtml}</div>
+                    </div>
+                </div>
+            </a>`;
         }
 
         function updateSeoUI(targetCatSlug, targetType) {

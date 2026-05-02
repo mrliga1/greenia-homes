@@ -346,6 +346,18 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
+            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA ---
+            const urlParams = new URLSearchParams(window.location.search);
+            let keywordFromUrl = urlParams.get('keyword');
+            
+            if (keywordFromUrl) {
+                filterState.keyword = keywordFromUrl;
+                let searchInput = document.getElementById('luc-keyword');
+                if (searchInput) searchInput.value = keywordFromUrl;
+            }
+            // --- KẾT THÚC ĐOẠN CHÈN THÊM ---
+
+            // Các code cũ của bác (tải Firebase, render, v.v.) nằm ở dưới giữ nguyên...
             const filterBar = document.getElementById('luc-filter-bar');
             if(filterBar) {
                 window.addEventListener('scroll', () => {
