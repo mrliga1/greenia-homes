@@ -280,14 +280,22 @@
         }
 
         function createProdCardHTML(p) {
-            const catSlug = createSafeSlug(p.cat || 'san-pham');
-            const pSlug = p.slug || createSafeSlug(p.title);
-            const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
-            const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
-            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
-            const link = `/san-pham/${catSlug}/${pSlug}/`;
-
+            // --- BẮT ĐẦU SỬA LỖI DÍNH LINK ---
+        let primaryCat = 'san-pham';
+        if (p.cat) {
+            // Ép chỉ lấy 1 danh mục đầu tiên
+            primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+        }
+        const catSlug = createSafeSlug(primaryCat);
+        const pSlug = p.slug || createSafeSlug(p.title);
+        const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
+        const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
+        const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
+        const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
+        
+        // Link mới siêu gọn gàng
+        const link = `${window.BASE_URL || '/'}san-pham/${catSlug}/${pSlug}/`;
+        // --- KẾT THÚC SỬA LỖI ---
             let areaBedHtml = "";
             if (p.area || p.bed) {
                 let areaPart = p.area ? `<span style="color: var(--gold); font-size:12px;">${p.area} m²</span>` : "";
