@@ -169,7 +169,6 @@
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
             </div>
 
-            <!-- TAB DANH MỤC VẪN GIỮ NGUYÊN ĐỂ BÁC QUẢN LÝ THÊM/SỬA/XÓA -->
             <div id="section-cat" class="form-section">
                 <div class="select-edit-box full">
                     <label style="color: var(--gold);"><i class="fas fa-search"></i> Chọn danh mục đã có để Sửa / Xóa:</label>
@@ -197,7 +196,6 @@
                 </div>
             </div>
 
-            <!-- TAB SẢN PHẨM: ĐÃ KẾT HỢP CHECKBOX & Ô NHẬP MỚI -->
             <div id="section-prod" class="form-section active">
                 <div class="form-grid">
                     <div class="form-group"><label>Mã SP (Tự động):</label><input type="text" id="p-id" disabled value="..."></div>
@@ -213,7 +211,6 @@
                         <button class="btn-unlock" id="p-slug-lock" onclick="toggleSlugLock('p-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
                     
-                    <!-- LƯỚI CHECKBOX & Ô NHẬP MỚI CHO DANH MỤC -->
                     <div class="form-group full">
                         <label>Danh mục (Tích chọn HOẶC nhập mới):</label>
                         <div id="p-cat-checkboxes" class="cat-checkbox-grid" style="margin-bottom: 10px;">
@@ -462,21 +459,25 @@
         document.getElementById(`list-${type}`).classList.add('active');
     }
 
-    // TẠO CHECKBOX DANH MỤC CHO SẢN PHẨM
+    // TẠO CHECKBOX DANH MỤC CHO SẢN PHẨM (VÁ LỖI AN TOÀN TUYỆT ĐỐI)
     function renderCategoryCheckboxes(selectedCats = []) {
         const catBox = document.getElementById('p-cat-checkboxes');
         if (!catBox) return;
         
-        let allProductCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title);
-        // Gom thêm các danh mục cũ còn sót lại trong dữ liệu products
+        let allProductCats = currentData.categories.filter(c => c.type === 'prod' && c.title).map(c => c.title.trim());
+        
         currentData.products.forEach(p => {
             if(p.cat) {
-                let pCats = Array.isArray(p.cat) ? p.cat : p.cat.split(',');
-                pCats.forEach(c => allProductCats.push(c.trim()));
+                let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
+                pCats.forEach(c => {
+                    if (c && typeof c === 'string' && c.trim() !== '') {
+                        allProductCats.push(c.trim());
+                    }
+                });
             }
         });
         
-        allProductCats = [...new Set(allProductCats.filter(Boolean))]; // Lọc trùng lặp
+        allProductCats = [...new Set(allProductCats)]; // Lọc trùng lặp
         
         if (allProductCats.length === 0) {
             catBox.innerHTML = '<div style="color:#888; font-size:12px;">Bạn chưa tạo danh mục Sản phẩm nào. Hãy qua Tab DANH MỤC để tạo trước.</div>';
@@ -496,6 +497,14 @@
         catBox.innerHTML = html;
     }
 
+    // LẤY DANH SÁCH DANH MỤC ĐƯỢC CHỌN KHI LƯU
+    function getSelectedCategories() {
+        const checkboxes = document.querySelectorAll('input[name="prod-categories"]:checked');
+        let selected = [];
+        checkboxes.forEach(cb => selected.push(cb.value));
+        return selected;
+    }
+
     function resetFormCalculations() {
         document.getElementById('p-id').value = Math.max(...currentData.products.map(x => x.id || 0), 0) + 1;
         document.getElementById('n-id').value = Math.max(...currentData.posts.map(x => x.id || 0), 0) + 1;
@@ -511,7 +520,7 @@
                 }).join('');
         }
         
-        // Render lưới checkbox & Gán datalist để nhập thủ công cho mượt
+        // Gọi hàm render lưới checkbox khi reset form
         renderCategoryCheckboxes();
         
         const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat));
@@ -577,8 +586,12 @@
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || ""; document.getElementById('p-seo-desc').value = item.seoDesc || ""; document.getElementById('p-seo-key').value = item.seoKeywords || "";
             
-            // Đổ dữ liệu vào Checkbox và Ô text mới
-            let itemCats = Array.isArray(item.cat) ? item.cat : (item.cat ? item.cat.split(',').map(c => c.trim()) : []);
+            // Xử lý chuẩn hóa mảng danh mục cũ tránh gây lỗi
+            let itemCats = [];
+            if (item.cat) {
+                if (Array.isArray(item.cat)) itemCats = item.cat;
+                else itemCats = String(item.cat).split(',').map(c => c.trim()).filter(Boolean);
+            }
             renderCategoryCheckboxes(itemCats);
             
             let allKnownCats = Array.from(document.querySelectorAll('input[name="prod-categories"]')).map(cb => cb.value);
@@ -674,14 +687,15 @@
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${item.slug}/`;
             } else {
                 const itemSlug = item.slug || slugify(item.title); 
-                const catSlug = item.cat ? slugify(Array.isArray(item.cat) ? item.cat[0] : item.cat) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
+                // VÁ LỖI AN TOÀN TUYỆT ĐỐI CHO HÀM LẤY CATSLUG
+                let catData = Array.isArray(item.cat) ? item.cat[0] : item.cat;
+                const catSlug = catData ? slugify(catData) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${catSlug}/${itemSlug}/`;
             }
             
             const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
             const isCatClass = item.typeKey === 'cat' ? 'is-category' : '';
             
-            // Xử lý hiển thị category cho các sản phẩm đa danh mục
             let displayCat = item.cat;
             if (Array.isArray(displayCat)) displayCat = displayCat.join(', ');
             
@@ -722,9 +736,13 @@
         navigator.clipboard.writeText(code); 
         alert("Đã copy MÃ GỢI Ý BÀI VIẾT LIÊN QUAN!\n\nDán vào chế độ NGUỒN của Nội dung chi tiết.");
     }
+    
+    // VÁ LỖI AN TOÀN CHO HÀM SLUGIFY (Khắc phục lỗi treo không thể bấm nút LƯU)
     function slugify(text) {
+        if (!text) return 'chua-phan-loai';
         return text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
     }
+    
     function handleTitleInput(titleInput, slugInputId) {
         const slugInput = document.getElementById(slugInputId);
         if (!editMode.active || !slugInput.disabled) { slugInput.value = slugify(titleInput.value); }
@@ -922,7 +940,6 @@
     }
 
     async function autoCreateProductFolder(prodData) {
-        // Lấy danh mục chính (danh mục đầu tiên) để tạo đường dẫn vật lý trên Github
         let primaryCat = Array.isArray(prodData.cat) ? prodData.cat[0] : prodData.cat;
         let catSlug = primaryCat ? slugify(primaryCat) : 'san-pham';
         const path = `san-pham/${catSlug}/${prodData.slug}/index.html`;
@@ -939,7 +956,6 @@
             .replace(/\{\{SLUG\}\}/g, () => prodData.slug)
             .replace(/\{\{ID\}\}/g, () => prodData.id)
             .replace(/\{\{TYPE\}\}/g, () => safeJS(prodData.type || 'Bán'))
-            // Ép Array Category thành chuỗi phẩy để file html đọc được
             .replace(/\{\{CAT\}\}/g, () => safeJS(Array.isArray(prodData.cat) ? prodData.cat.join(', ') : prodData.cat))
             .replace(/\{\{LOC\}\}/g, () => safeJS(prodData.loc))
             .replace(/\{\{PRICE\}\}/g, () => safeJS(prodData.price))
@@ -1071,7 +1087,6 @@
                 await autoCreateProductFolder(newData);
                 if(newData.cat && newData.cat.length > 0) {
                     btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG CẬP NHẬT DANH MỤC...';
-                    // Cập nhật lại HTML cho danh mục đầu tiên (danh mục chính)
                     let primaryCatSlug = slugify(newData.cat[0]);
                     let matchedCat = currentData.categories.find(c => c.title === newData.cat[0] || c.slug === primaryCatSlug);
                     if (matchedCat) await autoCreateCategoryFolder(matchedCat);
