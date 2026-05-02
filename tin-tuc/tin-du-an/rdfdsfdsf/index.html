@@ -413,83 +413,51 @@
                 let prods = prodSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
                 let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // 1. Sidebar - Tách tự động Danh mục Sản Phẩm
-                let countBan = 0, countThue = 0;
-                let typeCats = {}, priceCats = {}, locCats = {};
+                // =========================================================================
+                // 1. Sidebar - Danh mục Sản Phẩm (ĐỌC NHÓM TỪ ADMIN)
+                // =========================================================================
+                let countBan = prods.filter(p => p.type === 'Bán').length;
+                let countThue = prods.filter(p => p.type === 'Thuê').length;
 
-                // Hàm nhận diện từ khóa để chia nhóm
-                function categorizeTag(tagName) {
-                    let t = tagName.toLowerCase();
-                    if (t.includes('tỷ') || t.includes('triệu') || t.includes('giá')) return 'price';
-                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu')) return 'loc';
-                    return 'type';
-                }
+                let typeLinesHTML = '';
+                if(countBan > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`;
+                if(countThue > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`;
 
-                prods.forEach(p => {
-                    if(p.type === 'Bán') countBan++;
-                    else if(p.type === 'Thuê') countThue++;
+                let locLinesHTML = '';
+                let priceLinesHTML = '';
+
+                if (allCategories && allCategories.length > 0) {
+                    let prodCategories = allCategories.filter(c => c.type === 'prod'); 
                     
-                    if(p.cat) {
-                        // Tách bằng dấu phẩy nếu bài viết gán nhiều danh mục
-                        let catArray = Array.isArray(p.cat) ? p.cat : p.cat.split(',');
-                        catArray.forEach(c => {
-                            let cleanCat = c.trim();
-                            if(cleanCat !== '' && cleanCat.toLowerCase() !== 'chuyển nhượng' && cleanCat.toLowerCase() !== 'cho thuê') {
-                                let group = categorizeTag(cleanCat);
-                                if (group === 'price') priceCats[cleanCat] = (priceCats[cleanCat] || 0) + 1;
-                                else if (group === 'loc') locCats[cleanCat] = (locCats[cleanCat] || 0) + 1;
-                                else typeCats[cleanCat] = (typeCats[cleanCat] || 0) + 1;
+                    prodCategories.forEach(c => {
+                        let catName = c.title || c.name || "";
+                        let catSlug = createSafeSlug(c.slug || catName);
+                        let catGroup = c.group || 'type'; 
+                        
+                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
+                            // Hàm isCatMatch2 để tránh lỗi chưa định nghĩa
+                            let isMatch = (pData, targetSlug) => {
+                                let catsArray = Array.isArray(pData.cat) ? pData.cat : (pData.cat ? String(pData.cat).split(',') : []);
+                                return catsArray.some(cItem => createSafeSlug(cItem) === targetSlug);
+                            };
+                            let count = prods.filter(p => isMatch(p, catSlug)).length;
+                            
+                            if (count > 0 || c.showEmpty) {
+                                let lineHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/"><span>${catName}</span><span class="gr-cat-count">(${count})</span></a>`;
+                                
+                                if (catGroup === 'price') priceLinesHTML += lineHTML;
+                                else if (catGroup === 'loc') locLinesHTML += lineHTML;
+                                else typeLinesHTML += lineHTML;
                             }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
 
-                // Khối: LOẠI HÌNH BĐS
-                let typeLines = [];
-                if(countBan > 0) typeLines.push(`<a href="${safeBaseUrl}san-pham/chuyen-nhuong/"><span>Chuyển nhượng</span><span class="gr-cat-count">(${countBan})</span></a>`);
-                if(countThue > 0) typeLines.push(`<a href="${safeBaseUrl}san-pham/cho-thue/"><span>Cho thuê</span><span class="gr-cat-count">(${countThue})</span></a>`);
-                Object.keys(typeCats).forEach(c => {
-                    typeLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${typeCats[c]})</span></a>`);
-                });
-
-                // Khối: THEO KHOẢNG GIÁ
-                let priceLines = [];
-                Object.keys(priceCats).forEach(c => {
-                    priceLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${priceCats[c]})</span></a>`);
-                });
-
-                // Khối: THEO KHU VỰC
-                let locLines = [];
-                Object.keys(locCats).forEach(c => {
-                    locLines.push(`<a href="${safeBaseUrl}san-pham/${createSafeSlug(c)}/"><span>${c}</span><span class="gr-cat-count">(${locCats[c]})</span></a>`);
-                });
-
-                // Gộp tất cả HTML lại
                 let catWidgetHTML = '';
-                
-                if (typeLines.length > 0) {
-                    catWidgetHTML += `
-                    <div class="gr-cat-widget" style="margin-bottom: 20px;">
-                        <div class="gr-cat-h">LOẠI HÌNH BĐS</div>
-                        <div class="gr-cat-l">${typeLines.join('')}</div>
-                    </div>`;
-                }
-
-                if (locLines.length > 0) {
-                    catWidgetHTML += `
-                    <div class="gr-cat-widget" style="margin-bottom: 20px;">
-                        <div class="gr-cat-h">THEO KHU VỰC</div>
-                        <div class="gr-cat-l">${locLines.join('')}</div>
-                    </div>`;
-                }
-
-                if (priceLines.length > 0) {
-                    catWidgetHTML += `
-                    <div class="gr-cat-widget">
-                        <div class="gr-cat-h">KHOẢNG GIÁ</div>
-                        <div class="gr-cat-l">${priceLines.join('')}</div>
-                    </div>`;
-                }
+                if (typeLinesHTML !== '') catWidgetHTML += `<div class="gr-cat-widget" style="margin-bottom:25px;"><div class="gr-cat-h">DANH MỤC SẢN PHẨM</div><div class="gr-cat-l">${typeLinesHTML}</div></div>`;
+                if (priceLinesHTML !== '') catWidgetHTML += `<div class="gr-cat-widget" style="margin-bottom:25px;"><div class="gr-cat-h">KHOẢNG GIÁ</div><div class="gr-cat-l">${priceLinesHTML}</div></div>`;
+                if (locLinesHTML !== '') catWidgetHTML += `<div class="gr-cat-widget" style="margin-bottom:25px;"><div class="gr-cat-h">KHU VỰC / VỊ TRÍ</div><div class="gr-cat-l">${locLinesHTML}</div></div>`;
+                // =========================================================================
 
                 // 2. Sidebar - Tin mới & BĐS Nổi bật
                 let latestNewsHTML = posts.filter(p => p.id != post.id).slice(0, 5).map(p => {

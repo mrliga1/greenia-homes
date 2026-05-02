@@ -530,7 +530,6 @@ sfsfs
                     }).length;
                     
                     if (relatedCount > 0) {
-                        // SỬA: LẤY ĐÚNG LINK DANH MỤC TĨNH CỦA GITHUB
                         readmoreCatHTML = `
                         <div class="v261-readmore-cat">
                             <span>Xem thêm sản phẩm cùng danh mục: </span>
@@ -540,7 +539,7 @@ sfsfs
                 }
 
                 // =========================================================================
-                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI TỪ DATABASE CATEGORIES (CHIA 3 KHỐI)
+                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI TỪ DATABASE CATEGORIES (ĐỌC NHÓM TỪ ADMIN)
                 // =========================================================================
                 let countBan = allProducts.filter(p => p.type === 'Bán').length;
                 let countThue = allProducts.filter(p => p.type === 'Thuê').length;
@@ -554,52 +553,33 @@ sfsfs
                 let priceLinesHTML = '';
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
 
-                // Logic Phân Loại Tự Động (Trí tuệ nhân tạo mini)
-                function getCategoryGroup(name) {
-                    let t = name.toLowerCase();
-                    if (t.includes('tỷ') || t.includes('triệu') || t.includes('giá') || t.includes('thỏa thuận')) return 'price';
-                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu')) return 'loc';
-                    return 'type';
-                }
-
                 if (allCategories && allCategories.length > 0) {
-                    // Lọc ra các category thuộc hệ Sản Phẩm (type = 'prod' hoặc rỗng)
-                    let prodCategories = allCategories.filter(c => c.type === 'prod' || !c.type); 
+                    let prodCategories = allCategories.filter(c => c.type === 'prod'); 
                     
                     prodCategories.forEach(c => {
                         let catName = c.title || c.name || "";
                         let catSlug = createSafeSlug(c.slug || catName);
+                        let catGroup = c.group || 'type'; // Lấy nhóm từ Database Admin (type, price, loc)
                         
-                        // Bỏ qua các danh mục tĩnh đã được chèn cứng ở trên
                         if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
                             let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
                             if (count > 0 || c.showEmpty) {
-                                let group = getCategoryGroup(catName);
-                                // SỬA: LẤY ĐÚNG LINK TĨNH TRÊN GITHUB CỦA CATEGORY
                                 let lineHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
                                 
-                                if (group === 'price') priceLinesHTML += lineHTML;
-                                else if (group === 'loc') locLinesHTML += lineHTML;
+                                if (catGroup === 'price') priceLinesHTML += lineHTML;
+                                else if (catGroup === 'loc') locLinesHTML += lineHTML;
                                 else typeLinesHTML += lineHTML;
 
-                                // Thêm vào Header Dropdown
                                 ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                             }
                         }
                     });
                 }
 
-                // Lắp ráp HTML cuối cùng
                 let dynamicSidebarHTML = '';
-                if (typeLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${typeLinesHTML}</div></div>`;
-                }
-                if (priceLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
-                }
-                if (locLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${locLinesHTML}</div></div>`;
-                }
+                if (typeLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${typeLinesHTML}</div></div>`;
+                if (priceLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
+                if (locLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${locLinesHTML}</div></div>`;
                 // =========================================================================
 
                 // XỬ LÝ LỊCH SỬ DUYỆT (GỢI Ý)
@@ -724,7 +704,7 @@ sfsfs
                                 </div>
                             </div>
                             <div class="luc-nav-right-group">
-                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="window.location.href='${safeBaseUrl}danh-muc-sp.html?keyword=' + document.getElementById('luc-keyword').value; return false;">
+                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="window.location.href='${safeBaseUrl}san-pham.html?keyword=' + document.getElementById('luc-keyword').value; return false;">
                                     <input type="text" id="luc-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
                                     <button type="submit" id="luc-search-btn"><i class="fas fa-search"></i></button>
                                 </form>
