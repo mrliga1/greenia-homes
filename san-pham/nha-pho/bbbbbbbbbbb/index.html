@@ -22,7 +22,6 @@
     <script>
         window.BASE_URL = '/';
         var checkId = "56";
-        // Nếu file chưa được render bởi server, lập tức quay về trang sản phẩm
         if (checkId.includes("{{") || checkId === "") {
             window.location.replace(window.BASE_URL + 'san-pham.html');
         }
@@ -40,7 +39,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        /* GIỮ NGUYÊN 100% CẤU TRÚC CSS BÁC GỬI */
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
         
         #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; padding: 35px 0 35px 0 !important; width: 100%; box-sizing: border-box; overflow: visible !important;}
@@ -183,13 +181,17 @@
         .v261-lb-nav:hover { background:rgba(197, 160, 89, 0.2); border-color:#c5a059; color:#c5a059; transform:translateY(-50%) scale(1.1); box-shadow:0 0 15px rgba(197, 160, 89, 0.3); }
         .v261-lb-nav.prev { left:30px; } .v261-lb-nav.next { right:30px; }
 
-        /* CAROUSELS CHUẨN */
+        /* CAROUSELS VÀ GRID CHUẨN */
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 15px; margin-top: 40px; }
         .s-tit { font-size: 20px !important; font-weight: 500; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
+        
         .gr-carousel-wrapper { position: relative; }
         .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 10px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
         .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
+
+        /* LƯỚI GRID CHO KHỐI GỢI Ý, BÁN VÀ CHO THUÊ */
+        .gr-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-bottom: 10px; }
         
         .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
         .s2-card:hover { border-color: #c5a059; transform: translateY(-5px); }
@@ -209,7 +211,11 @@
         .gr-nav-btn:hover { background: #c5a059; color: #000; border-color: #c5a059; }
         .gr-prev { left: -15px; } .gr-next { right: -15px; }
 
-        @media (max-width: 1024px) { .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } }
+        @media (max-width: 1200px) { .gr-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 1024px) { 
+            .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } 
+            .gr-grid { grid-template-columns: repeat(3, 1fr); }
+        }
         @media (max-width: 767px) { 
             .v261-intro { flex-direction: column; } 
             .v261-c1, .v261-c2, .v261-c3 { width: 100%; position: relative !important; top: 0 !important;} 
@@ -220,6 +226,7 @@
             .luc-nav-right-group { width: 100%; } 
             #luc-search-form { width: 100%; }
             .gr-carousel .s2-card { flex: 0 0 100% !important; max-width: 100% !important; }
+            .gr-grid { grid-template-columns: 1fr; }
             .gr-nav-btn { display: none !important; }
         }
 
@@ -558,7 +565,9 @@
                     });
                 }
 
-                // 4. CAROUSEL GỢI Ý
+                // ===============================================
+                // BƠM KHỐI GỢI Ý THÀNH DẠNG GRID (CÓ LOAD MORE)
+                // ===============================================
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
@@ -568,29 +577,28 @@
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
                     matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
-                    smartRecommended = matchedByCat.slice(0, 10);
+                    smartRecommended = matchedByCat.slice(0, 20); // Lấy tối đa 20 sản phẩm để load more
                 }
                 
-                if (smartRecommended.length < 10) {
+                if (smartRecommended.length < 20) {
                     let fallbackProds = allProducts.filter(p => {
                         let pSlug = p.slug || createSafeSlug(p.title);
                         if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false;
                         return !smartRecommended.some(sp => (sp.slug || createSafeSlug(sp.title)) === pSlug);
-                    }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
+                    }).sort(() => 0.5 - Math.random()).slice(0, 20 - smartRecommended.length);
                     smartRecommended = [...smartRecommended, ...fallbackProds];
                 }
 
+                window.smartRecommendedData = smartRecommended;
                 let relatedHTML = '';
                 if(smartRecommended.length > 0) {
                     relatedHTML = `
                     <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'related-scroll')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="related-scroll" class="gr-carousel">
-                            ${smartRecommended.map(p => renderCardHTML(p)).join('')}
-                        </div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'related-scroll')"><i class="fas fa-chevron-right"></i></button>
-                    </div>`;
+                    <div class="gr-grid" id="related-grid">
+                        ${smartRecommended.slice(0, 10).map(p => renderCardHTML(p)).join('')}
+                    </div>
+                    ${smartRecommended.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rec-more" class="s1-btn" onclick="loadMoreRec(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : ''}
+                    `;
                 }
 
                 // 5. MAP
@@ -603,29 +611,30 @@
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
-                // BƠM CAROUSEL MỚI NHẤT VÀ DỰ ÁN
-                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
-                let saleHTML = saleProds.length > 0 ? `
+                // ===============================================
+                // BƠM KHỐI BÁN/THUÊ THÀNH DẠNG GRID (CÓ LOAD MORE KÉP)
+                // ===============================================
+                const allSaleProds = allProducts.filter(p => p.type === 'Bán');
+                window.allSaleProdsData = allSaleProds;
+                let saleHTML = allSaleProds.length > 0 ? `
                     <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    <div class="gr-grid" id="sale-grid">
+                        ${allSaleProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem thêm BĐS Bán</a></div>
+                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
                 ` : '';
 
-                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
-                let rentHTML = rentProds.length > 0 ? `
+                const allRentProds = allProducts.filter(p => p.type === 'Thuê');
+                window.allRentProdsData = allRentProds;
+                let rentHTML = allRentProds.length > 0 ? `
                     <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="rent-scroll-latest" class="gr-carousel">${rentProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    <div class="gr-grid" id="rent-grid">
+                        ${allRentProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem thêm BĐS Cho thuê</a></div>
+                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
                 ` : '';
 
+                // Khối dự án vẫn giữ nguyên Carousel
                 let projHTML = '';
                 if (independentProjects && independentProjects.length > 0) {
                     projHTML = `
@@ -643,10 +652,10 @@
                         </div>
                         <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}du-an.html" class="s1-btn">Xem thêm Dự án</a></div>`;
+                    <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
                 }
 
-                // SỬA FIX ĐƯỜNG DẪN LINK ĐIỀU HƯỚNG TAB
+                // IN DỮ LIỆU RA GIAO DIỆN
                 container.innerHTML = `
                     <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
@@ -830,6 +839,72 @@
                 document.getElementById('sp-container').innerHTML = "<div style='text-align:center; padding:50px; color:#ff4d4f;'>Hệ thống đang cập nhật dữ liệu. Vui lòng F5 lại trang.</div>";
             }
         });
+
+        // ==========================================
+        // CÁC HÀM AJAX LOAD MORE KÉP (DÀNH CHO GRID)
+        // ==========================================
+        window.recPage = 1;
+        window.loadMoreRec = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-rec-more');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+            setTimeout(() => {
+                window.recPage++;
+                const nextItems = window.smartRecommendedData.slice((window.recPage - 1) * 10, window.recPage * 10);
+                document.getElementById('related-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                if(window.recPage * 10 >= window.smartRecommendedData.length) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.innerHTML = "XEM THÊM BẤT ĐỘNG SẢN KHÁC <i class='fas fa-chevron-down'></i>";
+                }
+            }, 400);
+        };
+
+        window.saleClickCount = 0;
+        window.loadMoreSale = function(e) {
+            e.preventDefault();
+            if(window.saleClickCount === 0) {
+                const btn = document.getElementById('btn-sale-more');
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allSaleProdsData.slice(10, 20);
+                    document.getElementById('sale-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.saleClickCount++;
+                    
+                    // Nếu đã hết sản phẩm để load, chuyển nút thành xem tất cả
+                    if(window.allSaleProdsData.length <= 20) {
+                         btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
+                    } else {
+                         btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
+                    }
+                }, 400);
+            } else {
+                window.location.href = window.BASE_URL + 'san-pham/chuyen-nhuong/';
+            }
+        };
+
+        window.rentClickCount = 0;
+        window.loadMoreRent = function(e) {
+            e.preventDefault();
+            if(window.rentClickCount === 0) {
+                const btn = document.getElementById('btn-rent-more');
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allRentProdsData.slice(10, 20);
+                    document.getElementById('rent-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.rentClickCount++;
+                    
+                    if(window.allRentProdsData.length <= 20) {
+                        btn.innerHTML = "XEM TẤT CẢ BĐS CHO THUÊ <i class='fas fa-arrow-right'></i>";
+                    } else {
+                        btn.innerHTML = "XEM TẤT CẢ BĐS CHO THUÊ <i class='fas fa-arrow-right'></i>";
+                    }
+                }, 400);
+            } else {
+                window.location.href = window.BASE_URL + 'san-pham/cho-thue/';
+            }
+        };
+
 
         function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
