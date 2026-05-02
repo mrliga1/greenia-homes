@@ -476,19 +476,8 @@
         const catBox = document.getElementById('p-cat-checkboxes');
         if (!catBox) return;
         
+        // CHỈ LẤY DANH MỤC CHUẨN TỪ DATABASE CATEGORIES (Không quét rác từ sản phẩm cũ nữa)
         let allProductCats = currentData.categories.filter(c => c.type === 'prod' && c.title).map(c => c.title.trim());
-        
-        currentData.products.forEach(p => {
-            if(p.cat) {
-                let pCats = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
-                pCats.forEach(c => {
-                    if (c && typeof c === 'string' && c.trim() !== '') {
-                        allProductCats.push(c.trim());
-                    }
-                });
-            }
-        });
-        
         allProductCats = [...new Set(allProductCats)]; 
         
         if (allProductCats.length === 0) {
@@ -533,8 +522,9 @@
         
         renderCategoryCheckboxes();
         
-        const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat));
-        const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title).concat(currentData.posts.map(x => x.cat));
+        // CHỈ LẤY DANH MỤC CHUẨN TỪ DATABASE ĐỂ ĐƯA VÀO DROPDOWN
+        const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title);
+        const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title);
         populateCats('p-cats', prodCats); 
         populateCats('n-cats', newsCats);
         
