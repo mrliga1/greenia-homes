@@ -402,28 +402,39 @@
 
                 updateSeoUI(activeCatSlug, filterState.type);
 
+                // =========================================================================
+                // TẠO MENU DROPDOWN TỪ DATABASE CATEGORIES (CHUẨN HÓA)
+                // =========================================================================
                 const ddList = document.getElementById('dyn-cat-list');
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item ${activeCatSlug === '' ? 'selected' : ''}" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
                 if (allCategories && allCategories.length > 0) {
-                    allCategories.forEach(c => {
-                        let cleanSlug = createSafeSlug(c.slug || c.name);
+                    // Chỉ lọc các danh mục thuộc phân hệ Sản Phẩm
+                    let prodCategories = allCategories.filter(c => c.type === 'prod' || !c.type);
+                    
+                    prodCategories.forEach(c => {
+                        let catName = c.title || c.name || "";
+                        let cleanSlug = createSafeSlug(c.slug || catName);
                         
-                        if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
+                        if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong' && catName !== '') {
                             let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
                             
                             if (count > 0 || c.showEmpty) {
-                                let isSelected = (filterState.cat !== '' && cleanSlug === filterState.cat) ? 'selected' : '';
+                                // Kiểm tra xem danh mục này có đang được chọn (đang mở) hay không
+                                let isSelected = (activeCatSlug !== '' && cleanSlug === activeCatSlug) ? 'selected' : '';
                                 if (isSelected) {
                                     const currentCatNameEl = document.getElementById('luc-current-cat-name');
-                                    if(currentCatNameEl) currentCatNameEl.innerText = beautifyCatName(cleanSlug);
+                                    if(currentCatNameEl) currentCatNameEl.innerText = catName;
                                 }
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="luc-drop-item ${isSelected}" data-cat="${cleanSlug}" data-name="${beautifyCatName(cleanSlug)}"><span>${beautifyCatName(cleanSlug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                
+                                // Tạo thẻ <a> với link tĩnh chuẩn SEO
+                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="luc-drop-item ${isSelected}" data-cat="${cleanSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                             }
                         }
                     });
                 }
-                ddList.innerHTML = ddListHTML;
+                if(ddList) ddList.innerHTML = ddListHTML;
+                // =========================================================================
 
                 runFilter();
                 
