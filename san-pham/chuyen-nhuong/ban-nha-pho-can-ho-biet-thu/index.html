@@ -109,7 +109,7 @@
         .v261-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.15); filter: brightness(1.1); }
         
         .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
-        .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; }
+        .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; text-transform:uppercase;}
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
         .v261-cat a { display:flex; justify-content:space-between; padding:10px; color:#b0b8c4; font-size:12px; text-decoration:none; border-bottom:1px solid #222; }
         .v261-cat a:hover { color:#c5a059; background:#1a1f2e; }
@@ -348,11 +348,6 @@
         let allProducts = [];
         let allCategories = [];
 
-        let filteredData = [];
-        const itemsPerPage = 10;
-        let currentPage = 1;
-        let filterState = { type: '', cat: '', keyword: '' };
-
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
             return String(title).toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
@@ -529,31 +524,79 @@
                     }).length;
                     
                     if (relatedCount > 0) {
+                        // SỬA: LẤY ĐÚNG LINK DANH MỤC TĨNH CỦA GITHUB
                         readmoreCatHTML = `
                         <div class="v261-readmore-cat">
                             <span>Xem thêm sản phẩm cùng danh mục: </span>
-                            <a href="${safeBaseUrl}danh-muc-sp.html?keyword=${activeCatSlug}">${breadcrumbCatName} <span class="cat-count">(${relatedCount})</span></a>
+                            <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName} <span class="cat-count">(${relatedCount})</span></a>
                         </div>`;
                     }
                 }
 
-                // ===============================================
-                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI (CHIA 3 KHỐI)
-                // ===============================================
-                let countBan = 0, countThue = 0;
-                let typeCats = {}, priceCats = {}, locCats = {};
+                // =========================================================================
+                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI TỪ DATABASE CATEGORIES (CHIA 3 KHỐI)
+                // =========================================================================
+                let countBan = allProducts.filter(p => p.type === 'Bán').length;
+                let countThue = allProducts.filter(p => p.type === 'Thuê').length;
 
-                function categorizeTag(tagName) {
-                    let t = tagName.toLowerCase();
-                    // Nhóm Giá
+                let typeLinesHTML = `<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
+                
+                if(countBan > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
+                if(countThue > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
+
+                let locLinesHTML = '';
+                let priceLinesHTML = '';
+                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
+
+                // Logic Phân Loại Tự Động (Trí tuệ nhân tạo mini)
+                function getCategoryGroup(name) {
+                    let t = name.toLowerCase();
                     if (t.includes('tỷ') || t.includes('triệu') || t.includes('giá') || t.includes('thỏa thuận')) return 'price';
-                    // Nhóm Khu Vực
-                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu') || t.includes('vị trí')) return 'loc';
-                    // Loại Hình
+                    if (t.includes('quận') || t.includes('huyện') || t.includes('phường') || t.includes('thành phố') || t.includes('tp') || t.includes('khu')) return 'loc';
                     return 'type';
                 }
 
-                // Lịch sử người dùng (Gợi ý thông minh)
+                if (allCategories && allCategories.length > 0) {
+                    // Lọc ra các category thuộc hệ Sản Phẩm (type = 'prod' hoặc rỗng)
+                    let prodCategories = allCategories.filter(c => c.type === 'prod' || !c.type); 
+                    
+                    prodCategories.forEach(c => {
+                        let catName = c.title || c.name || "";
+                        let catSlug = createSafeSlug(c.slug || catName);
+                        
+                        // Bỏ qua các danh mục tĩnh đã được chèn cứng ở trên
+                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
+                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
+                            if (count > 0 || c.showEmpty) {
+                                let group = getCategoryGroup(catName);
+                                // SỬA: LẤY ĐÚNG LINK TĨNH TRÊN GITHUB CỦA CATEGORY
+                                let lineHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
+                                
+                                if (group === 'price') priceLinesHTML += lineHTML;
+                                else if (group === 'loc') locLinesHTML += lineHTML;
+                                else typeLinesHTML += lineHTML;
+
+                                // Thêm vào Header Dropdown
+                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                            }
+                        }
+                    });
+                }
+
+                // Lắp ráp HTML cuối cùng
+                let dynamicSidebarHTML = '';
+                if (typeLinesHTML !== '') {
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${typeLinesHTML}</div></div>`;
+                }
+                if (priceLinesHTML !== '') {
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
+                }
+                if (locLinesHTML !== '') {
+                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${locLinesHTML}</div></div>`;
+                }
+                // =========================================================================
+
+                // XỬ LÝ LỊCH SỬ DUYỆT (GỢI Ý)
                 let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
                 if (prod) {
@@ -573,79 +616,6 @@
                     localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
                 }
 
-                allProducts.forEach(p => {
-                    if(p.type === 'Bán') countBan++;
-                    else if(p.type === 'Thuê') countThue++;
-                    
-                    if(p.cat) {
-                        let catArray = Array.isArray(p.cat) ? p.cat : String(p.cat).split(',');
-                        catArray.forEach(c => {
-                            let cleanCat = c.trim();
-                            let cleanLower = cleanCat.toLowerCase();
-                            if(cleanCat !== '' && cleanLower !== 'bán' && cleanLower !== 'thuê' && cleanLower !== 'chuyển nhượng' && cleanLower !== 'cho thuê') {
-                                let group = categorizeTag(cleanCat);
-                                if (group === 'price') priceCats[cleanCat] = (priceCats[cleanCat] || 0) + 1;
-                                else if (group === 'loc') locCats[cleanCat] = (locCats[cleanCat] || 0) + 1;
-                                else typeCats[cleanCat] = (typeCats[cleanCat] || 0) + 1;
-                            }
-                        });
-                    }
-                    
-                    // Nạp thêm trường vị trí vào mục Khu Vực (nếu có)
-                    if (p.loc && p.loc.trim() !== '') {
-                        let l = p.loc.trim();
-                        locCats[l] = (locCats[l] || 0) + 1;
-                    }
-                });
-
-                // Cập nhật thẻ Dropdown Header
-                let ddListHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
-                if (allCategories && allCategories.length > 0) {
-                    allCategories.forEach(c => {
-                        let catSlug = createSafeSlug(c.slug || c.name);
-                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
-                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
-                            if (count > 0 || c.showEmpty) {
-                                ddListHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${catSlug}" class="luc-drop-item" data-cat="${catSlug}" data-name="${beautifyCatName(c.name || c.slug)}"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
-                            }
-                        }
-                    });
-                }
-
-                // Xây HTML 3 Khối
-                let typeLinesHTML = `<a href="${safeBaseUrl}danh-muc-sp.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả sản phẩm</span></a>`;
-                if(countBan > 0) typeLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
-                if(countThue > 0) typeLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
-                Object.keys(typeCats).forEach(c => {
-                    typeLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${createSafeSlug(c)}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c)}</span><span style="color:#666; font-size:11px;">(${typeCats[c]})</span></a>`;
-                });
-
-                let locLinesHTML = '';
-                let sortedLocs = Object.keys(locCats).sort((a,b) => locCats[b] - locCats[a]);
-                sortedLocs.forEach(c => {
-                    locLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${encodeURIComponent(c)}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${c}</span><span style="color:#666; font-size:11px;">(${locCats[c]})</span></a>`;
-                });
-
-                let priceLinesHTML = '';
-                Object.keys(priceCats).forEach(c => {
-                    priceLinesHTML += `<a href="${safeBaseUrl}danh-muc-sp.html?keyword=${createSafeSlug(c)}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c)}</span><span style="color:#666; font-size:11px;">(${priceCats[c]})</span></a>`;
-                });
-
-                // Gộp chung thành 1 biến
-                let dynamicSidebarHTML = '';
-                if (typeLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">LOẠI HÌNH BĐS</div><div class="l">${typeLinesHTML}</div></div>`;
-                }
-                if (locLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">THEO KHU VỰC</div><div class="l">${locLinesHTML}</div></div>`;
-                }
-                if (priceLinesHTML !== '') {
-                    dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
-                }
-
-                // ===============================================
-
-                // BƠM KHỐI GỢI Ý THÀNH DẠNG GRID (CÓ LOAD MORE)
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
@@ -697,7 +667,7 @@
                     <div class="gr-grid" id="sale-grid">
                         ${allSaleProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
+                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
                 ` : '';
 
                 const allRentProds = allProducts.filter(p => p.type === 'Thuê');
@@ -707,7 +677,7 @@
                     <div class="gr-grid" id="rent-grid">
                         ${allRentProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
+                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
                 ` : '';
 
                 let projHTML = '';
@@ -737,9 +707,9 @@
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
                                 <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
-                                <a href="${safeBaseUrl}danh-muc-sp.html" class="luc-nav-item" id="tab-all">Tất cả</a>
-                                <a href="${safeBaseUrl}danh-muc-sp.html?keyword=bán" class="luc-nav-item" id="tab-ban">Bán</a>
-                                <a href="${safeBaseUrl}danh-muc-sp.html?keyword=thuê" class="luc-nav-item" id="tab-thue">Cho thuê</a>
+                                <a href="${safeBaseUrl}san-pham.html" class="luc-nav-item" id="tab-all">Tất cả</a>
+                                <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
+                                <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
                                 <div class="luc-nav-group" id="luc-cat-dropdown-group">
                                     <div class="luc-nav-item luc-dd-trigger"><span id="luc-current-cat-name">Danh mục khác</span> <i class="fas fa-chevron-down"></i></div>
                                     <div class="luc-dropdown">
@@ -758,8 +728,8 @@
 
                     <div class="gr-breadcrumbs" style="padding: 0 15px;">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}danh-muc-sp.html">Sản phẩm</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}danh-muc-sp.html?keyword=${activeCatSlug}">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
 
@@ -932,7 +902,7 @@
                     }
                 }, 400);
             } else {
-                window.location.href = window.BASE_URL + 'danh-muc-sp.html?keyword=bán';
+                window.location.href = window.BASE_URL + 'san-pham/chuyen-nhuong/';
             }
         };
 
@@ -954,7 +924,7 @@
                     }
                 }, 400);
             } else {
-                window.location.href = window.BASE_URL + 'danh-muc-sp.html?keyword=thuê';
+                window.location.href = window.BASE_URL + 'san-pham/cho-thue/';
             }
         };
 
