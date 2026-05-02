@@ -21,7 +21,7 @@
         window.BASE_URL = '/';
         var checkId = "{{ID}}";
         if (checkId.includes("{{") || checkId === "") {
-            window.location.replace(window.BASE_URL + 'san-pham.html');
+            window.location.replace(window.BASE_URL + '/san-pham/');
         }
     </script>
 
@@ -549,8 +549,8 @@
                     localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
                 }
 
-                let rightSidebarCatHTML = `<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
+                let rightSidebarCatHTML = `<a href="${safeBaseUrl}/san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
+                let ddListHTML = `<a href="${safeBaseUrl}/san-pham/" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
                 allProducts.forEach(p => {
                     if(p.type === 'Bán') countBan++;
@@ -667,7 +667,7 @@
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
                                 <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
-                                <a href="${safeBaseUrl}san-pham.html" class="luc-nav-item" id="tab-all">Tất cả</a>
+                                <a href="${safeBaseUrl}/san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
                                 <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
                                 <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
                                 <div class="luc-nav-group" id="luc-cat-dropdown-group">
@@ -688,7 +688,7 @@
 
                     <div class="gr-breadcrumbs" style="padding: 0 15px;">
                         <a href="${safeBaseUrl}">Trang chủ</a> <span class="sep">&gt;</span>
-                        <a href="${safeBaseUrl}san-pham.html">Sản phẩm</a> <span class="sep">&gt;</span>
+                        <a href="${safeBaseUrl}/san-pham/">Sản phẩm</a> <span class="sep">&gt;</span>
                         <a href="${safeBaseUrl}san-pham/${activeCatSlug}/">${breadcrumbCatName}</a> <span class="sep">&gt;</span>
                         <span class="current">${prod.title}</span>
                     </div>
