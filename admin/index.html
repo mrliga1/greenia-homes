@@ -112,6 +112,33 @@
 
         .select-edit-box { background: rgba(197,160,89,0.1); border: 1px dashed var(--gold); border-radius: 8px; padding: 15px; margin-bottom: 25px; }
         .select-edit-box select { background: #000; border-color: var(--gold); color: var(--gold); font-weight: bold; }
+
+        /* LƯỚI CHECKBOX DANH MỤC LÀM MỚI */
+        .cat-checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            background: #1a1f2b;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .cat-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .cat-checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -142,6 +169,7 @@
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
             </div>
 
+            <!-- TAB DANH MỤC VẪN GIỮ NGUYÊN ĐỂ BÁC QUẢN LÝ THÊM/SỬA/XÓA -->
             <div id="section-cat" class="form-section">
                 <div class="select-edit-box full">
                     <label style="color: var(--gold);"><i class="fas fa-search"></i> Chọn danh mục đã có để Sửa / Xóa:</label>
@@ -169,6 +197,7 @@
                 </div>
             </div>
 
+            <!-- TAB SẢN PHẨM: ĐÃ KẾT HỢP CHECKBOX & Ô NHẬP MỚI -->
             <div id="section-prod" class="form-section active">
                 <div class="form-grid">
                     <div class="form-group"><label>Mã SP (Tự động):</label><input type="text" id="p-id" disabled value="..."></div>
@@ -183,7 +212,17 @@
                         <input type="text" id="p-slug" placeholder="Tu-dong-tao-link-khi-go-tieu-de">
                         <button class="btn-unlock" id="p-slug-lock" onclick="toggleSlugLock('p-slug')" title="Mở khóa để sửa link thủ công"><i class="fas fa-lock"></i></button>
                     </div>
-                    <div class="form-group"><label>Danh mục:</label><input list="p-cats" id="p-cat" placeholder="Chọn hoặc nhập mới..."><datalist id="p-cats"></datalist></div>
+                    
+                    <!-- LƯỚI CHECKBOX & Ô NHẬP MỚI CHO DANH MỤC -->
+                    <div class="form-group full">
+                        <label>Danh mục (Tích chọn HOẶC nhập mới):</label>
+                        <div id="p-cat-checkboxes" class="cat-checkbox-grid" style="margin-bottom: 10px;">
+                            <div style="color:#888; font-size:12px;">Đang tải danh mục...</div>
+                        </div>
+                        <input type="text" id="p-cat" list="p-cats" placeholder="Hoặc gõ thêm danh mục mới nếu chưa có ở trên (ngăn cách bằng dấu phẩy)...">
+                        <datalist id="p-cats"></datalist>
+                    </div>
+
                     <div class="form-group"><label>Mã Dự Án:</label><input type="text" id="p-projectCode" placeholder="VD: P123"></div>
                     <div class="form-group full"><label>Địa chỉ hiển thị trên đầu:</label><input type="text" id="p-loc" placeholder="Nhập địa chỉ cụ thể (Hiển thị văn bản)"></div>
                     
@@ -344,7 +383,6 @@
     const AUTO_IMGBB_KEY = "60db8cf1bb4bab34f3ed102e1170056a"; 
     const CONFIG = { owner: "mrliga1", repo: "greenia-homes" }; 
 
-    // ĐÃ FIX 1: Cập nhật DOMAIN GỐC để sinh file chính xác
     const MAIN_DOMAIN = "https://greeniahomes.vn";
     
     const TOKEN_GITHUB = ""; 
@@ -424,6 +462,40 @@
         document.getElementById(`list-${type}`).classList.add('active');
     }
 
+    // TẠO CHECKBOX DANH MỤC CHO SẢN PHẨM
+    function renderCategoryCheckboxes(selectedCats = []) {
+        const catBox = document.getElementById('p-cat-checkboxes');
+        if (!catBox) return;
+        
+        let allProductCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title);
+        // Gom thêm các danh mục cũ còn sót lại trong dữ liệu products
+        currentData.products.forEach(p => {
+            if(p.cat) {
+                let pCats = Array.isArray(p.cat) ? p.cat : p.cat.split(',');
+                pCats.forEach(c => allProductCats.push(c.trim()));
+            }
+        });
+        
+        allProductCats = [...new Set(allProductCats.filter(Boolean))]; // Lọc trùng lặp
+        
+        if (allProductCats.length === 0) {
+            catBox.innerHTML = '<div style="color:#888; font-size:12px;">Bạn chưa tạo danh mục Sản phẩm nào. Hãy qua Tab DANH MỤC để tạo trước.</div>';
+            return;
+        }
+
+        let html = '';
+        allProductCats.forEach(cat => {
+            const isChecked = selectedCats.includes(cat) ? 'checked' : '';
+            html += `
+                <label class="cat-checkbox-item">
+                    <input type="checkbox" name="prod-categories" value="${cat}" ${isChecked}>
+                    ${cat}
+                </label>
+            `;
+        });
+        catBox.innerHTML = html;
+    }
+
     function resetFormCalculations() {
         document.getElementById('p-id').value = Math.max(...currentData.products.map(x => x.id || 0), 0) + 1;
         document.getElementById('n-id').value = Math.max(...currentData.posts.map(x => x.id || 0), 0) + 1;
@@ -438,9 +510,15 @@
                     return `<option value="${c.id}">${prefix} ${c.title}</option>`;
                 }).join('');
         }
+        
+        // Render lưới checkbox & Gán datalist để nhập thủ công cho mượt
+        renderCategoryCheckboxes();
+        
         const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title).concat(currentData.products.map(x => x.cat));
         const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title).concat(currentData.posts.map(x => x.cat));
-        populateCats('p-cats', prodCats); populateCats('n-cats', newsCats);
+        populateCats('p-cats', prodCats); 
+        populateCats('n-cats', newsCats);
+        
         ['p-slug', 'n-slug', 'pj-slug', 'c-slug'].forEach(id => {
             const el = document.getElementById(id);
             if(el) { el.disabled = false; const icon = document.querySelector(`#${id}-lock i`); if(icon) { icon.className = "fas fa-lock"; document.getElementById(`${id}-lock`).classList.remove('unlocked'); } }
@@ -449,7 +527,7 @@
 
     function populateCats(id, cats) {
         const list = document.getElementById(id);
-        list.innerHTML = [...new Set(cats.filter(Boolean))].map(c => `<option value="${c}">`).join('');
+        if(list) list.innerHTML = [...new Set(cats.filter(Boolean))].map(c => `<option value="${c}">`).join('');
     }
 
     function switchTab(type) {
@@ -490,7 +568,7 @@
         if(type === 'prod') {
             document.getElementById('p-id').value = item.id; document.getElementById('p-type').value = item.type || "Bán";
             document.getElementById('p-title').value = item.title || ""; document.getElementById('p-slug').value = item.slug || "";
-            document.getElementById('p-cat').value = item.cat || ""; document.getElementById('p-projectCode').value = item.projectCode || "";
+            document.getElementById('p-projectCode').value = item.projectCode || "";
             document.getElementById('p-loc').value = item.loc || ""; document.getElementById('p-price').value = item.price || "";
             document.getElementById('p-area').value = item.area || ""; document.getElementById('p-dir').value = item.dir || "";
             document.getElementById('p-floor').value = item.floor || ""; document.getElementById('p-bed').value = item.bed || "";
@@ -498,6 +576,15 @@
             document.getElementById('p-legal').value = item.legal || ""; document.getElementById('p-map').value = item.map || ""; 
             CKEDITOR.instances['p-content'].setData(item.content || ""); 
             document.getElementById('p-seo-title').value = item.seoTitle || ""; document.getElementById('p-seo-desc').value = item.seoDesc || ""; document.getElementById('p-seo-key').value = item.seoKeywords || "";
+            
+            // Đổ dữ liệu vào Checkbox và Ô text mới
+            let itemCats = Array.isArray(item.cat) ? item.cat : (item.cat ? item.cat.split(',').map(c => c.trim()) : []);
+            renderCategoryCheckboxes(itemCats);
+            
+            let allKnownCats = Array.from(document.querySelectorAll('input[name="prod-categories"]')).map(cb => cb.value);
+            let unknownCats = itemCats.filter(c => !allKnownCats.includes(c));
+            document.getElementById('p-cat').value = unknownCats.join(', ');
+
             uploadedFiles.main = item.img || ""; uploadedFiles.gallery = item.gallery || [];
             document.getElementById('p-main-preview').innerHTML = item.img ? `<img src="${item.img}" class="preview-item">` : '';
             document.getElementById('p-gallery-preview').innerHTML = (item.gallery || []).map(url => `<img src="${url}" class="preview-item">`).join('');
@@ -569,7 +656,6 @@
         } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); }
     }
 
-    // ĐÃ FIX 2: Cập nhật đường link ở bên cột Sidebar (Hiển thị link sao chép)
     function buildLinkLibrary() {
         const container = document.getElementById('list-links');
         let html = '';
@@ -588,16 +674,20 @@
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${item.slug}/`;
             } else {
                 const itemSlug = item.slug || slugify(item.title); 
-                const catSlug = item.cat ? slugify(item.cat) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
+                const catSlug = item.cat ? slugify(Array.isArray(item.cat) ? item.cat[0] : item.cat) : (item.typeKey === 'prod' ? 'san-pham' : 'tin-tuc');
                 fullUrl = `${MAIN_DOMAIN}/${item.folder}/${catSlug}/${itemSlug}/`;
             }
             
             const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
             const isCatClass = item.typeKey === 'cat' ? 'is-category' : '';
             
+            // Xử lý hiển thị category cho các sản phẩm đa danh mục
+            let displayCat = item.cat;
+            if (Array.isArray(displayCat)) displayCat = displayCat.join(', ');
+            
             html += `
-                <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(item.cat || item.label || '').toLowerCase()}">
-                    <div><span class="link-cat ${isCatClass}">${item.label} | ${item.cat || item.status || 'Mục SEO'}</span></div>
+                <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(displayCat || item.label || '').toLowerCase()}">
+                    <div><span class="link-cat ${isCatClass}">${item.label} | ${displayCat || item.status || 'Mục SEO'}</span></div>
                     <a href="${fullUrl}" target="_blank" class="link-tit">${item.title}</a>
                     <div class="btn-group">
                         <button class="btn-action" onclick="copyToClip('${fullUrl}')"><i class="fas fa-link"></i> Link</button>
@@ -661,6 +751,29 @@
         } catch(e) { alert("Lỗi Cloud ImgBB!"); return null; }
     }
 
+    async function handleSingleUpload(input, previewId, targetFileKey = 'main') {
+        if(!input.files[0]) return;
+        const url = await uploadToCloud(input.files[0]);
+        if(url) {
+            uploadedFiles[targetFileKey] = url;
+            document.getElementById(previewId).innerHTML = `<img src="${url}" class="preview-item">`;
+        }
+    }
+
+    async function handleMultiUpload(input, previewId, targetFileKey = 'gallery') {
+        const files = Array.from(input.files);
+        if(files.length === 0) return;
+        const previewGrid = document.getElementById(previewId);
+        
+        for(let file of files) {
+            const url = await uploadToCloud(file);
+            if(url) {
+                uploadedFiles[targetFileKey].push(url);
+                previewGrid.innerHTML += `<img src="${url}" class="preview-item">`;
+            }
+        }
+    }
+
     function addToMediaLibrary(url, name) {
         const placeholder = document.getElementById('media-placeholder');
         if(placeholder) placeholder.style.display = 'none';
@@ -669,7 +782,6 @@
         const encodedHtml = btoa(unescape(encodeURIComponent(imgHtmlCode)));
         const item = document.createElement('div'); item.className = 'media-item';
         
-        // Tự động trích xuất tên file gọn gàng
         let displayName = url.split('/').pop().split('?')[0] || name;
         
         item.innerHTML = `
@@ -685,16 +797,20 @@
             </div>`;
         document.getElementById('list-media').prepend(item);
     }
-    // HÀM QUÉT TOÀN BỘ ẢNH TRONG DATABASE ĐỂ HIỂN THỊ LẠI
+    
+    function copyDecodedHTML(base64Html) {
+        const html = decodeURIComponent(escape(atob(base64Html)));
+        navigator.clipboard.writeText(html);
+        alert("Đã copy mã HTML ảnh.\nBác có thể Paste (Ctrl+V) vào Trình Soạn Thảo nội dung bài viết.");
+    }
+
     function buildMediaLibrary() {
         let allImages = new Set();
         
-        // Cào ảnh từ Sản phẩm (Ảnh bìa + Album)
         currentData.products.forEach(p => { 
             if(p.img) allImages.add(p.img); 
             if(p.gallery && Array.isArray(p.gallery)) p.gallery.forEach(i => allImages.add(i)); 
         });
-        // Cào ảnh từ Tin tức và Dự án
         currentData.posts.forEach(p => { if(p.thumb) allImages.add(p.thumb); });
         currentData.projects.forEach(p => { if(p.img) allImages.add(p.img); });
 
@@ -709,7 +825,6 @@
         }
     }
 
-    // HÀM GẮN ẢNH VÀO FORM ĐANG MỞ
     function useImageFor(target, url) {
         const isProd = document.getElementById('section-prod').classList.contains('active');
         const isNews = document.getElementById('section-news').classList.contains('active');
@@ -730,15 +845,8 @@
         }
     }
     
-
-    /* =================================================================
-        🔥 MÀNG LỌC CƯỠNG CHẾ: XÓA SẠCH VẾT TÍCH BẢO MẬT (ANTI-CACHE) 🔥
-    ================================================================= */
-    
-    // ĐÃ FIX TỐI THƯỢNG: Lấy khuôn trực tiếp từ mã nguồn GitHub (Bỏ qua mọi Cache)
     async function getTemplateFile(fileName) {
         try {
-            // Lấy link RAW từ kho Public của bác, gắn thêm Date.now() để luôn lấy bản mới nhất từng giây!
             const url = `https://raw.githubusercontent.com/mrliga1/greenia-homes/main/${fileName}?nocache=${Date.now()}`;
             const response = await fetch(url, { cache: "no-store" });
             if (!response.ok) throw new Error("Lỗi HTTP: " + response.status);
@@ -778,19 +886,16 @@
         } catch (e) { console.error(e); alert("Lỗi mạng khi kết nối Github."); return false; }
     }
 
-    // HÀM BỔ TRỢ 1: Xử lý an toàn JS
     const safeJS = (str) => {
         if (!str) return '';
         return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
     };
     
-    // HÀM BỔ TRỢ 2: Xử lý an toàn HTML Attributes (Dành cho SEO Meta Tags)
     const safeHTML = (str) => {
         if (!str) return '';
         return String(str).replace(/"/g, '&quot;');
     };
 
-    // HÀM BỔ TRỢ 3: Xử lý an toàn Nội dung bài viết (Chống mã nhúng phá code)
     const safeContent = (str) => {
         if (!str) return '';
         return String(str).replace(/\\/g, '\\\\').replace(/\`/g, '\\`').replace(/\$/g, '\\$').replace(/<\/script>/gi, '<\\/script>');
@@ -817,8 +922,11 @@
     }
 
     async function autoCreateProductFolder(prodData) {
-        let catSlug = prodData.cat ? slugify(prodData.cat) : 'san-pham';
+        // Lấy danh mục chính (danh mục đầu tiên) để tạo đường dẫn vật lý trên Github
+        let primaryCat = Array.isArray(prodData.cat) ? prodData.cat[0] : prodData.cat;
+        let catSlug = primaryCat ? slugify(primaryCat) : 'san-pham';
         const path = `san-pham/${catSlug}/${prodData.slug}/index.html`;
+        
         let templateHtml = await getTemplateFile('chi-tiet-sp.html');
         if (!templateHtml) return;
 
@@ -831,7 +939,8 @@
             .replace(/\{\{SLUG\}\}/g, () => prodData.slug)
             .replace(/\{\{ID\}\}/g, () => prodData.id)
             .replace(/\{\{TYPE\}\}/g, () => safeJS(prodData.type || 'Bán'))
-            .replace(/\{\{CAT\}\}/g, () => safeJS(prodData.cat))
+            // Ép Array Category thành chuỗi phẩy để file html đọc được
+            .replace(/\{\{CAT\}\}/g, () => safeJS(Array.isArray(prodData.cat) ? prodData.cat.join(', ') : prodData.cat))
             .replace(/\{\{LOC\}\}/g, () => safeJS(prodData.loc))
             .replace(/\{\{PRICE\}\}/g, () => safeJS(prodData.price))
             .replace(/\{\{AREA\}\}/g, () => safeJS(prodData.area))
@@ -888,7 +997,42 @@
             contentVal = CKEDITOR.instances['p-content'].getData();
             rawDesc = document.getElementById('p-seo-desc').value;
             autoDesc = contentVal.replace(/<[^>]*>?/gm, '').substring(0, 150) + "...";
-            newData = { id: parseInt(document.getElementById('p-id').value) || Date.now(), type: document.getElementById('p-type').value, title: titleVal, slug: slugVal, cat: document.getElementById('p-cat').value, projectCode: document.getElementById('p-projectCode').value || "", loc: document.getElementById('p-loc').value, price: document.getElementById('p-price').value, area: document.getElementById('p-area').value, dir: document.getElementById('p-dir').value || "", floor: document.getElementById('p-floor').value || "", bed: document.getElementById('p-bed').value || "", wc: document.getElementById('p-wc').value || "", front: document.getElementById('p-front').value || "", legal: document.getElementById('p-legal').value || "", map: document.getElementById('p-map').value || "", img: uploadedFiles.main, gallery: uploadedFiles.gallery, content: contentVal, seoTitle: document.getElementById('p-seo-title').value || titleVal, seoDesc: rawDesc || autoDesc, seoKeywords: document.getElementById('p-seo-key').value || `${document.getElementById('p-cat').value}, bất động sản` };
+            
+            // LẤY DANH SÁCH DANH MỤC TỪ CHECKBOX & Ô NHẬP TAY
+            let selectedCats = getSelectedCategories();
+            let newCatsStr = document.getElementById('p-cat').value;
+            if (newCatsStr) {
+                newCatsStr.split(',').forEach(c => {
+                    let cleanCat = c.trim();
+                    if (cleanCat && !selectedCats.includes(cleanCat)) selectedCats.push(cleanCat);
+                });
+            }
+            if (selectedCats.length === 0) { alert("Vui lòng tick chọn hoặc gõ tay ít nhất 1 Danh Mục cho sản phẩm!"); return; }
+
+            newData = { 
+                id: parseInt(document.getElementById('p-id').value) || Date.now(), 
+                type: document.getElementById('p-type').value, 
+                title: titleVal, 
+                slug: slugVal, 
+                cat: selectedCats, // Ghi thẳng mảng danh mục vào Data
+                projectCode: document.getElementById('p-projectCode').value || "", 
+                loc: document.getElementById('p-loc').value, 
+                price: document.getElementById('p-price').value, 
+                area: document.getElementById('p-area').value, 
+                dir: document.getElementById('p-dir').value || "", 
+                floor: document.getElementById('p-floor').value || "", 
+                bed: document.getElementById('p-bed').value || "", 
+                wc: document.getElementById('p-wc').value || "", 
+                front: document.getElementById('p-front').value || "", 
+                legal: document.getElementById('p-legal').value || "", 
+                map: document.getElementById('p-map').value || "", 
+                img: uploadedFiles.main, 
+                gallery: uploadedFiles.gallery, 
+                content: contentVal, 
+                seoTitle: document.getElementById('p-seo-title').value || titleVal, 
+                seoDesc: rawDesc || autoDesc, 
+                seoKeywords: document.getElementById('p-seo-key').value || `${selectedCats.join(', ')}, bất động sản` 
+            };
         } else if (type === 'news') {
             titleVal = document.getElementById('n-title').value;
             if(!titleVal) { alert("Tiêu đề Tin tức là bắt buộc!"); return; }
@@ -902,7 +1046,6 @@
             if(!titleVal) { alert("Tên Dự án là bắt buộc!"); return; }
             slugVal = document.getElementById('pj-slug').value || slugify(titleVal);
             
-            // ĐÃ FIX 5: Gán link dự án bằng MAIN_DOMAIN mới
             newData = { id: parseInt(document.getElementById('pj-id').value) || Date.now(), title: titleVal, slug: slugVal, status: document.getElementById('pj-status').value, loc: document.getElementById('pj-loc').value, price: document.getElementById('pj-price').value, img: uploadedFiles.projMain, link: `${MAIN_DOMAIN}/du-an/${slugVal}/`, seoTitle: document.getElementById('pj-seo-title').value || titleVal, seoDesc: document.getElementById('pj-seo-desc').value || `Dự án ${titleVal}`, seoKeywords: document.getElementById('pj-seo-key').value || `dự án ${titleVal}, bất động sản` };
         } else if (type === 'cat') {
             titleVal = document.getElementById('c-title').value;
@@ -926,9 +1069,11 @@
             if (type === 'cat') await autoCreateCategoryFolder(newData);
             else if (type === 'prod') {
                 await autoCreateProductFolder(newData);
-                if(newData.cat) {
+                if(newData.cat && newData.cat.length > 0) {
                     btn.innerHTML = '<i class="fas fa-sync fa-spin"></i> ĐANG CẬP NHẬT DANH MỤC...';
-                    let matchedCat = currentData.categories.find(c => c.title === newData.cat || c.slug === slugify(newData.cat));
+                    // Cập nhật lại HTML cho danh mục đầu tiên (danh mục chính)
+                    let primaryCatSlug = slugify(newData.cat[0]);
+                    let matchedCat = currentData.categories.find(c => c.title === newData.cat[0] || c.slug === primaryCatSlug);
                     if (matchedCat) await autoCreateCategoryFolder(matchedCat);
                 }
             }
@@ -941,7 +1086,6 @@
                 }
             }
             else if (type === 'proj') {
-                // Đã lưu xong Database. Bỏ qua việc ép khuôn HTML vì Admin tự code tay dự án.
                 console.log("Đã lưu Data dự án. Bỏ qua tạo giao diện.");
             }
 
