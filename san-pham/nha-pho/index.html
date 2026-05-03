@@ -13,16 +13,16 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
+    <link rel="canonical" href="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
     
-    <meta name="description" content="afsf" />
-    <meta name="keywords" content="sfsfsf" />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
-    <meta property="og:title" content="sfsfs | Greenia Homes" />
-    <meta property="og:description" content="afsf" />
+    <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
+    <meta property="og:description" content="{{DESC}}" />
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
+    <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -121,6 +121,24 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
+    <meta name="description" content="afsf" />
+    <meta name="keywords" content="sfsfsf" />
+    <meta property="og:title" content="sfsfs" />
+    <meta property="og:description" content="afsf" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "sfsfs",
+      "description": "afsf",
+      "url": "https://greeniahomes.vn/san-pham/nha-pho/"
+    }
+    </script>
+    
 </head>
 <body>
 
@@ -250,7 +268,7 @@
         let currentPage = 1;
         
         let defaultCat = null;
-        try { defaultCat = { slug: "nha-pho", name: "sfsfs", desc: "afsf" }; } catch(e) {}
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { mainType: '', catType: '', catPrice: '', catLoc: '', keyword: '' };
@@ -330,22 +348,17 @@
         }
 
         function updateSeoUI(targetCatSlug, targetType) {
-            let displayTitle = "Danh mục Bất động sản";
-            let displayDesc = "Danh sách các bất động sản đang bán và cho thuê giá tốt nhất tại Greenia Homes.";
+            let displayTitle = typeof defaultSeoTitle !== 'undefined' ? defaultSeoTitle : 'Danh mục Bất động sản';
+            let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
-            if (!searchSlug || searchSlug === '') {
-                if (targetType === 'Bán') {
-                    displayTitle = "Bất động sản Đang Bán";
-                    displayDesc = "Cập nhật danh sách nhà phố, biệt thự, căn hộ đang chào bán mới nhất tại Greenia Homes.";
-                } else if (targetType === 'Thuê') {
-                    displayTitle = "Bất động sản Cho Thuê";
-                    displayDesc = "Cập nhật danh sách nhà phố, biệt thự, căn hộ cho thuê giá tốt nhất tại Greenia Homes.";
-                } else {
-                    displayTitle = defaultSeoTitle;
-                    displayDesc = defaultSeoDesc;
-                }
-            } else {
+            if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
+                if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
+                else if (targetType === 'Thuê') searchSlug = 'cho-thue';
+                else searchSlug = '';
+            }
+
+            if (searchSlug !== '') {
                 let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.title || c.name) === searchSlug);
                 if (matchedCat) {
                     displayTitle = matchedCat.seoTitle || matchedCat.title || matchedCat.name || beautifyCatName(searchSlug);
@@ -365,7 +378,17 @@
                 descEl.innerHTML = displayDesc; 
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
-            if(boxEl) boxEl.style.display = 'block';
+            
+            // CHẶN ĐỨNG SỰ CỐ NGAY TẠI ĐÂY:
+            if(boxEl) {
+                // Nếu đang có từ khóa tìm kiếm -> BẮT BUỘC ẨN TIÊU ĐỀ
+                if (filterState.keyword !== '') {
+                    boxEl.style.display = 'none';
+                } else {
+                    // Trạng thái bình thường -> Bật tiêu đề
+                    boxEl.style.display = 'block';
+                }
+            }
         }
 
         document.addEventListener("DOMContentLoaded", async function() {

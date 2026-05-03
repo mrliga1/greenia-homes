@@ -348,22 +348,17 @@
         }
 
         function updateSeoUI(targetCatSlug, targetType) {
-            let displayTitle = "Danh mục Bất động sản";
-            let displayDesc = "Danh sách các bất động sản đang bán và cho thuê giá tốt nhất tại Greenia Homes.";
+            let displayTitle = typeof defaultSeoTitle !== 'undefined' ? defaultSeoTitle : 'Danh mục Bất động sản';
+            let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
-            if (!searchSlug || searchSlug === '') {
-                if (targetType === 'Bán') {
-                    displayTitle = "Bất động sản Đang Bán";
-                    displayDesc = "Cập nhật danh sách nhà phố, biệt thự, căn hộ đang chào bán mới nhất tại Greenia Homes.";
-                } else if (targetType === 'Thuê') {
-                    displayTitle = "Bất động sản Cho Thuê";
-                    displayDesc = "Cập nhật danh sách nhà phố, biệt thự, căn hộ cho thuê giá tốt nhất tại Greenia Homes.";
-                } else {
-                    displayTitle = defaultSeoTitle;
-                    displayDesc = defaultSeoDesc;
-                }
-            } else {
+            if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
+                if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
+                else if (targetType === 'Thuê') searchSlug = 'cho-thue';
+                else searchSlug = '';
+            }
+
+            if (searchSlug !== '') {
                 let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.title || c.name) === searchSlug);
                 if (matchedCat) {
                     displayTitle = matchedCat.seoTitle || matchedCat.title || matchedCat.name || beautifyCatName(searchSlug);
@@ -383,7 +378,17 @@
                 descEl.innerHTML = displayDesc; 
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
-            if(boxEl) boxEl.style.display = 'block';
+            
+            // CHẶN ĐỨNG SỰ CỐ NGAY TẠI ĐÂY:
+            if(boxEl) {
+                // Nếu đang có từ khóa tìm kiếm -> BẮT BUỘC ẨN TIÊU ĐỀ
+                if (filterState.keyword !== '') {
+                    boxEl.style.display = 'none';
+                } else {
+                    // Trạng thái bình thường -> Bật tiêu đề
+                    boxEl.style.display = 'block';
+                }
+            }
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
