@@ -52,6 +52,11 @@
         .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
         .btn-cancel-edit { display: none; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         
+        /* THÊM STYLE CHO NÚT ĐỒNG BỘ TẤT CẢ */
+        .btn-sync-all { margin-left: auto; background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3); }
+        .btn-sync-all:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(9, 132, 227, 0.5); }
+        .btn-sync-all:disabled { opacity: 0.5; cursor: not-allowed; }
+
         .form-section { display: none; animation: fadeIn 0.3s; }
         .form-section.active { display: block; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -166,9 +171,11 @@
                 <button class="tab-btn" id="tab-proj-btn" onclick="switchTab('proj')"><i class="fas fa-project-diagram"></i> DỰ ÁN</button>
                 <button class="tab-btn" id="tab-cat-btn" onclick="switchTab('cat')"><i class="fas fa-folder-open"></i> DANH MỤC</button>
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
+                
+                <!-- NÚT ĐỒNG BỘ TOÀN HỆ THỐNG MỚI ĐƯỢC THÊM VÀO -->
+                <button class="btn-sync-all" id="btn-sync-all" onclick="syncAllToGithub()"><i class="fas fa-sync"></i> ĐỒNG BỘ TẤT CẢ LÊN WEB</button>
             </div>
 
-            <!-- TÙY CHỈNH CHIA NHÓM DANH MỤC Ở ĐÂY -->
             <div id="section-cat" class="form-section">
                 <div class="select-edit-box full">
                     <label style="color: var(--gold);"><i class="fas fa-search"></i> Chọn danh mục đã có để Sửa / Xóa:</label>
@@ -186,7 +193,6 @@
                         </select>
                     </div>
                     
-                    <!-- THÊM Ô PHÂN LOẠI NHÓM CHO DANH MỤC (CHỈ HIỆN KHI CHỌN SẢN PHẨM) -->
                     <div class="form-group full" id="c-group-wrap" style="display: none;">
                         <label style="color:#00b894;"><i class="fas fa-layer-group"></i> Nhóm hiển thị trên Web (Dành cho Sản Phẩm):</label>
                         <select id="c-group" style="border-color: #00b894;">
@@ -373,7 +379,6 @@
     </div>
 </div>
 <script>
-    // MÃ HÓA BẢO MẬT API KEY CHỐNG BOT GITHUB
     const firebaseConfig = {
       apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
       authDomain: "greenia-homes.firebaseapp.com",
@@ -476,7 +481,6 @@
         const catBox = document.getElementById('p-cat-checkboxes');
         if (!catBox) return;
         
-        // CHỈ LẤY DANH MỤC CHUẨN TỪ DATABASE CATEGORIES (Không quét rác từ sản phẩm cũ nữa)
         let allProductCats = currentData.categories.filter(c => c.type === 'prod' && c.title).map(c => c.title.trim());
         allProductCats = [...new Set(allProductCats)]; 
         
@@ -522,7 +526,6 @@
         
         renderCategoryCheckboxes();
         
-        // CHỈ LẤY DANH MỤC CHUẨN TỪ DATABASE ĐỂ ĐƯA VÀO DROPDOWN
         const prodCats = currentData.categories.filter(c => c.type === 'prod').map(c => c.title);
         const newsCats = currentData.categories.filter(c => c.type === 'news').map(c => c.title);
         populateCats('p-cats', prodCats); 
@@ -544,7 +547,7 @@
             if(!confirm("Đang sửa mục khác. Chuyển tab sẽ mất dữ liệu. Chuyển?")) return;
             cancelEdit();
         }
-        document.querySelectorAll('.tab-btn:not(.btn-cancel-edit)').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-btn:not(.btn-cancel-edit):not(.btn-sync-all)').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
         document.getElementById(`tab-${type}-btn`).classList.add('active');
         document.getElementById(`section-${type}`).classList.add('active');
@@ -672,16 +675,24 @@
         } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); }
     }
 
+    // TÁCH CHUỖI MẢNG JSON AN TOÀN
+    function extractCatsSafely(catData) {
+        if (!catData) return [];
+        if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
+            try {
+                let parsed = JSON.parse(catData);
+                return parsed.map(c => String(c).trim()).filter(c => c !== '');
+            } catch(e) {}
+        }
+        let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
+        return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
+    }
+
     function getPrimaryCatSlug(catData, defaultSlug = 'san-pham') {
         if (!catData) return defaultSlug;
-        let primaryCatStr = '';
-        if (Array.isArray(catData)) {
-            primaryCatStr = catData[0];
-        } else {
-            primaryCatStr = String(catData).split(',')[0];
-        }
-        if (!primaryCatStr || primaryCatStr.trim() === '') return defaultSlug;
-        return slugify(primaryCatStr.trim());
+        let cleanArray = extractCatsSafely(catData);
+        if(cleanArray.length > 0) return slugify(cleanArray[0]);
+        return defaultSlug;
     }
 
     function buildLinkLibrary() {
@@ -709,8 +720,7 @@
             const safeTitle = item.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
             const isCatClass = item.typeKey === 'cat' ? 'is-category' : '';
             
-            let displayCat = item.cat;
-            if (Array.isArray(displayCat)) displayCat = displayCat.join(', ');
+            let displayCat = extractCatsSafely(item.cat).join(', ');
             
             html += `
                 <div class="link-item" id="link-item-${item.typeKey}-${item.id}" data-title="${item.title.toLowerCase()}" data-cat="${(displayCat || item.label || '').toLowerCase()}">
@@ -980,7 +990,7 @@
             .replace(/\{\{SLUG\}\}/g, () => prodData.slug)
             .replace(/\{\{ID\}\}/g, () => prodData.id)
             .replace(/\{\{TYPE\}\}/g, () => safeJS(prodData.type || 'Bán'))
-            .replace(/\{\{CAT\}\}/g, () => safeJS(Array.isArray(prodData.cat) ? prodData.cat.join(', ') : prodData.cat))
+            .replace(/\{\{CAT\}\}/g, () => JSON.stringify(prodData.cat)) // Đã sửa để truyền mảng an toàn
             .replace(/\{\{LOC\}\}/g, () => safeJS(prodData.loc))
             .replace(/\{\{PRICE\}\}/g, () => safeJS(prodData.price))
             .replace(/\{\{AREA\}\}/g, () => safeJS(prodData.area))
@@ -1092,7 +1102,6 @@
             slugVal = document.getElementById('c-slug').value || slugify(titleVal);
             rawDesc = document.getElementById('c-seo-desc').value;
             
-            // LƯU C-GROUP VÀO FIREBASE
             let catGroup = document.getElementById('c-type').value === 'prod' ? document.getElementById('c-group').value : 'type';
 
             newData = { 
@@ -1147,6 +1156,89 @@
         } catch(e) { 
             console.error("LỖI CHI TIẾT:", e); alert("LỖI:\n" + e.message); 
             btn.innerHTML = originalBtnText; btn.disabled = false;
+        }
+    }
+
+    // =====================================================================
+    // HÀM ĐỒNG BỘ TOÀN BỘ HỆ THỐNG
+    // =====================================================================
+    async function syncAllToGithub() {
+        if (currentUserRole !== 'admin') { 
+            alert("⛔ CHỈ QUẢN TRỊ VIÊN MỚI CÓ THỂ CHẠY ĐỒNG BỘ TOÀN HỆ THỐNG!"); 
+            return; 
+        }
+        
+        let tokenInput = document.getElementById('sys-gh-token');
+        let currentToken = tokenInput ? tokenInput.value.trim() : TOKEN_GITHUB;
+        if (!currentToken) { 
+            alert("CẢNH BÁO: Cần có Token GitHub để đồng bộ!"); 
+            return; 
+        }
+
+        const confirmSync = confirm("Hệ thống sẽ tái tạo lại toàn bộ file HTML cho các Danh Mục, Sản Phẩm và Tin Tức.\n\nQuá trình này có thể mất vài phút. Bác có muốn tiếp tục?");
+        if (!confirmSync) return;
+
+        const btnSync = document.getElementById('btn-sync-all');
+        const statusText = document.getElementById('sync-status');
+        btnSync.disabled = true;
+        
+        try {
+            // Lấy mẫu template mới nhất để đảm bảo đúc đúng form
+            let tplSP = await getTemplateFile('chi-tiet-sp.html');
+            let tplDMSP = await getTemplateFile('danh-muc-sp.html');
+            let tplBlog = await getTemplateFile('blog.html');
+            let tplDMBlog = await getTemplateFile('danh-muc.html');
+
+            if(!tplSP || !tplDMSP || !tplBlog || !tplDMBlog) {
+                throw new Error("Không thể tải đủ file Template. Hủy đồng bộ.");
+            }
+
+            // Gộp mảng cần xử lý
+            let itemsToSync = [
+                ...currentData.categories.map(c => ({...c, _syncType: 'cat'})),
+                ...currentData.products.map(p => ({...p, _syncType: 'prod'})),
+                ...currentData.posts.map(n => ({...n, _syncType: 'news'}))
+            ];
+
+            let total = itemsToSync.length;
+            let success = 0;
+            let failed = 0;
+
+            for (let i = 0; i < total; i++) {
+                let item = itemsToSync[i];
+                btnSync.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ĐANG ĐỒNG BỘ (${i+1}/${total})...`;
+                statusText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tạo trang: ${item.title}`;
+
+                try {
+                    if (item._syncType === 'cat') {
+                        await autoCreateCategoryFolder(item);
+                    } else if (item._syncType === 'prod') {
+                        await autoCreateProductFolder(item);
+                    } else if (item._syncType === 'news') {
+                        await autoCreateNewsFolder(item);
+                    }
+                    success++;
+                } catch(err) {
+                    console.error("Lỗi đồng bộ item:", item.title, err);
+                    failed++;
+                }
+
+                // Nghỉ 1.5 giây giữa mỗi file để GitHub không block IP
+                await new Promise(resolve => setTimeout(resolve, 1500));
+            }
+
+            statusText.innerHTML = `<i class="fas fa-check-circle"></i> Đồng bộ hoàn tất!`;
+            statusText.style.color = "#00b894";
+            alert(`✅ QUÁ TRÌNH ĐỒNG BỘ KẾT THÚC!\n- Thành công: ${success}\n- Lỗi: ${failed}\n\nToàn bộ giao diện đã được cập nhật phiên bản mới nhất.`);
+
+        } catch (e) {
+            console.error("Lỗi đồng bộ toàn hệ thống:", e);
+            statusText.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Lỗi đồng bộ!`;
+            statusText.style.color = "#ff4d4f";
+            alert("Lỗi quá trình đồng bộ: " + e.message);
+        } finally {
+            btnSync.disabled = false;
+            btnSync.innerHTML = `<i class="fas fa-sync"></i> ĐỒNG BỘ TẤT CẢ LÊN WEB`;
         }
     }
 </script>
