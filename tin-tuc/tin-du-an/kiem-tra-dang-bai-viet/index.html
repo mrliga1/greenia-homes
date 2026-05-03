@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>kiểm tra đăng bài viết | Greenia Homes</title>
-    <meta name="description" content="kiểm tra nội dung
-..." />
-    <meta name="keywords" content="tin dự án, " />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
     <!-- CHUẨN HÓA ĐƯỜNG LINK BẢN GỐC (ABSOLUTE URL) -->
-    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/tin-du-an/kiem-tra-dang-bai-viet/" />
+    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN ZALO, FACEBOOK -->
-    <meta property="og:title" content="kiểm tra đăng bài viết" />
-    <meta property="og:description" content="kiểm tra nội dung
-..." />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/tin-du-an/kiem-tra-dang-bai-viet/" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:image" content="{{IMG}}" />
+    <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
     <meta property="og:type" content="article" />
 
     <script>
         window.BASE_URL = '/';
-        var checkId = "10";
+        var checkId = "{{ID}}";
         if (checkId.includes("{{") || checkId === "") {
             window.location.replace(window.BASE_URL + 'tin-tuc.html');
         }
@@ -229,6 +227,30 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/tin-du-an/kiem-tra-dang-bai-viet/" />
+    
+        <meta name="description" content="kiểm tra nội dung
+..." />
+        <meta name="keywords" content="tin dự án, tin tức" />
+        <meta property="og:title" content="kiểm tra đăng bài viết" />
+        <meta property="og:description" content="kiểm tra nội dung
+..." />
+        <meta property="og:image" content="" />
+        <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/tin-du-an/kiem-tra-dang-bai-viet/" />
+        <meta property="og:type" content="article" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "kiểm tra đăng bài viết",
+  "image": "",
+  "datePublished": "15/4/2026",
+  "author": {
+    "@type": "Person",
+    "name": "Ban Biên Tập"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -264,15 +286,14 @@
         let defaultPost = null;
         try { 
             defaultPost = {
-                id: "10",
-                title: "kiểm tra đăng bài viết",
-                slug: "kiem-tra-dang-bai-viet",
-                cat: "tin dự án",
-                date: "15/4/2026",
-                author: "Ban Biên Tập",
-                thumb: "",
-                content: `<p>kiểm tra nội dung</p>
-`
+                id: "{{ID}}",
+                title: "{{TITLE_JSON}}",
+                slug: "{{SLUG}}",
+                cat: "{{CAT}}",
+                date: "{{DATE}}",
+                author: "{{AUTHOR}}",
+                thumb: "{{IMG}}",
+                content: `{{CONTENT_JSON}}`
             };
         } catch(e) {}
         window.GREENIA_CURRENT_POST = defaultPost;
