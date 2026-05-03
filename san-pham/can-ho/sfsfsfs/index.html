@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sfsđs | Greenia Homes</title>
-    <meta name="description" content="{{DESC}}" />
-    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta name="description" content="agsggggggg" />
+    <meta name="keywords" content="aaaaaaaaa" />
     
     <!-- CHUẨN HÓA LINK GỐC (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/{{CAT_SLUG}}/{{SLUG}}/" />
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/can-ho/sfsfsfs/" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN ZALO, FACEBOOK -->
-    <meta property="og:title" content="{{TITLE}}" />
-    <meta property="og:description" content="{{DESC}}" />
-    <meta property="og:image" content="{{IMG}}" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/{{CAT_SLUG}}/{{SLUG}}/" />
+    <meta property="og:title" content="sfsđs" />
+    <meta property="og:description" content="agsggggggg" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/can-ho/sfsfsfs/" />
     <meta property="og:type" content="article" />
     
     <script>
         window.BASE_URL = '/';
-        var checkId = "{{ID}}";
+        var checkId = "46";
         if (checkId.includes("{{") || checkId === "") {
             window.location.replace(window.BASE_URL + 'san-pham/');
         }
@@ -233,31 +233,6 @@
             z-index: 99999999 !important; 
         }
     </style>
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/can-ho/sfsfsfs/" />
-    
-        <meta name="description" content="agsggggggg" />
-        <meta name="keywords" content="aaaaaaaaa" />
-        <meta property="og:title" content="sfsđs" />
-        <meta property="og:description" content="agsggggggg" />
-        <meta property="og:image" content="" />
-        <meta property="og:url" content="https://greeniahomes.vn/san-pham/can-ho/sfsfsfs/" />
-        <meta property="og:type" content="product" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Product",
-  "name": "sfsđs",
-  "image": "",
-  "description": "agsggggggg",
-  "offers": {
-    "@type": "Offer",
-    "url": "https://greeniahomes.vn/san-pham/can-ho/sfsfsfs/",
-    "priceCurrency": "VND",
-    "price": "0",
-    "availability": "https://schema.org/InStock"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -308,25 +283,25 @@
         let defaultProduct = null;
         try { 
             defaultProduct = {
-                id: "{{ID}}",
-                title: "{{TITLE_JSON}}",
-                slug: "{{SLUG}}",
-                type: "{{TYPE}}",
-                cat: "{{CAT}}",
-                loc: "{{LOC}}",
-                price: "{{PRICE}}",
-                area: "{{AREA}}",
-                dir: "{{DIR}}",
-                floor: "{{FLOOR}}",
-                bed: "{{BED}}",
-                wc: "{{WC}}",
-                front: "{{FRONT}}",
-                legal: "{{LEGAL}}",
-                img: "{{IMG}}",
-                gallery: '{{GALLERY_JSON}}' === '{{' + 'GALLERY_JSON}}' ? [] : {{GALLERY_JSON}},
-                video: "{{VIDEO}}",
-                map: "{{MAP_JSON}}",
-                content: `{{CONTENT_JSON}}`
+                id: "46",
+                title: "sfsfsfs",
+                slug: "sfsfsfs",
+                type: "Thuê",
+                cat: "Căn hộ",
+                loc: "ádf",
+                price: "10 tye",
+                area: "121",
+                dir: "",
+                floor: "",
+                bed: "5",
+                wc: "",
+                front: "",
+                legal: "",
+                img: "",
+                gallery: '[]' === '{{' + 'GALLERY_JSON}}' ? [] : [],
+                video: "",
+                map: "",
+                content: ``
             };
         } catch(e) {}
         window.GREENIA_CURRENT_PRODUCT = defaultProduct;
@@ -684,7 +659,7 @@
 
                 // 5. MAP
                 let mapHTML = '<div style="padding:20px;text-align:center;color:#888;">Đang cập nhật vị trí.</div>';
-                if(prod.map && prod.map !== "{{MAP_JSON}}") {
+                if(prod.map && prod.map !== "") {
                     if(prod.map.includes('<iframe')) mapHTML = prod.map;
                     else mapHTML = `<iframe width="100%" height="450" frameborder="0" style="border:0" src="${prod.map}"></iframe>`;
                 }
