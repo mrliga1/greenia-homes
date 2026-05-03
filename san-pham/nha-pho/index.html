@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sfsfs | Greenia Homes</title>
+    <title>Danh Mục Sản Phẩm | Greenia Homes</title>
     
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
@@ -13,17 +13,17 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
     
-    <meta name="description" content="{{DESC}}" />
-    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta name="description" content="afsf" />
+    <meta name="keywords" content="sfsfsf" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
-    <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
-    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:title" content="sfsfs | Greenia Homes" />
+    <meta property="og:description" content="afsf" />
     <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
-    <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -146,24 +146,6 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
-    <meta name="description" content="afsf" />
-    <meta name="keywords" content="sfsfsf" />
-    <meta property="og:title" content="sfsfs" />
-    <meta property="og:description" content="afsf" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
-    <meta property="og:type" content="website" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "sfsfs",
-      "description": "afsf",
-      "url": "https://greeniahomes.vn/san-pham/nha-pho/"
-    }
-    </script>
-    
 </head>
 <body>
 
@@ -281,7 +263,7 @@
         
         // BẢO VỆ CHỐNG LỖI CÚ PHÁP: Gán giá trị rỗng nếu template không được đúc
         let defaultCat = null;
-        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        try { defaultCat = { slug: "nha-pho", name: "sfsfs", desc: "afsf" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { type: '', cat: '', keyword: '' };
@@ -339,7 +321,7 @@
             let searchSlug = targetCatSlug;
             
             // Ép kiểu nếu bấm vào tab Bán/Thuê
-            if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
+            if (targetCatSlug === '' || targetCatSlug === 'nha-pho') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
                 else searchSlug = '';
@@ -418,7 +400,7 @@
                 let activeCatSlug = '';
 
                 // BẢO VỆ AN TOÀN TUYỆT ĐỐI CHO BIẾN currCat
-                if (currCat && currCat.slug && currCat.slug !== '{{SLUG}}' && currCat.slug !== 'tat-ca-san-pham') {
+                if (currCat && currCat.slug && currCat.slug !== 'nha-pho' && currCat.slug !== 'tat-ca-san-pham') {
                     activeCatSlug = currCat.slug;
                     if (currCat.slug === 'ban') { filterState.type = 'Bán'; activeCatSlug = 'chuyen-nhuong'; } 
                     else if (currCat.slug === 'cho-thue') { filterState.type = 'Thuê'; activeCatSlug = 'cho-thue'; }
@@ -438,7 +420,7 @@
                 document.querySelectorAll('.luc-nav-item').forEach(t => t.classList.remove('active'));
                 if (filterState.type === 'Bán') { document.getElementById('tab-ban').classList.add('active'); }
                 else if (filterState.type === 'Thuê') { document.getElementById('tab-thue').classList.add('active'); }
-                else if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') { /* handled by dropdown */ }
+                else if (filterState.cat !== '' && filterState.cat !== 'nha-pho') { /* handled by dropdown */ }
                 else { document.getElementById('tab-all').classList.add('active'); }
 
                 updateSeoUI(activeCatSlug, filterState.type);
@@ -593,8 +575,8 @@
                 else if (filterState.type === 'Thuê') matchType = (p.type === 'Thuê');
                 
                 let matchCat = true;
-                // BẢO VỆ: Không lọc nếu biến cat là rỗng hoặc bị dính placeholder {{SLUG}}
-                if (filterState.cat !== '' && filterState.cat !== '{{SLUG}}') {
+                // BẢO VỆ: Không lọc nếu biến cat là rỗng hoặc bị dính placeholder nha-pho
+                if (filterState.cat !== '' && filterState.cat !== 'nha-pho') {
                     matchCat = isCatMatch(p, filterState.cat);
                 }
                 
