@@ -52,7 +52,6 @@
         .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.05); }
         .btn-cancel-edit { display: none; background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         
-        /* THÊM STYLE CHO NÚT ĐỒNG BỘ TẤT CẢ */
         .btn-sync-all { margin-left: auto; background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 6px; box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3); }
         .btn-sync-all:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(9, 132, 227, 0.5); }
         .btn-sync-all:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -172,7 +171,6 @@
                 <button class="tab-btn" id="tab-cat-btn" onclick="switchTab('cat')"><i class="fas fa-folder-open"></i> DANH MỤC</button>
                 <button class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelEdit()"><i class="fas fa-times"></i> HỦY SỬA</button>
                 
-                <!-- NÚT ĐỒNG BỘ TOÀN HỆ THỐNG MỚI ĐƯỢC THÊM VÀO -->
                 <button class="btn-sync-all" id="btn-sync-all" onclick="syncAllToGithub()"><i class="fas fa-sync"></i> ĐỒNG BỘ TẤT CẢ LÊN WEB</button>
             </div>
 
@@ -675,7 +673,6 @@
         } catch(e) { console.error(e); alert("Lỗi kết nối máy chủ khi xóa!"); }
     }
 
-    // TÁCH CHUỖI MẢNG JSON AN TOÀN
     function extractCatsSafely(catData) {
         if (!catData) return [];
         if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
@@ -990,7 +987,10 @@
             .replace(/\{\{SLUG\}\}/g, () => prodData.slug)
             .replace(/\{\{ID\}\}/g, () => prodData.id)
             .replace(/\{\{TYPE\}\}/g, () => safeJS(prodData.type || 'Bán'))
-            .replace(/\{\{CAT\}\}/g, () => JSON.stringify(prodData.cat)) // Đã sửa để truyền mảng an toàn
+            
+            // ĐIỂM SỬA CHỮA CHÍNH: KHÔNG DÙNG JSON.STRINGIFY MÀ NỐI CHUỖI AN TOÀN CHO TEMPLATE
+            .replace(/\{\{CAT\}\}/g, () => safeJS(Array.isArray(prodData.cat) ? prodData.cat.join(', ') : prodData.cat))
+            
             .replace(/\{\{LOC\}\}/g, () => safeJS(prodData.loc))
             .replace(/\{\{PRICE\}\}/g, () => safeJS(prodData.price))
             .replace(/\{\{AREA\}\}/g, () => safeJS(prodData.area))
