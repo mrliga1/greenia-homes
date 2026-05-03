@@ -234,7 +234,6 @@
     <script src="/assets/js/ui.js"></script>
 
    <script>
-        // MÃ HÓA BẢO MẬT API KEY BẰNG BASE64 CHỐNG BOT GITHUB
         const firebaseConfig = {
           apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -283,7 +282,6 @@
             return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
-        // HÀM BỔ SUNG: Bóc tách danh mục cực chuẩn, chống dính link URL
         function getPrimaryCatSlug(catData, defaultSlug) {
             if (!catData) return defaultSlug;
             let primaryCat = Array.isArray(catData) ? catData[0] : String(catData).split(',')[0].trim();
@@ -298,7 +296,6 @@
         }
 
         function renderCardHTML(p) {
-            // SỬ DỤNG HÀM MỚI ĐỂ TẠO URL SACH SẼ 100%
             const catSlug = getPrimaryCatSlug(p.cat, 'san-pham');
             const pSlug = p.slug || createSafeSlug(p.title);
             
@@ -398,7 +395,7 @@
                 independentProjects = pjSnap.docs.map(d => d.data()).sort((a,b) => b.id - a.id);
 
                 // =========================================================================
-                // CHIA 3 NHÓM DROPDOWN: LOẠI HÌNH, KHOẢNG GIÁ, KHU VỰC
+                // CHIA 3 NHÓM DROPDOWN VỚI HTML CHUẨN CỦA FILE DANH-MUC-SP.HTML
                 // =========================================================================
                 const ddList = document.getElementById('dyn-cat-list');
                 let activeCatSlug = filterState.cat;
@@ -538,7 +535,6 @@
             if(!isLoadMore) currentPage = 1;
             
             filteredData = allProducts.filter(p => {
-                // CHỐNG LỖI HIỂN THỊ TẤT CẢ: Ép kiểm tra đồng thời Keyword + Danh mục + Loại hình
                 let matchKeyword = true;
                 if(filterState.keyword !== '') {
                     const kw = filterState.keyword.toLowerCase();
@@ -636,7 +632,11 @@
         });
 
         document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
-        document.getElementById('foryou-load-btn-v67').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; forYouPage++; setTimeout(() => renderForYouGrid(), 300); });
+        
+        const forYouBtn = document.getElementById('foryou-load-btn-v67');
+        if(forYouBtn) {
+            forYouBtn.addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; forYouPage++; setTimeout(() => renderForYouGrid(), 300); });
+        }
 
         window.clearLucSearch = function(doRun = true) { 
             filterState.keyword = ''; document.getElementById('luc-keyword').value = ''; 
@@ -645,10 +645,12 @@
         }
 
         const ddGroup = document.getElementById('luc-cat-dropdown-group');
-        ddGroup.querySelector('.luc-dd-trigger').addEventListener('click', function(e) {
-            e.preventDefault(); e.stopPropagation(); ddGroup.classList.toggle('active-drop');
-        });
-        document.addEventListener('click', e => { if(!ddGroup.contains(e.target)) ddGroup.classList.remove('active-drop'); });
+        if(ddGroup) {
+            ddGroup.querySelector('.luc-dd-trigger').addEventListener('click', function(e) {
+                e.preventDefault(); e.stopPropagation(); ddGroup.classList.toggle('active-drop');
+            });
+            document.addEventListener('click', e => { if(!ddGroup.contains(e.target)) ddGroup.classList.remove('active-drop'); });
+        }
 
         var grScrollTimer;
         window.grScroll = function(dir, id) { const el = document.getElementById(id); if(el) { const item = el.querySelector('.s2-card'); if(item) { const w = item.offsetWidth + 20; el.scrollBy({left: w * dir, behavior: 'smooth'}); } } }
