@@ -266,8 +266,16 @@
             return { id: p.id || pSlug, img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
         }
 
+        // =========================================================================
+        // SỬA LỖI TẠO LINK CHUẨN XÁC, CHỐNG DÍNH DANH MỤC
+        // =========================================================================
         function createProdCardHTML(p, isList = false) {
-            const catSlug = createSafeSlug(p.cat || 'san-pham');
+            let primaryCat = 'san-pham';
+            if (p.cat) {
+                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0].trim();
+            }
+            
+            const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
@@ -315,6 +323,7 @@
                         </a>`;
             }
         }
+        // =========================================================================
 
         let defaultCat = null;
         try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}

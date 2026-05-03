@@ -367,10 +367,17 @@
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
+        // =========================================================================
+        // SỬA LỖI Ở ĐÂY: HÀM RENDER CARD CHUẨN (TÁCH DANH MỤC TRÁNH DÍNH CHỮ)
+        // =========================================================================
         function renderCardHTML(p) {
             let primaryCat = 'san-pham';
             if (p.cat) {
-                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+                if (Array.isArray(p.cat) && p.cat.length > 0) {
+                    primaryCat = p.cat[0];
+                } else if (typeof p.cat === 'string' && p.cat.trim() !== '') {
+                    primaryCat = p.cat.split(',')[0].trim();
+                }
             }
             
             const catSlug = createSafeSlug(primaryCat);
@@ -402,6 +409,7 @@
                 </div>
             </a>`;
         }
+        // =========================================================================
 
         function autoGenerateSingleProductSchema(prodData) {
             const oldSchema = document.getElementById('gr-dynamic-schema-single');
@@ -553,7 +561,7 @@
                     prodCategories.forEach(c => {
                         let catName = c.title || c.name || "";
                         let catSlug = createSafeSlug(c.slug || catName);
-                        let catGroup = c.group || 'type'; // Lấy nhóm từ Database Admin (type, price, loc)
+                        let catGroup = c.group || 'type'; 
                         
                         if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
                             let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
