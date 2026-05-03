@@ -12,11 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
+    <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
     <link rel="canonical" href="https://greeniahomes.vn/san-pham/3-5-ty/" />
     
     <meta name="description" content="" />
     <meta name="keywords" content="3- 5 tỷ, bất động sản" />
     
+    <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
     <meta property="og:title" content="3- 5 tỷ | Greenia Homes" />
     <meta property="og:description" content="" />
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
@@ -247,6 +249,10 @@
         const itemsPerPage = 10;
         let currentPage = 1;
         
+        let defaultCat = null;
+        try { defaultCat = { slug: "3-5-ty", name: "3- 5 tỷ", desc: "" }; } catch(e) {}
+        window.GREENIA_CURRENT_CATEGORY = defaultCat;
+        
         let filterState = { mainType: '', catType: '', catPrice: '', catLoc: '', keyword: '' };
         
         let smartRecommended = [];
@@ -265,7 +271,7 @@
             return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
-        // CHỐNG MÙ DỮ LIỆU MẢNG TỪ ADMIN
+        // BỘ CÔNG CỤ XỬ LÝ MẢNG JSON CỰC MẠNH
         function extractCatsSafely(catData) {
             if (!catData) return [];
             if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
@@ -278,7 +284,6 @@
             return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
         }
 
-        // TẠO LINK CHUẨN XÁC, CHỈ LẤY ĐÚNG 1 DANH MỤC
         function getPrimaryCatSlug(catData, defaultSlug) {
             if (!catData) return defaultSlug;
             let cleanArray = extractCatsSafely(catData);
@@ -368,20 +373,12 @@
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
-            // XÁC ĐỊNH CHUẨN XÁC URL ĐỂ LẤY SLUG NGAY CẢ KHI TEMPLATE BỊ TRỐNG
+            // XÁC ĐỊNH DANH MỤC TRỰC TIẾP TỪ URL - KHÔNG DÙNG BIẾN ẨN
             let initialCatSlug = '';
-            let templateSlug = '3-5-ty';
-            if (templateSlug && !templateSlug.includes('{{') && templateSlug.trim() !== '') {
-                let rawSlug = createSafeSlug(templateSlug);
-                if (rawSlug !== 'san-pham') initialCatSlug = rawSlug;
-            } 
-            if (!initialCatSlug) {
-                let path = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '');
-                let p = path.split('/').filter(Boolean);
-                if (p.length >= 2 && p[0] === 'san-pham') {
-                    let urlSlug = createSafeSlug(p[p.length - 1]);
-                    if (urlSlug !== 'san-pham') initialCatSlug = urlSlug;
-                }
+            let pathParts = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/').filter(Boolean);
+            if (pathParts.length >= 2 && pathParts[0] === 'san-pham') {
+                initialCatSlug = createSafeSlug(pathParts[pathParts.length - 1]);
+                if (initialCatSlug === 'san-pham') initialCatSlug = '';
             }
 
             if (keywordFromUrl) {
@@ -402,7 +399,7 @@
                 allCategories = cSnap.docs.map(d => d.data());
                 independentProjects = pjSnap.docs.map(d => d.data()).sort((a,b) => b.id - a.id);
 
-                // PHÂN LỚP DANH MỤC VÀ SET TRẠNG THÁI ACTIVE CHUẨN XÁC
+                // PHÂN LỚP DANH MỤC HIỆN TẠI ĐỂ LỌC ĐÚNG TAB
                 document.querySelectorAll('.luc-nav-item:not(.luc-dd-trigger)').forEach(t => t.classList.remove('active'));
                 
                 if (initialCatSlug === 'chuyen-nhuong') {
@@ -426,7 +423,7 @@
                 }
 
                 // =========================================================================
-                // IN CÁC DROPDOWN CHIA NHÓM VÀ LIÊN KẾT ĐÚNG LINK TỪNG MỤC
+                // TẠO GIAO DIỆN 3 KHỐI DROPDOWN
                 // =========================================================================
                 let ddTypeHTML = '';
                 let ddPriceHTML = '';
@@ -514,6 +511,7 @@
                     let fallbackProds = allProducts.sort(() => 0.5 - Math.random()).slice(0, 20);
                     smartRecommended = [...new Set([...smartRecommended, ...fallbackProds])].slice(0, 20);
                 }
+                window.smartRecommendedData = smartRecommended;
                 renderForYouGrid();
 
                 let activeTitleSlug = filterState.catType || filterState.catLoc || filterState.catPrice || initialCatSlug;
@@ -625,12 +623,12 @@
         function renderForYouGrid() {
             const grid = document.getElementById('foryou-grid-v67');
             const wrap = document.getElementById('foryou-load-wrap-v67');
-            const paginated = smartRecommended.slice(0, forYouPage * forYouItemsPerPage);
+            const paginated = window.smartRecommendedData.slice(0, forYouPage * forYouItemsPerPage);
             if (paginated.length > 0) {
-                grid.innerHTML = paginated.map(p => renderCardHTML(p)).join('');
-                if (paginated.length >= smartRecommended.length) wrap.style.display = 'none';
-                else wrap.style.display = 'block';
-            } else { grid.innerHTML = "<p style='color:#888; text-align:center; grid-column:1/-1;'>Chưa có gợi ý.</p>"; }
+                if(grid) grid.innerHTML = paginated.map(p => renderCardHTML(p)).join('');
+                if (paginated.length >= window.smartRecommendedData.length) { if(wrap) wrap.style.display = 'none'; }
+                else { if(wrap) wrap.style.display = 'block'; }
+            } else { if(grid) grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Chưa có gợi ý.</div>"; }
         }
 
         // TÍNH NĂNG MỞ MENU DROPDOWN
@@ -663,12 +661,57 @@
             }
         });
 
+        // CÁC NÚT TẢI THÊM
         document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
         
-        const forYouBtn = document.getElementById('foryou-load-btn-v67');
-        if(forYouBtn) {
-            forYouBtn.addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; forYouPage++; setTimeout(() => renderForYouGrid(), 300); });
-        }
+        window.recPage = 1;
+        window.loadMoreRec = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('foryou-load-btn-v67');
+            if(!btn) return;
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+            setTimeout(() => {
+                forYouPage++;
+                renderForYouGrid();
+                btn.innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>";
+            }, 400);
+        };
+
+        window.saleClickCount = 0;
+        window.loadMoreSale = function(e) {
+            e.preventDefault();
+            if(window.saleClickCount === 0) {
+                const btn = document.getElementById('btn-sale-more');
+                if(!btn) return;
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allSaleProdsData.slice(10, 20);
+                    document.getElementById('sale-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.saleClickCount++;
+                    btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
+                }, 400);
+            } else {
+                window.location.href = window.BASE_URL + 'san-pham/chuyen-nhuong/';
+            }
+        };
+
+        window.rentClickCount = 0;
+        window.loadMoreRent = function(e) {
+            e.preventDefault();
+            if(window.rentClickCount === 0) {
+                const btn = document.getElementById('btn-rent-more');
+                if(!btn) return;
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allRentProdsData.slice(10, 20);
+                    document.getElementById('rent-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.rentClickCount++;
+                    btn.innerHTML = "XEM TẤT CẢ BĐS CHO THUÊ <i class='fas fa-arrow-right'></i>";
+                }, 400);
+            } else {
+                window.location.href = window.BASE_URL + 'san-pham/cho-thue/';
+            }
+        };
 
         window.clearLucSearch = function() { 
             window.location.href = safeBaseUrl + 'san-pham/';
@@ -679,7 +722,7 @@
         window.grPlay = function() { grScrollTimer = setInterval(function() { window.grScroll(1, 'gr-proj-scroll'); }, 4000); }
         window.grPause = function() { clearInterval(grScrollTimer); }
         grPlay();
-        
+
         const filterBar = document.getElementById('luc-filter-bar');
         if(filterBar) {
             window.addEventListener('scroll', () => {
