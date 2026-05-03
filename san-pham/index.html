@@ -541,7 +541,7 @@
             }
         });
 
-        function runFilter(isLoadMore = false) {
+       function runFilter(isLoadMore = false) {
             if(!isLoadMore) currentPage = 1;
             
             filteredData = allProducts.filter(p => {
@@ -569,10 +569,18 @@
             });
 
             const statusDiv = document.getElementById('luc-search-status');
+            const seoHeaderDiv = document.getElementById('luc-seo-header'); // Gọi khối tiêu đề
+
             if(filterState.keyword !== '') {
+                // ĐANG TÌM KIẾM: Hiện thanh báo kết quả, Ẩn tiêu đề khổng lồ
                 statusDiv.style.display = 'flex';
-                statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearLucSearch()'>Xóa</span>`;
-            } else { statusDiv.style.display = 'none'; }
+                statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='window.location.href="/san-pham/"'>Xóa</span>`;
+                if(seoHeaderDiv) seoHeaderDiv.style.display = 'none'; 
+            } else { 
+                // KHÔNG TÌM KIẾM: Ẩn báo kết quả, Trả lại tiêu đề
+                statusDiv.style.display = 'none'; 
+                if(seoHeaderDiv) seoHeaderDiv.style.display = 'block';
+            }
 
             const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
             const grid = document.getElementById('luc-grid-result');
@@ -582,6 +590,8 @@
             } else {
                 grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
             }
+
+            autoGenerateProductCategorySchema(paginatedData);
 
             const loadBtnWrap = document.querySelector('.luc-load-wrap');
             if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
@@ -656,3 +666,5 @@
             });
         }
     </script>
+</body>
+</html>
