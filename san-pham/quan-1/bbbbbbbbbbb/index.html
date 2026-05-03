@@ -52,10 +52,10 @@
         @keyframes luxSlideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
-        .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
+        .luc-nav-left-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .luc-nav-right-group { display: flex; align-items: center; }
         
-        .luc-nav-item { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 13px; font-weight: 500; transition: 0.3s; border-radius: 8px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
+        .luc-nav-item { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 13px; font-weight: 500; transition: 0.3s; border-radius: 8px; white-space: nowrap; background: transparent; text-decoration: none !important; display: inline-block;}
         .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1) !important; color: #c5a059 !important; border-color: #c5a059 !important; }
         
         #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
@@ -113,8 +113,6 @@
         .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
         .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; text-transform:uppercase;}
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
-        .v261-cat a { display:flex; justify-content:space-between; padding:10px; color:#b0b8c4; font-size:12px; text-decoration:none; border-bottom:1px solid #222; }
-        .v261-cat a:hover { color:#c5a059; background:#1a1f2e; }
         
         .v261-gallery-container { width: 100%; position: relative; }
         .v261-gal-main-wrapper { position:relative; width:100%; height:450px; background: #000; overflow:hidden; border-bottom:1px solid #333; }
@@ -202,7 +200,7 @@
         .gr-tit { font-size: 13px !important; font-weight: 600; color: #fff; height: 38px; line-height: 1.4 !important; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .s2-card:hover .gr-tit { color: #c5a059; }
         .gr-loc { font-size: 11px; color: #999; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; }
-        .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; }
+        .gr-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; justify-content: space-between; margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 11px; }
         .gr-hl { color: #c5a059; font-weight: 700; font-size: 14px; }
         
         .gr-nav-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(35, 45, 69, 1); background: rgba(14, 18, 27, 0.8); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; transition: 0.3s; }
@@ -267,7 +265,6 @@
     <script src="/assets/js/ui.js"></script>
 
     <script>
-        // MÃ HÓA BẢO MẬT API KEY BẰNG BASE64 CHỐNG BOT GITHUB
         const firebaseConfig = {
           apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
           authDomain: "greenia-homes.firebaseapp.com",
@@ -283,7 +280,6 @@
         }
         const db = firebase.firestore();
 
-        // BẢO VỆ CHỐNG LỖI CÚ PHÁP TỪ TRÌNH BIÊN DỊCH
         let defaultProduct = null;
         try { 
             defaultProduct = {
@@ -338,15 +334,29 @@
             return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
+        // BỘ CÔNG CỤ XỬ LÝ MẢNG JSON CỰC MẠNH
+        function extractCatsSafely(catData) {
+            if (!catData) return [];
+            if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
+                try {
+                    let parsed = JSON.parse(catData);
+                    return parsed.map(c => String(c).trim()).filter(c => c !== '');
+                } catch(e) {}
+            }
+            let catsArr = typeof catData === 'string' ? catData.split(',') : (Array.isArray(catData) ? catData : []);
+            return catsArr.map(c => String(c).replace(/['"\[\]{}]/g, '').trim()).filter(c => c !== '');
+        }
+
         function getPrimaryCatSlug(catData, defaultSlug) {
             if (!catData) return defaultSlug;
-            let primaryCat = Array.isArray(catData) ? catData[0] : String(catData).split(',')[0].trim();
-            return createSafeSlug(primaryCat) || defaultSlug;
+            let cleanArray = extractCatsSafely(catData);
+            if(cleanArray.length > 0) return createSafeSlug(cleanArray[0]);
+            return defaultSlug;
         }
 
         function isCatMatch(pData, targetSlug) {
             if (!targetSlug || targetSlug === '') return true;
-            let catsArray = Array.isArray(pData.cat) ? pData.cat : (pData.cat ? String(pData.cat).split(',') : []);
+            let catsArray = extractCatsSafely(pData.cat);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
 
@@ -465,7 +475,7 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // Xác định chính xác danh mục gốc của sản phẩm
+                // XÁC ĐỊNH DANH MỤC CHO BREADCRUMB
                 let activeCatSlug = '';
                 let breadcrumbCatName = 'Sản phẩm';
                 let activeCatType = '';
@@ -473,9 +483,8 @@
                 let activeCatLoc = '';
                 
                 if (prod.cat) {
-                    let pCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
+                    let pCats = extractCatsSafely(prod.cat);
                     
-                    // Ưu tiên lấy danh mục Loại hình làm danh mục chính
                     let validTypeCat = pCats.find(c => {
                         let matched = allCategories.find(dbCat => createSafeSlug(dbCat.slug || dbCat.name) === createSafeSlug(c) && (!dbCat.group || dbCat.group === 'type'));
                         return matched;
@@ -489,7 +498,6 @@
                         breadcrumbCatName = beautifyCatName(activeCatSlug);
                     }
                     
-                    // Phân loại các tag của sản phẩm vào 3 nhóm để bôi sáng Dropdown
                     pCats.forEach(c => {
                         let matched = allCategories.find(dbCat => createSafeSlug(dbCat.slug || dbCat.name) === createSafeSlug(c));
                         if(matched) {
@@ -532,7 +540,7 @@
                 }
 
                 // =========================================================================
-                // IN CÁC DROPDOWN CHIA NHÓM VÀ LIÊN KẾT ĐÚNG LINK CHO TRANG CHI TIẾT
+                // IN CÁC DROPDOWN CHIA NHÓM VÀ LIÊN KẾT CHUẨN XÁC CHO SIDEBAR
                 // =========================================================================
                 let ddTypeHTML = '';
                 let ddPriceHTML = '';
@@ -560,11 +568,10 @@
                                 let fontWeight = isSelected ? '700' : '400';
                                 let bgHoverClass = isSelected ? 'background: rgba(197, 160, 89, 0.1);' : '';
                                 
-                                // LIÊN KẾT ĐÚNG CHUẨN ĐỂ CLICK VÀO LÀ VỀ TRANG DANH MỤC
                                 let itemUrl = `${safeBaseUrl}san-pham/${cleanSlug}/`;
                                 
                                 let itemHTML = `<a href="${itemUrl}" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${textColor}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${fontWeight}; ${bgHoverClass}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
-                                let sideHTML = `<a href="${itemUrl}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:${textColor}; font-weight: ${fontWeight}; text-decoration:none; border-bottom:1px solid #222;"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
+                                let sideHTML = `<a href="${itemUrl}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:${textColor}; font-weight: ${fontWeight}; text-decoration:none; border-bottom:1px solid #222; ${bgHoverClass}"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
                                 
                                 if (catGroup === 'price') { ddPriceHTML += itemHTML; sidePriceHTML += sideHTML; }
                                 else if (catGroup === 'loc') { ddLocHTML += itemHTML; sideLocHTML += sideHTML; }
@@ -577,7 +584,6 @@
                 // Gắn HTML vào Cột phải
                 let dynamicSidebarHTML = '';
                 
-                // Nút Bán/Thuê cho cột phải
                 let countBan = allProducts.filter(p => p.type === 'Bán').length;
                 let countThue = allProducts.filter(p => p.type === 'Thuê').length;
                 let topLinksHTML = `<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
@@ -593,7 +599,6 @@
                 let ddListPrice = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${!activeCatPrice ? '#c5a059' : '#b0b8c4'}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${!activeCatPrice ? '700' : '400'};"><span>Tất cả Khoảng giá</span></a>` + ddPriceHTML;
                 let ddListLoc = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${!activeCatLoc ? '#c5a059' : '#b0b8c4'}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${!activeCatLoc ? '700' : '400'};"><span>Tất cả Khu vực</span></a>` + ddLocHTML;
 
-                // Cập nhật Nhãn Dropdown
                 let lblType = "Loại hình"; let lblPrice = "Khoảng giá"; let lblLoc = "Khu vực";
                 if(activeCatType) { let n = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatType); if(n) lblType = n.title || n.name; }
                 if(activeCatPrice) { let n = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatPrice); if(n) lblPrice = n.title || n.name; }
@@ -609,7 +614,7 @@
                         viewedHistory.ids.unshift(prodIdForTracking);
                         if (viewedHistory.ids.length > 30) viewedHistory.ids.pop();
                     }
-                    let prodCats = Array.isArray(prod.cat) ? prod.cat : (typeof prod.cat === 'string' ? prod.cat.split(',') : []);
+                    let prodCats = extractCatsSafely(prod.cat);
                     prodCats.forEach(c => {
                         let cleanSlug = createSafeSlug(c);
                         if (cleanSlug && cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
@@ -626,7 +631,7 @@
                     let matchedByCat = allProducts.filter(p => {
                         let pSlug = p.slug || createSafeSlug(p.title);
                         if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false; 
-                        let pCats = Array.isArray(p.cat) ? p.cat : (typeof p.cat === 'string' ? p.cat.split(',') : []);
+                        let pCats = extractCatsSafely(p.cat);
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
                     matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
