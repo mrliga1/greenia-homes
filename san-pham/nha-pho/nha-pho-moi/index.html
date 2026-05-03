@@ -345,7 +345,11 @@
         function renderCardHTML(p) {
             let primaryCat = 'san-pham';
             if (p.cat) {
-                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+                if (Array.isArray(p.cat) && p.cat.length > 0) {
+                    primaryCat = p.cat[0];
+                } else if (typeof p.cat === 'string' && p.cat.trim() !== '') {
+                    primaryCat = p.cat.split(',')[0].trim();
+                }
             }
             
             const catSlug = createSafeSlug(primaryCat);
@@ -508,7 +512,7 @@
                 }
 
                 // =========================================================================
-                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI TỪ DATABASE CATEGORIES (ĐỌC NHÓM TỪ ADMIN)
+                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI (ĐỌC NHÓM TỪ ADMIN)
                 // =========================================================================
                 let countBan = allProducts.filter(p => p.type === 'Bán').length;
                 let countThue = allProducts.filter(p => p.type === 'Thuê').length;
@@ -520,6 +524,11 @@
 
                 let locLinesHTML = '';
                 let priceLinesHTML = '';
+                
+                // Mới: Khởi tạo biến lưu dropdown chia nhóm
+                let ddTypeHTML = '';
+                let ddPriceHTML = '';
+                let ddLocHTML = '';
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
 
                 if (allCategories && allCategories.length > 0) {
@@ -528,27 +537,44 @@
                     prodCategories.forEach(c => {
                         let catName = c.title || c.name || "";
                         let catSlug = createSafeSlug(c.slug || catName);
-                        let catGroup = c.group || 'type'; // Lấy nhóm từ Database Admin (type, price, loc)
+                        let catGroup = c.group || 'type'; 
                         
                         if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
                             let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
                             if (count > 0 || c.showEmpty) {
+                                // Cho Cột phải
                                 let lineHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
                                 
-                                if (catGroup === 'price') priceLinesHTML += lineHTML;
-                                else if (catGroup === 'loc') locLinesHTML += lineHTML;
-                                else typeLinesHTML += lineHTML;
+                                // Cho Dropdown Thanh ngang
+                                let isSelected = (activeCatSlug !== '' && catSlug === activeCatSlug) ? 'selected' : '';
+                                let itemHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item ${isSelected}" data-cat="${catSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
 
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                if (catGroup === 'price') {
+                                    priceLinesHTML += lineHTML;
+                                    ddPriceHTML += itemHTML;
+                                } else if (catGroup === 'loc') {
+                                    locLinesHTML += lineHTML;
+                                    ddLocHTML += itemHTML;
+                                } else {
+                                    typeLinesHTML += lineHTML;
+                                    ddTypeHTML += itemHTML;
+                                }
                             }
                         }
                     });
                 }
 
+                // Gắn HTML vào Cột phải
                 let dynamicSidebarHTML = '';
                 if (typeLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${typeLinesHTML}</div></div>`;
                 if (priceLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
                 if (locLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${locLinesHTML}</div></div>`;
+
+                // Gắn HTML vào Dropdown chia nhóm
+                if (ddTypeHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Loại hình</div>` + ddTypeHTML;
+                if (ddPriceHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Khoảng giá</div>` + ddPriceHTML;
+                if (ddLocHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Khu vực</div>` + ddLocHTML;
+
                 // =========================================================================
 
                 // XỬ LÝ LỊCH SỬ DUYỆT (GỢI Ý)
