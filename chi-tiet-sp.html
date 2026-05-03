@@ -7,8 +7,10 @@
     <meta name="description" content="{{DESC}}" />
     <meta name="keywords" content="{{KEYWORDS}}" />
     
+    <!-- CHUẨN HÓA LINK GỐC (SEO) -->
     <link rel="canonical" href="https://greeniahomes.vn/san-pham/{{CAT_SLUG}}/{{SLUG}}/" />
     
+    <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN ZALO, FACEBOOK -->
     <meta property="og:title" content="{{TITLE}}" />
     <meta property="og:description" content="{{DESC}}" />
     <meta property="og:image" content="{{IMG}}" />
@@ -30,6 +32,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
+    <!-- FIREBASE CHUẨN GỐC -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
@@ -328,7 +331,7 @@
             return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
-        // BỘ XỬ LÝ MẢNG SIÊU CẤP ĐỂ ĐỌC MỌI DỮ LIỆU TỪ ADMIN
+        // BỘ CÔNG CỤ XỬ LÝ MẢNG JSON CỰC MẠNH
         function extractCatsSafely(catData) {
             if (!catData) return [];
             if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
@@ -469,7 +472,7 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // ĐỌC THÔNG SỐ DANH MỤC CỦA SẢN PHẨM HIỆN TẠI
+                // XÁC ĐỊNH DANH MỤC CHO BREADCRUMB
                 let activeCatSlug = '';
                 let breadcrumbCatName = 'Sản phẩm';
                 let activeCatType = '';
@@ -503,8 +506,8 @@
                 }
 
                 if (!activeCatSlug) {
-                    const paths = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/').filter(Boolean);
-                    if (paths.length >= 2 && paths[0] === 'san-pham') {
+                    const paths = window.location.pathname.split('/').filter(Boolean);
+                    if (paths.length >= 3 && paths[paths.length - 3] === 'san-pham') {
                         activeCatSlug = createSafeSlug(paths[paths.length - 2]);
                         breadcrumbCatName = beautifyCatName(activeCatSlug);
                         activeCatType = activeCatSlug;
@@ -534,7 +537,7 @@
                 }
 
                 // =========================================================================
-                // IN CÁC DROPDOWN CHIA NHÓM (CÓ TRỎ ĐÚNG LINK SANG DANH MỤC)
+                // IN CÁC DROPDOWN CHIA NHÓM VÀ LIÊN KẾT CHUẨN XÁC CHO SIDEBAR
                 // =========================================================================
                 let ddTypeHTML = '';
                 let ddPriceHTML = '';
@@ -575,10 +578,11 @@
                     });
                 }
 
+                // Gắn HTML vào Cột phải
+                let dynamicSidebarHTML = '';
+                
                 let countBan = allProducts.filter(p => p.type === 'Bán').length;
                 let countThue = allProducts.filter(p => p.type === 'Thuê').length;
-                
-                let dynamicSidebarHTML = '';
                 let topLinksHTML = `<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
                 if(countBan > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
                 if(countThue > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
@@ -587,10 +591,12 @@
                 if (sidePriceHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${sidePriceHTML}</div></div>`;
                 if (sideLocHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${sideLocHTML}</div></div>`;
 
+                // Gắn HTML vào Dropdown chia nhóm ở thanh Navbar
                 let ddListType = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${!activeCatType ? '#c5a059' : '#b0b8c4'}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${!activeCatType ? '700' : '400'};"><span>Tất cả Loại hình</span></a>` + ddTypeHTML;
                 let ddListPrice = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${!activeCatPrice ? '#c5a059' : '#b0b8c4'}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${!activeCatPrice ? '700' : '400'};"><span>Tất cả Khoảng giá</span></a>` + ddPriceHTML;
                 let ddListLoc = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${!activeCatLoc ? '#c5a059' : '#b0b8c4'}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${!activeCatLoc ? '700' : '400'};"><span>Tất cả Khu vực</span></a>` + ddLocHTML;
 
+                // Cập nhật Nhãn Dropdown trên thanh Navbar
                 let lblType = "Loại hình"; let lblPrice = "Khoảng giá"; let lblLoc = "Khu vực";
                 if(activeCatType) { let n = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatType); if(n) lblType = n.title || n.name; }
                 if(activeCatPrice) { let n = allCategories.find(c => createSafeSlug(c.slug || c.name) === activeCatPrice); if(n) lblPrice = n.title || n.name; }
@@ -598,7 +604,7 @@
 
                 // =========================================================================
 
-                // XỬ LÝ LỊCH SỬ DUYỆT BẰNG HÀM MỚI CHỐNG LỖI MẢNG
+                // XỬ LÝ LỊCH SỬ DUYỆT (GỢI Ý)
                 let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
                 if (prod) {
@@ -647,10 +653,11 @@
                     <div class="gr-grid" id="related-grid">
                         ${smartRecommended.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${smartRecommended.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rec-more" class="s1-btn" onclick="loadMoreRec(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : ''}
+                    ${smartRecommended.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rec-more" class="s1-btn" onclick="loadMoreRec(event)">XEM THÊM BẤT ĐỘNG SẢN KHÁC <i class="fas fa-chevron-down"></i></button></div>` : ''}
                     `;
                 }
 
+                // 5. MAP
                 let mapHTML = '<div style="padding:20px;text-align:center;color:#888;">Đang cập nhật vị trí.</div>';
                 if(prod.map && prod.map !== "{{MAP_JSON}}") {
                     if(prod.map.includes('<iframe')) mapHTML = prod.map;
@@ -660,6 +667,7 @@
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
+                // BƠM KHỐI BÁN/THUÊ THÀNH DẠNG GRID (CÓ LOAD MORE KÉP)
                 const allSaleProds = allProducts.filter(p => p.type === 'Bán');
                 window.allSaleProdsData = allSaleProds;
                 let saleHTML = allSaleProds.length > 0 ? `
@@ -667,7 +675,7 @@
                     <div class="gr-grid" id="sale-grid">
                         ${allSaleProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
+                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM BẤT ĐỘNG SẢN BÁN <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
                 ` : '';
 
                 const allRentProds = allProducts.filter(p => p.type === 'Thuê');
@@ -677,7 +685,7 @@
                     <div class="gr-grid" id="rent-grid">
                         ${allRentProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
+                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM BẤT ĐỘNG SẢN CHO THUÊ <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
                 ` : '';
 
                 let projHTML = '';
