@@ -55,12 +55,12 @@
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
         .luc-nav-right-group { display: flex; align-items: center; }
         
-        .luc-nav-item { cursor: pointer; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 13px; font-weight: 500; transition: 0.3s; border-radius: 8px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
+        .luc-nav-item { cursor: pointer; padding: 1px 1px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 8px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
         .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1) !important; color: #c5a059 !important; border-color: #c5a059 !important; }
         
         #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
-        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 32px; }
-        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 12px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; font-size: 10px; height: 25px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 10px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
         
         .luc-nav-group { position: relative; display: inline-block; }
         .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
@@ -111,8 +111,9 @@
         .v261-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.15); filter: brightness(1.1); }
         
         .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
-        .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; text-transform:uppercase;}
+        .v261-cat .h { background:#1a1f2e; padding:5px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; text-transform:uppercase;}
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
+        .v261-cat a { font-size: 12px !important; }
         
         .v261-gallery-container { width: 100%; position: relative; }
         .v261-gal-main-wrapper { position:relative; width:100%; height:450px; background: #000; overflow:hidden; border-bottom:1px solid #333; }
@@ -572,8 +573,8 @@
                                 
                                 let itemUrl = `${safeBaseUrl}san-pham/${cleanSlug}/`;
                                 
-                                let itemHTML = `<a href="${itemUrl}" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${textColor}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${fontWeight}; ${bgHoverClass}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
-                                let sideHTML = `<a href="${itemUrl}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:${textColor}; font-weight: ${fontWeight}; text-decoration:none; border-bottom:1px solid #222; ${bgHoverClass}"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
+                                let itemHTML = `<a href="${itemUrl}" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${textColor}; font-size: 12px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${fontWeight}; ${bgHoverClass}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                let sideHTML = `<a href="${itemUrl}" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 1px 20px; color:${textColor}; font-weight: ${fontWeight}; text-decoration:none; border-bottom:1px solid #222; ${bgHoverClass}"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
                                 
                                 if (catGroup === 'price') { ddPriceHTML += itemHTML; sidePriceHTML += sideHTML; }
                                 else if (catGroup === 'loc') { ddLocHTML += itemHTML; sideLocHTML += sideHTML; }
@@ -589,8 +590,8 @@
                 let countBan = allProducts.filter(p => p.type === 'Bán').length;
                 let countThue = allProducts.filter(p => p.type === 'Thuê').length;
                 let topLinksHTML = `<a href="${safeBaseUrl}san-pham/" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                if(countBan > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
-                if(countThue > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
+                if(countBan > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 1px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
+                if(countThue > 0) topLinksHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 1px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
 
                 if (sideTypeHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${topLinksHTML}${sideTypeHTML}</div></div>`;
                 if (sidePriceHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${sidePriceHTML}</div></div>`;
@@ -719,7 +720,7 @@
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
-                                <div class="luc-nav-item active" id="tab-intro">Chi tiết Sản phẩm</div>
+                                <div class="luc-nav-item active" id="tab-intro">Chi tiết</div>
                                 <a href="${safeBaseUrl}san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
                                 <a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="luc-nav-item" id="tab-ban">Bán</a>
                                 <a href="${safeBaseUrl}san-pham/cho-thue/" class="luc-nav-item" id="tab-thue">Cho thuê</a>
