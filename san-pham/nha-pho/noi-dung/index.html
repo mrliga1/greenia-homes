@@ -6,18 +6,35 @@
     <title>qqqqqqqqqq | Greenia Homes</title>
     <meta name="description" content="qqqqqqqqq" />
     <meta name="keywords" content="qqqqqqqqqqq" />
-    <link rel="canonical" href="/san-pham/nha-pho/noi-dung/" />
+    
+    <!-- CHUẨN HÓA LINK GỐC (SEO) -->
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/noi-dung/" />
+    
+    <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN ZALO, FACEBOOK -->
     <meta property="og:title" content="qqqqqqqqqq" />
     <meta property="og:description" content="qqqqqqqqq" />
-    <meta property="og:url" content="/san-pham/nha-pho/noi-dung/" />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://i.ibb.co/dJXkSn5m/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/noi-dung/" />
+    <meta property="og:type" content="article" />
+    
+    <script>
+        window.BASE_URL = '/';
+        var checkId = "53";
+        if (checkId.includes("{{") || checkId === "") {
+            window.location.replace(window.BASE_URL + 'san-pham.html');
+        }
+    </script>
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="/favicon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- FIREBASE CHUẨN GỐC -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: clip !important;}
@@ -28,25 +45,26 @@
         .luc-clearfix { clear: both; display: block; width: 100%; height: 1px; }
         .luc-spacer { height: 0px; width: 100%; display: block; margin-top: 20px; }
         
-        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 0px; z-index: 10 !important; background-color: #05080f; padding: 5px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s, background 0.3s; }
-        .luc-sticky-wrapper.is-stuck { top: 0px; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
+        .luc-sticky-wrapper { background-color: #05080f; padding: 0px 0; margin-bottom: 0px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: all 0.3s ease; z-index: 99999 !important; width: 100%; }
+        .luc-sticky-wrapper.is-stuck { position: fixed; top: 0; left: 0; right: 0; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); animation: luxSlideDown 0.4s ease; }
+        @keyframes luxSlideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
         
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
         .luc-nav-left-group { display: flex; align-items: center; gap: 0px; flex-wrap: wrap; }
         .luc-nav-right-group { display: flex; align-items: center; }
         
-        .luc-nav-item { cursor: pointer; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 20px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
+        .luc-nav-item { cursor: pointer; padding: 2px 8px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; transition: 0.3s; border-radius: 10px; white-space: nowrap; background: transparent; margin-right: 8px; text-decoration: none !important; display: inline-block;}
         .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
         
         #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
-        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 8px 30px 8px 15px; border-radius: 30px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 34px; }
-        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 13px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 5px 10px; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 25px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 12px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
         
         .luc-nav-group { position: relative; display: inline-block; }
         .luc-dd-trigger { padding-right: 15px; } .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
         .luc-dropdown { position: absolute !important; top: 100% !important; left: 0 !important; min-width: 180px; background: #0b1120; border: 1px solid #c5a059; border-radius: 6px; padding: 5px 0; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.9); z-index: 1000; margin-top: 10px !important; }
         .luc-nav-group.active-drop .luc-dropdown { display: block; animation: luxFadeIn 0.3s; }
-        .luc-drop-item { padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
+        .luc-drop-item { display: block; padding: 8px 15px; color: #b0b8c4; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-decoration: none;}
         .luc-drop-item:hover { background: rgba(197, 160, 89, 0.1); color: #c5a059; }
         .luc-drop-item.selected { color: #c5a059; font-weight: 700; background: rgba(197, 160, 89, 0.1); }
         @keyframes luxFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -90,8 +108,8 @@
         .v261-btn.bl { background: linear-gradient(135deg, #0068ff 0%, #00a8ff 100%); box-shadow: 0 4px 15px rgba(0, 104, 255, 0.4); }
         .v261-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.15); filter: brightness(1.1); }
         
-        .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; height:100%; overflow:hidden; display:flex; flex-direction:column; }
-        .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; }
+        .v261-cat { background:#0b1120; border:1px dashed #c5a059; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; margin-bottom: 20px; }
+        .v261-cat .h { background:#1a1f2e; padding:10px; font-weight:700; font-size:13px; color:#fff; text-align:center; border-bottom:1px solid #c5a059; text-transform:uppercase;}
         .v261-cat .l { overflow-y:auto; flex-grow:1; padding:0; max-height: 400px; }
         .v261-cat a { display:flex; justify-content:space-between; padding:10px; color:#b0b8c4; font-size:12px; text-decoration:none; border-bottom:1px solid #222; }
         .v261-cat a:hover { color:#c5a059; background:#1a1f2e; }
@@ -161,13 +179,17 @@
         .v261-lb-nav:hover { background:rgba(197, 160, 89, 0.2); border-color:#c5a059; color:#c5a059; transform:translateY(-50%) scale(1.1); box-shadow:0 0 15px rgba(197, 160, 89, 0.3); }
         .v261-lb-nav.prev { left:30px; } .v261-lb-nav.next { right:30px; }
 
-        /* CAROUSELS CHUẨN */
+        /* CAROUSELS VÀ GRID CHUẨN */
         .s-head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(35, 45, 69, 1); padding-bottom: 8px; margin-bottom: 15px; margin-top: 40px; }
         .s-tit { font-size: 20px !important; font-weight: 500; color: #fff; text-transform: uppercase; border-left: 4px solid #c5a059; padding-left: 15px; margin: 0; line-height: 1; }
+        
         .gr-carousel-wrapper { position: relative; }
         .gr-carousel { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 10px; scroll-behavior: smooth; scrollbar-width: none;}
         .gr-carousel::-webkit-scrollbar { display: none; }
         .gr-carousel .s2-card { flex: 0 0 calc(20% - 16px); max-width: calc(20% - 16px); }
+
+        /* LƯỚI GRID CHO KHỐI GỢI Ý, BÁN VÀ CHO THUÊ */
+        .gr-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-bottom: 10px; }
         
         .s2-card { background: #0b1120; border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; text-decoration: none;}
         .s2-card:hover { border-color: #c5a059; transform: translateY(-5px); }
@@ -187,17 +209,22 @@
         .gr-nav-btn:hover { background: #c5a059; color: #000; border-color: #c5a059; }
         .gr-prev { left: -15px; } .gr-next { right: -15px; }
 
-        @media (max-width: 1024px) { .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } }
+        @media (max-width: 1200px) { .gr-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 1024px) { 
+            .v261-intro { flex-wrap: wrap; } .v261-c1 { width: 100%; margin-bottom: 20px; } .v261-c2 { width: 58%; } .v261-c3 { width: 38%; } 
+            .gr-grid { grid-template-columns: repeat(3, 1fr); }
+        }
         @media (max-width: 767px) { 
             .v261-intro { flex-direction: column; } 
             .v261-c1, .v261-c2, .v261-c3 { width: 100%; position: relative !important; top: 0 !important;} 
             .v261-specs { grid-template-columns: 1fr 1fr; } 
             .v261-lb-nav { width:40px; height:40px; font-size:16px; } .v261-lb-nav.prev { left:10px; } .v261-lb-nav.next { right:10px; } .v261-lb-close { right:10px; top:10px; } .v261-lb-body { padding:0; }
-            .luc-nav-bar { flex-direction: column; align-items: flex-start; gap: 10px; } 
+            .luc-nav-bar { flex-direction: column; align-items: flex-start; gap: 0px; } 
             .luc-nav-left-group { width: 100%; overflow-x: auto; flex-wrap: nowrap; } 
             .luc-nav-right-group { width: 100%; } 
             #luc-search-form { width: 100%; }
             .gr-carousel .s2-card { flex: 0 0 100% !important; max-width: 100% !important; }
+            .gr-grid { grid-template-columns: 1fr; }
             .gr-nav-btn { display: none !important; }
         }
 
@@ -210,9 +237,6 @@
             z-index: 99999999 !important; 
         }
     </style>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -259,7 +283,7 @@
         }
         const db = firebase.firestore();
 
-        // BẢO VỆ CHỐNG LỖI CÚ PHÁP
+        // BẢO VỆ CHỐNG LỖI CÚ PHÁP TỪ TRÌNH BIÊN DỊCH
         let defaultProduct = null;
         try { 
             defaultProduct = {
@@ -289,9 +313,9 @@
         } catch(e) {}
         window.GREENIA_CURRENT_PRODUCT = defaultProduct;
 
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        const safeBaseUrl = window.BASE_URL;
         
-        const u_logo = 'https://mrliga1.github.io/greenia-homes/assets/images/logo-greenia-homes.png'; 
+        const u_logo = '/assets/images/logo-greenia-homes.png'; 
         const zalo_img = 'https://cdn.haitrieu.com/wp-content/uploads/2022/01/Logo-Zalo-Arc.png';
         const phone_img = 'https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png'; 
         
@@ -301,11 +325,6 @@
         let autoPlayInterval;
         let allProducts = [];
         let allCategories = [];
-
-        let filteredData = [];
-        const itemsPerPage = 10;
-        let currentPage = 1;
-        let filterState = { type: '', cat: '', keyword: '' };
 
         function createSafeSlug(title) {
             if(!title) return 'san-pham';
@@ -327,13 +346,23 @@
         }
 
         function renderCardHTML(p) {
-            const pCat = p.cat ? String(p.cat) : 'san-pham';
-            const catSlug = createSafeSlug(pCat);
+            let primaryCat = 'san-pham';
+            if (p.cat) {
+                if (Array.isArray(p.cat) && p.cat.length > 0) {
+                    primaryCat = p.cat[0];
+                } else if (typeof p.cat === 'string' && p.cat.trim() !== '') {
+                    primaryCat = p.cat.split(',')[0].trim();
+                }
+            }
+            
+            const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
+            
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+            
             const locStr = p.loc ? String(p.loc) : '';
             const locHtml = locStr ? `<div class="gr-loc"><i class="fas fa-map-marker-alt"></i> ${locStr.substring(0,40)}...</div>` : '';
             const areaHtml = p.area ? `<span class="gr-hl" style="font-size:12px;font-weight:400;">${p.area} m²</span>` : '';
@@ -343,7 +372,7 @@
             <a href="${link}" class="s2-card">
                 <div class="s2-thumb-box">
                     <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                    <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
                 <div class="s2-body">
                     <h3 class="gr-tit s2-tit">${p.title}</h3>
@@ -356,23 +385,68 @@
             </a>`;
         }
 
-        document.addEventListener("DOMContentLoaded", async function() {
-            const filterBar = document.getElementById('luc-filter-bar');
-            if(filterBar) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 100) filterBar.classList.add('is-stuck');
-                    else filterBar.classList.remove('is-stuck');
-                });
+        function autoGenerateSingleProductSchema(prodData) {
+            const oldSchema = document.getElementById('gr-dynamic-schema-single');
+            if (oldSchema) oldSchema.remove();
+
+            const pTitle = prodData.title || "Sản phẩm Bất động sản";
+            const pImage = window.resolveImg ? window.resolveImg(prodData.img) : (prodData.img || "https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png");
+            
+            let rawPrice = 0;
+            if(prodData.price) {
+                let priceStr = String(prodData.price).toLowerCase();
+                let numPart = parseFloat(priceStr.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                if (!isNaN(numPart)) {
+                    if(priceStr.includes('tỷ')) rawPrice = numPart * 1000000000;
+                    else if (priceStr.includes('triệu')) rawPrice = numPart * 1000000;
+                    else rawPrice = numPart;
+                }
             }
 
+            let cleanDesc = "Đang cập nhật mô tả.";
+            if(prodData.content) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = prodData.content;
+                cleanDesc = tempDiv.textContent.replace(/(\r\n|\n|\r)/gm, " ").substring(0, 200) + '...';
+            }
+
+            const schemaObj = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": pTitle,
+                "image": pImage,
+                "description": cleanDesc,
+                "brand": {
+                    "@type": "Brand",
+                    "name": "Greenia Homes"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "url": window.location.href,
+                    "priceCurrency": "VND",
+                    "price": rawPrice,
+                    "availability": "https://schema.org/InStock",
+                    "itemCondition": "https://schema.org/NewCondition"
+                },
+                "additionalProperty": []
+            };
+
+            if(prodData.area) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Diện tích", "value": prodData.area + " m2"});
+            if(prodData.bed) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Phòng ngủ", "value": prodData.bed});
+            if(prodData.loc) schemaObj.additionalProperty.push({"@type": "PropertyValue", "name": "Vị trí", "value": prodData.loc});
+
+            const script = document.createElement('script');
+            script.id = 'gr-dynamic-schema-single';
+            script.type = "application/ld+json";
+            script.text = JSON.stringify(schemaObj);
+            document.head.appendChild(script);
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
             const container = document.getElementById('sp-container');
             const prod = window.GREENIA_CURRENT_PRODUCT; 
 
-            // Lệnh bảo vệ: Tránh mở trực tiếp file khuôn rỗng
-            if (!prod || String(prod.id).includes("{{") || prod.id === "") { 
-                window.location.replace(safeBaseUrl + 'san-pham.html'); 
-                return; 
-            }
+            autoGenerateSingleProductSchema(prod);
 
             try {
                 const [prodSnap, catSnap, projSnap] = await Promise.all([
@@ -385,7 +459,6 @@
                 allCategories = catSnap.docs.map(doc => doc.data());
                 let independentProjects = projSnap.docs.map(doc => doc.data()).sort((a,b) => b.id - a.id);
 
-                // 1. TẠO MEDIA LIST
                 mediaList = [];
                 if(prod.video) mediaList.push({type: 'video', url: prod.video, thumb: 'https://via.placeholder.com/800x450?text=Video+Preview'});
                 if(prod.img) mediaList.push({type: 'image', url: window.resolveImg ? window.resolveImg(prod.img) : prod.img});
@@ -394,7 +467,6 @@
                 }
                 if(mediaList.length === 0) mediaList.push({type: 'image', url: 'https://via.placeholder.com/800x450?text=No+Image'});
 
-                // 2. BÓC TÁCH DANH MỤC HIỆN TẠI
                 let activeCatSlug = '';
                 let breadcrumbCatName = 'Sản phẩm';
                 
@@ -442,9 +514,73 @@
                     }
                 }
 
-                // 3. DANH MỤC Ở CỘT PHẢI
-                let countBan = 0, countThue = 0;
+                // =========================================================================
+                // 3. TẠO TỰ ĐỘNG DANH MỤC CỘT PHẢI (ĐỌC NHÓM TỪ ADMIN)
+                // =========================================================================
+                let countBan = allProducts.filter(p => p.type === 'Bán').length;
+                let countThue = allProducts.filter(p => p.type === 'Thuê').length;
+
+                let typeLinesHTML = `<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
                 
+                if(countBan > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
+                if(countThue > 0) typeLinesHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
+
+                let locLinesHTML = '';
+                let priceLinesHTML = '';
+                
+                // Mới: Khởi tạo biến lưu dropdown chia nhóm
+                let ddTypeHTML = '';
+                let ddPriceHTML = '';
+                let ddLocHTML = '';
+                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
+
+                if (allCategories && allCategories.length > 0) {
+                    let prodCategories = allCategories.filter(c => c.type === 'prod'); 
+                    
+                    prodCategories.forEach(c => {
+                        let catName = c.title || c.name || "";
+                        let catSlug = createSafeSlug(c.slug || catName);
+                        let catGroup = c.group || 'type'; 
+                        
+                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong' && catName !== '') {
+                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
+                            if (count > 0 || c.showEmpty) {
+                                // Cho Cột phải
+                                let lineHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${catName}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
+                                
+                                // Cho Dropdown Thanh ngang
+                                let isSelected = (activeCatSlug !== '' && catSlug === activeCatSlug) ? 'selected' : '';
+                                let itemHTML = `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item ${isSelected}" data-cat="${catSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+
+                                if (catGroup === 'price') {
+                                    priceLinesHTML += lineHTML;
+                                    ddPriceHTML += itemHTML;
+                                } else if (catGroup === 'loc') {
+                                    locLinesHTML += lineHTML;
+                                    ddLocHTML += itemHTML;
+                                } else {
+                                    typeLinesHTML += lineHTML;
+                                    ddTypeHTML += itemHTML;
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gắn HTML vào Cột phải
+                let dynamicSidebarHTML = '';
+                if (typeLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">DANH MỤC SẢN PHẨM</div><div class="l">${typeLinesHTML}</div></div>`;
+                if (priceLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHOẢNG GIÁ</div><div class="l">${priceLinesHTML}</div></div>`;
+                if (locLinesHTML !== '') dynamicSidebarHTML += `<div class="v261-cat" style="margin-bottom: 20px;"><div class="h">KHU VỰC / VỊ TRÍ</div><div class="l">${locLinesHTML}</div></div>`;
+
+                // Gắn HTML vào Dropdown chia nhóm
+                if (ddTypeHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Loại hình</div>` + ddTypeHTML;
+                if (ddPriceHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Khoảng giá</div>` + ddPriceHTML;
+                if (ddLocHTML !== '') ddListHTML += `<div style="padding: 8px 15px; font-weight: 800; color: #c5a059; font-size: 11px; text-transform: uppercase; background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.2);">Khu vực</div>` + ddLocHTML;
+
+                // =========================================================================
+
+                // XỬ LÝ LỊCH SỬ DUYỆT (GỢI Ý)
                 let prodIdForTracking = prod.slug || createSafeSlug(prod.title);
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
                 if (prod) {
@@ -464,31 +600,6 @@
                     localStorage.setItem('greenia_smart_history', JSON.stringify(viewedHistory));
                 }
 
-                let rightSidebarCatHTML = `<a href="${safeBaseUrl}san-pham.html" style="font-weight: 700; color: #c5a059; background: rgba(197, 160, 89, 0.08); border-bottom: 1px solid rgba(197, 160, 89, 0.4); display:flex; justify-content:space-between; padding:10px; text-decoration:none;"><span>Tất cả danh mục</span></a>`;
-                let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
-                
-                allProducts.forEach(p => {
-                    if(p.type === 'Bán') countBan++;
-                    else if(p.type === 'Thuê') countThue++;
-                });
-
-                if(countBan > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/chuyen-nhuong/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Chuyển nhượng</span><span style="color:#666; font-size:11px;">(${countBan})</span></a>`;
-                if(countThue > 0) rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/cho-thue/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>Cho thuê</span><span style="color:#666; font-size:11px;">(${countThue})</span></a>`;
-                
-                if (allCategories && allCategories.length > 0) {
-                    allCategories.forEach(c => {
-                        let catSlug = createSafeSlug(c.slug || c.name);
-                        if (catSlug !== 'ban' && catSlug !== 'cho-thue' && catSlug !== 'chuyen-nhuong') {
-                            let count = allProducts.filter(p => isCatMatch(p, catSlug)).length;
-                            if (count > 0 || c.showEmpty) {
-                                rightSidebarCatHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" style="padding-left: 20px; display:flex; justify-content:space-between; padding:10px 10px 10px 20px; color:#b0b8c4; text-decoration:none; border-bottom:1px solid #222;"><span>${beautifyCatName(c.name || c.slug)}</span><span style="color:#666; font-size:11px;">(${count})</span></a>`;
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${catSlug}/" class="luc-drop-item" data-cat="${catSlug}" data-name="${beautifyCatName(c.name || c.slug)}"><span>${beautifyCatName(c.name || c.slug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
-                            }
-                        }
-                    });
-                }
-
-                // 4. CAROUSEL GỢI Ý
                 let smartRecommended = [];
                 if (viewedHistory.cats.length > 0) {
                     let matchedByCat = allProducts.filter(p => {
@@ -498,29 +609,28 @@
                         return pCats.some(c => viewedHistory.cats.includes(createSafeSlug(c)));
                     });
                     matchedByCat = matchedByCat.sort(() => 0.5 - Math.random());
-                    smartRecommended = matchedByCat.slice(0, 10);
+                    smartRecommended = matchedByCat.slice(0, 20); 
                 }
                 
-                if (smartRecommended.length < 10) {
+                if (smartRecommended.length < 20) {
                     let fallbackProds = allProducts.filter(p => {
                         let pSlug = p.slug || createSafeSlug(p.title);
                         if (pSlug === (prod.slug || createSafeSlug(prod.title))) return false;
                         return !smartRecommended.some(sp => (sp.slug || createSafeSlug(sp.title)) === pSlug);
-                    }).sort(() => 0.5 - Math.random()).slice(0, 10 - smartRecommended.length);
+                    }).sort(() => 0.5 - Math.random()).slice(0, 20 - smartRecommended.length);
                     smartRecommended = [...smartRecommended, ...fallbackProds];
                 }
 
+                window.smartRecommendedData = smartRecommended;
                 let relatedHTML = '';
                 if(smartRecommended.length > 0) {
                     relatedHTML = `
                     <div class="s-head"><h2 class="s-tit">Bất động sản dành cho bạn</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'related-scroll')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="related-scroll" class="gr-carousel">
-                            ${smartRecommended.map(p => renderCardHTML(p)).join('')}
-                        </div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'related-scroll')"><i class="fas fa-chevron-right"></i></button>
-                    </div>`;
+                    <div class="gr-grid" id="related-grid">
+                        ${smartRecommended.slice(0, 10).map(p => renderCardHTML(p)).join('')}
+                    </div>
+                    ${smartRecommended.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rec-more" class="s1-btn" onclick="loadMoreRec(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : ''}
+                    `;
                 }
 
                 // 5. MAP
@@ -533,27 +643,25 @@
                 const shareLink = encodeURIComponent(window.location.href);
                 const contentStr = prod.content ? String(prod.content) : '';
 
-                // BƠM CAROUSEL MỚI NHẤT VÀ DỰ ÁN
-                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
-                let saleHTML = saleProds.length > 0 ? `
+                // BƠM KHỐI BÁN/THUÊ THÀNH DẠNG GRID (CÓ LOAD MORE KÉP)
+                const allSaleProds = allProducts.filter(p => p.type === 'Bán');
+                window.allSaleProdsData = allSaleProds;
+                let saleHTML = allSaleProds.length > 0 ? `
                     <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất bán mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'sale-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="sale-scroll-latest" class="gr-carousel">${saleProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'sale-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    <div class="gr-grid" id="sale-grid">
+                        ${allSaleProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem thêm BĐS Bán</a></div>
+                    ${allSaleProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-sale-more" class="s1-btn" onclick="loadMoreSale(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/chuyen-nhuong/" class="s1-btn">Xem tất cả BĐS Bán</a></div>`}
                 ` : '';
 
-                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
-                let rentHTML = rentProds.length > 0 ? `
+                const allRentProds = allProducts.filter(p => p.type === 'Thuê');
+                window.allRentProdsData = allRentProds;
+                let rentHTML = allRentProds.length > 0 ? `
                     <div class="s-head" style="margin-top:60px;"><h2 class="s-tit">Tin nhà đất cho thuê mới nhất</h2></div>
-                    <div class="gr-carousel-wrapper">
-                        <button class="gr-nav-btn gr-prev" onclick="grScroll(-1, 'rent-scroll-latest')"><i class="fas fa-chevron-left"></i></button>
-                        <div id="rent-scroll-latest" class="gr-carousel">${rentProds.map(p => renderCardHTML(p)).join('')}</div>
-                        <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'rent-scroll-latest')"><i class="fas fa-chevron-right"></i></button>
+                    <div class="gr-grid" id="rent-grid">
+                        ${allRentProds.slice(0, 10).map(p => renderCardHTML(p)).join('')}
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem thêm BĐS Cho thuê</a></div>
+                    ${allRentProds.length > 10 ? `<div class="s2-footer" style="margin-top:0;"><button id="btn-rent-more" class="s1-btn" onclick="loadMoreRent(event)">XEM THÊM <i class="fas fa-chevron-down"></i></button></div>` : `<div class="s2-footer" style="margin-top:0;"><a href="${safeBaseUrl}san-pham/cho-thue/" class="s1-btn">Xem tất cả BĐS Cho thuê</a></div>`}
                 ` : '';
 
                 let projHTML = '';
@@ -566,17 +674,19 @@
                             ${independentProjects.slice(0, 10).map(p => {
                                 const imgUrl = window.resolveImg ? window.resolveImg(p.img) : p.img;
                                 return `<a href="${p.link}" class="s2-card">
-                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}"></div>
+                                    <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>
                                     <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
                                 </a>`;
                             }).join('')}
                         </div>
                         <button class="gr-nav-btn gr-next" onclick="grScroll(1, 'feat-scroll')"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="s2-footer"><a href="${safeBaseUrl}du-an.html" class="s1-btn">Xem thêm Dự án</a></div>`;
+                    <div class="s2-footer"><a href="${safeBaseUrl}du-an/" class="s1-btn">Xem thêm Dự án</a></div>`;
                 }
 
+                // IN DỮ LIỆU RA GIAO DIỆN
                 container.innerHTML = `
+                    <div id="luc-filter-placeholder"></div>
                     <div class="luc-sticky-wrapper" id="luc-filter-bar">
                         <div class="luc-nav-bar">
                             <div class="luc-nav-left-group" id="luc-tabs-container">
@@ -592,7 +702,7 @@
                                 </div>
                             </div>
                             <div class="luc-nav-right-group">
-                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="return false;">
+                                <form id="luc-search-form" class="luc-input-wrap" onsubmit="window.location.href='${safeBaseUrl}san-pham.html?keyword=' + document.getElementById('luc-keyword').value; return false;">
                                     <input type="text" id="luc-keyword" placeholder="Tìm dự án, khu vực..." autocomplete="off">
                                     <button type="submit" id="luc-search-btn"><i class="fas fa-search"></i></button>
                                 </form>
@@ -618,8 +728,8 @@
                                         ${mediaList.map((item, k) => `
                                             <div class="v261-gal-item" data-index="${k}">
                                                 ${item.type === 'video' ? 
-                                                    `<div class="v261-vid-wrap" onclick="v261OpenLB(${k})"><i class="fas fa-play-circle v261-play-icon"></i><div class="v261-vid-overlay"></div><img src="${item.thumb}" class="v261-vid-thumb"></div>` : 
-                                                    `<img src="${item.url}" onclick="v261OpenLB(${k})">`
+                                                    `<div class="v261-vid-wrap" onclick="v261OpenLB(${k})"><i class="fas fa-play-circle v261-play-icon"></i><div class="v261-vid-overlay"></div><img src="${item.thumb}" class="v261-vid-thumb" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>` : 
+                                                    `<img src="${item.url}" onclick="v261OpenLB(${k})" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800';">`
                                                 }
                                             </div>
                                         `).join('')}
@@ -630,7 +740,7 @@
                                 <div class="v261-gal-thumbs" id="gal-thumbs">
                                     ${mediaList.map((item, k) => `
                                         <div class="v261-thumb-item ${k === 0 ? 'active' : ''}" onclick="v261GoTo(${k})">
-                                            ${item.type === 'video' ? `<i class="fas fa-video v261-th-icon"></i><img src="${item.thumb}">` : `<img src="${item.url}">`}
+                                            ${item.type === 'video' ? `<i class="fas fa-video v261-th-icon"></i><img src="${item.thumb}">` : `<img src="${item.url}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=150';">`}
                                         </div>
                                     `).join('')}
                                 </div>
@@ -691,10 +801,7 @@
                         </div>
 
                         <div class="v261-c3">
-                            <div class="v261-cat">
-                                <div class="h">DANH MỤC SẢN PHẨM</div>
-                                <div class="l">${rightSidebarCatHTML}</div>
-                            </div>
+                            ${dynamicSidebarHTML}
                         </div>
                     </div>
 
@@ -713,23 +820,19 @@
 
                 setTimeout(initGallery, 300);
                 
-                const searchForm = document.getElementById('luc-search-form');
-                if(searchForm) {
-                    searchForm.addEventListener('submit', function(e) {
-                        e.preventDefault(); 
-                        const val = document.getElementById('luc-keyword').value.trim();
-                        if(val !== '') { 
-                            filterState.keyword = val;
-                            document.getElementById('luc-intro-section').style.display = 'none';
-                            document.querySelector('.gr-breadcrumbs').style.display = 'none';
-                            document.getElementById('luc-grid-main-container').style.display = 'block';
-                            runFilter(); 
-                            window.scrollTo({ top: document.getElementById('luc-grid-anchor').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+                const filterBar = document.getElementById('luc-filter-bar');
+                if(filterBar) {
+                    const placeholder = document.getElementById('luc-filter-placeholder');
+                    window.addEventListener('scroll', () => {
+                        if (window.scrollY > 120) {
+                            filterBar.classList.add('is-stuck');
+                            if(placeholder) placeholder.style.height = filterBar.offsetHeight + 'px';
+                        } else {
+                            filterBar.classList.remove('is-stuck');
+                            if(placeholder) placeholder.style.height = '0px';
                         }
                     });
                 }
-
-                document.getElementById('luc-load-more-btn').addEventListener('click', function() { this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải..."; currentPage++; setTimeout(() => runFilter(true), 300); });
                 
                 const ddGroup = document.getElementById('luc-cat-dropdown-group');
                 if(ddGroup) {
@@ -745,47 +848,69 @@
             }
         });
 
-        function runFilter(isLoadMore = false) {
-            if(!isLoadMore) currentPage = 1;
-            
-            filteredData = allProducts.filter(p => {
-                if(filterState.keyword !== '') {
-                    const kw = filterState.keyword.toLowerCase();
-                    return (p.title && String(p.title).toLowerCase().includes(kw)) || 
-                           (p.loc && String(p.loc).toLowerCase().includes(kw)) || 
-                           (p.cat && String(p.cat).toLowerCase().includes(kw));
+        // ==========================================
+        // CÁC HÀM AJAX LOAD MORE KÉP (DÀNH CHO GRID)
+        // ==========================================
+        window.recPage = 1;
+        window.loadMoreRec = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-rec-more');
+            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+            setTimeout(() => {
+                window.recPage++;
+                const nextItems = window.smartRecommendedData.slice((window.recPage - 1) * 10, window.recPage * 10);
+                document.getElementById('related-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                if(window.recPage * 10 >= window.smartRecommendedData.length) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.innerHTML = "XEM THÊM BẤT ĐỘNG SẢN KHÁC <i class='fas fa-chevron-down'></i>";
                 }
-                return true;
-            });
+            }, 400);
+        };
 
-            const statusDiv = document.getElementById('luc-search-status');
-            if(filterState.keyword !== '') {
-                statusDiv.style.display = 'flex';
-                statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='clearLucSearch()'>Xóa</span>`;
-            } else { statusDiv.style.display = 'none'; }
-
-            const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
-            const grid = document.getElementById('luc-grid-result');
-            
-            if(paginatedData.length > 0) {
-                grid.innerHTML = paginatedData.map(p => renderCardHTML(p)).join('');
+        window.saleClickCount = 0;
+        window.loadMoreSale = function(e) {
+            e.preventDefault();
+            if(window.saleClickCount === 0) {
+                const btn = document.getElementById('btn-sale-more');
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allSaleProdsData.slice(10, 20);
+                    document.getElementById('sale-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.saleClickCount++;
+                    
+                    if(window.allSaleProdsData.length <= 20) {
+                         btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
+                    } else {
+                         btn.innerHTML = "XEM TẤT CẢ BĐS BÁN <i class='fas fa-arrow-right'></i>";
+                    }
+                }, 400);
             } else {
-                grid.innerHTML = "<div style='grid-column:1/-1;text-align:center;padding:50px;color:#888;'>Không tìm thấy sản phẩm phù hợp.</div>";
+                window.location.href = window.BASE_URL + 'san-pham/chuyen-nhuong/';
             }
+        };
 
-            const loadBtnWrap = document.querySelector('.luc-load-wrap');
-            if(paginatedData.length >= filteredData.length) { loadBtnWrap.style.display = 'none'; } 
-            else { loadBtnWrap.style.display = 'block'; document.getElementById('luc-load-more-btn').innerHTML = "XEM THÊM <i class='fas fa-chevron-down'></i>"; }
-        }
-        
-        window.clearLucSearch = function() { 
-            document.getElementById('luc-keyword').value = '';
-            filterState.keyword = '';
-            document.getElementById('luc-grid-main-container').style.display = 'none';
-            document.getElementById('luc-search-status').style.display = 'none';
-            document.getElementById('luc-intro-section').style.display = 'flex';
-            document.querySelector('.gr-breadcrumbs').style.display = 'flex';
-        }
+        window.rentClickCount = 0;
+        window.loadMoreRent = function(e) {
+            e.preventDefault();
+            if(window.rentClickCount === 0) {
+                const btn = document.getElementById('btn-rent-more');
+                btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Đang tải...";
+                setTimeout(() => {
+                    const nextItems = window.allRentProdsData.slice(10, 20);
+                    document.getElementById('rent-grid').insertAdjacentHTML('beforeend', nextItems.map(p => renderCardHTML(p)).join(''));
+                    window.rentClickCount++;
+                    
+                    if(window.allRentProdsData.length <= 20) {
+                        btn.innerHTML = "XEM TẤT CẢ BĐS CHO THUÊ <i class='fas fa-arrow-right'></i>";
+                    } else {
+                        btn.innerHTML = "XEM TẤT CẢ BĐS CHO THUÊ <i class='fas fa-arrow-right'></i>";
+                    }
+                }, 400);
+            } else {
+                window.location.href = window.BASE_URL + 'san-pham/cho-thue/';
+            }
+        };
 
         function initGallery() {
             const galMain = document.getElementById('gal-main');
@@ -895,7 +1020,7 @@
             if(item.type === 'video') {
                  if(item.url.indexOf('<iframe') !== -1) html = item.url;
                  else html = '<video controls autoplay src="'+item.url+'"></video>';
-            } else { html = '<img src="'+item.url+'">'; }
+            } else { html = '<img src="'+item.url+'" onerror="this.src=\'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800\'">'; }
             lbBody.innerHTML = html;
             lbCount.innerText = (currentIdx + 1) + ' / ' + mediaList.length;
         }
