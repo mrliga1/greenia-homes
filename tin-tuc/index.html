@@ -189,7 +189,7 @@
         if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.firestore();
 
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/greenia-homes/';
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/';
         
         window.safeHTMLAttr = function(str) {
             if(!str) return '';
@@ -213,6 +213,13 @@
             return title.toString().normalize('NFC').toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
+        function beautifyCatName(slug) {
+            if (!slug) return '';
+            const words = String(slug).split('-');
+            const map = {'ban':'Bán', 'cho':'Cho', 'thue':'Thuê', 'chuyen':'Chuyển', 'nhuong':'Nhượng', 'nha':'Nhà', 'pho':'Phố', 'can':'Căn', 'ho':'Hộ', 'du':'Dự', 'an':'Án', 'quan':'Quận'};
+            return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
+        }
+
         function extractPostData(p) {
             const tempDiv = document.createElement('div'); tempDiv.innerHTML = p.content || "";
             const firstImg = tempDiv.querySelector('img');
@@ -225,31 +232,26 @@
             const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const link = `${safeBaseUrl}tin-tuc/${catSlug}/${pSlug}/`;
-            // Cố gắng lấy ID chuẩn xác để so sánh
             return { id: p.id || pSlug, img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
         }
 
-       function createProdCardHTML(p, isList = false) {
-            // --- BẮT ĐẦU SỬA LỖI DÍNH LINK ---
+        // =========================================================================
+        // HÀM RENDER LINK SẢN PHẨM ĐÃ ĐƯỢC DỌN LỖI CÚ PHÁP
+        // =========================================================================
+        function createProdCardHTML(p, isList = false) {
             let primaryCat = 'san-pham';
             if (p.cat) {
-                // Ép chỉ lấy 1 danh mục đầu tiên
-                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0];
+                // Tách chuẩn xác 1 danh mục để chống dính link
+                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0].trim();
             }
+            
             const catSlug = createSafeSlug(primaryCat);
-            // --- KẾT THÚC SỬA LỖI ---
-
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
-            
-            // Link mới siêu gọn gàng
+            const fallbackImg = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600";
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
-
-            let areaBedHtml = "";
-            // ... (Phần code bên dưới giữ nguyên y hệt của bác)
 
             let areaBedHtml = "";
             if (p.area || p.bed) {
@@ -291,6 +293,11 @@
                         </a>`;
             }
         }
+        // =========================================================================
+
+        let defaultCat = null;
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        window.GREENIA_CURRENT_CATEGORY = defaultCat;
 
         let allPosts = [];
         let allProducts = [];
@@ -341,7 +348,7 @@
                 const sidebarProds = [...allProducts].sort(() => 0.5 - Math.random()).slice(0, 6);
                 document.getElementById('sidebar-products-grid').innerHTML = sidebarProds.map(p => createProdCardHTML(p, true)).join('');
 
-                // YÊU CẦU 4: BĐS Dành cho bạn (Hiển thị sản phẩm từng xem trong 7 ngày, nếu trống thì lấy Mới nhất)
+                // BĐS Dành cho bạn
                 let smartRecommended = [];
                 try {
                     let historyData = JSON.parse(localStorage.getItem('greenia_smart_history')) || { ids: [], timestamps: [] };
@@ -359,7 +366,6 @@
                     }
                 } catch(e) {}
 
-                // Khách mới hoặc chưa xem đủ 10 sản phẩm -> Lấy thêm SẢN PHẨM MỚI NHẤT
                 if (smartRecommended.length === 0) {
                     smartRecommended = allProducts.slice(0, 10);
                 } else if (smartRecommended.length < 10) {
@@ -401,27 +407,24 @@
                 document.getElementById('top-grid-container').style.opacity = 1;
             }
         });
-		
-		// ==========================================
+        
+        // ==========================================
         // HỆ THỐNG AUTO SCHEMA - DANH MỤC TIN TỨC
         // ==========================================
         function autoGenerateCategorySchema(catName, posts) {
-            // 1. Xóa Schema cũ (nếu có) để tránh rác khi chuyển Tab
             const oldSchema = document.getElementById('gr-dynamic-schema');
             if (oldSchema) oldSchema.remove();
 
-            // 2. Lấy tối đa 15 bài viết đầu tiên để báo cáo cho Google
             const listItems = posts.slice(0, 15).map((p, index) => {
                 const pd = extractPostData(p);
                 return {
                     "@type": "ListItem",
                     "position": index + 1,
-                    "url": pd.link,
+                    "url": window.location.origin + pd.link,
                     "name": pd.title
                 };
             });
 
-            // 3. Xây dựng cấu trúc chuẩn: CollectionPage + ItemList
             const schemaObj = {
                 "@context": "https://schema.org",
                 "@graph": [
@@ -447,13 +450,13 @@
                 ]
             };
 
-            // 4. Bơm ngầm vào thẻ <head>
             const script = document.createElement('script');
             script.id = 'gr-dynamic-schema';
             script.type = "application/ld+json";
             script.text = JSON.stringify(schemaObj);
             document.head.appendChild(script);
         }
+
         window.switchTab = function(catName, btnEl) {
             document.querySelectorAll('.s1-tab').forEach(t => t.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
@@ -469,9 +472,8 @@
                  });
             }
             
-			// Kích hoạt sinh Schema tự động cho Tab hiện tại
             autoGenerateCategorySchema(catName, currentTabPosts);
-			
+            
             if(currentTabPosts.length === 0) {
                 document.getElementById('top-grid-container').innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:#888;">Chưa có bài viết.</div>`;
                 document.getElementById('top-grid-container').style.opacity = 1;
@@ -499,9 +501,7 @@
             const firstPost = extractPostData(currentTabPosts[0]);
             renderHeroSafely(firstPost.link, firstPost.img, firstPost.title, firstPost.excerpt, firstPost.date);
             
-            // YÊU CẦU 1: CỘT 3 - HIỂN THỊ CÁC BÀI VIẾT ĐƯỢC XEM NHIỀU NHẤT
             let popularPosts = [...currentTabPosts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
-            // Nếu chưa có hệ thống đếm lượt xem (views), lấy ngẫu nhiên 5 bài
             if(popularPosts.every(p => !p.views)) {
                 popularPosts = [...currentTabPosts].sort(() => 0.5 - Math.random()).slice(0, 5);
             }
@@ -522,7 +522,6 @@
             
             document.getElementById('top-grid-container').style.opacity = 1;
             
-            // YÊU CẦU 2: LOẠI TRỪ BÀI ĐÃ HIỂN THỊ KHỎI "CÓ THỂ BẠN QUAN TÂM"
             const shownIds = new Set();
             hoverPosts.forEach(p => shownIds.add(p.id || createSafeSlug(p.title)));
             popularPosts.forEach(p => shownIds.add(p.id || createSafeSlug(p.title)));
