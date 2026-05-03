@@ -6,14 +6,20 @@
     <title>Tin Thị Trường | Greenia Homes</title>
     <meta name="description" content="aaaaaavvvvvvvv" />
     <meta name="keywords" content="Tin Thị Trường, bất động sản" />
-    <link rel="canonical" href="/tin-tuc/tin-thi-truong/" />
-    <meta property="og:title" content="Tin Thị Trường" />
+    
+    <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
+    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/tin-thi-truong/" />
+    
+    <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN MẠNG XÃ HỘI -->
+    <meta property="og:title" content="Tin Thị Trường | Greenia Homes" />
     <meta property="og:description" content="aaaaaavvvvvvvv" />
-    <meta property="og:url" content="/tin-tuc/tin-thi-truong/" />
+    <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
+    <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
+    <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/tin-thi-truong/" />
     <meta property="og:type" content="website" />
 
-    <link rel="icon" href="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" type="image/x-icon" />    
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="/favicon.png">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -242,8 +248,16 @@
             return { id: p.id || pSlug, img: window.resolveImg ? window.resolveImg(img) : img, excerpt, link, catSlug, pSlug, title: p.title, date: p.date, cat: p.cat };
         }
 
+        // =========================================================================
+        // SỬA LỖI TẠO LINK CHUẨN XÁC, CHỐNG DÍNH DANH MỤC
+        // =========================================================================
         function createProdCardHTML(p, isList = false) {
-            const catSlug = createSafeSlug(p.cat || 'san-pham');
+            let primaryCat = 'san-pham';
+            if (p.cat) {
+                primaryCat = Array.isArray(p.cat) ? p.cat[0] : String(p.cat).split(',')[0].trim();
+            }
+            
+            const catSlug = createSafeSlug(primaryCat);
             const pSlug = p.slug || createSafeSlug(p.title);
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagText = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
@@ -291,6 +305,7 @@
                         </a>`;
             }
         }
+        // =========================================================================
 
         let defaultCat = null;
         try { defaultCat = { slug: "tin-thi-truong", name: "Tin Thị Trường", desc: "aaaaaavvvvvvvv" }; } catch(e) {}
