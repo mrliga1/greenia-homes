@@ -303,7 +303,7 @@
             return title.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a').replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i').replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u').replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
         }
 
-        // HÀM BỔ SUNG: Chuyên tách danh mục để làm link sạch sẽ
+        // HÀM BỔ SUNG: Chuyên tách danh mục để làm link sạch sẽ, chống dính chữ
         function getPrimaryCatSlug(catData, defaultSlug) {
             if (!catData) return defaultSlug;
             let primaryCat = Array.isArray(catData) ? catData[0] : String(catData).split(',')[0].trim();
@@ -672,10 +672,8 @@
                                 </div>
                             </section>
 
-                            <div class="gr-cat-widget">
-                                <div class="gr-cat-h">DANH MỤC BĐS</div>
-                                <div class="gr-cat-l">${catWidgetHTML}</div>
-                            </div>
+                            <!-- ĐÃ TÁCH THÀNH 3 WIDGET RIÊNG BIỆT -->
+                            ${catWidgetHTML}
 
                             <div style="margin-top:10px;">
                                 <div class="gr-w-title">BĐS Nổi bật</div>
