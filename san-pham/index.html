@@ -356,7 +356,6 @@
 
             if (searchSlug !== '') {
                 let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.title || c.name) === searchSlug);
-                
                 if (matchedCat) {
                     displayTitle = matchedCat.seoTitle || matchedCat.title || matchedCat.name || beautifyCatName(searchSlug);
                     displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
@@ -375,7 +374,17 @@
                 descEl.innerHTML = displayDesc; 
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
-            if(boxEl) boxEl.style.display = 'block';
+            
+            // CHẶN ĐỨNG SỰ CỐ NGAY TẠI ĐÂY:
+            if(boxEl) {
+                // Nếu đang có từ khóa tìm kiếm -> BẮT BUỘC ẨN TIÊU ĐỀ
+                if (filterState.keyword !== '') {
+                    boxEl.style.display = 'none';
+                } else {
+                    // Trạng thái bình thường -> Bật tiêu đề
+                    boxEl.style.display = 'block';
+                }
+            }
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
