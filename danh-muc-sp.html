@@ -316,10 +316,11 @@
         }
 
         function updateSeoUI(targetCatSlug, targetType) {
-            let displayTitle = defaultSeoTitle;
-            let displayDesc = defaultSeoDesc;
+            let displayTitle = typeof defaultSeoTitle !== 'undefined' ? defaultSeoTitle : 'Danh mục Bất động sản';
+            let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
+            // Ép kiểu nếu bấm vào tab Bán/Thuê
             if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
@@ -327,9 +328,12 @@
             }
 
             if (searchSlug !== '') {
-                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === searchSlug);
+                // SỬA: Đọc đúng cấu trúc của Admin mới (c.title)
+                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.title || c.name) === searchSlug);
+                
                 if (matchedCat) {
-                    displayTitle = matchedCat.seoTitle || matchedCat.name || beautifyCatName(searchSlug);
+                    // Ưu tiên hiển thị: seoTitle -> title -> name
+                    displayTitle = matchedCat.seoTitle || matchedCat.title || matchedCat.name || beautifyCatName(searchSlug);
                     displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
                 } else { 
                     displayTitle = beautifyCatName(searchSlug); 
@@ -340,20 +344,35 @@
             const titleEl = document.getElementById('luc-seo-title');
             const descEl = document.getElementById('luc-seo-desc');
             const boxEl = document.getElementById('luc-seo-header');
+            
             if(titleEl) titleEl.innerText = displayTitle;
-            if(descEl) { descEl.innerHTML = displayDesc; descEl.style.display = displayDesc ? 'block' : 'none'; }
+            if(descEl) { 
+                descEl.innerHTML = displayDesc; 
+                descEl.style.display = displayDesc ? 'block' : 'none'; 
+            }
             if(boxEl) boxEl.style.display = 'block';
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA ---
+            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA TÌM KIẾM VÀ LINK TĨNH ---
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
+            // Nhận diện danh mục từ Link tĩnh tĩnh (VD: /san-pham/nha-pho/)
+            let pathSlug = '';
+            const paths = window.location.pathname.split('/').filter(Boolean);
+            if (paths.length >= 2 && paths[paths.length - 2] === 'san-pham') {
+                pathSlug = paths[paths.length - 1]; 
+            }
+
             if (keywordFromUrl) {
+                // 1. Dành cho thao tác gõ vào ô Tìm kiếm
                 filterState.keyword = keywordFromUrl;
                 let searchInput = document.getElementById('luc-keyword');
                 if (searchInput) searchInput.value = keywordFromUrl;
+            } else if (pathSlug && pathSlug !== 'index.html' && pathSlug !== 'san-pham.html') {
+                // 2. Dành cho thao tác truy cập qua link danh mục tĩnh của Admin sinh ra
+                filterState.cat = pathSlug; 
             }
             // --- KẾT THÚC ĐOẠN CHÈN THÊM ---
 
