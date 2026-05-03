@@ -316,10 +316,11 @@
         }
 
         function updateSeoUI(targetCatSlug, targetType) {
-            let displayTitle = defaultSeoTitle;
-            let displayDesc = defaultSeoDesc;
+            let displayTitle = typeof defaultSeoTitle !== 'undefined' ? defaultSeoTitle : 'Danh mục Bất động sản';
+            let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
+            // Ép kiểu nếu bấm vào tab Bán/Thuê
             if (targetCatSlug === '' || targetCatSlug === 'quan-2') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
@@ -327,9 +328,12 @@
             }
 
             if (searchSlug !== '') {
-                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === searchSlug);
+                // SỬA: Đọc đúng cấu trúc của Admin mới (c.title)
+                let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.title || c.name) === searchSlug);
+                
                 if (matchedCat) {
-                    displayTitle = matchedCat.seoTitle || matchedCat.name || beautifyCatName(searchSlug);
+                    // Ưu tiên hiển thị: seoTitle -> title -> name
+                    displayTitle = matchedCat.seoTitle || matchedCat.title || matchedCat.name || beautifyCatName(searchSlug);
                     displayDesc = matchedCat.seoDesc || matchedCat.desc || "";
                 } else { 
                     displayTitle = beautifyCatName(searchSlug); 
@@ -340,20 +344,35 @@
             const titleEl = document.getElementById('luc-seo-title');
             const descEl = document.getElementById('luc-seo-desc');
             const boxEl = document.getElementById('luc-seo-header');
+            
             if(titleEl) titleEl.innerText = displayTitle;
-            if(descEl) { descEl.innerHTML = displayDesc; descEl.style.display = displayDesc ? 'block' : 'none'; }
+            if(descEl) { 
+                descEl.innerHTML = displayDesc; 
+                descEl.style.display = displayDesc ? 'block' : 'none'; 
+            }
             if(boxEl) boxEl.style.display = 'block';
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA ---
+            // --- CHÈN THÊM ĐOẠN NÀY ĐỂ BẮT TỪ KHÓA TÌM KIẾM VÀ LINK TĨNH ---
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
+            // Nhận diện danh mục từ Link tĩnh tĩnh (VD: /san-pham/nha-pho/)
+            let pathSlug = '';
+            const paths = window.location.pathname.split('/').filter(Boolean);
+            if (paths.length >= 2 && paths[paths.length - 2] === 'san-pham') {
+                pathSlug = paths[paths.length - 1]; 
+            }
+
             if (keywordFromUrl) {
+                // 1. Dành cho thao tác gõ vào ô Tìm kiếm
                 filterState.keyword = keywordFromUrl;
                 let searchInput = document.getElementById('luc-keyword');
                 if (searchInput) searchInput.value = keywordFromUrl;
+            } else if (pathSlug && pathSlug !== 'index.html' && pathSlug !== 'san-pham.html') {
+                // 2. Dành cho thao tác truy cập qua link danh mục tĩnh của Admin sinh ra
+                filterState.cat = pathSlug; 
             }
             // --- KẾT THÚC ĐOẠN CHÈN THÊM ---
 
@@ -406,29 +425,35 @@
 
                 updateSeoUI(activeCatSlug, filterState.type);
 
-                // TẠO MENU DANH MỤC VÀ ĐẾM SỐ LƯỢNG (LIVE)
+               // =========================================================================
+                // TẠO MENU DROPDOWN TỪ DATABASE CATEGORIES (CHUẨN HÓA)
+                // =========================================================================
                 const ddList = document.getElementById('dyn-cat-list');
                 let ddListHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item ${activeCatSlug === '' ? 'selected' : ''}" data-cat="" data-name="Tất cả danh mục"><span>Tất cả danh mục</span></a>`;
                 
                 if (allCategories && allCategories.length > 0) {
-                    allCategories.forEach(c => {
-                        let cleanSlug = createSafeSlug(c.slug || c.name);
+                    let prodCategories = allCategories.filter(c => c.type === 'prod' || !c.type);
+                    
+                    prodCategories.forEach(c => {
+                        let catName = c.title || c.name || "";
+                        let cleanSlug = createSafeSlug(c.slug || catName);
                         
-                        if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong') {
+                        if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong' && catName !== '') {
                             let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
                             
                             if (count > 0 || c.showEmpty) {
-                                let isSelected = (filterState.cat !== '' && cleanSlug === filterState.cat) ? 'selected' : '';
+                                let isSelected = (activeCatSlug !== '' && cleanSlug === activeCatSlug) ? 'selected' : '';
                                 if (isSelected) {
                                     const currentCatNameEl = document.getElementById('luc-current-cat-name');
-                                    if(currentCatNameEl) currentCatNameEl.innerText = beautifyCatName(cleanSlug);
+                                    if(currentCatNameEl) currentCatNameEl.innerText = catName;
                                 }
-                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="luc-drop-item ${isSelected}" data-cat="${cleanSlug}" data-name="${beautifyCatName(cleanSlug)}"><span>${beautifyCatName(cleanSlug)}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                ddListHTML += `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="luc-drop-item ${isSelected}" data-cat="${cleanSlug}" data-name="${catName}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                             }
                         }
                     });
                 }
-                ddList.innerHTML = ddListHTML;
+                if(ddList) ddList.innerHTML = ddListHTML;
+                // =========================================================================
 
                 runFilter();
                 
