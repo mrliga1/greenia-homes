@@ -108,7 +108,7 @@ function initScrollEffects() {
     const threshold = window.innerHeight * 0.6;
     window.addEventListener('scroll', function() {
         const mainHeader = document.getElementById('main-header');
-        const subMenu = document.getElementById('sub-menu');
+        const subMenu = document.querySelector('.sub-header');
         let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
         if (currentScroll > threshold) {
