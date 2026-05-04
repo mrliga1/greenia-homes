@@ -130,9 +130,8 @@
 </head>
 <body>
 
-    <!-- KHỐI HEADER ĐỘNG (JS TỰ ĐỘNG BƠM VÀO) -->
-    <div id="site-header"></div>
-    <div id="sub-menu" class="sub-header"></div>
+    <!-- TẠO VỎ BỌC MỚI ĐỂ TRÁNH UI.JS BƠM MENU MẶC ĐỊNH -->
+    <div id="vinhomes-main-header"></div>
 
     <!-- KHU VỰC CHÍNH CỦA TRANG CHI TIẾT DỰ ÁN -->
     <main class="greenia-luxury-theme">
@@ -397,16 +396,14 @@
             firebase.initializeApp(firebaseConfig);
         }
     </script>
-    <!-- LỆNH KÍCH HOẠT MENU ĐỘC LẬP TỪ HỆ THỐNG -->
+    
+    <!-- LỆNH KÍCH HOẠT MENU CHÍNH RIÊNG CHO VINHOMES -->
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                // Sử dụng chính hàm xịn xò của bác trong ui.js
-                // Cú pháp: loadSpecificMenu('ID_CỦA_VỎ', 'ID_CỦA_RUỘT_TRONG_FILE_KHO')
-                if (typeof loadSpecificMenu === 'function') {
-                    loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park');
-                }
-            }, 300); // Đợi 0.3s cho chắc cốp
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lấy thẳng menu Vinhomes bơm vào cái vỏ mới tạo ngay khi trang vừa tải xong
+            if (typeof loadSpecificMenu === 'function') {
+                loadSpecificMenu('vinhomes-main-header', 'menu-vinhomes-saigon-park');
+            }
         });
     </script>
 </body>
