@@ -1,29 +1,416 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>INDEX - Dự án vinhomes | Greenia Homes | Greenia Homes</title>
-
-    <link rel="canonical" href="https://greeniahomes.vn/du-an/vinhomes/" />
-    <meta name="description" content="Khám phá thông tin chi tiết về index của dự án vinhomes. Dự án vinhomes" />
-    <meta name="keywords" content="index vinhomes" />
-    <meta property="og:title" content="INDEX - Dự án vinhomes | Greenia Homes" />
-    <meta property="og:description" content="Khám phá thông tin chi tiết về index của dự án vinhomes. Dự án vinhomes" />
-    <meta property="og:url" content="https://greeniahomes.vn/du-an/vinhomes/" />
-    <meta property="og:type" content="website" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "INDEX - Dự án vinhomes | Greenia Homes",
-      "description": "Khám phá thông tin chi tiết về index của dự án vinhomes. Dự án vinhomes",
-      "url": "https://greeniahomes.vn/du-an/vinhomes/"
-    }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tiêu đề trang (Bác tự đổi theo ý muốn) -->
+    <title>Danh Sách Dự Án | Greenia Homes</title>
     
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- SEO CƠ BẢN -->
+    <meta name="description" content="Danh sách dự án bất động sản đang phân phối..." />
+    <link rel="canonical" href="https://greeniahomes.vn/du-an/" />
+    
+    <!-- FONT CHỮ VÀ CSS DÙNG CHUNG CỦA HỆ THỐNG -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <style>
+        /* CSS reset cơ bản cho nền tối của trang */
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; }
+        
+        /* Bác viết thêm CSS giao diện riêng cho trang này vào đây */
+        
+        
+        
+        /* Cố định z-index cho popup để không bị lỗi đè lớp */
+        [class*="popup"], [id*="popup"], [class*="overlay"], [id*="overlay"], [class*="modal"] { z-index: 99999999 !important; }
+    </style>
+    
+    <!-- THƯ VIỆN FIREBASE CỐT LÕI -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
-<h1>Dự án vinhomes</h1>
-<p>Thư mục đã sẵn sàng. Vui lòng Upload các file thiết kế tay của bạn (index.html, vi-tri.html...) đè lên file này.</p>
+
+    <!-- KHỐI HEADER ĐỘNG (JS TỰ ĐỘNG BƠM VÀO) -->
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
+
+    <!-- KHU VỰC SÁNG TẠO CỦA BÁC: CHỈ CẦN VIẾT CODE VÀO ĐÂY -->
+    <main class="greenia-luxury-theme">
+        <!-- ĐÂY LÀ ĐOẠN CSS ĐỘC QUYỀN CHO TRANG CHI TIẾT DỰ ÁN, ĐẢM BẢO KHÔNG XUNG ĐỘT -->
+        <style>
+            .pj-hero { position: relative; height: 85vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; }
+            .pj-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.4); }
+            .pj-hero-content { position: relative; z-index: 2; max-width: 900px; padding: 0 20px; animation: fadeUp 1s forwards; }
+            .pj-badge { background: var(--lux-gold); color: #000; padding: 8px 20px; border-radius: 30px; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 2px; margin-bottom: 25px; display: inline-block; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+            .pj-title { font-family: 'Cinzel', serif; font-size: clamp(40px, 6vw, 70px); color: #fff; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+            .pj-slogan { font-size: 18px; color: #d1d5db; margin-bottom: 30px; line-height: 1.6; font-family: 'Playfair Display', serif; font-style: italic; }
+            
+            .pj-section { padding: 90px 20px; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+            .pj-container { max-width: 1200px; margin: 0 auto; }
+            .pj-sec-title { font-family: 'Cinzel', serif; font-size: 36px; color: var(--lux-gold); text-align: center; margin-bottom: 60px; text-transform: uppercase; }
+            
+            /* Lưới Overview */
+            .pj-overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+            .pj-overview-card { background: rgba(11, 17, 32, 0.6); border: 1px solid rgba(197, 160, 89, 0.2); padding: 30px 25px; border-radius: 6px; transition: 0.4s; backdrop-filter: blur(10px); }
+            .pj-overview-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.6); background: rgba(197, 160, 89, 0.05); }
+            .pj-overview-card i { color: var(--lux-gold); font-size: 32px; margin-bottom: 20px; }
+            .pj-overview-card h4 { font-family: 'Playfair Display', serif; color: #fff; font-size: 16px; margin-bottom: 10px; text-transform: uppercase; color: #94a3b8;}
+            .pj-overview-card p { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.4; margin: 0; }
+
+            /* Bố cục Split (Hình - Chữ) */
+            .pj-split { display: flex; align-items: center; gap: 60px; margin-bottom: 60px; }
+            .pj-split.reverse { flex-direction: row-reverse; }
+            .pj-split-text { flex: 1; min-width: 320px; }
+            .pj-split-text h3 { font-family: 'Playfair Display', serif; font-size: 28px; color: #fff; margin-bottom: 20px; }
+            .pj-split-text p { color: #b0b8c4; font-size: 15px; line-height: 1.7; margin-bottom: 20px; text-align: justify; }
+            .pj-split-img { flex: 1; position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-width: 320px; }
+            .pj-split-img img { width: 100%; display: block; transition: 0.5s; }
+            .pj-split-img:hover img { transform: scale(1.05); filter: brightness(1.1); }
+            
+            .pj-list { list-style: none; padding: 0; margin: 0; }
+            .pj-list li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px; color: #e2e8f0; font-size: 15px; line-height: 1.6; }
+            .pj-list li i { color: var(--lux-gold); margin-top: 4px; font-size: 14px; }
+
+            /* Lưới Mặt Bằng Phân Khu */
+            .pj-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+            .pj-sub-card { background: #080c15; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; transition: 0.3s; }
+            .pj-sub-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(197,160,89,0.1); }
+            .pj-sub-img { height: 200px; position: relative; overflow: hidden; }
+            .pj-sub-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+            .pj-sub-card:hover .pj-sub-img img { transform: scale(1.1); }
+            .pj-sub-tag { position: absolute; top: 15px; left: 15px; background: var(--lux-gold); color: #000; font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; text-transform: uppercase; z-index: 2; }
+            .pj-sub-body { padding: 25px; }
+            .pj-sub-title { font-family: 'Cinzel', serif; font-size: 20px; color: #fff; margin: 0 0 15px; font-weight: 700; }
+            .pj-sub-info { font-size: 13px; color: #94a3b8; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+            .pj-sub-info i { color: var(--lux-gold); width: 15px; text-align: center; }
+            .pj-sub-price { display: block; margin-top: 15px; font-size: 18px; color: var(--lux-gold); font-weight: 700; }
+
+            /* Bảng giá & Chính sách */
+            .pj-policy-box { background: rgba(197,160,89,0.05); border-left: 4px solid var(--lux-gold); padding: 30px; margin-top: 20px; }
+            .pj-table-wrap { overflow-x: auto; margin-top: 30px; border: 1px solid rgba(197,160,89,0.2); border-radius: 6px; }
+            .pj-table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; }
+            .pj-table th { background: rgba(197,160,89,0.1); color: var(--lux-gold); padding: 18px 20px; border-bottom: 2px solid var(--lux-gold); font-family: 'Playfair Display', serif; font-size: 16px; white-space: nowrap; }
+            .pj-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; font-size: 14px; }
+            .pj-table tr:hover td { background: rgba(255,255,255,0.02); color: #fff; }
+
+            @media (max-width: 968px) {
+                .pj-split { flex-direction: column !important; gap: 30px; }
+                .pj-hero { height: auto; padding: 120px 0; }
+                .pj-title { font-size: 36px; }
+            }
+        </style>
+
+        <!-- SECTION 1: HERO BANNER (ẢNH CHỜ THAY BẰNG ẢNH TỔNG QUAN DỰ ÁN TỪ TRÊN CAO) -->
+        <section class="pj-hero">
+            <img src="https://placehold.co/1920x800/05080f/c5a059?text=Hinh+Anh+Tong+Quan+Vinhomes" alt="Vinhomes Grand Park" class="pj-hero-bg">
+            <div class="pj-hero-content">
+                <span class="pj-badge">Đại Đô Thị Thông Minh Đẳng Cấp</span>
+                <h1 class="pj-title">Vinhomes Grand Park</h1>
+                <p class="pj-slogan">Thành phố thông minh - Công viên của những giá trị sống đích thực, trung tâm mới của khu Đông Sài Gòn.</p>
+                <div class="cta-group" style="justify-content: center;">
+                    <a href="javascript:void(0)" onclick="openPopupNew()" class="btn-cta-luxury">
+                        <i class="fas fa-download"></i> TẢI BẢNG GIÁ & CHÍNH SÁCH MỚI NHẤT
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TỔNG QUAN DỰ ÁN -->
+        <section class="pj-section">
+            <div class="pj-container">
+                <h2 class="pj-sec-title">Tổng Quan Dự Án</h2>
+                <div class="pj-overview-grid">
+                    <div class="pj-overview-card">
+                        <i class="far fa-building"></i>
+                        <h4>Chủ đầu tư</h4>
+                        <p>Vingroup</p>
+                    </div>
+                    <div class="pj-overview-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Vị trí đắc địa</h4>
+                        <p>Nguyễn Xiển & Phước Thiện, TP Thủ Đức</p>
+                    </div>
+                    <div class="pj-overview-card">
+                        <i class="fas fa-chart-area"></i>
+                        <h4>Tổng quy mô</h4>
+                        <p>271 - 272 ha</p>
+                    </div>
+                    <div class="pj-overview-card">
+                        <i class="fas fa-layer-group"></i>
+                        <h4>Mật độ xây dựng</h4>
+                        <p>Chỉ từ 20% - 25%</p>
+                    </div>
+                    <div class="pj-overview-card">
+                        <i class="fas fa-home"></i>
+                        <h4>Loại hình sản phẩm</h4>
+                        <p>Căn hộ, Shophouse, Biệt thự, Dinh thự</p>
+                    </div>
+                    <div class="pj-overview-card">
+                        <i class="fas fa-gavel"></i>
+                        <h4>Pháp lý</h4>
+                        <p>Sở hữu lâu dài (Người VN), 50 năm (Người NN)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: VỊ TRÍ & KẾT NỐI (ẢNH CHỜ THAY BẰNG BẢN ĐỒ VỊ TRÍ HOẶC KẾT NỐI VÙNG) -->
+        <section class="pj-section" style="background-color: #0b1120;">
+            <div class="pj-container">
+                <div class="pj-split">
+                    <div class="pj-split-text">
+                        <span class="brand-subtitle">Tọa độ vàng</span>
+                        <h3>Tâm Điểm Kết Nối Giao Thương</h3>
+                        <p>Sở hữu mặt tiền ôm trọn hai tuyến đường huyết mạch Nguyễn Xiển và Phước Thiện, tiếp giáp trực tiếp sông Tắc và sông Đồng Nai, Vinhomes Grand Park được đánh giá là điểm nút liên kết vùng hoàn hảo, định hình thành trung tâm phát triển kinh tế, thương mại và giải trí hàng đầu.</p>
+                        <ul class="pj-list">
+                            <li><i class="fas fa-check-circle"></i> Chỉ 10 phút di chuyển đến tuyến Metro Bến Thành – Suối Tiên và Bến xe Miền Đông mới.</li>
+                            <li><i class="fas fa-check-circle"></i> Kết nối Quận 1 sầm uất chỉ khoảng 30 phút lái xe.</li>
+                            <li><i class="fas fa-check-circle"></i> Bán kính 1km - 4km kết nối Đại học FullBright, KCN Công nghệ cao 1 & 2, Khu du lịch Suối Tiên.</li>
+                            <li><i class="fas fa-check-circle"></i> Nhanh chóng kết nối Sân bay Tân Sơn Nhất (30 phút) và Sân bay Quốc tế Long Thành (40 phút).</li>
+                        </ul>
+                    </div>
+                    <div class="pj-split-img">
+                        <img src="https://placehold.co/600x450/1a1f2e/c5a059?text=Hinh+Ban+Do+Vi+Tri+Vinhomes" alt="Vị trí Vinhomes Grand Park">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: HỆ SINH THÁI TIỆN ÍCH (ẢNH CHỜ THAY BẰNG ẢNH CÔNG VIÊN 36HA / VINCOM) -->
+        <section class="pj-section">
+            <div class="pj-container">
+                <div class="pj-split reverse">
+                    <div class="pj-split-text">
+                        <span class="brand-subtitle">ALL IN ONE</span>
+                        <h3>Hệ Sinh Thái Tiện Ích Đỉnh Cao</h3>
+                        <p>Không chỉ là một nơi để ở, đại đô thị mở ra một không gian sống đẳng cấp - nơi cư dân được tận hưởng chuỗi tiện ích chuẩn quốc tế đa dạng ngay dưới thềm nhà. Được quản lý bởi hệ thống thông minh AI và IoT đảm bảo vận hành trơn tru 24/7.</p>
+                        <ul class="pj-list">
+                            <li><i class="fas fa-gem"></i> <strong>Đại công viên 36ha</strong> hàng đầu Đông Nam Á tích hợp 15 công viên chủ đề đa dạng.</li>
+                            <li><i class="fas fa-shopping-bag"></i> Trung tâm thương mại <strong>Vincom Mega Mall</strong> lớn nhất miền Nam đáp ứng mọi nhu cầu mua sắm.</li>
+                            <li><i class="fas fa-swimming-pool"></i> Hệ thống hồ bơi resort, công viên nước, biển hồ cát trắng nhân tạo, khu chèo thuyền Kayak.</li>
+                            <li><i class="fas fa-bus"></i> Giao thông xanh với hệ thống xe bus điện nội ngoại khu <strong>Vinbus</strong> tiện lợi.</li>
+                        </ul>
+                    </div>
+                    <div class="pj-split-img">
+                        <img src="https://placehold.co/600x450/1a1f2e/c5a059?text=Hinh+Anh+Tien+Ich+Cong+Vien+Vincom" alt="Tiện ích Vinhomes Grand Park">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: CÁC PHÂN KHU ĐÃ & ĐANG PHÂN PHỐI (ẢNH CHỜ CHO TỪNG PHÂN KHU) -->
+        <section class="pj-section" style="background-color: #0b1120;">
+            <div class="pj-container">
+                <h2 class="pj-sec-title">Mặt Bằng & Phân Khu Nổi Bật</h2>
+                <div class="pj-sub-grid">
+                    
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag">The Beverly</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Beverly" alt="The Beverly">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">Phân Khu The Beverly</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Quy mô: 10 tòa (22 - 34 tầng)</div>
+                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 28m2 – 120m2</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Vị trí kim cương đối diện công viên 36ha</div>
+                            <span class="pj-sub-price">Giá từ: 65 triệu/m2</span>
+                        </div>
+                    </div>
+
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag">Glory Heights</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Glory+Heights" alt="Glory Heights">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">Phân Khu Glory Heights</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Quy mô: 5 tòa (3.620 căn)</div>
+                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 29.9m2 - 108m2</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Ban công Panorama kính tràn cao cấp</div>
+                            <span class="pj-sub-price">Giá từ: 45 - 80 triệu/m2</span>
+                        </div>
+                    </div>
+
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag">The Beverly Solari</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Beverly+Solari" alt="The Beverly Solari">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">The Beverly Solari</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Quy mô: 13 tòa (~10.000 căn)</div>
+                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 27m2 – 108m2</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Tọa lạc đại lộ mua sắm sầm uất nhất</div>
+                            <span class="pj-sub-price">Căn Studio từ: 1.8 tỷ</span>
+                        </div>
+                    </div>
+
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag">Thấp Tầng</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Manhattan" alt="The Manhattan">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">The Manhattan & Glory</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Quy mô: 1.399 căn biệt thự/Shophouse</div>
+                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 84m2 – 800m2</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Sát cạnh công viên 36ha và dọc sông Tắc</div>
+                            <span class="pj-sub-price">Giá từ: 13 tỷ/căn</span>
+                        </div>
+                    </div>
+
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag">Hàng Hiệu</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Lumiere+Boulevard" alt="Lumiere Boulevard">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">Lumiere Boulevard</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Phát triển bởi: Masterise Homes</div>
+                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 50m2 – 99m2</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Kiến trúc xanh 3D lớn nhất TP.HCM</div>
+                            <span class="pj-sub-price">Giá từ: 60 - 100 triệu/m2</span>
+                        </div>
+                    </div>
+
+                    <div class="pj-sub-card">
+                        <div class="pj-sub-img">
+                            <span class="pj-sub-tag" style="background:#f1c40f;">Đã Bàn Giao</span>
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Rainbow+Origami" alt="Origami & Rainbow">
+                        </div>
+                        <div class="pj-sub-body">
+                            <h3 class="pj-sub-title">The Rainbow & Origami</h3>
+                            <div class="pj-sub-info"><i class="fas fa-building"></i> Tổng cộng: 38 tòa tháp</div>
+                            <div class="pj-sub-info"><i class="fas fa-check-circle"></i> Tình trạng: Đã bàn giao nhà & có sổ</div>
+                            <div class="pj-sub-info"><i class="fas fa-star"></i> Vườn Nhật Bản, tiện ích hiện hữu</div>
+                            <span class="pj-sub-price">Giá từ: 30 - 70 triệu/m2</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: BẢNG GIÁ & CHÍNH SÁCH ƯU ĐÃI -->
+        <section class="pj-section">
+            <div class="pj-container">
+                <h2 class="pj-sec-title">Chính Sách Bán Hàng Ưu Đãi Mới Nhất</h2>
+                
+                <div class="pj-policy-box">
+                    <h3 style="font-family: 'Cinzel', serif; color: var(--lux-gold); font-size: 22px; margin-top: 0;">Đặc Quyền Vượt Trội Chào Đón Cư Dân</h3>
+                    <ul class="pj-list" style="margin-top: 20px;">
+                        <li><i class="fas fa-gift"></i> <strong>Hỗ trợ về ở sớm:</strong> Chiết khấu lên đến 8.5% giá bán cho khách nhận nhà sớm.</li>
+                        <li><i class="fas fa-percent"></i> <strong>Thanh toán nhanh:</strong> Nhận ngay chiết khấu 11% khi thanh toán sớm trong 15 ngày.</li>
+                        <li><i class="fas fa-university"></i> <strong>Gói vay ưu đãi:</strong> Ngân hàng hỗ trợ vay 80%, thời hạn lên tới 35 năm.</li>
+                        <li><i class="fas fa-piggy-bank"></i> <strong>Ân hạn nợ gốc:</strong> Hỗ trợ gốc và lãi suất 0% lên đến 24 tháng.</li>
+                    </ul>
+                </div>
+
+                <div class="pj-table-wrap">
+                    <table class="pj-table">
+                        <thead>
+                            <tr>
+                                <th>Loại Căn Hộ</th>
+                                <th>Diện Tích (m2)</th>
+                                <th>Mức Giá Tham Khảo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Căn Studio</td>
+                                <td>27.0m2 – 39.4m2</td>
+                                <td>Từ 1.8 tỷ – 2.3 tỷ</td>
+                            </tr>
+                            <tr>
+                                <td>Căn 1PN / 1PN+</td>
+                                <td>46.0m2 – 51.8m2</td>
+                                <td>Từ 2.5 tỷ – 3.3 tỷ</td>
+                            </tr>
+                            <tr>
+                                <td>Căn 2PN / 2PN+1</td>
+                                <td>58.3m2 – 70.0m2</td>
+                                <td>Từ 2.9 tỷ – 4.4 tỷ</td>
+                            </tr>
+                            <tr>
+                                <td>Căn 3PN</td>
+                                <td>81.0m2 – 108.0m2</td>
+                                <td>Từ 4.4 tỷ – 7.2 tỷ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- KHỐI 7: CTA CUỐI TRANG NHẮC NHỞ HÀNH ĐỘNG -->
+        <section id="lux-cta-v118" style="margin-top: 40px;">
+            <div class="cta-bg-glow"></div>
+            <div class="cta-content">
+                <span class="cta-sub">Giỏ Hàng Nội Bộ Độc Quyền</span>
+                <h2 class="cta-title">Tải Bảng Giá 20 Căn Đẹp Nhất Hôm Nay</h2>
+                <p class="cta-desc">Liên hệ trực tiếp với chuyên gia của Greenia Homes để nhận ngay giỏ hàng nội bộ giá tốt, nhà có sẵn, ở ngay hoặc làm sổ hồng.</p>
+                <div class="cta-actions">
+                    <a href="javascript:void(0);" onclick="openPopupNew()" class="btn-gold"><i class="far fa-envelope"></i> TẢI BÁO GIÁ QUA ZALO</a>
+                    <a href="tel:0932966700" class="btn-outline" onclick="triggerTrackingNew('Phone')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- KHỐI FOOTER ĐỘNG (JS TỰ ĐỘNG BƠM VÀO) -->
+    <div id="site-footer"></div>
+    
+    <!-- LOAD GIAO DIỆN HEADER/FOOTER (BẮT BUỘC PHẢI CÓ) -->
+    <script src="/assets/js/ui.js"></script>
+
+    <!-- KHU VỰC VIẾT JAVASCRIPT CỦA TRANG -->
+    <script>
+        // 1. KHỞI TẠO FIREBASE KẾT NỐI DATA (MÃ KHÓA AN TOÀN)
+        const firebaseConfig = {
+            apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
+            authDomain: "greenia-homes.firebaseapp.com",
+            projectId: "greenia-homes",
+            storageBucket: "greenia-homes.appspot.com",
+            messagingSenderId: "24027695632",
+            appId: "1:24027695632:web:13a23aa156e864f7d55895",
+            measurementId: "G-YRK63BNPP0"
+        };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/';
+
+        // 2. HÀM TẠO SLUG DÙNG CHUNG KHI GỌI DATA
+        function createSafeSlug(title) {
+            if(!title) return '';
+            return String(title).toLowerCase().trim()
+                .replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a')
+                .replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i')
+                .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u')
+                .replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd')
+                .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+        }
+
+        // 3. JAVASCRIPT XỬ LÝ RIÊNG CỦA BÁC VIẾT TẠI ĐÂY
+        document.addEventListener("DOMContentLoaded", async function() {
+            try {
+                // Ví dụ: Lấy data từ collection 'projects'
+                // const projSnap = await db.collection('projects').get();
+                // const projects = projSnap.docs.map(doc => doc.data());
+                
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        });
+    </script>
 </body>
 </html>
