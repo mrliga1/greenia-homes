@@ -21,6 +21,7 @@
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
     <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
     <meta property="og:description" content="{{DESC}}" />
+    <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
     <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
     <meta property="og:type" content="website" />
@@ -28,21 +29,45 @@
     <style>
         body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif;}
 
-        #lux-uni-catalog { background-color: #05080f; color: #b0b8c4; padding: 35px 0 35px 0; width: 100%; box-sizing: border-box; }
+        #lux-uni-catalog { 
+            background-color: #05080f; 
+            color: #b0b8c4; 
+            padding: 35px 0 35px 0; 
+            width: 100%; 
+            box-sizing: border-box;
+        }
         #lux-uni-catalog * { box-sizing: border-box; }
         .luc-inner { max-width: 1280px; margin: 0 auto; padding: 0 15px; }
         
-        .luc-sticky-wrapper { position: -webkit-sticky; position: sticky; top: 35px; z-index: 10; background-color: #05080f; padding: 0px 0; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(197, 160, 89, 0.1); transition: top 0.3s ease-in-out, background 0.3s; }
-        .luc-sticky-wrapper.is-stuck { top: 0 !important; background-color: rgba(5, 8, 15, 0.95); backdrop-filter: blur(10px); }
+        .luc-sticky-wrapper { 
+            position: -webkit-sticky; 
+            position: sticky; 
+            top: 35px; 
+            z-index: 10; 
+            background-color: #05080f; 
+            padding: 0px 0; 
+            margin-bottom: 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1); 
+            transition: top 0.3s ease-in-out, background 0.3s; 
+        }
+
+        .luc-sticky-wrapper.is-stuck {
+            top: 0 !important;
+            background-color: rgba(5, 8, 15, 0.95);
+            backdrop-filter: blur(10px);
+        }
 
         .luc-nav-bar { display: flex; justify-content: space-between; align-items: center; padding: 0; max-width: 1280px; margin: 0 auto; }
+        .luc-nav-left-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .luc-nav-right-group { display: flex; align-items: center; }
         
-        .luc-nav-item { cursor: pointer; padding: 1px 10px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; border-radius: 8px; transition: 0.3s; background: transparent; text-decoration: none; display: inline-block; white-space: nowrap;}
-        .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1) !important; color: #c5a059 !important; border-color: #c5a059 !important; }
+        .luc-nav-item { cursor: pointer; padding: 2px 8px; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-transform: none; font-size: 12px; font-weight: 500; border-radius: 10px; transition: 0.3s; background: transparent; text-decoration: none; display: inline-block;}
+        .luc-nav-item:hover, .luc-nav-item.active { background: rgba(197, 160, 89, 0.1); color: #c5a059; border-color: #c5a059; }
         
         #luc-search-form { position: relative; width: 220px; display: block; margin: 0; }
-        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 8px; color: #fff; outline: none; transition: 0.3s; font-size: 11px; height: 25px; }
-        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 10px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
+        #luc-search-form input { width: 100%; background: #0b1120; border: 1px solid rgba(197,160,89,0.3); padding: 5px 30px 5px 15px; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; font-size: 12px; height: 25px; }
+        #luc-search-btn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); color: #c5a059; font-size: 12px; cursor: pointer; z-index: 5; background: transparent; border: none; outline: none; padding: 1px 10px; }
         
         .luc-nav-group { position: relative; display: inline-block; }
         .luc-dd-trigger i { margin-left: 5px; font-size: 11px; }
@@ -132,7 +157,7 @@
             <div class="luc-sticky-wrapper" id="luc-filter-bar">
                 <div class="luc-nav-bar">
                     <div class="luc-nav-left-group" id="luc-tabs-container" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                        <a href="/san-pham/" class="luc-nav-item" id="tab-all">Tất cả</a>
+                        <a href="/san-pham.html" class="luc-nav-item active" data-type="all" id="tab-all">Tất cả</a>
                         <a href="/san-pham/chuyen-nhuong/" class="luc-nav-item" data-type="Bán" id="tab-ban">Bán</a>
                         <a href="/san-pham/cho-thue/" class="luc-nav-item" data-type="Thuê" id="tab-thue">Cho thuê</a>
                         
@@ -169,7 +194,7 @@
             <div class="luc-notification-area"><div id="luc-search-status" class="luc-status-bar" style="display:none;"></div></div>
             <div id="luc-grid-anchor"></div>
 
-            <div id="luc-seo-header" style="text-align: left; margin-bottom: 30px; padding: 0 15px 5px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3);">
+            <div id="luc-seo-header" style="text-align: left; margin-bottom: 30px; padding: 0 15px 5px; border-bottom: 1px dashed rgba(197, 160, 89, 0.3); display: none;">
                 <h1 id="luc-seo-title" style="color: #c5a059; font-size: clamp(24px, 5vw, 32px); font-weight: 500; margin: 0 0 10px 0; line-height: 1.4; text-transform: none !important;"></h1>
                 <div id="luc-seo-desc" style="color: #b0b8c4; font-size: 14px; line-height: 1.6; max-width: 100%; margin: 0;"></div>
             </div>
@@ -271,6 +296,7 @@
             return words.map(w => map[w.toLowerCase()] || (w.charAt(0).toUpperCase() + w.slice(1))).join(' ');
         }
 
+        // ĐÃ BỔ SUNG HÀM BỊ THIẾU
         function extractCatsSafely(catData) {
             if (!catData) return [];
             if (typeof catData === 'string' && catData.startsWith('[') && catData.endsWith(']')) {
@@ -291,7 +317,7 @@
         }
 
         function isCatMatch(pData, targetSlug) {
-            if (!targetSlug || targetSlug === '') return true;
+            if (!targetSlug || targetSlug === '' || targetSlug === '{{SLUG}}') return true;
             let catsArray = extractCatsSafely(pData.cat);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
@@ -303,7 +329,6 @@
             const tagClass = p.type === 'Bán' ? 'tag-ban' : 'tag-thue';
             const tagName = p.type === 'Bán' ? 'Đang bán' : 'Cho thuê';
             const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-            const fallbackImg = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600";
             
             const link = `${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
             
@@ -316,7 +341,7 @@
             <a href="${link}" class="s2-card">
                 <div class="s2-thumb-box">
                     <span class="gr-tag-abs ${tagClass}">${tagName}</span>
-                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='${fallbackImg}';">
+                    <img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';">
                 </div>
                 <div class="s2-body">
                     <h3 class="gr-tit s2-tit">${p.title}</h3>
@@ -361,13 +386,10 @@
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
             
-            // CHẶN ĐỨNG SỰ CỐ NGAY TẠI ĐÂY:
             if(boxEl) {
-                // Nếu đang có từ khóa tìm kiếm -> BẮT BUỘC ẨN TIÊU ĐỀ
                 if (filterState.keyword !== '') {
                     boxEl.style.display = 'none';
                 } else {
-                    // Trạng thái bình thường -> Bật tiêu đề
                     boxEl.style.display = 'block';
                 }
             }
@@ -377,17 +399,34 @@
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
+            let templateSlug = '{{SLUG}}';
             let initialCatSlug = '';
-            let pathParts = window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/').filter(Boolean);
-            if (pathParts.length >= 2 && pathParts[0] === 'san-pham') {
-                initialCatSlug = createSafeSlug(pathParts[pathParts.length - 1]);
-                if (initialCatSlug === 'san-pham') initialCatSlug = '';
+
+            if (templateSlug && !templateSlug.includes('{{')) {
+                initialCatSlug = templateSlug; 
+            } else {
+                const paths = window.location.pathname.split('/').filter(Boolean);
+                if (paths.length >= 2 && paths[paths.length - 2] === 'san-pham') {
+                    initialCatSlug = paths[paths.length - 1]; 
+                }
             }
 
             if (keywordFromUrl) {
                 filterState.keyword = keywordFromUrl;
                 let searchInput = document.getElementById('luc-keyword');
                 if (searchInput) searchInput.value = keywordFromUrl;
+            }
+
+            if (initialCatSlug && initialCatSlug !== 'san-pham' && initialCatSlug !== 'chuyen-nhuong' && initialCatSlug !== 'cho-thue') {
+                document.getElementById('tab-all').classList.remove('active');
+            } else if (initialCatSlug === 'chuyen-nhuong') {
+                document.getElementById('tab-all').classList.remove('active');
+                document.getElementById('tab-ban').classList.add('active');
+                filterState.mainType = 'Bán';
+            } else if (initialCatSlug === 'cho-thue') {
+                document.getElementById('tab-all').classList.remove('active');
+                document.getElementById('tab-thue').classList.add('active');
+                filterState.mainType = 'Thuê';
             }
 
             try {
@@ -402,15 +441,7 @@
                 allCategories = cSnap.docs.map(d => d.data());
                 independentProjects = pjSnap.docs.map(d => d.data()).sort((a,b) => b.id - a.id);
 
-                document.querySelectorAll('.luc-nav-item:not(.luc-dd-trigger)').forEach(t => t.classList.remove('active'));
-                
-                if (initialCatSlug === 'chuyen-nhuong') {
-                    const b = document.getElementById('tab-ban'); if(b) b.classList.add('active');
-                    filterState.mainType = 'Bán';
-                } else if (initialCatSlug === 'cho-thue') {
-                    const t = document.getElementById('tab-thue'); if(t) t.classList.add('active');
-                    filterState.mainType = 'Thuê';
-                } else if (initialCatSlug) {
+                if (initialCatSlug && initialCatSlug !== 'chuyen-nhuong' && initialCatSlug !== 'cho-thue') {
                     let matchedCat = allCategories.find(c => createSafeSlug(c.slug || c.name) === initialCatSlug);
                     if (matchedCat) {
                         let grp = matchedCat.group || 'type';
@@ -420,13 +451,11 @@
                     } else {
                         filterState.catType = initialCatSlug; 
                     }
-                } else {
-                    const a = document.getElementById('tab-all'); if(a) a.classList.add('active');
                 }
 
-                let ddTypeHTML = '';
-                let ddPriceHTML = '';
-                let ddLocHTML = '';
+                let ddTypeHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: #b0b8c4; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 400;"><span>Tất cả Loại hình</span></a>`;
+                let ddPriceHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: #b0b8c4; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 400;"><span>Tất cả Khoảng giá</span></a>`;
+                let ddLocHTML = `<a href="${safeBaseUrl}san-pham.html" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: #b0b8c4; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 400;"><span>Tất cả Khu vực</span></a>`;
 
                 if (allCategories && allCategories.length > 0) {
                     let prodCategories = allCategories.filter(c => c.type === 'prod' || !c.type);
@@ -447,9 +476,7 @@
                                 let fontWeight = isSelected ? '700' : '400';
                                 let bgHoverClass = isSelected ? 'background: rgba(197, 160, 89, 0.1);' : '';
                                 
-                                let itemUrl = `${safeBaseUrl}san-pham/${cleanSlug}/`;
-                                
-                                let itemHTML = `<a href="${itemUrl}" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${textColor}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${fontWeight}; ${bgHoverClass}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
+                                let itemHTML = `<a href="${safeBaseUrl}san-pham/${cleanSlug}/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; color: ${textColor}; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: ${fontWeight}; ${bgHoverClass}"><span>${catName}</span> <span style="color:#666; font-size:10px;">(${count})</span></a>`;
                                 
                                 if (catGroup === 'price') ddPriceHTML += itemHTML;
                                 else if (catGroup === 'loc') ddLocHTML += itemHTML;
@@ -459,9 +486,9 @@
                     });
                 }
 
-                document.getElementById('dyn-cat-type').innerHTML = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); color: ${!filterState.catType ? '#c5a059' : '#b0b8c4'}; font-weight: ${!filterState.catType ? '700' : '400'};"><span>Tất cả Loại hình</span></a>` + ddTypeHTML;
-                document.getElementById('dyn-cat-price').innerHTML = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); color: ${!filterState.catPrice ? '#c5a059' : '#b0b8c4'}; font-weight: ${!filterState.catPrice ? '700' : '400'};"><span>Tất cả Khoảng giá</span></a>` + ddPriceHTML;
-                document.getElementById('dyn-cat-loc').innerHTML = `<a href="${safeBaseUrl}san-pham/" class="luc-drop-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 13px; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); color: ${!filterState.catLoc ? '#c5a059' : '#b0b8c4'}; font-weight: ${!filterState.catLoc ? '700' : '400'};"><span>Tất cả Khu vực</span></a>` + ddLocHTML;
+                document.getElementById('dyn-cat-type').innerHTML = ddTypeHTML;
+                document.getElementById('dyn-cat-price').innerHTML = ddPriceHTML;
+                document.getElementById('dyn-cat-loc').innerHTML = ddLocHTML;
 
                 if(filterState.catType) {
                     let n = allCategories.find(c => createSafeSlug(c.slug || c.name) === filterState.catType);
@@ -476,41 +503,24 @@
                     if(n) document.getElementById('lbl-cat-loc').innerText = n.title || n.name;
                 }
 
-                const saleProds = allProducts.filter(p => p.type === 'Bán');
-                window.allSaleProdsData = saleProds;
-                const saleScroll = document.getElementById('sale-scroll');
-                if (saleScroll) {
-                    if (saleProds.length > 0) {
-                        saleScroll.innerHTML = saleProds.slice(0, 10).map(p => renderCardHTML(p)).join('');
-                    } else {
-                        saleScroll.innerHTML = '<div style="color:#888; padding:20px; font-style:italic;">Chưa có dữ liệu.</div>';
-                    }
-                }
+                const saleProds = allProducts.filter(p => p.type === 'Bán').slice(0, 10);
+                const rentProds = allProducts.filter(p => p.type === 'Thuê').slice(0, 10);
 
-                const rentProds = allProducts.filter(p => p.type === 'Thuê');
-                window.allRentProdsData = rentProds;
+                const saleScroll = document.getElementById('sale-scroll');
+                if (saleScroll) saleScroll.innerHTML = saleProds.map(p => renderCardHTML(p)).join('');
+
                 const rentScroll = document.getElementById('rent-scroll');
-                if (rentScroll) {
-                    if (rentProds.length > 0) {
-                        rentScroll.innerHTML = rentProds.slice(0, 10).map(p => renderCardHTML(p)).join('');
-                    } else {
-                        rentScroll.innerHTML = '<div style="color:#888; padding:20px; font-style:italic;">Chưa có dữ liệu.</div>';
-                    }
-                }
+                if (rentScroll) rentScroll.innerHTML = rentProds.map(p => renderCardHTML(p)).join('');
 
                 const projScroll = document.getElementById('gr-proj-scroll');
                 if (projScroll) {
-                    if (independentProjects.length > 0) {
-                        projScroll.innerHTML = independentProjects.slice(0, 10).map(p => {
-                            const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
-                            return `<a href="${p.link}" class="s2-card">
-                                <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>
-                                <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
-                            </a>`;
-                        }).join('');
-                    } else {
-                        projScroll.innerHTML = '<div style="color:#888; padding:20px; font-style:italic;">Chưa có dữ liệu.</div>';
-                    }
+                    projScroll.innerHTML = independentProjects.slice(0, 10).map(p => {
+                        const imgUrl = window.resolveImg ? window.resolveImg(p.img) : (p.img || '');
+                        return `<a href="${p.link}" class="s2-card">
+                            <div class="s2-thumb-box"><span class="gr-tag-abs tag-ban" style="background:#ff9f43; color:#000;">Dự án</span><img src="${imgUrl}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500';"></div>
+                            <div class="s2-body"><h3 class="gr-tit s2-tit">${p.title}</h3><div style="margin-top:auto; font-size:11px; color:#888;"><i class="far fa-star" style="color:#c5a059;"></i> Đang mở bán</div></div>
+                        </a>`;
+                    }).join('');
                 }
 
                 let viewedHistory = JSON.parse(localStorage.getItem('greenia_smart_history')) || { cats: [], ids: [] };
@@ -548,6 +558,8 @@
             let schemaName = document.getElementById('luc-seo-title') ? document.getElementById('luc-seo-title').innerText : "Danh mục Bất Động Sản";
             let schemaDesc = document.getElementById('luc-seo-desc') ? document.getElementById('luc-seo-desc').innerText : "Danh sách các bất động sản đang bán và cho thuê giá tốt nhất tại Greenia Homes.";
             
+            const baseUrl = window.location.origin + '/'; 
+
             const listItems = currentData.slice(0, 20).map((p, index) => {
                 let pCat = 'san-pham';
                 if(p.cat) {
@@ -556,7 +568,7 @@
                 }
                 const catSlug = createSafeSlug(pCat);
                 const pSlug = p.slug || createSafeSlug(p.title);
-                const link = `${window.location.origin}${safeBaseUrl}san-pham/${catSlug}/${pSlug}/`;
+                const link = `${baseUrl}san-pham/${catSlug}/${pSlug}/`;
                 return { "@type": "ListItem", "position": index + 1, "url": link, "name": p.title };
             });
 
@@ -614,13 +626,14 @@
 
             const statusDiv = document.getElementById('luc-search-status');
             const seoHeaderDiv = document.getElementById('luc-seo-header');
+
             if(filterState.keyword !== '') {
                 statusDiv.style.display = 'flex';
                 statusDiv.innerHTML = `Tìm thấy <strong class="luc-count-badge" style="margin: 0 5px;">${filteredData.length}</strong> kết quả cho: "<strong>${filterState.keyword}</strong>" <span style='cursor:pointer;color:#ff6b6b;text-decoration:underline;margin-left:10px;' onclick='window.location.href="/san-pham/"'>Xóa</span>`;
-                if(seoHeaderDiv) seoHeaderDiv.style.display = 'none'; // Ẩn Tiêu đề khi đang tìm kiếm
+                if(seoHeaderDiv) seoHeaderDiv.style.display = 'none'; 
             } else { 
                 statusDiv.style.display = 'none'; 
-                if(seoHeaderDiv) seoHeaderDiv.style.display = 'block'; // Hiện lại Tiêu đề khi không tìm kiếm
+                if(seoHeaderDiv) seoHeaderDiv.style.display = 'block';
             }
 
             const paginatedData = filteredData.slice(0, currentPage * itemsPerPage);
