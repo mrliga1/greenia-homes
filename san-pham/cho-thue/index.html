@@ -13,17 +13,17 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/cho-thue/" />
+    <link rel="canonical" href="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
     
-    <meta name="description" content="Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes." />
-    <meta name="keywords" content="Cho thuê, cho thuê nhà phố, cho thuê cản hộ. cho thuê biệt thự, cho thuê kho" />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
-    <meta property="og:title" content="Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp | Greenia Homes" />
-    <meta property="og:description" content="Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes." />
+    <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
+    <meta property="og:description" content="{{DESC}}" />
     <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/cho-thue/" />
+    <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -146,6 +146,24 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/cho-thue/" />
+    <meta name="description" content="Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes." />
+    <meta name="keywords" content="Cho thuê, cho thuê nhà phố, cho thuê cản hộ. cho thuê biệt thự, cho thuê kho" />
+    <meta property="og:title" content="Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp" />
+    <meta property="og:description" content="Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes." />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/cho-thue/" />
+    <meta property="og:type" content="website" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp",
+      "description": "Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes.",
+      "url": "https://greeniahomes.vn/san-pham/cho-thue/"
+    }
+    </script>
+    
 </head>
 <body>
 
@@ -275,7 +293,7 @@
         let currentPage = 1;
         
         let defaultCat = null;
-        try { defaultCat = { slug: "cho-thue", name: "Greenia Homes - Hỗ trợ mua bán chuyển nhượng chuyên nghiệp", desc: "Tổng hợp các sản phẩm đang được cho thuê tại Greenia Homes với giá thuê, vị trí cạnh tranh nhất trên thị trường cùng với sự hỗ trợ chuyên nghiệp từ đội ngũ Greenia Homes." }; } catch(e) {}
+        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { mainType: '', catType: '', catPrice: '', catLoc: '', keyword: '' };
@@ -316,7 +334,8 @@
         }
 
         function isCatMatch(pData, targetSlug) {
-            if (!targetSlug || targetSlug === '' || targetSlug === 'cho-thue') return true;
+            // Đã tách chữ để chống Bot thay thế nhầm
+            if (!targetSlug || targetSlug === '' || targetSlug === '{{' + 'SLUG}}') return true;
             let catsArray = extractCatsSafely(pData.cat);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
@@ -359,7 +378,8 @@
             let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
-            if (targetCatSlug === '' || targetCatSlug === 'cho-thue') {
+            // Đã tách chữ để chống Bot thay thế nhầm
+            if (targetCatSlug === '' || targetCatSlug === '{{' + 'SLUG}}') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
                 else searchSlug = '';
@@ -386,16 +406,13 @@
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
 
-            // --- BẮT ĐẦU PHẦN MỚI: TỰ ĐỘNG ĐỔI TÊN TAB TRÌNH DUYỆT ---
             if (filterState.keyword !== '') {
                 document.title = `Kết quả tìm kiếm: ${filterState.keyword} | Greenia Homes`;
             } else {
                 let tabTitle = displayTitle;
-                // Nếu tiêu đề chưa có chữ Greenia Homes thì nối thêm vào cho chuẩn SEO
                 if (!tabTitle.includes('Greenia')) tabTitle += ' | Greenia Homes';
                 document.title = tabTitle;
             }
-            // --- KẾT THÚC PHẦN MỚI ---
             
             if(boxEl) {
                 if (filterState.keyword !== '') {
@@ -410,7 +427,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
-            let templateSlug = 'cho-thue';
+            let templateSlug = '{{SLUG}}';
             let initialCatSlug = '';
 
             if (templateSlug && !templateSlug.includes('{{')) {
