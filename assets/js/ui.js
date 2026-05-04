@@ -347,10 +347,21 @@ function initMasterFormsAndPopup() {
 // PHẦN 5: ĐIỂM KHỞI ĐỘNG (IGNITION SWITCH)
 // --------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    // TỚ ĐÃ SỬA CHỖ NÀY: Gọi thẳng file header.html, footer.html ở thư mục gốc
+    // 1. Tải Header và Footer mặc định
     await loadComponent('site-header', 'components/header.html');
     await loadComponent('site-footer', 'components/footer.html');
     
+    // 2. [THÊM MỚI] TỰ ĐỘNG PHÁT HIỆN VÀ TẢI SUB-MENU
+    // Hệ thống sẽ tìm xem trên trang có thẻ div nào mang class="sub-header" không
+    const subHeaderContainer = document.querySelector('.sub-header');
+    if (subHeaderContainer && subHeaderContainer.id) {
+        // Nếu có, lấy chính cái ID đó để đi tìm menu trong file sub-menus.html
+        const menuId = subHeaderContainer.id; 
+        await loadSpecificMenu(menuId, menuId);
+        console.log("Đã kích hoạt tự động nạp Sub-menu:", menuId);
+    }
+    
+    // 3. Khởi chạy các hiệu ứng và tính năng khác
     initScrollEffects();
     if (typeof initHeroSlider === "function") initHeroSlider();
 
