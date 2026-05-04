@@ -13,17 +13,17 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
     
-    <meta name="description" content="{{DESC}}" />
-    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta name="description" content="afsf" />
+    <meta name="keywords" content="sfsfsf" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
-    <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
-    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:title" content="sfsfs | Greenia Homes" />
+    <meta property="og:description" content="afsf" />
     <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
-    <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -146,24 +146,6 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/nha-pho/" />
-    <meta name="description" content="afsf" />
-    <meta name="keywords" content="sfsfsf" />
-    <meta property="og:title" content="sfsfs" />
-    <meta property="og:description" content="afsf" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/nha-pho/" />
-    <meta property="og:type" content="website" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "sfsfs",
-      "description": "afsf",
-      "url": "https://greeniahomes.vn/san-pham/nha-pho/"
-    }
-    </script>
-    
 </head>
 <body>
 
@@ -293,7 +275,7 @@
         let currentPage = 1;
         
         let defaultCat = null;
-        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        try { defaultCat = { slug: "nha-pho", name: "sfsfs", desc: "afsf" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { mainType: '', catType: '', catPrice: '', catLoc: '', keyword: '' };
@@ -335,7 +317,7 @@
         }
 
         function isCatMatch(pData, targetSlug) {
-            if (!targetSlug || targetSlug === '' || targetSlug === '{{SLUG}}') return true;
+            if (!targetSlug || targetSlug === '' || targetSlug === 'nha-pho') return true;
             let catsArray = extractCatsSafely(pData.cat);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
@@ -377,7 +359,7 @@
             let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
-            if (targetCatSlug === '' || targetCatSlug === '{{SLUG}}') {
+            if (targetCatSlug === '' || targetCatSlug === 'nha-pho') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
                 else searchSlug = '';
@@ -417,7 +399,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
-            let templateSlug = '{{SLUG}}';
+            let templateSlug = 'nha-pho';
             let initialCatSlug = '';
 
             if (templateSlug && !templateSlug.includes('{{')) {
