@@ -60,7 +60,7 @@ async function loadComponent(elementId, filePath) {
 async function loadSpecificMenu(containerId, menuId) {
     try {
         // Đã bỏ chữ 'components/' vì hệ thống lấy trực tiếp
-        const response = await fetch(BASE_URL + 'sub-menus.html');
+        const response = await fetch(BASE_URL + 'components/sub-menus.html');
         if (!response.ok) throw new Error('Không tìm thấy kho menu');
         const html = await response.text();
         const tempDiv = document.createElement('div');
