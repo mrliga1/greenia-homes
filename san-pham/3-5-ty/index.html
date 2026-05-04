@@ -316,7 +316,8 @@
         }
 
         function isCatMatch(pData, targetSlug) {
-            if (!targetSlug || targetSlug === '' || targetSlug === '3-5-ty') return true;
+            // Đã tách chữ để chống Bot thay thế nhầm
+            if (!targetSlug || targetSlug === '' || targetSlug === '{{' + 'SLUG}}') return true;
             let catsArray = extractCatsSafely(pData.cat);
             return catsArray.some(c => createSafeSlug(c) === targetSlug);
         }
@@ -359,7 +360,8 @@
             let displayDesc = typeof defaultSeoDesc !== 'undefined' ? defaultSeoDesc : '';
             let searchSlug = targetCatSlug;
             
-            if (targetCatSlug === '' || targetCatSlug === '3-5-ty') {
+            // Đã tách chữ để chống Bot thay thế nhầm
+            if (targetCatSlug === '' || targetCatSlug === '{{' + 'SLUG}}') {
                 if (targetType === 'Bán') searchSlug = 'chuyen-nhuong'; 
                 else if (targetType === 'Thuê') searchSlug = 'cho-thue';
                 else searchSlug = '';
@@ -386,16 +388,13 @@
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
 
-            // --- BẮT ĐẦU PHẦN MỚI: TỰ ĐỘNG ĐỔI TÊN TAB TRÌNH DUYỆT ---
             if (filterState.keyword !== '') {
                 document.title = `Kết quả tìm kiếm: ${filterState.keyword} | Greenia Homes`;
             } else {
                 let tabTitle = displayTitle;
-                // Nếu tiêu đề chưa có chữ Greenia Homes thì nối thêm vào cho chuẩn SEO
                 if (!tabTitle.includes('Greenia')) tabTitle += ' | Greenia Homes';
                 document.title = tabTitle;
             }
-            // --- KẾT THÚC PHẦN MỚI ---
             
             if(boxEl) {
                 if (filterState.keyword !== '') {
