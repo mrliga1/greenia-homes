@@ -3,31 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Tiêu đề trang (Bác tự đổi theo ý muốn) -->
-    <title>Danh Sách Dự Án | Greenia Homes</title>
+    <title>Vinhomes Grand Park | Greenia Homes</title>
     
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
     <!-- SEO CƠ BẢN -->
-    <meta name="description" content="Danh sách dự án bất động sản đang phân phối..." />
-    <link rel="canonical" href="https://greeniahomes.vn/du-an/" />
+    <meta name="description" content="Khám phá siêu dự án Vinhomes Grand Park - Thành phố thông minh đa tiện ích tại trung tâm khu Đông Sài Gòn." />
+    <link rel="canonical" href="https://greeniahomes.vn/du-an/vinhomes-grand-park/" />
     
     <!-- FONT CHỮ VÀ CSS DÙNG CHUNG CỦA HỆ THỐNG -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- NẾU BÁC ĐANG CHẠY DƯỚI MÁY CÁ NHÂN (LOCAL), BỎ DÒNG DƯỚI NẾU BỊ LỖI -->
+    <!-- <link rel="stylesheet" href="/assets/css/style.css"> -->
 
     <style>
         /* CSS reset cơ bản cho nền tối của trang */
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; }
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: hidden; }
+        * { box-sizing: border-box; }
         
-        /* Bác viết thêm CSS giao diện riêng cho trang này vào đây */
+        :root {
+            --lux-gold: #c5a059;
+            --lux-gold-hover: #d4af37;
+            --lux-dark: #05080f;
+            --lux-white: #ffffff;
+        }
+
+        /* KHAI BÁO CÁC HIỆU ỨNG (RẤT QUAN TRỌNG ĐỂ KHÔNG BỊ TÀNG HÌNH) */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         
-        
-        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Nút chung */
+        .btn-cta-luxury { display: inline-flex; align-items: center; gap: 10px; background: rgba(11, 17, 32, 0.8); color: var(--lux-gold) !important; text-decoration: none; padding: 15px 35px; border-radius: 4px; border: 1px solid var(--lux-gold); font-weight: 700; transition: all 0.4s ease; text-transform: uppercase; font-size: 14px; cursor: pointer; }
+        .btn-cta-luxury:hover { background: var(--lux-gold); color: #000 !important; transform: translateY(-3px); }
+        .btn-gold { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 35px; background: rgba(197, 160, 89, 0.1); color: var(--lux-gold); border: 1px solid var(--lux-gold); text-decoration: none; font-weight: 700; text-transform: uppercase; border-radius: 4px; transition: 0.3s; cursor: pointer; font-size: 14px;}
+        .btn-gold:hover { background: var(--lux-gold); color: #000; }
+        .btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 35px; background: transparent; color: var(--lux-white); border: 1px solid rgba(255, 255, 255, 0.3); text-decoration: none; font-weight: 700; text-transform: uppercase; border-radius: 4px; transition: 0.3s; cursor: pointer; font-size: 14px;}
+        .btn-outline:hover { border-color: var(--lux-white); background: rgba(255, 255, 255, 0.1); }
+
         /* Cố định z-index cho popup để không bị lỗi đè lớp */
         [class*="popup"], [id*="popup"], [class*="overlay"], [id*="overlay"], [class*="modal"] { z-index: 99999999 !important; }
+
+        /* ĐÂY LÀ ĐOẠN CSS ĐỘC QUYỀN CHO TRANG CHI TIẾT DỰ ÁN */
+        .pj-hero { position: relative; height: 85vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .pj-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.4); }
+        .pj-hero-content { position: relative; z-index: 2; max-width: 900px; padding: 0 20px; opacity: 0; animation: fadeUp 1s forwards; }
+        .pj-badge { background: var(--lux-gold); color: #000; padding: 8px 20px; border-radius: 30px; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 2px; margin-bottom: 25px; display: inline-block; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+        .pj-title { font-family: 'Cinzel', serif; font-size: clamp(40px, 6vw, 70px); color: #fff; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+        .pj-slogan { font-size: 18px; color: #d1d5db; margin-bottom: 30px; line-height: 1.6; font-family: 'Playfair Display', serif; font-style: italic; }
+        
+        .pj-section { padding: 90px 20px; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
+        .pj-container { max-width: 1200px; margin: 0 auto; }
+        .pj-sec-title { font-family: 'Cinzel', serif; font-size: 36px; color: var(--lux-gold); text-align: center; margin-bottom: 60px; text-transform: uppercase; }
+        
+        /* Lưới Overview */
+        .pj-overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .pj-overview-card { background: rgba(11, 17, 32, 0.6); border: 1px solid rgba(197, 160, 89, 0.2); padding: 30px 25px; border-radius: 6px; transition: 0.4s; backdrop-filter: blur(10px); }
+        .pj-overview-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.6); background: rgba(197, 160, 89, 0.05); }
+        .pj-overview-card i { color: var(--lux-gold); font-size: 32px; margin-bottom: 20px; }
+        .pj-overview-card h4 { font-family: 'Playfair Display', serif; color: #94a3b8; font-size: 16px; margin-bottom: 10px; text-transform: uppercase; }
+        .pj-overview-card p { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.4; margin: 0; }
+
+        /* Bố cục Split (Hình - Chữ) */
+        .pj-split { display: flex; align-items: center; gap: 60px; margin-bottom: 60px; }
+        .pj-split.reverse { flex-direction: row-reverse; }
+        .pj-split-text { flex: 1; min-width: 320px; }
+        .pj-split-text h3 { font-family: 'Playfair Display', serif; font-size: 32px; color: #fff; margin-bottom: 20px; }
+        .brand-subtitle { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700; color: var(--lux-gold); letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .brand-subtitle::before { content: ''; display: block; width: 40px; height: 2px; background: var(--lux-gold); }
+        .pj-split-text p { color: #b0b8c4; font-size: 16px; line-height: 1.7; margin-bottom: 20px; text-align: justify; }
+        .pj-split-img { flex: 1; position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-width: 320px; }
+        .pj-split-img img { width: 100%; display: block; transition: 0.5s; }
+        .pj-split-img:hover img { transform: scale(1.05); filter: brightness(1.1); }
+        
+        .pj-list { list-style: none; padding: 0; margin: 0; }
+        .pj-list li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px; color: #e2e8f0; font-size: 15px; line-height: 1.6; }
+        .pj-list li i { color: var(--lux-gold); margin-top: 4px; font-size: 14px; }
+
+        /* Lưới Mặt Bằng Phân Khu */
+        .pj-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .pj-sub-card { background: #080c15; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; transition: 0.3s; }
+        .pj-sub-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(197,160,89,0.1); }
+        .pj-sub-img { height: 220px; position: relative; overflow: hidden; }
+        .pj-sub-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .pj-sub-card:hover .pj-sub-img img { transform: scale(1.1); }
+        .pj-sub-tag { position: absolute; top: 15px; left: 15px; background: var(--lux-gold); color: #000; font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; text-transform: uppercase; z-index: 2; }
+        .pj-sub-body { padding: 25px; }
+        .pj-sub-title { font-family: 'Cinzel', serif; font-size: 20px; color: #fff; margin: 0 0 15px; font-weight: 700; }
+        .pj-sub-info { font-size: 14px; color: #94a3b8; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .pj-sub-info i { color: var(--lux-gold); width: 16px; text-align: center; }
+        .pj-sub-price { display: block; margin-top: 20px; font-size: 18px; color: var(--lux-gold); font-weight: 700; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;}
+
+        /* Bảng giá & Chính sách */
+        .pj-policy-box { background: rgba(197,160,89,0.05); border-left: 4px solid var(--lux-gold); padding: 30px; margin-top: 20px; border-radius: 4px;}
+        .pj-table-wrap { overflow-x: auto; margin-top: 40px; border: 1px solid rgba(197,160,89,0.2); border-radius: 6px; }
+        .pj-table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; background: #0b1120; }
+        .pj-table th { background: rgba(197,160,89,0.1); color: var(--lux-gold); padding: 18px 20px; border-bottom: 2px solid var(--lux-gold); font-family: 'Playfair Display', serif; font-size: 16px; white-space: nowrap; }
+        .pj-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; font-size: 15px; }
+        .pj-table tr:hover td { background: rgba(197, 160, 89, 0.05); color: #fff; }
+
+        /* CTA Cuối trang */
+        #lux-cta-v118 { width: 100%; position: relative; padding: 100px 20px; background: linear-gradient(rgba(5, 8, 15, 0.85), rgba(5, 8, 15, 0.95)), url('https://placehold.co/1920x800/05080f/c5a059?text=Anh+Nen+Goi+Gia'); background-size: cover; background-position: center; background-attachment: fixed; border-top: 1px solid rgba(197, 160, 89, 0.2); border-bottom: 1px solid rgba(197, 160, 89, 0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-top: 60px;}
+        .cta-content { max-width: 900px; width: 100%; text-align: center; position: relative; z-index: 2; opacity: 0; animation: fadeUp 1s forwards; }
+        .cta-sub { color: var(--lux-gold); font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 4px; display: block; margin-bottom: 20px; }
+        .cta-title { color: var(--lux-white); font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; line-height: 1.3; margin: 0 0 25px 0; }
+        .cta-desc { color: var(--lux-text); font-family: 'Manrope', sans-serif; font-size: 16px; margin: 0 auto 40px; max-width: 700px; line-height: 1.6; }
+        .cta-actions { display: flex; justify-content: center; gap: 20px; }
+
+        @media (max-width: 968px) {
+            .pj-split { flex-direction: column !important; gap: 30px; }
+            .pj-hero { height: auto; padding: 120px 0; }
+            .pj-title { font-size: 36px; }
+            .cta-actions { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+            .btn-gold, .btn-outline { width: 100%; }
+            .cta-title { font-size: 28px; }
+        }
     </style>
     
     <!-- THƯ VIỆN FIREBASE CỐT LÕI -->
@@ -40,81 +138,19 @@
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
 
-    <!-- KHU VỰC SÁNG TẠO CỦA BÁC: CHỈ CẦN VIẾT CODE VÀO ĐÂY -->
+    <!-- KHU VỰC CHÍNH CỦA TRANG CHI TIẾT DỰ ÁN -->
     <main class="greenia-luxury-theme">
-        <!-- ĐÂY LÀ ĐOẠN CSS ĐỘC QUYỀN CHO TRANG CHI TIẾT DỰ ÁN, ĐẢM BẢO KHÔNG XUNG ĐỘT -->
-        <style>
-            .pj-hero { position: relative; height: 85vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; }
-            .pj-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.4); }
-            .pj-hero-content { position: relative; z-index: 2; max-width: 900px; padding: 0 20px; animation: fadeUp 1s forwards; }
-            .pj-badge { background: var(--lux-gold); color: #000; padding: 8px 20px; border-radius: 30px; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 2px; margin-bottom: 25px; display: inline-block; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
-            .pj-title { font-family: 'Cinzel', serif; font-size: clamp(40px, 6vw, 70px); color: #fff; line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
-            .pj-slogan { font-size: 18px; color: #d1d5db; margin-bottom: 30px; line-height: 1.6; font-family: 'Playfair Display', serif; font-style: italic; }
-            
-            .pj-section { padding: 90px 20px; border-bottom: 1px solid rgba(197, 160, 89, 0.05); }
-            .pj-container { max-width: 1200px; margin: 0 auto; }
-            .pj-sec-title { font-family: 'Cinzel', serif; font-size: 36px; color: var(--lux-gold); text-align: center; margin-bottom: 60px; text-transform: uppercase; }
-            
-            /* Lưới Overview */
-            .pj-overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-            .pj-overview-card { background: rgba(11, 17, 32, 0.6); border: 1px solid rgba(197, 160, 89, 0.2); padding: 30px 25px; border-radius: 6px; transition: 0.4s; backdrop-filter: blur(10px); }
-            .pj-overview-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.6); background: rgba(197, 160, 89, 0.05); }
-            .pj-overview-card i { color: var(--lux-gold); font-size: 32px; margin-bottom: 20px; }
-            .pj-overview-card h4 { font-family: 'Playfair Display', serif; color: #fff; font-size: 16px; margin-bottom: 10px; text-transform: uppercase; color: #94a3b8;}
-            .pj-overview-card p { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.4; margin: 0; }
 
-            /* Bố cục Split (Hình - Chữ) */
-            .pj-split { display: flex; align-items: center; gap: 60px; margin-bottom: 60px; }
-            .pj-split.reverse { flex-direction: row-reverse; }
-            .pj-split-text { flex: 1; min-width: 320px; }
-            .pj-split-text h3 { font-family: 'Playfair Display', serif; font-size: 28px; color: #fff; margin-bottom: 20px; }
-            .pj-split-text p { color: #b0b8c4; font-size: 15px; line-height: 1.7; margin-bottom: 20px; text-align: justify; }
-            .pj-split-img { flex: 1; position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-width: 320px; }
-            .pj-split-img img { width: 100%; display: block; transition: 0.5s; }
-            .pj-split-img:hover img { transform: scale(1.05); filter: brightness(1.1); }
-            
-            .pj-list { list-style: none; padding: 0; margin: 0; }
-            .pj-list li { margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px; color: #e2e8f0; font-size: 15px; line-height: 1.6; }
-            .pj-list li i { color: var(--lux-gold); margin-top: 4px; font-size: 14px; }
-
-            /* Lưới Mặt Bằng Phân Khu */
-            .pj-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
-            .pj-sub-card { background: #080c15; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; transition: 0.3s; }
-            .pj-sub-card:hover { border-color: var(--lux-gold); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(197,160,89,0.1); }
-            .pj-sub-img { height: 200px; position: relative; overflow: hidden; }
-            .pj-sub-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-            .pj-sub-card:hover .pj-sub-img img { transform: scale(1.1); }
-            .pj-sub-tag { position: absolute; top: 15px; left: 15px; background: var(--lux-gold); color: #000; font-size: 11px; font-weight: bold; padding: 5px 12px; border-radius: 4px; text-transform: uppercase; z-index: 2; }
-            .pj-sub-body { padding: 25px; }
-            .pj-sub-title { font-family: 'Cinzel', serif; font-size: 20px; color: #fff; margin: 0 0 15px; font-weight: 700; }
-            .pj-sub-info { font-size: 13px; color: #94a3b8; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-            .pj-sub-info i { color: var(--lux-gold); width: 15px; text-align: center; }
-            .pj-sub-price { display: block; margin-top: 15px; font-size: 18px; color: var(--lux-gold); font-weight: 700; }
-
-            /* Bảng giá & Chính sách */
-            .pj-policy-box { background: rgba(197,160,89,0.05); border-left: 4px solid var(--lux-gold); padding: 30px; margin-top: 20px; }
-            .pj-table-wrap { overflow-x: auto; margin-top: 30px; border: 1px solid rgba(197,160,89,0.2); border-radius: 6px; }
-            .pj-table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; }
-            .pj-table th { background: rgba(197,160,89,0.1); color: var(--lux-gold); padding: 18px 20px; border-bottom: 2px solid var(--lux-gold); font-family: 'Playfair Display', serif; font-size: 16px; white-space: nowrap; }
-            .pj-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e2e8f0; font-size: 14px; }
-            .pj-table tr:hover td { background: rgba(255,255,255,0.02); color: #fff; }
-
-            @media (max-width: 968px) {
-                .pj-split { flex-direction: column !important; gap: 30px; }
-                .pj-hero { height: auto; padding: 120px 0; }
-                .pj-title { font-size: 36px; }
-            }
-        </style>
-
-        <!-- SECTION 1: HERO BANNER (ẢNH CHỜ THAY BẰNG ẢNH TỔNG QUAN DỰ ÁN TỪ TRÊN CAO) -->
+        <!-- SECTION 1: HERO BANNER -->
         <section class="pj-hero">
+            <!-- ẢNH 1: TỔNG QUAN TỪ TRÊN CAO -->
             <img src="https://placehold.co/1920x800/05080f/c5a059?text=Hinh+Anh+Tong+Quan+Vinhomes" alt="Vinhomes Grand Park" class="pj-hero-bg">
             <div class="pj-hero-content">
                 <span class="pj-badge">Đại Đô Thị Thông Minh Đẳng Cấp</span>
                 <h1 class="pj-title">Vinhomes Grand Park</h1>
                 <p class="pj-slogan">Thành phố thông minh - Công viên của những giá trị sống đích thực, trung tâm mới của khu Đông Sài Gòn.</p>
                 <div class="cta-group" style="justify-content: center;">
-                    <a href="javascript:void(0)" onclick="openPopupNew()" class="btn-cta-luxury">
+                    <a href="javascript:void(0)" onclick="alert('Bác cài popup vào đây nhé')" class="btn-cta-luxury">
                         <i class="fas fa-download"></i> TẢI BẢNG GIÁ & CHÍNH SÁCH MỚI NHẤT
                     </a>
                 </div>
@@ -160,7 +196,7 @@
             </div>
         </section>
 
-        <!-- SECTION 3: VỊ TRÍ & KẾT NỐI (ẢNH CHỜ THAY BẰNG BẢN ĐỒ VỊ TRÍ HOẶC KẾT NỐI VÙNG) -->
+        <!-- SECTION 3: VỊ TRÍ & KẾT NỐI -->
         <section class="pj-section" style="background-color: #0b1120;">
             <div class="pj-container">
                 <div class="pj-split">
@@ -176,13 +212,14 @@
                         </ul>
                     </div>
                     <div class="pj-split-img">
+                        <!-- ẢNH 2: BẢN ĐỒ VỊ TRÍ -->
                         <img src="https://placehold.co/600x450/1a1f2e/c5a059?text=Hinh+Ban+Do+Vi+Tri+Vinhomes" alt="Vị trí Vinhomes Grand Park">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4: HỆ SINH THÁI TIỆN ÍCH (ẢNH CHỜ THAY BẰNG ẢNH CÔNG VIÊN 36HA / VINCOM) -->
+        <!-- SECTION 4: HỆ SINH THÁI TIỆN ÍCH -->
         <section class="pj-section">
             <div class="pj-container">
                 <div class="pj-split reverse">
@@ -198,13 +235,14 @@
                         </ul>
                     </div>
                     <div class="pj-split-img">
+                        <!-- ẢNH 3: CÔNG VIÊN 36HA HOẶC VINCOM -->
                         <img src="https://placehold.co/600x450/1a1f2e/c5a059?text=Hinh+Anh+Tien+Ich+Cong+Vien+Vincom" alt="Tiện ích Vinhomes Grand Park">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 5: CÁC PHÂN KHU ĐÃ & ĐANG PHÂN PHỐI (ẢNH CHỜ CHO TỪNG PHÂN KHU) -->
+        <!-- SECTION 5: CÁC PHÂN KHU ĐÃ & ĐANG PHÂN PHỐI -->
         <section class="pj-section" style="background-color: #0b1120;">
             <div class="pj-container">
                 <h2 class="pj-sec-title">Mặt Bằng & Phân Khu Nổi Bật</h2>
@@ -213,7 +251,8 @@
                     <div class="pj-sub-card">
                         <div class="pj-sub-img">
                             <span class="pj-sub-tag">The Beverly</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Beverly" alt="The Beverly">
+                            <!-- ẢNH PHÂN KHU 1 -->
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Anh+Phan+Khu+The+Beverly" alt="The Beverly">
                         </div>
                         <div class="pj-sub-body">
                             <h3 class="pj-sub-title">Phân Khu The Beverly</h3>
@@ -227,7 +266,8 @@
                     <div class="pj-sub-card">
                         <div class="pj-sub-img">
                             <span class="pj-sub-tag">Glory Heights</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Glory+Heights" alt="Glory Heights">
+                            <!-- ẢNH PHÂN KHU 2 -->
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Anh+Phan+Khu+Glory+Heights" alt="Glory Heights">
                         </div>
                         <div class="pj-sub-body">
                             <h3 class="pj-sub-title">Phân Khu Glory Heights</h3>
@@ -241,7 +281,8 @@
                     <div class="pj-sub-card">
                         <div class="pj-sub-img">
                             <span class="pj-sub-tag">The Beverly Solari</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Beverly+Solari" alt="The Beverly Solari">
+                            <!-- ẢNH PHÂN KHU 3 -->
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Anh+The+Beverly+Solari" alt="The Beverly Solari">
                         </div>
                         <div class="pj-sub-body">
                             <h3 class="pj-sub-title">The Beverly Solari</h3>
@@ -255,7 +296,8 @@
                     <div class="pj-sub-card">
                         <div class="pj-sub-img">
                             <span class="pj-sub-tag">Thấp Tầng</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Manhattan" alt="The Manhattan">
+                            <!-- ẢNH PHÂN KHU 4 -->
+                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Anh+Khu+Thap+Tang+Manhattan" alt="The Manhattan">
                         </div>
                         <div class="pj-sub-body">
                             <h3 class="pj-sub-title">The Manhattan & Glory</h3>
@@ -263,34 +305,6 @@
                             <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 84m2 – 800m2</div>
                             <div class="pj-sub-info"><i class="fas fa-star"></i> Sát cạnh công viên 36ha và dọc sông Tắc</div>
                             <span class="pj-sub-price">Giá từ: 13 tỷ/căn</span>
-                        </div>
-                    </div>
-
-                    <div class="pj-sub-card">
-                        <div class="pj-sub-img">
-                            <span class="pj-sub-tag">Hàng Hiệu</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=Lumiere+Boulevard" alt="Lumiere Boulevard">
-                        </div>
-                        <div class="pj-sub-body">
-                            <h3 class="pj-sub-title">Lumiere Boulevard</h3>
-                            <div class="pj-sub-info"><i class="fas fa-building"></i> Phát triển bởi: Masterise Homes</div>
-                            <div class="pj-sub-info"><i class="fas fa-expand"></i> Diện tích: 50m2 – 99m2</div>
-                            <div class="pj-sub-info"><i class="fas fa-star"></i> Kiến trúc xanh 3D lớn nhất TP.HCM</div>
-                            <span class="pj-sub-price">Giá từ: 60 - 100 triệu/m2</span>
-                        </div>
-                    </div>
-
-                    <div class="pj-sub-card">
-                        <div class="pj-sub-img">
-                            <span class="pj-sub-tag" style="background:#f1c40f;">Đã Bàn Giao</span>
-                            <img src="https://placehold.co/400x300/1e293b/c5a059?text=The+Rainbow+Origami" alt="Origami & Rainbow">
-                        </div>
-                        <div class="pj-sub-body">
-                            <h3 class="pj-sub-title">The Rainbow & Origami</h3>
-                            <div class="pj-sub-info"><i class="fas fa-building"></i> Tổng cộng: 38 tòa tháp</div>
-                            <div class="pj-sub-info"><i class="fas fa-check-circle"></i> Tình trạng: Đã bàn giao nhà & có sổ</div>
-                            <div class="pj-sub-info"><i class="fas fa-star"></i> Vườn Nhật Bản, tiện ích hiện hữu</div>
-                            <span class="pj-sub-price">Giá từ: 30 - 70 triệu/m2</span>
                         </div>
                     </div>
 
@@ -350,67 +364,26 @@
         </section>
 
         <!-- KHỐI 7: CTA CUỐI TRANG NHẮC NHỞ HÀNH ĐỘNG -->
-        <section id="lux-cta-v118" style="margin-top: 40px;">
+        <section id="lux-cta-v118">
             <div class="cta-bg-glow"></div>
             <div class="cta-content">
                 <span class="cta-sub">Giỏ Hàng Nội Bộ Độc Quyền</span>
                 <h2 class="cta-title">Tải Bảng Giá 20 Căn Đẹp Nhất Hôm Nay</h2>
                 <p class="cta-desc">Liên hệ trực tiếp với chuyên gia của Greenia Homes để nhận ngay giỏ hàng nội bộ giá tốt, nhà có sẵn, ở ngay hoặc làm sổ hồng.</p>
                 <div class="cta-actions">
-                    <a href="javascript:void(0);" onclick="openPopupNew()" class="btn-gold"><i class="far fa-envelope"></i> TẢI BÁO GIÁ QUA ZALO</a>
-                    <a href="tel:0932966700" class="btn-outline" onclick="triggerTrackingNew('Phone')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
+                    <a href="javascript:void(0);" onclick="alert('Bác cài popup tải bảng giá vào đây')" class="btn-gold"><i class="far fa-envelope"></i> TẢI BÁO GIÁ QUA ZALO</a>
+                    <a href="tel:0932966700" class="btn-outline" onclick="console.log('Gọi điện')"><i class="fas fa-phone-alt"></i> 0932 966 700</a>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- KHỐI FOOTER ĐỘNG (JS TỰ ĐỘNG BƠM VÀO) -->
+    <!-- KHỐI FOOTER ĐỘNG (JS TỰ ĐỘNG BƠM VÀO NẾU BÁC CÓ FILE UI.JS) -->
     <div id="site-footer"></div>
     
-    <!-- LOAD GIAO DIỆN HEADER/FOOTER (BẮT BUỘC PHẢI CÓ) -->
-    <script src="/assets/js/ui.js"></script>
+    <!-- LOAD GIAO DIỆN HEADER/FOOTER (NẾU CÓ) -->
+    <!-- <script src="/assets/js/ui.js"></script> -->
 
-    <!-- KHU VỰC VIẾT JAVASCRIPT CỦA TRANG -->
-    <script>
-        // 1. KHỞI TẠO FIREBASE KẾT NỐI DATA (MÃ KHÓA AN TOÀN)
-        const firebaseConfig = {
-            apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
-            authDomain: "greenia-homes.firebaseapp.com",
-            projectId: "greenia-homes",
-            storageBucket: "greenia-homes.appspot.com",
-            messagingSenderId: "24027695632",
-            appId: "1:24027695632:web:13a23aa156e864f7d55895",
-            measurementId: "G-YRK63BNPP0"
-        };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
-        const safeBaseUrl = (typeof BASE_URL !== 'undefined') ? BASE_URL : '/';
-
-        // 2. HÀM TẠO SLUG DÙNG CHUNG KHI GỌI DATA
-        function createSafeSlug(title) {
-            if(!title) return '';
-            return String(title).toLowerCase().trim()
-                .replace(/\s+/g, '-').replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a')
-                .replace(/[éèẻẽẹêếềểễệ]/g, 'e').replace(/[íìỉĩị]/g, 'i')
-                .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o').replace(/[úùủũụưứừửữự]/g, 'u')
-                .replace(/[ýỳỷỹỵ]/g, 'y').replace(/đ/g, 'd')
-                .replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
-        }
-
-        // 3. JAVASCRIPT XỬ LÝ RIÊNG CỦA BÁC VIẾT TẠI ĐÂY
-        document.addEventListener("DOMContentLoaded", async function() {
-            try {
-                // Ví dụ: Lấy data từ collection 'projects'
-                // const projSnap = await db.collection('projects').get();
-                // const projects = projSnap.docs.map(doc => doc.data());
-                
-            } catch (error) {
-                console.error("Lỗi:", error);
-            }
-        });
-    </script>
 </body>
 </html>
