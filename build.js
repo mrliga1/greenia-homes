@@ -271,6 +271,14 @@ if (fs.existsSync(duAnDir)) {
     const projectFolders = fs.readdirSync(duAnDir).filter(f => fs.statSync(path.join(duAnDir, f)).isDirectory());
 
     projectFolders.forEach(slug => {
+        // --- BẮT ĐẦU ĐẶT VÙNG CẤM ---
+        const danhSachCam = ['vinhomes-saigon-park', 'vinhomes-grand-park'];
+        if (danhSachCam.includes(slug)) {
+            console.log(`[BẢO VỆ] Bỏ qua bơm SEO tự động cho trang: ${slug} (Vùng cấm của Admin tự code tay)`);
+            return; // Bỏ qua không bơm hay sửa đổi file trong thư mục này
+        }
+        // --- KẾT THÚC VÙNG CẤM ---
+
         // Tìm Data SEO của dự án này từ Admin (để lấy Tên, Mô tả gốc)
         const projData = projects.find(p => (p.slug || makeSafeSlug(p.title)) === slug) || {};
         const projFolder = path.join(duAnDir, slug);
@@ -292,7 +300,7 @@ if (fs.existsSync(duAnDir)) {
             // Bộ SEO tự động bơm vào
             const seoInfo = {
                 title: `${prefixName} - Dự án ${projData.seoTitle || projData.title || slug} | Greenia Homes`,
-                seoDesc: `Khám phá thông tin chi tiết về ${prefixName.toLowerCase()} của dự án ${projData.title || slug}. ${projData.seoDesc || ''}`,
+                seoDesc: `Khám phá thông vị chi tiết về ${prefixName.toLowerCase()} của dự án ${projData.title || slug}. ${projData.seoDesc || ''}`,
                 seoKeywords: `${pageCode.replace(/-/g, ' ')} ${projData.title || slug}`
             };
 
