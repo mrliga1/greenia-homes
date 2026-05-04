@@ -403,6 +403,17 @@
                 descEl.innerHTML = displayDesc; 
                 descEl.style.display = displayDesc ? 'block' : 'none'; 
             }
+
+            // --- BẮT ĐẦU PHẦN MỚI: TỰ ĐỘNG ĐỔI TÊN TAB TRÌNH DUYỆT ---
+            if (filterState.keyword !== '') {
+                document.title = `Kết quả tìm kiếm: ${filterState.keyword} | Greenia Homes`;
+            } else {
+                let tabTitle = displayTitle;
+                // Nếu tiêu đề chưa có chữ Greenia Homes thì nối thêm vào cho chuẩn SEO
+                if (!tabTitle.includes('Greenia')) tabTitle += ' | Greenia Homes';
+                document.title = tabTitle;
+            }
+            // --- KẾT THÚC PHẦN MỚI ---
             
             if(boxEl) {
                 if (filterState.keyword !== '') {
@@ -412,7 +423,6 @@
                 }
             }
         }
-
         document.addEventListener("DOMContentLoaded", async function() {
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
@@ -731,7 +741,7 @@
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 100) filterBar.classList.add('is-stuck');
                 else filterBar.classList.remove('is-stuck');
-            });
+            }); 
         }
     </script>
 </body>
