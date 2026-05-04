@@ -131,7 +131,8 @@
 <body>
 
     <!-- TẠO VỎ BỌC MỚI ĐỂ TRÁNH UI.JS BƠM MENU MẶC ĐỊNH -->
-    <div id="vinhomes-main-header"></div>
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
 
     <!-- KHU VỰC CHÍNH CỦA TRANG CHI TIẾT DỰ ÁN -->
     <main class="greenia-luxury-theme">
@@ -397,13 +398,16 @@
         }
     </script>
     
-    <!-- LỆNH KÍCH HOẠT MENU CHÍNH RIÊNG CHO VINHOMES -->
+    <!-- BƠM ĐÚNG MENU VINHOMES VÀO CÁI VỎ SUB-MENU CỦA HỆ THỐNG -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Lấy thẳng menu Vinhomes bơm vào cái vỏ mới tạo ngay khi trang vừa tải xong
-            if (typeof loadSpecificMenu === 'function') {
-                loadSpecificMenu('vinhomes-main-header', 'menu-vinhomes-saigon-park');
-            }
+        document.addEventListener("DOMContentLoaded", () => {
+            // Đợi 0.1s để chắc chắn cái vỏ #sub-menu đã sẵn sàng trên trang
+            setTimeout(function() {
+                if (typeof loadSpecificMenu === 'function') {
+                    // Bơm ruột Vinhomes vào vỏ sub-menu mặc định
+                    loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park');
+                }
+            }, 100);
         });
     </script>
 </body>
