@@ -504,7 +504,14 @@
                         let catGroup = c.group || 'type'; 
                         
                         if(cleanSlug !== 'ban' && cleanSlug !== 'cho-thue' && cleanSlug !== 'chuyen-nhuong' && catName !== '') {
-                            let count = allProducts.filter(p => isCatMatch(p, cleanSlug)).length;
+                            // BẮT ĐẦU SỬA LỖI ĐẾM SỐ LƯỢNG
+                            let count = allProducts.filter(p => {
+                                let matchMain = true;
+                                // Chỉ đếm những sản phẩm thuộc đúng Tab Bán hoặc Thuê hiện tại
+                                if (filterState.mainType) matchMain = (p.type === filterState.mainType);
+                                return matchMain && isCatMatch(p, cleanSlug);
+                            }).length;
+                            // KẾT THÚC SỬA LỖI
                             if (count > 0 || c.showEmpty) {
                                 let isSelected = false;
                                 if (catGroup === 'price' && filterState.catPrice === cleanSlug) isSelected = true;
