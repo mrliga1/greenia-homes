@@ -5,27 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>rdfdsfdsf | Greenia Homes</title>
-    <meta name="description" content="Kiểm tra b&agrave;i viết
-
-👉 Xem chi tiết: b&aacute;n nh&agrave; phố quận 2
-..." />
-    <meta name="keywords" content="tin dự án, tin tức" />
+    <meta name="description" content="{{DESC}}" />
+    <meta name="keywords" content="{{KEYWORDS}}" />
     <!-- CHUẨN HÓA ĐƯỜNG LINK BẢN GỐC (ABSOLUTE URL) -->
-    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/tin-du-an/rdfdsfdsf/" />
+    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE LÊN ZALO, FACEBOOK -->
-    <meta property="og:title" content="rdfdsfdsf" />
-    <meta property="og:description" content="Kiểm tra b&agrave;i viết
-
-👉 Xem chi tiết: b&aacute;n nh&agrave; phố quận 2
-..." />
-    <meta property="og:image" content="https://i.ibb.co/rKL8hWyg/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg" />
-    <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/tin-du-an/rdfdsfdsf/" />
+    <meta property="og:title" content="{{TITLE}}" />
+    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:image" content="{{IMG}}" />
+    <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/{{CAT_SLUG}}/{{SLUG}}/" />
     <meta property="og:type" content="article" />
 
     <script>
         window.BASE_URL = '/';
-        var checkId = "11";
+        var checkId = "{{ID}}";
         if (checkId.includes("{{") || checkId === "") {
             window.location.replace(window.BASE_URL + 'tin-tuc.html');
         }
@@ -233,6 +227,34 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="canonical" href="https://greeniahomes.vn/tin-tuc/tin-du-an/rdfdsfdsf/" />
+    
+        <meta name="description" content="Kiểm tra b&agrave;i viết
+
+👉 Xem chi tiết: b&aacute;n nh&agrave; phố quận 2
+..." />
+        <meta name="keywords" content="tin dự án, tin tức" />
+        <meta property="og:title" content="rdfdsfdsf" />
+        <meta property="og:description" content="Kiểm tra b&agrave;i viết
+
+👉 Xem chi tiết: b&aacute;n nh&agrave; phố quận 2
+..." />
+        <meta property="og:image" content="https://i.ibb.co/rKL8hWyg/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg" />
+        <meta property="og:url" content="https://greeniahomes.vn/tin-tuc/tin-du-an/rdfdsfdsf/" />
+        <meta property="og:type" content="article" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "rdfdsfdsf",
+  "image": "https://i.ibb.co/rKL8hWyg/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg",
+  "datePublished": "16/4/2026",
+  "author": {
+    "@type": "Person",
+    "name": "Chuyên gia Greenia"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -268,21 +290,14 @@
         let defaultPost = null;
         try { 
             defaultPost = {
-                id: "11",
-                title: "rdfdsfdsf",
-                slug: "rdfdsfdsf",
-                cat: "tin dự án",
-                date: "16/4/2026",
-                author: "Chuyên gia Greenia",
-                thumb: "https://i.ibb.co/rKL8hWyg/tien-ich-du-an-an-phu-new-city-giai-doan-2.jpg",
-                content: `<p>Kiểm tra b&agrave;i viết</p>
-
-<p><strong>👉 Xem chi tiết:</strong> <a href="https://mrliga1.github.io/greenia-homes/san-pham/ban-nha-pho-quan-2/">b&aacute;n nh&agrave; phố quận 2</a></p>
-
-<p><strong>👉 C&oacute; thể bạn quan t&acirc;m:</strong> <a href="https://mrliga1.github.io/greenia-homes/blog/kiem-tra-dang-bai-viet/">kiểm tra đăng b&agrave;i viết</a></p>
-
-<p>&nbsp;</p>
-<div style="background:#f9f9f9; padding:15px; border-left:4px solid #c5a059; margin:20px 0;"> <a href="https://mrliga1.github.io/greenia-homes/blog/kiem-tra-dang-bai-viet/" style="color:#c5a059; font-weight:bold; text-decoration:none;">kiểm tra đăng bài viết</a></div>`
+                id: "{{ID}}",
+                title: "{{TITLE_JSON}}",
+                slug: "{{SLUG}}",
+                cat: "{{CAT}}",
+                date: "{{DATE}}",
+                author: "{{AUTHOR}}",
+                thumb: "{{IMG}}",
+                content: `{{CONTENT_JSON}}`
             };
         } catch(e) {}
         window.GREENIA_CURRENT_POST = defaultPost;
