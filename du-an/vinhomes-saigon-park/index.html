@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vinhomes Saigon Park | Greenia Homes</title>
     
-    <link rel="icon" href="/assets/images/vinhomes-saigon-park-logo.png" type="image/png" sizes="any">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
     <!-- SEO CƠ BẢN -->
-    <meta name="description" content="Khám phá Vinhomes Saigon Park - Khu đô thị Đại học Quốc tế đẳng cấp tại khu Tây Bắc TP.HCM. Bảng giá & Chính sách ưu đãi độc quyền từ Greenia Homes." />
+    <meta name="description" content="Khám phá Vinhomes Saigon Park - Khu đô thị đẳng cấp tại khu Tây Bắc TP.HCM. Bảng giá & Chính sách ưu đãi độc quyền từ Greenia Homes." />
     <link rel="canonical" href="https://greeniahomes.vn/du-an/vinhomes-saigon-park/" />
     
     <!-- TỐI ƯU HIỂN THỊ KHI CHIA SẺ LÊN ZALO, FACEBOOK (OPEN GRAPH) -->
@@ -47,138 +47,107 @@
             min-height: 70vh;
         }
 
-        .pj-container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 40px 20px;
-        }
-
         /* ==============================================================
-           BÁC VIẾT CSS ĐỘC QUYỀN CHO DỰ ÁN NÀY XUỐNG BÊN DƯỚI NAY
+           CSS ĐỘC QUYỀN: THIẾT KẾ MỚI CHO BANNER (KHÔNG ẢNH NỀN TOÀN MÀN HÌNH)
            ============================================================== */
         
-        /* KHỐI ẢNH PHÍA TRÊN BANNER */
-        .vsp-top-image {
-            width: 100%;
-            display: block;
-            margin-top: 80px; /* Đẩy xuống để không bị menu đè lên, bác có thể điều chỉnh thông số này */
-        }
-
-        .vsp-top-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
-
         @keyframes vspFadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* KHỐI BANNER CHÍNH */
-        .vsp-hero {
+        .vsp-hero-clean {
             position: relative;
             width: 100%;
-            height: 100vh;
-            min-height: 650px;
+            /* Thay margin bằng padding để nền đẩy lên sát mí màn hình, xóa viền đen */
+            padding-top: 130px; 
+            padding-bottom: 80px;
+            /* Nền màu tối loang nhẹ sang trọng thay vì dùng ảnh nền */
+            background: radial-gradient(circle at 0% 0%, #111a2f 0%, #05080f 80%);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            background-color: #05080f; /* Màu nền dự phòng */
-        }
-        
-        .vsp-hero-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 1;
-        }
-        
-        /* HIỆU ỨNG SLIDESHOW ẢNH NỀN */
-        .vsp-slide {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            opacity: 0;
-            /* Phóng to nhẹ và mờ đi tạo cảm giác sang trọng */
-            transform: scale(1.1); 
-            transition: opacity 1.5s ease-in-out, transform 6s ease;
-        }
-        
-        .vsp-slide.active {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 1;
-        }
-        
-        /* Lớp phủ đen Gradient mờ ảo dần xuống dưới để khớp với màu nền web */
-        .vsp-hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, rgba(5,8,15,0.7) 0%, rgba(5,8,15,0.4) 50%, #05080f 100%);
-            z-index: 2;
         }
 
-        /* Layout Container chia 2 cột */
         .vsp-hero-container {
-            position: relative;
-            z-index: 3;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 50px;
+            gap: 60px;
             flex-wrap: wrap;
         }
 
-        /* CỘT TRÁI: TEXT */
+        /* CỘT TRÁI: TEXT & SLIDESHOW ẢNH */
         .vsp-hero-left {
-            flex: 1;
-            min-width: 300px;
-            text-align: left;
+            flex: 1.2;
+            min-width: 320px;
             animation: vspFadeUp 1s ease-out forwards;
         }
 
         .vsp-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(32px, 5.5vw, 65px);
+            font-size: clamp(36px, 5vw, 60px);
             color: var(--lux-white);
             line-height: 1.1;
-            margin: 0 0 20px 0;
+            margin: 0 0 15px 0;
             text-transform: uppercase;
-            font-weight: 600;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-weight: 700;
         }
 
         .vsp-slogan {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: clamp(16px, 1.8vw, 20px);
-            color: #d1d5db;
-            max-width: 600px;
-            margin: 0 0 40px 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 16px;
+            color: #a0aec0;
+            margin: 0 0 30px 0;
             line-height: 1.6;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            max-width: 90%;
+        }
+
+        /* Khung hiển thị ảnh (Thay thế cho việc chèn ảnh phía trên menu) */
+        .vsp-featured-gallery {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Tỷ lệ vàng 16:9 */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            background: #000;
+        }
+
+        .vsp-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 1s ease-in-out, transform 4s ease-out;
+        }
+
+        .vsp-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
         }
 
         /* CỘT PHẢI: FORM GỐC CỦA BÁC */
         .vsp-hero-right {
-            flex: 0 0 400px;
-            max-width: 100%;
+            flex: 0.8;
+            min-width: 320px;
+            max-width: 450px;
             animation: vspFadeUp 1.2s ease-out forwards;
         }
 
         /* CSS FORM GỐC ĐƯỢC BÊ NGUYÊN XI VÀO */
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-        .v15-ver-container { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
         .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
         .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
@@ -189,18 +158,16 @@
         .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
         .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
         .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
-        .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; animation: vspFadeUp 0.5s forwards; }
+        .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; width: 100%; animation: vspFadeUp 0.5s forwards; }
         .success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
         .success-text { color: #ddd; font-size: 13px; }
 
         /* Responsive Mobile */
         @media (max-width: 968px) {
-            .vsp-hero { height: auto; padding: 120px 0 60px 0; }
+            .vsp-hero-clean { padding-top: 100px; padding-bottom: 60px; }
             .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
-            .vsp-hero-left { text-align: center; }
             .vsp-slogan { margin-left: auto; margin-right: auto; }
-            .vsp-hero-right { width: 100%; flex: none; }
-            .vsp-top-image { margin-top: 60px; } /* Điều chỉnh nhẹ cho mobile */
+            .vsp-hero-right { width: 100%; max-width: 500px; }
         }
            
     </style>
@@ -220,36 +187,22 @@
     <!-- ========================================================== -->
     <main class="greenia-luxury-theme" id="page-content">
         
-        <!-- KHỐI ẢNH ĐỘC LẬP NẰM TRÊN BANNER -->
-        <div class="vsp-top-image">
-            <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
-        </div>
-
-        <!-- BẮT ĐẦU HERO BANNER VINHOMES SAIGON PARK -->
-        <section class="vsp-hero">
-            
-            <!-- Danh sách ảnh nền Banner Slideshow -->
-            <div class="vsp-hero-bg">
-                <!-- ẢNH 1 (Mặc định hiển thị trước) -->
-                <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Phối cảnh Vinhomes Saigon Park 1" class="vsp-slide active">
-                <!-- ẢNH 2 (Đã sửa cú pháp alt) -->
-                <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Phối cảnh Vinhomes Saigon Park Hóc Môn" class="vsp-slide">
-                <!-- ẢNH 3 (Đã cập nhật định dạng hiển thị) -->
-                <picture class="vsp-slide">
-                    <source srcset="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" type="image/webp">
-                    <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh Vinhomes Sài Gòn Park Hóc Môn" style="width: 100%; height: 100%; object-fit: cover;">
-                </picture>
-                
-                <div class="vsp-hero-overlay"></div>
-            </div>
-
-            <!-- Nội dung đè lên ảnh nền chia 2 cột -->
+        <!-- BẮT ĐẦU HERO BANNER THIẾT KẾ MỚI (KHÔNG ẢNH NỀN) -->
+        <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
                 
-                <!-- Cột trái: Text & Slogan -->
+                <!-- Cột trái: Text & Cụm Ảnh Slideshow -->
                 <div class="vsp-hero-left">
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
                     <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
+                    
+                    <!-- Cụm ảnh Slideshow thay thế cho ảnh nền -->
+                    <div class="vsp-featured-gallery">
+                        <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park" class="vsp-slide active">
+                        <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Vinhomes Saigon Park Hóc Môn" class="vsp-slide">
+                        <!-- Ảnh số 3 đuôi webp đã được xử lý chuẩn -->
+                        <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh nội khu" class="vsp-slide">
+                    </div>
                 </div>
 
                 <!-- Cột phải: Form Gốc -->
@@ -280,7 +233,6 @@
                 </div>
 
             </div>
-            
         </section>
         <!-- KẾT THÚC HERO BANNER -->
 
@@ -288,7 +240,7 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 
-                // 1. CHẠY HIỆU ỨNG SLIDESHOW ẢNH NỀN
+                // 1. CHẠY HIỆU ỨNG SLIDESHOW CHO KHUNG ẢNH BÊN TRÁI
                 const slides = document.querySelectorAll('.vsp-slide');
                 if (slides.length > 1) {
                     let currentSlide = 0;
@@ -296,17 +248,15 @@
                         slides[currentSlide].classList.remove('active');
                         currentSlide = (currentSlide + 1) % slides.length;
                         slides[currentSlide].classList.add('active');
-                    }, 5000); // Đổi ảnh mỗi 5 giây
+                    }, 4000); // Đổi ảnh mỗi 4 giây
                 }
 
-                // 2. KHỐI API GOOGLE SHEET CỦA BÁC
+                // 2. KHỐI API GOOGLE SHEET CỦA BÁC (GIỮ NGUYÊN)
                 const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
                 let clientIPNew = "";
 
-                // Lấy IP người dùng
                 fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
 
-                // Lấy số lượng đánh giá sao từ Sheet
                 fetch(API_LEAD_NEW + "?action=count")
                 .then(res => res.json())
                 .then(data => {
@@ -319,7 +269,6 @@
                     if(cHero) cHero.innerText = `(5.0/5 - 186 đánh giá)`;
                 });
 
-                // Xử lý gửi Form
                 const form = document.getElementById('leadFormV15Ver');
                 if(form) {
                     form.addEventListener('submit', function(e) {
