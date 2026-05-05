@@ -46,13 +46,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* KHỐI ẢNH ĐỘC LẬP PHÍA TRÊN */
         .vsp-top-image { width: 100%; display: block; padding-top: 0px; background-color: #05080f; }
         .vsp-top-image img { width: 100%; height: auto; display: block; object-fit: cover; }
 
-        /* BANNER CHÍNH */
         .vsp-hero-clean {
-            position: relative; width: 100%; padding-top: 30px; padding-bottom: 60px;
+            position: relative; width: 100%; padding-top: 30px; padding-bottom: 50px;
             background: linear-gradient(135deg, #05080f 0%, #0d1423 50%, #05080f 100%);
             display: flex; align-items: center; justify-content: center;
             border-top: 1px solid rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.1);
@@ -94,7 +92,6 @@
 
         .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        /* FORM */
         #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -102,6 +99,7 @@
         .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
         .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
         .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        
         .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
         .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
         .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
@@ -112,57 +110,71 @@
         .success-text { color: #ddd; font-size: 13px; }
 
         /* ==============================================================
-           PHẦN TỔNG QUAN DỰ ÁN - FULL NỘI DUNG GỐC
+           PHẦN TỔNG QUAN: 6 KHỐI (3 TRÁI, 3 PHẢI) - KHỐI 1 PHẢI LÀ ẢNH LỚN
            ============================================================== */
         .vsp-overview-section {
-            padding: 50px 20px;
+            padding: 40px 20px;
             background-color: var(--lux-dark);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
 
         .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
 
         .vsp-section-title {
             font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold);
-            text-align: center; margin-bottom: 40px; text-transform: uppercase; font-weight: 700;
+            text-align: center; margin-bottom: 30px; text-transform: uppercase; font-weight: 700;
         }
 
-        .vsp-overview-grid {
-            display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start;
+        .vsp-overview-6-blocks {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Chia 2 cột chính */
+            gap: 20px;
         }
 
-        /* Ảnh đại diện tổng quan */
-        .vsp-overview-image {
-            width: 100%; border-radius: 8px; overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2);
+        /* Cấu trúc các cột trái và phải để chứa 3 khối con mỗi bên */
+        .vsp-column-side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
-        .vsp-overview-image img { width: 100%; height: auto; display: block; transition: 0.5s; }
-        .vsp-overview-image:hover img { transform: scale(1.03); }
 
-        /* Bảng thông số chi tiết */
-        .vsp-info-table { width: 100%; border-collapse: collapse; }
-        .vsp-info-row { display: flex; border-bottom: 1px solid rgba(197, 160, 89, 0.15); padding: 15px 0; align-items: flex-start; }
-        .vsp-info-row:last-child { border-bottom: none; }
-        
-        .vsp-info-label { 
-            flex: 0 0 160px; font-family: 'Cinzel', serif; font-size: 13px; 
-            color: var(--lux-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        .vsp-overview-block {
+            background: rgba(11, 17, 32, 0.8);
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            padding: 20px;
+            border-radius: 8px;
+            height: 100%;
         }
-        .vsp-info-value { 
-            flex: 1; font-family: 'Manrope', sans-serif; font-size: 15px; color: #e2e8f0; line-height: 1.6;
-        }
-        .vsp-info-value strong { color: #fff; font-weight: 700; }
 
-        /* List số lượng sản phẩm */
-        .product-list { list-style: none; padding: 0; margin: 5px 0 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .product-list li { position: relative; padding-left: 15px; font-size: 14px; color: #cbd5e1; }
-        .product-list li::before { content: '→'; position: absolute; left: 0; color: var(--lux-gold); }
+        .vsp-block-label {
+            font-family: 'Cinzel', serif; font-size: 12px; color: var(--lux-gold);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 10px; display: block; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            padding-bottom: 5px;
+        }
+
+        .vsp-block-value { font-size: 14px; line-height: 1.6; color: #e2e8f0; }
+        .vsp-block-value strong { color: #fff; }
+
+        /* Khối 1 bên phải lớn chứa ảnh */
+        .vsp-block-image-large {
+            padding: 0; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.3);
+            min-height: 300px;
+        }
+        .vsp-block-image-large img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+
+        /* Danh sách sản phẩm dạng Grid nhỏ */
+        .grid-products {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5px 15px;
+            list-style: none; padding: 0; margin: 5px 0 0 0;
+        }
+        .grid-products li { font-size: 13px; color: #cbd5e1; position: relative; padding-left: 12px; }
+        .grid-products li::before { content: '♦'; position: absolute; left: 0; color: var(--lux-gold); font-size: 10px; }
 
         @media (max-width: 968px) {
-            .vsp-overview-grid { grid-template-columns: 1fr; }
-            .vsp-info-label { flex: 0 0 130px; font-size: 12px; }
-            .vsp-hero-clean { padding-top: 50px; padding-bottom: 50px; }
-            .product-list { grid-template-columns: 1fr; }
+            .vsp-overview-6-blocks { grid-template-columns: 1fr; }
+            .vsp-block-image-large { min-height: 250px; }
         }
     </style>
     
@@ -223,58 +235,55 @@
             <div class="vsp-overview-container">
                 <h2 class="vsp-section-title">Tổng Quan Dự Án</h2>
                 
-                <div class="vsp-overview-grid">
-                    <div class="vsp-overview-image">
-                        <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Sài Gòn Park">
+                <div class="vsp-overview-6-blocks">
+                    
+                    <div class="vsp-column-side">
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thông tin dự án</span>
+                            <div class="vsp-block-value">
+                                <strong>Vinhomes Sài Gòn Park</strong><br>
+                                Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)
+                            </div>
+                        </div>
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Đơn vị phát triển</span>
+                            <div class="vsp-block-value">
+                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
+                                Tổng thầu xây dựng: Coteccons
+                            </div>
+                        </div>
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thời gian sở hữu</span>
+                            <div class="vsp-block-value">
+                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
+                                • Khách nước ngoài: 50 năm
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="vsp-info-table">
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Tên dự án</div>
-                            <div class="vsp-info-value"><strong>Vinhomes Sài Gòn Park</strong></div>
+                    <div class="vsp-column-side">
+                        <div class="vsp-overview-block vsp-block-image-large">
+                            <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
                         </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Vị trí</div>
-                            <div class="vsp-info-value">Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)</div>
-                        </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Chủ đầu tư</div>
-                            <div class="vsp-info-value"><strong>Tập đoàn Vingroup</strong></div>
-                        </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Xây dựng</div>
-                            <div class="vsp-info-value">Tổng thầu Coteccons</div>
-                        </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Quy mô</div>
-                            <div class="vsp-info-value">
-                                • Diện tích dự án: <strong>880 ha</strong><br>
-                                • Tổng vốn đầu tư: <strong>59.000 tỷ đồng</strong><br>
-                                • Dân số dự kiến: <strong>135.000 người</strong><br>
-                                • Mật độ xây dựng: <strong>31%</strong>
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Quy mô chi tiết</span>
+                            <div class="vsp-block-value">
+                                Diện tích: 880 ha | Vốn: 59.000 tỷ đồng<br>
+                                Dân số: 135.000 người | Mật độ xây dựng: 31%
                             </div>
                         </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Loại hình</div>
-                            <div class="vsp-info-value">Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</div>
-                        </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Sản phẩm</div>
-                            <div class="vsp-info-value">
-                                <ul class="product-list">
-                                    <li>24 tòa căn hộ</li>
-                                    <li>2.491 căn nhà liền kề</li>
-                                    <li>552 căn biệt thự</li>
-                                    <li>1.500 căn nhà ở xã hội</li>
-                                    <li>815 căn tái định cư</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="vsp-info-row">
-                            <div class="vsp-info-label">Sở hữu</div>
-                            <div class="vsp-info-value">50 năm với khách nước ngoài & <strong>sở hữu lâu dài</strong> với khách Việt Nam</div>
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Số lượng sản phẩm</span>
+                            <ul class="grid-products">
+                                <li>24 tòa căn hộ</li>
+                                <li>2.491 căn nhà liền kề</li>
+                                <li>552 căn biệt thự</li>
+                                <li>1.500 căn nhà ở xã hội</li>
+                                <li>815 căn tái định cư</li>
+                            </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
