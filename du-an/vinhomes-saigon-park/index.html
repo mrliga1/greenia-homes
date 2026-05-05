@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vinhomes Saigon Park | Greenia Homes</title>
     
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
+    <link rel="icon" href="/assets/images/vinhomes-saigon-park-logo.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
     <!-- SEO CƠ BẢN -->
@@ -60,8 +60,8 @@
         .vsp-top-image {
             width: 100%;
             display: block;
-            padding-top: 0px; /* Dùng padding để ảnh xuống dưới menu mà không tạo khoảng đen */
-            background-color: #05080f; /* Đổ màu nền trùng màu web để lấp kín mọi kẽ hở */
+            padding-top: 0px; 
+            background-color: #05080f; 
         }
 
         .vsp-top-image img {
@@ -71,19 +71,35 @@
             object-fit: cover;
         }
 
-        /* KHỐI BANNER CHÍNH */
+        /* KHỐI BANNER CHÍNH - THIẾT KẾ SANG TRỌNG MỚI */
         .vsp-hero-clean {
             position: relative;
             width: 100%;
-            padding-top: 60px; 
-            padding-bottom: 80px;
-            background: radial-gradient(circle at 0% 0%, #111a2f 0%, #05080f 80%);
+            padding-top: 80px; 
+            padding-bottom: 90px;
+            /* Gradient kết hợp tạo chiều sâu */
+            background: linear-gradient(135deg, #05080f 0%, #0d1423 50%, #05080f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        /* Hiệu ứng pattern lưới chìm mờ ảo phía sau */
+        .vsp-hero-clean::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .vsp-hero-container {
+            position: relative;
+            z-index: 3;
             width: 100%;
             max-width: 1280px;
             margin: 0 auto;
@@ -102,35 +118,66 @@
             animation: vspFadeUp 1s ease-out forwards;
         }
 
+        /* Badge Tag sang trọng mới */
+        .vsp-badge-lux {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(197, 160, 89, 0.1);
+            color: var(--lux-gold);
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(197, 160, 89, 0.3);
+        }
+
         .vsp-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(36px, 5vw, 60px);
+            font-size: clamp(36px, 4.5vw, 55px);
             color: var(--lux-white);
-            line-height: 1.1;
+            line-height: 1.2;
             margin: 0 0 15px 0;
             text-transform: uppercase;
             font-weight: 700;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .vsp-slogan {
             font-family: 'Manrope', sans-serif;
             font-size: 16px;
             color: #a0aec0;
-            margin: 0 0 30px 0;
+            margin: 0 0 35px 0;
             line-height: 1.6;
-            max-width: 90%;
+            max-width: 95%;
+            /* Đường viền nhấn bên trái Slogan */
+            border-left: 3px solid var(--lux-gold);
+            padding-left: 15px;
         }
 
-        /* Khung hiển thị ảnh (Thay thế cho việc chèn ảnh phía trên menu) */
+        /* Khung hiển thị ảnh viền vàng chìm */
         .vsp-featured-gallery {
             position: relative;
             width: 100%;
             padding-top: 56.25%; /* Tỷ lệ vàng 16:9 */
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            border: 1px solid rgba(197, 160, 89, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(197, 160, 89, 0.2);
             background: #000;
+        }
+
+        /* Lớp bóng viền vàng bên trong khung ảnh */
+        .vsp-featured-gallery::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.2);
+            pointer-events: none;
+            z-index: 3;
         }
 
         .vsp-slide {
@@ -177,9 +224,9 @@
 
         /* Responsive Mobile */
         @media (max-width: 968px) {
-            .vsp-hero-clean { padding-top: 60px; padding-bottom: 60px; }
+            .vsp-hero-clean { padding-top: 50px; padding-bottom: 60px; }
             .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
-            .vsp-slogan { margin-left: auto; margin-right: auto; }
+            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
             .vsp-hero-right { width: 100%; max-width: 500px; }
             .vsp-top-image { padding-top: 60px; }
         }
@@ -212,6 +259,7 @@
                 
                 <!-- Cột trái: Text & Cụm Ảnh Slideshow -->
                 <div class="vsp-hero-left">
+                    <div class="vsp-badge-lux"><i class="fas fa-gem"></i> Tuyệt tác độc bản</div>
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
                     <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                     
