@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tên Dự Án | Greenia Homes</title>
+    
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="/favicon.png">
+
+    <!-- SEO CƠ BẢN -->
+    <meta name="description" content="Mô tả ngắn gọn về dự án (Khoảng 150 ký tự để Google hiển thị chuẩn nhất)." />
+    <link rel="canonical" href="https://greeniahomes.vn/du-an/link-du-an-cua-bac/" />
+    
+    <!-- TỐI ƯU HIỂN THỊ KHI CHIA SẺ LÊN ZALO, FACEBOOK (OPEN GRAPH) -->
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tên Dự Án Nổi Bật | Greenia Homes" />
+    <meta property="og:description" content="Mô tả khi chia sẻ lên mạng xã hội." />
+    <meta property="og:url" content="https://greeniahomes.vn/du-an/link-du-an-cua-bac/" />
+    <meta property="og:site_name" content="Greenia Homes" />
+    <meta property="og:image" content="https://greeniahomes.vn/assets/images/anh-bia-chia-se-zalo.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- FONT CHỮ VÀ CSS DÙNG CHUNG CỦA HỆ THỐNG -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <style>
+        /* ==============================================================
+           CSS NỀN TẢNG CHO TRANG CHI TIẾT DỰ ÁN (BÁC GIỮ NGUYÊN)
+           ============================================================== */
+        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: hidden; }
+        * { box-sizing: border-box; }
+        
+        :root {
+            --lux-gold: #c5a059;
+            --lux-gold-hover: #d4af37;
+            --lux-dark: #05080f;
+            --lux-white: #ffffff;
+        }
+
+        .greenia-luxury-theme {
+            width: 100%;
+            min-height: 70vh;
+        }
+
+        /* Container chuẩn để gom nội dung vào giữa màn hình */
+        .pj-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 40px 20px;
+        }
+
+        /* ==============================================================
+           BÁC VIẾT CSS ĐỘC QUYỀN CHO DỰ ÁN NÀY XUỐNG BÊN DƯỚI NAY
+           ============================================================== */
+        
+           
+    </style>
+    
+    <!-- THƯ VIỆN FIREBASE CỐT LÕI -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <!-- KHU VỰC HEADER VÀ MENU (UI.JS SẼ TỰ ĐỘNG BƠM VÀO ĐÂY) -->
+    <div id="site-header"></div>
+    <div id="sub-menu" class="sub-header"></div>
+
+    <!-- ========================================================== -->
+    <!-- KHU VỰC CHÍNH CỦA TRANG: BÁC TỰ DO THIẾT KẾ BÊN TRONG NÀY -->
+    <!-- ========================================================== -->
+    <main class="greenia-luxury-theme" id="page-content">
+        
+        <div class="pj-container" style="text-align: center; padding-top: 100px;">
+            <h1 style="color: var(--lux-gold); font-family: 'Cinzel', serif;">Khu Vực Thiết Kế Dự Án</h1>
+            <p>Bác xóa đoạn text này đi và bắt đầu dựng các khối nội dung (Banner, Tổng quan, Vị trí...) ở đây nhé.</p>
+        </div>
+
+    </main>
+    <!-- ========================================================== -->
+
+    <!-- KHU VỰC FOOTER (UI.JS SẼ TỰ ĐỘNG BƠM VÀO ĐÂY) -->
+    <div id="site-footer"></div>
+    
+    <!-- TẢI GIAO DIỆN CHUNG HEADER/FOOTER -->
+    <script src="/assets/js/ui.js"></script>
+    
+    <!-- KHỞI TẠO FIREBASE CHO TRANG -->
+    <script>
+        const firebaseConfig = {
+            apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
+            authDomain: "greenia-homes.firebaseapp.com",
+            projectId: "greenia-homes",
+            storageBucket: "greenia-homes.appspot.com",
+            messagingSenderId: "24027695632",
+            appId: "1:24027695632:web:13a23aa156e864f7d55895",
+            measurementId: "G-YRK63BNPP0"
+        };
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+    </script>
+    
+    <!-- NẾU TRANG NÀY CÓ MENU DỰ ÁN RIÊNG, BÁC KÍCH HOẠT ĐOẠN CODE NÀY -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Đợi 0.1s để chắc chắn cái vỏ #sub-menu đã sẵn sàng trên trang
+            setTimeout(function() {
+                if (typeof loadSpecificMenu === 'function') {
+                    // Bác thay 'ten-menu-cua-bac' bằng ID của menu dự án tương ứng trong ui.js
+                    // Nếu dự án không có menu riêng thì bác cứ xóa luôn khối <script> này đi cũng được.
+                    // loadSpecificMenu('sub-menu', 'ten-menu-cua-bac');
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
