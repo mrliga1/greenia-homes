@@ -3,48 +3,41 @@
        1. CSS NỀN TẢNG CỦA SUB-MENU
        ========================================== */
     #menu-vinhomes-saigon-park,
-    #menu-the-global {
+    #menu-the-global,
+    #sub-menu { /* Bổ sung thêm #sub-menu để chắc chắn nhận CSS khi bị bơm ruột vào */
         position: relative;
-        background-color: #05080f !important; /* Ép nền đen tuyền */
+        background-color: #05080f !important; 
         border-bottom: 1px solid rgba(197, 160, 89, 0.2);
         font-family: 'Manrope', sans-serif !important;
         z-index: 1000;
     }
     
     #menu-vinhomes-saigon-park .nav-link,
-    #menu-the-global .nav-link {
+    #menu-the-global .nav-link,
+    #sub-menu .nav-link {
         font-family: 'Manrope', sans-serif !important;
         font-weight: 500 !important;
         letter-spacing: 0.5px;
     }
 
     /* ==========================================
-       2. CSS XỬ LÝ MENU MOBILE (ĐÃ ĐƯỢC CÁCH LY)
+       2. CSS XỬ LÝ MENU MOBILE
        ========================================== */
-    
-    /* Trên máy tính: Ẩn nút 3 gạch, hiện dàn menu ngang */
     @media (min-width: 969px) {
-        #menu-vinhomes-saigon-park .mobile-menu-btn,
-        #menu-the-global .mobile-menu-btn { display: none !important; }
-        
-        #menu-vinhomes-saigon-park .main-nav,
-        #menu-the-global .main-nav { display: flex !important; }
+        .mobile-menu-btn { display: none !important; }
+        .main-nav { display: flex !important; }
     }
 
-    /* Trên điện thoại (dưới 968px) */
     @media (max-width: 968px) {
-        #menu-vinhomes-saigon-park .header-container,
-        #menu-the-global .header-container {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            position: relative; /* Trụ cột để menu thả xuống từ đây */
+            position: relative; 
         }
         
-        /* Trang trí nút 3 gạch */
-        #menu-vinhomes-saigon-park .mobile-menu-btn,
-        #menu-the-global .mobile-menu-btn {
+        .mobile-menu-btn {
             display: block !important;
             background: transparent;
             border: none;
@@ -55,9 +48,7 @@
             outline: none;
         }
 
-        /* Ẩn menu mặc định, biến thành khối nằm chờ thả xuống */
-        #menu-vinhomes-saigon-park .main-nav,
-        #menu-the-global .main-nav {
+        .main-nav {
             display: none; 
             position: absolute;
             top: 100%; 
@@ -69,15 +60,12 @@
             z-index: 99999;
         }
 
-        /* LỆNH QUAN TRỌNG: Mở menu */
-        #menu-vinhomes-saigon-park .main-nav.active,
-        #menu-the-global .main-nav.active {
+        /* Khi có active sẽ bung ra */
+        .main-nav.active {
             display: block !important;
         }
 
-        /* Dàn các link dọc xuống */
-        #menu-vinhomes-saigon-park .nav-list,
-        #menu-the-global .nav-list {
+        .nav-list {
             display: flex;
             flex-direction: column;
             padding: 0;
@@ -85,13 +73,9 @@
             list-style: none;
         }
 
-        #menu-vinhomes-saigon-park .nav-list li,
-        #menu-the-global .nav-list li {
-            width: 100%;
-        }
+        .nav-list li { width: 100%; }
 
-        #menu-vinhomes-saigon-park .nav-link,
-        #menu-the-global .nav-link {
+        .nav-link {
             display: block;
             padding: 15px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -100,8 +84,7 @@
             font-size: 14px;
         }
 
-        #menu-vinhomes-saigon-park .nav-link:hover,
-        #menu-the-global .nav-link:hover {
+        .nav-link:hover {
             background: rgba(197, 160, 89, 0.1);
             color: #c5a059;
         }
@@ -129,9 +112,9 @@
             </nav>
         </div>  
         
-        <!-- CẤU TRÚC CHUẨN: Đưa Action bọc nút bấm ra ngoài, ngang hàng với center-group -->
+        <!-- SỬ DỤNG THIS.CLOSEST ĐỂ TÌM MENU MỘT CÁCH LINH HOẠT -->
         <div class="header-action">
-            <button class="mobile-menu-btn" onclick="document.querySelector('#menu-vinhomes-saigon-park .main-nav').classList.toggle('active');">☰</button>
+            <button class="mobile-menu-btn" onclick="this.closest('.header-container').querySelector('.main-nav').classList.toggle('active');">☰</button>
         </div>
     </div>
 </div>
@@ -157,9 +140,9 @@
             </nav>
         </div>
 
-        <!-- CẤU TRÚC CHUẨN: Đưa Action bọc nút bấm ra ngoài, ngang hàng với center-group -->
+        <!-- SỬ DỤNG THIS.CLOSEST ĐỂ TÌM MENU MỘT CÁCH LINH HOẠT -->
         <div class="header-action">
-            <button class="mobile-menu-btn" onclick="document.querySelector('#menu-the-global .main-nav').classList.toggle('active');">☰</button>
+            <button class="mobile-menu-btn" onclick="this.closest('.header-container').querySelector('.main-nav').classList.toggle('active');">☰</button>
         </div>
     </div>
 </div>
