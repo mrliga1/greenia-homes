@@ -57,6 +57,20 @@
            BÁC VIẾT CSS ĐỘC QUYỀN CHO DỰ ÁN NÀY XUỐNG BÊN DƯỚI NAY
            ============================================================== */
         
+        /* KHỐI ẢNH PHÍA TRÊN BANNER */
+        .vsp-top-image {
+            width: 100%;
+            display: block;
+            margin-top: 80px; /* Đẩy xuống để không bị menu đè lên, bác có thể điều chỉnh thông số này */
+        }
+
+        .vsp-top-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
         @keyframes vspFadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
@@ -186,6 +200,7 @@
             .vsp-hero-left { text-align: center; }
             .vsp-slogan { margin-left: auto; margin-right: auto; }
             .vsp-hero-right { width: 100%; flex: none; }
+            .vsp-top-image { margin-top: 60px; } /* Điều chỉnh nhẹ cho mobile */
         }
            
     </style>
@@ -205,17 +220,25 @@
     <!-- ========================================================== -->
     <main class="greenia-luxury-theme" id="page-content">
         
+        <!-- KHỐI ẢNH ĐỘC LẬP NẰM TRÊN BANNER -->
+        <div class="vsp-top-image">
+            <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
+        </div>
+
         <!-- BẮT ĐẦU HERO BANNER VINHOMES SAIGON PARK -->
         <section class="vsp-hero">
             
             <!-- Danh sách ảnh nền Banner Slideshow -->
             <div class="vsp-hero-bg">
                 <!-- ẢNH 1 (Mặc định hiển thị trước) -->
-                <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Phối cảnh vinhones Saigon Parl" class="vsp-slide active">
-                <!-- ẢNH 2 -->
-                <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Phối cảnh vinhomes Saigon Park Hóc Môn class="vsp-slide">
-                <!-- ẢNH 3 -->
-                <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh Vinhomes Sai Gòn Park Hốc Môn" class="vsp-slide">
+                <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Phối cảnh Vinhomes Saigon Park 1" class="vsp-slide active">
+                <!-- ẢNH 2 (Đã sửa cú pháp alt) -->
+                <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Phối cảnh Vinhomes Saigon Park Hóc Môn" class="vsp-slide">
+                <!-- ẢNH 3 (Đã cập nhật định dạng hiển thị) -->
+                <picture class="vsp-slide">
+                    <source srcset="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" type="image/webp">
+                    <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh Vinhomes Sài Gòn Park Hóc Môn" style="width: 100%; height: 100%; object-fit: cover;">
+                </picture>
                 
                 <div class="vsp-hero-overlay"></div>
             </div>
