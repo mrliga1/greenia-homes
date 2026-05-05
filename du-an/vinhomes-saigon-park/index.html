@@ -47,7 +47,6 @@
             min-height: 70vh;
         }
 
-        /* Container chuẩn để gom nội dung vào giữa màn hình */
         .pj-container { 
             max-width: 1200px; 
             margin: 0 auto; 
@@ -58,7 +57,6 @@
            BÁC VIẾT CSS ĐỘC QUYỀN CHO DỰ ÁN NÀY XUỐNG BÊN DƯỚI NAY
            ============================================================== */
         
-        /* Hiệu ứng chuyển động */
         @keyframes vspFadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
@@ -74,6 +72,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background-color: #05080f; /* Màu nền dự phòng */
         }
         
         .vsp-hero-bg {
@@ -82,11 +81,24 @@
             z-index: 1;
         }
         
-        .vsp-hero-bg img {
+        /* HIỆU ỨNG SLIDESHOW ẢNH NỀN */
+        .vsp-slide {
+            position: absolute;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center;
+            opacity: 0;
+            /* Phóng to nhẹ và mờ đi tạo cảm giác sang trọng */
+            transform: scale(1.1); 
+            transition: opacity 1.5s ease-in-out, transform 6s ease;
+        }
+        
+        .vsp-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 1;
         }
         
         /* Lớp phủ đen Gradient mờ ảo dần xuống dưới để khớp với màu nền web */
@@ -120,14 +132,14 @@
             animation: vspFadeUp 1s ease-out forwards;
         }
 
-        .project-title {
+        .vsp-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(32px, 5.5vw, 65px);
+            font-size: clamp(40px, 5.5vw, 65px);
             color: var(--lux-white);
             line-height: 1.1;
             margin: 0 0 20px 0;
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 700;
             text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
@@ -194,47 +206,31 @@
     <main class="greenia-luxury-theme" id="page-content">
         
         <!-- BẮT ĐẦU HERO BANNER VINHOMES SAIGON PARK -->
-        <!-- KHỐI 1: HERO SECTION & FORM GỐC CHUẨN 100% ĐÃ PHỤC HỒI ATTRIBUTES -->
-        <section class="hero-section">
-            <div class="hero-slider">
-                <div class="slide-item active">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg" 
-                         alt="Global City" 
-                         fetchpriority="high" 
-                         loading="eager" 
-                         data-no-lazy="1" 
-                         class="skip-lazy">
-                </div>
+        <section class="vsp-hero">
+            
+            <!-- Danh sách ảnh nền Banner Slideshow -->
+            <div class="vsp-hero-bg">
+                <!-- ẢNH 1 (Mặc định hiển thị trước) -->
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80" alt="Phối cảnh 1" class="vsp-slide active">
+                <!-- ẢNH 2 -->
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80" alt="Phối cảnh 2" class="vsp-slide">
+                <!-- ẢNH 3 -->
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80" alt="Phối cảnh 3" class="vsp-slide">
                 
-                <div class="slide-item">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg" 
-                         alt="Imperia" 
-                         loading="lazy">
-                </div>
-                <div class="slide-item">
-                    <img src="/assets/images/vinhomes-can-gio-sieu-do-thi-esg-dang-cap-the-gioi-om-tron-rung-vang-bien-bac-noi-kien-tao-thien-duong-nghi-duong-vui-choi-va-an-cu-ly-tuong.jpg" 
-                         alt="Vinhomes" 
-                         loading="lazy">
-                </div>
+                <div class="vsp-hero-overlay"></div>
             </div>
-            <div class="hero-overlay"></div>
-            <div class="hero-content-container">
-                <div class="hero-text">
-                    <span class="project-subtitle">Giá trị Hội tụ - Thịnh Vượng Vươn Xa</span>
-                    <h1 class="project-title">Greenia Homes</h1>
-                    <p class="project-desc">
-                        <strong>Greenia Homes</strong> (greeniahomes.vn) là thương hiệu cá nhân với nhiều năm kinh nghiệm trong lĩnh vực BĐS. <strong>Greenia Homes</strong> chuyên phân phối: Nhà phố, Biệt thự, Căn hộ cao cấp tại các dự án và khu đô thị tại TP HCM và khu vực lân cận.
-                    </p>
-                    <div class="cta-group">
-                        <a href="tel:0932966700" class="btn-cta-luxury" onclick="triggerTrackingNew('Phone')">
-                            <div class="cta-icon-box"><i class="fas fa-phone-alt"></i></div>
-                            <div class="cta-text-box"><span class="cta-label">Hotline 24/7</span><span class="cta-phone">0932 966 700</span></div>
-                        </a>
-                    </div>
-                </div>
+
+            <!-- Nội dung đè lên ảnh nền chia 2 cột -->
+            <div class="vsp-hero-container">
                 
-                <div class="hero-form-wrapper">
-                    <!-- KHÔI PHỤC CHÍNH XÁC ID, CLASS VÀ CẤU TRÚC 4 Ô NHẬP GỐC CỦA BÁC -->
+                <!-- Cột trái: Text & Slogan -->
+                <div class="vsp-hero-left">
+                    <h1 class="vsp-title">Vinhomes Saigon Park</h1>
+                    <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
+                </div>
+
+                <!-- Cột phải: Form Gốc -->
+                <div class="vsp-hero-right">
                     <section id="vhgp-final-v15-vertical">
                         <div class="v15-ver-container">
                             <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
@@ -259,13 +255,28 @@
                         </div>
                     </section>
                 </div>
+
             </div>
+            
         </section>
         <!-- KẾT THÚC HERO BANNER -->
 
-        <!-- SCRIPT XỬ LÝ ĐẾM SAO VÀ GỬI FORM VỀ GOOGLE SHEET (Khôi phục logic gốc) -->
+        <!-- SCRIPT XỬ LÝ ĐẾM SAO, GỬI FORM VÀ CHẠY SLIDESHOW -->
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+                
+                // 1. CHẠY HIỆU ỨNG SLIDESHOW ẢNH NỀN
+                const slides = document.querySelectorAll('.vsp-slide');
+                if (slides.length > 1) {
+                    let currentSlide = 0;
+                    setInterval(() => {
+                        slides[currentSlide].classList.remove('active');
+                        currentSlide = (currentSlide + 1) % slides.length;
+                        slides[currentSlide].classList.add('active');
+                    }, 5000); // Đổi ảnh mỗi 5 giây
+                }
+
+                // 2. KHỐI API GOOGLE SHEET CỦA BÁC
                 const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
                 let clientIPNew = "";
 
