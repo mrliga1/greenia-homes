@@ -4,7 +4,7 @@
        ========================================== */
     #menu-vinhomes-saigon-park,
     #menu-the-global,
-    #sub-menu { /* Bổ sung thêm #sub-menu để chắc chắn nhận CSS khi bị bơm ruột vào */
+    #sub-menu { /* Đảm bảo nhận nền đen khi bị bơm ruột */
         position: relative;
         background-color: #05080f !important; 
         border-bottom: 1px solid rgba(197, 160, 89, 0.2);
@@ -25,19 +25,25 @@
        ========================================== */
     @media (min-width: 969px) {
         .mobile-menu-btn { display: none !important; }
-        .main-nav { display: flex !important; }
+        #sub-menu .main-nav, .main-nav { display: flex !important; }
     }
 
     @media (max-width: 968px) {
+        /* CỘT TRỤ CHÍNH: Căn Logo sang trái, Nút sang phải */
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            position: relative; 
-            display: block !important;
+            position: relative; /* Dời position ra thẻ bao ngoài cùng để menu thả full màn hình */
+            padding: 10px 0;
         }
         
+        .header-center-group {
+            display: flex;
+            align-items: center;
+        }
+
         .mobile-menu-btn {
             display: block !important;
             background: transparent;
@@ -45,11 +51,12 @@
             font-size: 26px;
             color: #c5a059;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 5px 15px;
             outline: none;
         }
 
-        .main-nav {
+        /* KHỐI THẢ XUỐNG CỦA MENU */
+        #sub-menu .main-nav, .main-nav {
             display: none; 
             position: absolute;
             top: 100%; 
@@ -61,7 +68,9 @@
             z-index: 99999;
         }
 
-        /* Khi có active sẽ bung ra */
+        /* GIA TĂNG THÊM CSS ĐỂ DỰ PHÒNG */
+        body #sub-menu .main-nav.active,
+        #sub-menu .main-nav.active,
         .main-nav.active {
             display: block !important;
         }
@@ -113,9 +122,9 @@
             </nav>
         </div>  
         
-        <!-- SỬ DỤNG THIS.CLOSEST ĐỂ TÌM MENU MỘT CÁCH LINH HOẠT -->
         <div class="header-action">
-            <button class="mobile-menu-btn" onclick="this.closest('.header-container').querySelector('.main-nav').classList.toggle('active');">☰</button>
+            <!-- VŨ KHÍ TỐI THƯỢNG: Inline JS ép hiển thị bằng lệnh tuyệt đối (!important) -->
+            <button class="mobile-menu-btn" onclick="let nav = this.closest('.header-container').querySelector('.main-nav'); if(nav.classList.contains('active')){ nav.classList.remove('active'); nav.style.setProperty('display', 'none', 'important'); } else { nav.classList.add('active'); nav.style.setProperty('display', 'block', 'important'); }">☰</button>
         </div>
     </div>
 </div>
@@ -141,9 +150,9 @@
             </nav>
         </div>
 
-        <!-- SỬ DỤNG THIS.CLOSEST ĐỂ TÌM MENU MỘT CÁCH LINH HOẠT -->
         <div class="header-action">
-            <button class="mobile-menu-btn" onclick="this.closest('.header-container').querySelector('.main-nav').classList.toggle('active');">☰</button>
+            <!-- VŨ KHÍ TỐI THƯỢNG: Inline JS ép hiển thị bằng lệnh tuyệt đối (!important) -->
+            <button class="mobile-menu-btn" onclick="let nav = this.closest('.header-container').querySelector('.main-nav'); if(nav.classList.contains('active')){ nav.classList.remove('active'); nav.style.setProperty('display', 'none', 'important'); } else { nav.classList.add('active'); nav.style.setProperty('display', 'block', 'important'); }">☰</button>
         </div>
     </div>
 </div>
