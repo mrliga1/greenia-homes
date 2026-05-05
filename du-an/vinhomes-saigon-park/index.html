@@ -110,19 +110,14 @@
         .success-text { color: #ddd; font-size: 13px; }
 
         /* ==============================================================
-           PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - KHỐI 1 PHẢI LÀ ẢNH LỚN
+           PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - ĐÃ ĐỔI VỊ TRÍ
            ============================================================== */
         .vsp-overview-section {
-            padding: 30px 20px; /* Đã điều chỉnh padding gọn hơn */
+            padding: 40px 20px; /* Đã điều chỉnh padding gọn hơn */
             background-color: var(--lux-dark);
         }
 
         .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
-
-        .vsp-section-title {
-            font-family: 'Cinzel', serif; font-size: 28px; color: var(--lux-gold);
-            text-align: center; margin-bottom: 25px; text-transform: uppercase; font-weight: 700;
-        }
 
         .vsp-overview-6-blocks {
             display: grid;
@@ -230,44 +225,24 @@
             </div>
         </section>
 
+        <!-- PHẦN TỔNG QUAN DỰ ÁN: CẤU TRÚC 6 KHỐI ĐÃ FIX LỖI HTML & HOÁN ĐỔI VỊ TRÍ -->
         <section class="vsp-overview-section" id="tong-quan">
             <div class="vsp-overview-container">
                 
-                <h2 class="vsp-section-title">Tổng Quan Vinhomes Hóc Môn</h2>
-                
                 <div class="vsp-overview-6-blocks">
                     
+                    <!-- CỘT TRÁI (Chứa đúng 3 khối) -->
                     <div class="vsp-column-side">
+                        <!-- Đã đổi nhãn thành Tổng Quan Dự Án thay cho tiêu đề h2 -->
                         <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Thông tin dự án</span>
+                            <span class="vsp-block-label">Tổng Quan Dự Án</span>
                             <div class="vsp-block-value">
                                 <strong>Vinhomes Sài Gòn Park</strong><br>
                                 Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)
                             </div>
                         </div>
                         
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Đơn vị phát triển</span>
-                            <div class="vsp-block-value">
-                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
-                                Tổng thầu xây dựng: Coteccons
-                            </div>
-                        </div>
-                        
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Thời gian sở hữu</span>
-                            <div class="vsp-block-value">
-                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
-                                • Khách nước ngoài: 50 năm
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="vsp-column-side">
-                        <div class="vsp-overview-block vsp-block-image-large">
-                            <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
-                        </div>
-                        
+                        <!-- Đã chuyển Quy mô từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Quy mô chi tiết</span>
                             <div class="vsp-block-value">
@@ -276,6 +251,7 @@
                             </div>
                         </div>
                         
+                        <!-- Đã chuyển Số lượng sản phẩm từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
                             <ul class="grid-products">
@@ -285,6 +261,31 @@
                                 <li>1.500 căn nhà ở xã hội</li>
                                 <li>815 căn tái định cư</li>
                             </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
+                    <div class="vsp-column-side">
+                        <div class="vsp-overview-block vsp-block-image-large">
+                            <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
+                        </div>
+                        
+                        <!-- Đã chuyển Đơn vị phát triển từ trái sang phải -->
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Đơn vị phát triển</span>
+                            <div class="vsp-block-value">
+                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
+                                Tổng thầu xây dựng: Coteccons
+                            </div>
+                        </div>
+
+                        <!-- Đã chuyển Thời gian sở hữu từ trái sang phải -->
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thời gian sở hữu</span>
+                            <div class="vsp-block-value">
+                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
+                                • Khách nước ngoài: 50 năm
+                            </div>
                         </div>
                     </div>
 
