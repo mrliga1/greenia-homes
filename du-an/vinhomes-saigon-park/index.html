@@ -39,168 +39,62 @@
             --lux-white: #ffffff;
         }
 
-        .greenia-luxury-theme {
-            width: 100%;
-            min-height: 70vh;
-        }
+        .greenia-luxury-theme { width: 100%; min-height: 70vh; }
 
-        /* ==============================================================
-           CSS ĐỘC QUYỀN: THIẾT KẾ MỚI CHO BANNER 
-           ============================================================== */
-        
         @keyframes vspFadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* KHỐI ẢNH ĐỘC LẬP PHÍA TRÊN */
-        .vsp-top-image {
-            width: 100%;
-            display: block;
-            padding-top: 0px; 
-            background-color: #05080f; 
-        }
+        .vsp-top-image { width: 100%; display: block; padding-top: 0px; background-color: #05080f; }
+        .vsp-top-image img { width: 100%; height: auto; display: block; object-fit: cover; }
 
-        .vsp-top-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-        }
-
-        /* KHỐI BANNER CHÍNH - THIẾT KẾ SANG TRỌNG MỚI */
+        /* BANNER CHÍNH */
         .vsp-hero-clean {
-            position: relative;
-            width: 100%;
-            padding-top: 30px; 
-            padding-bottom: 90px;
-            /* Gradient kết hợp tạo chiều sâu */
+            position: relative; width: 100%; padding-top: 30px; padding-bottom: 60px;
             background: linear-gradient(135deg, #05080f 0%, #0d1423 50%, #05080f 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            border-top: 1px solid rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
 
-        /* Hiệu ứng pattern lưới chìm mờ ảo phía sau */
         .vsp-hero-clean::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background-image: linear-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: 0;
-            pointer-events: none;
+            background-size: 30px 30px; z-index: 0; pointer-events: none;
         }
 
         .vsp-hero-container {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 60px;
-            flex-wrap: wrap;
+            position: relative; z-index: 3; width: 100%; max-width: 1280px;
+            margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 60px; flex-wrap: wrap;
         }
 
-        /* CỘT TRÁI: TEXT & SLIDESHOW ẢNH */
-        .vsp-hero-left {
-            flex: 1.2;
-            min-width: 320px;
-            animation: vspFadeUp 1s ease-out forwards;
-        }
-
-        /* Badge Tag sang trọng mới */
-        .vsp-badge-lux {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(197, 160, 89, 0.1);
-            color: var(--lux-gold);
-            padding: 6px 16px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(197, 160, 89, 0.3);
-        }
-
+        .vsp-hero-left { flex: 1.2; min-width: 320px; animation: vspFadeUp 1s ease-out forwards; }
         .vsp-title {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(28px, 4.5vw, 40px);
-            color: var(--lux-white);
-            line-height: 1.2;
-            margin: 0 0 15px 0;
-            font-weight: 600;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif; font-size: clamp(28px, 4.5vw, 40px);
+            color: var(--lux-white); line-height: 1.2; margin: 0 0 15px 0; font-weight: 600; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .vsp-slogan {
-            font-family: 'Manrope', sans-serif;
-            font-size: 16px;
-            color: #a0aec0;
-            margin: 0 0 35px 0;
-            line-height: 1.6;
-            max-width: 95%;
-            /* Đường viền nhấn bên trái Slogan */
-            border-left: 3px solid var(--lux-gold);
-            padding-left: 15px;
+            font-family: 'Manrope', sans-serif; font-size: 16px; color: #a0aec0;
+            margin: 0 0 35px 0; line-height: 1.6; max-width: 95%;
+            border-left: 3px solid var(--lux-gold); padding-left: 15px;
         }
 
-        /* Khung hiển thị ảnh viền vàng chìm */
         .vsp-featured-gallery {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* Tỷ lệ vàng 16:9 */
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(197, 160, 89, 0.2);
-            background: #000;
-        }
-
-        /* Lớp bóng viền vàng bên trong khung ảnh */
-        .vsp-featured-gallery::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 8px;
-            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.2);
-            pointer-events: none;
-            z-index: 3;
+            position: relative; width: 100%; padding-top: 56.25%; border-radius: 8px;
+            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(197, 160, 89, 0.2); background: #000;
         }
 
         .vsp-slide {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transform: scale(1.05);
-            transition: opacity 1s ease-in-out, transform 4s ease-out;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity 1s ease-in-out, transform 4s ease-out;
         }
+        .vsp-slide.active { opacity: 1; transform: scale(1); z-index: 2; }
 
-        .vsp-slide.active {
-            opacity: 1;
-            transform: scale(1);
-            z-index: 2;
-        }
+        .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        /* CỘT PHẢI: FORM GỐC CỦA BÁC */
-        .vsp-hero-right {
-            flex: 0.8;
-            min-width: 320px;
-            max-width: 450px;
-            animation: vspFadeUp 1.2s ease-out forwards;
-        }
-
-        /* CSS FORM GỐC ĐƯỢC BÊ NGUYÊN XI VÀO */
+        /* FORM */
         #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
@@ -208,7 +102,6 @@
         .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
         .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
         .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
-        
         .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
         .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
         .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
@@ -218,196 +111,59 @@
         .success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
         .success-text { color: #ddd; font-size: 13px; }
 
-        /* Responsive Mobile */
-        @media (max-width: 968px) {
-            .vsp-hero-clean { padding-top: 50px; padding-bottom: 60px; }
-            .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
-            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
-            .vsp-hero-right { width: 100%; max-width: 500px; }
-            .vsp-top-image { padding-top: 0px; }
-        }
-
         /* ==============================================================
-           PHẦN THÊM MỚI: TỔNG QUAN DỰ ÁN (THIẾT KẾ CÓ VỊ TRÍ CHỜ ẢNH)
+           PHẦN TỔNG QUAN DỰ ÁN - FULL NỘI DUNG GỐC
            ============================================================== */
         .vsp-overview-section {
-            padding: 80px 20px;
+            padding: 50px 20px;
             background-color: var(--lux-dark);
             border-bottom: 1px solid rgba(197, 160, 89, 0.1);
         }
 
-        .vsp-overview-container {
-            max-width: 1280px;
-            margin: 0 auto;
-        }
+        .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
 
         .vsp-section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 36px;
-            color: var(--lux-gold);
-            text-align: center;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold);
+            text-align: center; margin-bottom: 40px; text-transform: uppercase; font-weight: 700;
         }
 
-        /* ĐỔI THÀNH LAYOUT LƯỚI BẤT ĐỐI XỨNG CÓ ẢNH */
-        .vsp-overview-grid-v2 {
-            display: grid;
-            grid-template-columns: 450px 1fr;
-            gap: 50px;
-            align-items: stretch;
+        .vsp-overview-grid {
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start;
         }
 
-        /* Cột Trái: Vị trí chờ để chèn ảnh */
-        .vsp-overview-image-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            min-height: 500px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            border: 1px solid rgba(197, 160, 89, 0.3);
+        /* Ảnh đại diện tổng quan */
+        .vsp-overview-image {
+            width: 100%; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2);
         }
+        .vsp-overview-image img { width: 100%; height: auto; display: block; transition: 0.5s; }
+        .vsp-overview-image:hover img { transform: scale(1.03); }
 
-        .vsp-overview-image-wrapper img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+        /* Bảng thông số chi tiết */
+        .vsp-info-table { width: 100%; border-collapse: collapse; }
+        .vsp-info-row { display: flex; border-bottom: 1px solid rgba(197, 160, 89, 0.15); padding: 15px 0; align-items: flex-start; }
+        .vsp-info-row:last-child { border-bottom: none; }
         
-        .vsp-overview-image-wrapper:hover img {
-            transform: scale(1.05);
+        .vsp-info-label { 
+            flex: 0 0 160px; font-family: 'Cinzel', serif; font-size: 13px; 
+            color: var(--lux-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
         }
+        .vsp-info-value { 
+            flex: 1; font-family: 'Manrope', sans-serif; font-size: 15px; color: #e2e8f0; line-height: 1.6;
+        }
+        .vsp-info-value strong { color: #fff; font-weight: 700; }
 
-        /* Khung viền vàng chìm ảo diệu bọc lấy ảnh */
-        .vsp-overview-image-wrapper::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.4);
-            pointer-events: none;
-            z-index: 2;
-        }
+        /* List số lượng sản phẩm */
+        .product-list { list-style: none; padding: 0; margin: 5px 0 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .product-list li { position: relative; padding-left: 15px; font-size: 14px; color: #cbd5e1; }
+        .product-list li::before { content: '→'; position: absolute; left: 0; color: var(--lux-gold); }
 
-        /* Cột Phải: Nội dung thông số chia 2 tầng */
-        .vsp-overview-content-v2 {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+        @media (max-width: 968px) {
+            .vsp-overview-grid { grid-template-columns: 1fr; }
+            .vsp-info-label { flex: 0 0 130px; font-size: 12px; }
+            .vsp-hero-clean { padding-top: 50px; padding-bottom: 50px; }
+            .product-list { grid-template-columns: 1fr; }
         }
-
-        /* Tầng trên: Lưới 4 ô (Grid) */
-        .vsp-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .vsp-stat-box {
-            background: rgba(11, 17, 32, 0.6);
-            border: 1px solid rgba(197, 160, 89, 0.15);
-            padding: 25px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .vsp-stat-box:hover {
-            border-color: var(--lux-gold);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            background: rgba(197, 160, 89, 0.05);
-        }
-
-        .vsp-stat-icon {
-            color: var(--lux-gold);
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-
-        .vsp-stat-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .vsp-stat-value {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: #fff;
-            line-height: 1.4;
-        }
-
-        /* Tầng dưới: Thẻ bài viết chi tiết (Card) */
-        .vsp-overview-card {
-            background: linear-gradient(145deg, #111a2f 0%, #080c15 100%);
-            border: 1px solid rgba(197, 160, 89, 0.3);
-            border-radius: 8px;
-            padding: 35px 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            flex: 1; /* Tự kéo giãn cho bằng chiều cao cột ảnh */
-        }
-
-        .vsp-card-title {
-            font-family: 'Cinzel', serif;
-            font-size: 22px;
-            color: var(--lux-gold);
-            margin-top: 0;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px dashed rgba(197, 160, 89, 0.3);
-        }
-
-        .vsp-overview-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .vsp-overview-list li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 12px;
-            color: #e2e8f0;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .vsp-overview-list li::before {
-            content: '♦';
-            position: absolute;
-            left: 0;
-            top: 2px;
-            color: var(--lux-gold);
-            font-size: 12px;
-        }
-
-        .vsp-overview-list strong {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        /* Responsive phần Tổng quan mới */
-        @media (max-width: 1024px) {
-            .vsp-overview-grid-v2 { grid-template-columns: 1fr; gap: 40px; }
-            .vsp-overview-image-wrapper { min-height: 400px; }
-        }
-
-        @media (max-width: 576px) {
-            .vsp-stats-grid { grid-template-columns: 1fr; }
-            .vsp-overview-card { padding: 25px 20px; }
-            .vsp-section-title { font-size: 28px; }
-        }
-            
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -426,16 +182,14 @@
 
         <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
-                
                 <div class="vsp-hero-left">
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
-                    
                     <p class="vsp-slogan"><strong style="color: var(--lux-gold);">Dự án Vinhomes Sai Gon Park</strong> (thường gọi là Vinhomes Hóc Môn) tọa lạc tại mặt tiền Quốc lộ 22, xã Tân Thới Nhì, huyện Hóc Môn, TP. Hồ Chí Minh. Đây là Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                     
                     <div class="vsp-featured-gallery">
-                        <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park" class="vsp-slide active">
-                        <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Vinhomes Saigon Park Hóc Môn" class="vsp-slide">
-                        <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh nội khu" class="vsp-slide">
+                        <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh" class="vsp-slide active">
+                        <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Phối cảnh" class="vsp-slide">
+                        <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Nội khu" class="vsp-slide">
                     </div>
                 </div>
 
@@ -448,7 +202,6 @@
                                 <span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span>
                             </div>
                             <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong style="color:#fff">Greenia Homes</strong> qua Zalo/Email.</p>
-
                             <form id="leadFormV15Ver" class="v15-ver-form">
                                 <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
                                 <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
@@ -456,7 +209,6 @@
                                 <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
                                 <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
                             </form>
-
                             <div id="v15-ver-success" class="success-overlay" style="display:none; text-align: center;">
                                 <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
                                 <div class="success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách.</div>
@@ -464,74 +216,71 @@
                         </div>
                     </section>
                 </div>
-
             </div>
         </section>
+
         <section class="vsp-overview-section" id="tong-quan">
             <div class="vsp-overview-container">
                 <h2 class="vsp-section-title">Tổng Quan Dự Án</h2>
                 
-                <div class="vsp-overview-grid-v2">
-                    
-                    <div class="vsp-overview-image-wrapper">
-                        <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Vị trí chờ ảnh tổng quan Vinhomes Saigon Park">
+                <div class="vsp-overview-grid">
+                    <div class="vsp-overview-image">
+                        <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Sài Gòn Park">
                     </div>
 
-                    <div class="vsp-overview-content-v2">
-                        
-                        <div class="vsp-stats-grid">
-                            <div class="vsp-stat-box">
-                                <i class="fas fa-map-marked-alt vsp-stat-icon"></i>
-                                <div class="vsp-stat-label">Vị trí</div>
-                                <div class="vsp-stat-value">Xã Tân Thới Nhì (nay là xã Xuân Thới Sơn), huyện Hóc Môn, TP.HCM</div>
-                            </div>
-                            
-                            <div class="vsp-stat-box">
-                                <i class="far fa-building vsp-stat-icon"></i>
-                                <div class="vsp-stat-label">Chủ đầu tư</div>
-                                <div class="vsp-stat-value">Tập đoàn Vingroup</div>
-                            </div>
-                            
-                            <div class="vsp-stat-box">
-                                <i class="fas fa-hard-hat vsp-stat-icon"></i>
-                                <div class="vsp-stat-label">Tổng thầu xây dựng</div>
-                                <div class="vsp-stat-value">Coteccons</div>
-                            </div>
-                            
-                            <div class="vsp-stat-box">
-                                <i class="fas fa-file-contract vsp-stat-icon"></i>
-                                <div class="vsp-stat-label">Thời gian sở hữu</div>
-                                <div class="vsp-stat-value">Người Việt: Lâu dài<br>Người NN: 50 năm</div>
+                    <div class="vsp-info-table">
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Tên dự án</div>
+                            <div class="vsp-info-value"><strong>Vinhomes Sài Gòn Park</strong></div>
+                        </div>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Vị trí</div>
+                            <div class="vsp-info-value">Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)</div>
+                        </div>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Chủ đầu tư</div>
+                            <div class="vsp-info-value"><strong>Tập đoàn Vingroup</strong></div>
+                        </div>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Xây dựng</div>
+                            <div class="vsp-info-value">Tổng thầu Coteccons</div>
+                        </div>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Quy mô</div>
+                            <div class="vsp-info-value">
+                                • Diện tích dự án: <strong>880 ha</strong><br>
+                                • Tổng vốn đầu tư: <strong>59.000 tỷ đồng</strong><br>
+                                • Dân số dự kiến: <strong>135.000 người</strong><br>
+                                • Mật độ xây dựng: <strong>31%</strong>
                             </div>
                         </div>
-
-                        <div class="vsp-overview-card">
-                            <h3 class="vsp-card-title">Quy Mô Phát Triển</h3>
-                            <ul class="vsp-overview-list">
-                                <li><strong>Diện tích dự án:</strong> 880 ha</li>
-                                <li><strong>Tổng vốn đầu tư:</strong> 59.000 tỷ đồng</li>
-                                <li><strong>Dân số dự kiến:</strong> 135.000 người</li>
-                                <li><strong>Mật độ xây dựng:</strong> 31%</li>
-                                <li><strong>Loại hình sản phẩm:</strong> Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</li>
-                                <li style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
-                                    <strong style="color: var(--lux-gold);">Số lượng sản phẩm:</strong><br>
-                                    - 24 tòa căn hộ<br>
-                                    - 2.491 căn nhà liền kề<br>
-                                    - 552 căn biệt thự<br>
-                                    - 1.500 căn nhà ở xã hội<br>
-                                    - 815 căn tái định cư
-                                </li>
-                            </ul>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Loại hình</div>
+                            <div class="vsp-info-value">Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</div>
                         </div>
-                        
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Sản phẩm</div>
+                            <div class="vsp-info-value">
+                                <ul class="product-list">
+                                    <li>24 tòa căn hộ</li>
+                                    <li>2.491 căn nhà liền kề</li>
+                                    <li>552 căn biệt thự</li>
+                                    <li>1.500 căn nhà ở xã hội</li>
+                                    <li>815 căn tái định cư</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="vsp-info-row">
+                            <div class="vsp-info-label">Sở hữu</div>
+                            <div class="vsp-info-value">50 năm với khách nước ngoài & <strong>sở hữu lâu dài</strong> với khách Việt Nam</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                
-                // 1. CHẠY HIỆU ỨNG SLIDESHOW CHO KHUNG ẢNH BÊN TRÁI
                 const slides = document.querySelectorAll('.vsp-slide');
                 if (slides.length > 1) {
                     let currentSlide = 0;
@@ -539,37 +288,24 @@
                         slides[currentSlide].classList.remove('active');
                         currentSlide = (currentSlide + 1) % slides.length;
                         slides[currentSlide].classList.add('active');
-                    }, 4000); // Đổi ảnh mỗi 4 giây
+                    }, 4000);
                 }
 
-                // 2. KHỐI API GOOGLE SHEET CỦA BÁC (GIỮ NGUYÊN)
                 const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
                 let clientIPNew = "";
-
                 fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
-
-                fetch(API_LEAD_NEW + "?action=count")
-                .then(res => res.json())
-                .then(data => {
+                fetch(API_LEAD_NEW + "?action=count").then(res => res.json()).then(data => {
                     let count = data.count !== undefined ? parseInt(data.count) : 186;
                     if(count < 5) count = 186;
-                    let cHero = document.getElementById('count-v15-ver');
-                    if(cHero) cHero.innerText = `(5.0/5 - ${count} đánh giá)`;
-                }).catch(e => {
-                    let cHero = document.getElementById('count-v15-ver');
-                    if(cHero) cHero.innerText = `(5.0/5 - 186 đánh giá)`;
-                });
+                    document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${count} đánh giá)`;
+                }).catch(e => { document.getElementById('count-v15-ver').innerText = `(5.0/5 - 186 đánh giá)`; });
 
                 const form = document.getElementById('leadFormV15Ver');
                 if(form) {
                     form.addEventListener('submit', function(e) {
                         e.preventDefault();
                         const btn = document.getElementById('btn-v15-ver-submit');
-                        const originalText = btn.innerText;
-                        btn.innerText = "ĐANG GỬI..."; 
-                        btn.style.color = "#fff"; 
-                        btn.disabled = true;
-
+                        btn.innerText = "ĐANG GỬI..."; btn.disabled = true;
                         let fd = new FormData();
                         fd.append("project", "Vinhomes Saigon Park (Dự Án Mới)");
                         fd.append("name", document.getElementById('v15-ver-name').value);
@@ -579,27 +315,18 @@
                         fd.append("url", window.location.href);
                         fd.append("ip", clientIPNew);
                         fd.append("rating", 5);
-
                         fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
                             form.style.display = 'none';
                             document.getElementById('v15-ver-success').style.display = 'block';
-                            if(typeof fbq === 'function') fbq('track', 'Lead');
-                        }).catch(err => {
-                            alert("Có lỗi xảy ra, vui lòng thử lại hoặc gọi Hotline."); 
-                            btn.innerText = originalText; 
-                            btn.style.color = "var(--lux-gold)"; 
-                            btn.disabled = false;
-                        });
+                        }).catch(err => { alert("Lỗi, vui lòng thử lại."); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
                     });
                 }
             });
         </script>
-
     </main>
+
     <div id="site-footer"></div>
-    
     <script src="/assets/js/ui.js"></script>
-    
     <script>
         const firebaseConfig = {
             apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
@@ -610,18 +337,12 @@
             appId: "1:24027695632:web:13a23aa156e864f7d55895",
             measurementId: "G-YRK63BNPP0"
         };
-        if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (typeof firebase !== 'undefined' && !firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     </script>
-    
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(function() {
-                if (typeof loadSpecificMenu === 'function') {
-                    // Đã kích hoạt và điền tên menu thực tế
-                    loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park');
-                }
+                if (typeof loadSpecificMenu === 'function') { loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park'); }
             }, 100);
         });
     </script>
