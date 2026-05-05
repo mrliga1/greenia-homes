@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tên Dự Án | Greenia Homes</title>
+    <title>Vinhomes Saigon Park | Khu Đô Thị Đại Học Quốc Tế Berjaya Việt Nam</title>
     
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
     <!-- SEO CƠ BẢN -->
-    <meta name="description" content="Mô tả ngắn gọn về dự án (Khoảng 150 ký tự để Google hiển thị chuẩn nhất)." />
-    <link rel="canonical" href="https://greeniahomes.vn/du-an/link-du-an-cua-bac/" />
+    <meta name="description" content="Khám phá Vinhomes Saigon Park - Khu đô thị Đại học Quốc tế đẳng cấp tại khu Tây Bắc TP.HCM. Bảng giá & Chính sách ưu đãi độc quyền từ Greenia Homes." />
+    <link rel="canonical" href="https://greeniahomes.vn/du-an/vinhomes-saigon-park/" />
     
     <!-- TỐI ƯU HIỂN THỊ KHI CHIA SẺ LÊN ZALO, FACEBOOK (OPEN GRAPH) -->
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Tên Dự Án Nổi Bật | Greenia Homes" />
-    <meta property="og:description" content="Mô tả khi chia sẻ lên mạng xã hội." />
-    <meta property="og:url" content="https://greeniahomes.vn/du-an/link-du-an-cua-bac/" />
+    <meta property="og:title" content="Vinhomes Saigon Park | Greenia Homes" />
+    <meta property="og:description" content="Đại đô thị phức hợp bậc nhất khu Tây Bắc Sài Gòn. Nhận báo giá ngay!" />
+    <meta property="og:url" content="https://greeniahomes.vn/du-an/vinhomes-saigon-park/" />
     <meta property="og:site_name" content="Greenia Homes" />
     <meta property="og:image" content="https://greeniahomes.vn/assets/images/anh-bia-chia-se-zalo.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -58,6 +58,153 @@
            BÁC VIẾT CSS ĐỘC QUYỀN CHO DỰ ÁN NÀY XUỐNG BÊN DƯỚI NAY
            ============================================================== */
         
+        /* Hiệu ứng chuyển động */
+        @keyframes vspFadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* KHỐI BANNER CHÍNH */
+        .vsp-hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 650px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            /* Nếu menu của bác trong suốt, bỏ margin-top đi. Nếu menu màu đen đặc thì dùng margin-top: -80px để đẩy ảnh lên kịch trần */
+        }
+        
+        .vsp-hero-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+        }
+        
+        .vsp-hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        /* Lớp phủ đen Gradient mờ ảo dần xuống dưới để khớp với màu nền web */
+        .vsp-hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(5,8,15,0.6) 0%, rgba(5,8,15,0.3) 50%, #05080f 100%);
+            z-index: 2;
+        }
+
+        /* Nội dung Banner */
+        .vsp-hero-content {
+            position: relative;
+            z-index: 3;
+            opacity: 0;
+            animation: vspFadeUp 1.2s ease-out forwards;
+        }
+
+        .vsp-badge {
+            display: inline-block;
+            background: rgba(197, 160, 89, 0.1);
+            color: var(--lux-gold);
+            border: 1px solid var(--lux-gold);
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .vsp-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(40px, 7vw, 80px);
+            color: var(--lux-white);
+            line-height: 1.1;
+            margin: 0 0 20px 0;
+            text-transform: uppercase;
+            font-weight: 700;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .vsp-slogan {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(18px, 2vw, 22px);
+            color: #d1d5db;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .vsp-cta-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Nút Vàng */
+        .vsp-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--lux-gold);
+            color: #000;
+            padding: 16px 40px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--lux-gold);
+        }
+        .vsp-btn-primary:hover {
+            background: transparent;
+            color: var(--lux-gold);
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Nút Viền Kính */
+        .vsp-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(11, 17, 32, 0.4);
+            backdrop-filter: blur(8px);
+            color: var(--lux-white);
+            padding: 16px 40px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 15px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .vsp-btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--lux-white);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Banner cho Mobile */
+        @media (max-width: 768px) {
+            .vsp-hero { height: auto; min-height: 80vh; padding: 120px 0 60px 0; }
+            .vsp-cta-group { flex-direction: column; width: 100%; padding: 0 15px; }
+            .vsp-btn-primary, .vsp-btn-secondary { width: 100%; justify-content: center; }
+        }
            
     </style>
     
@@ -76,10 +223,33 @@
     <!-- ========================================================== -->
     <main class="greenia-luxury-theme" id="page-content">
         
-        <div class="pj-container" style="text-align: center; padding-top: 100px;">
-            <h1 style="color: var(--lux-gold); font-family: 'Cinzel', serif;">Khu Vực Thiết Kế Dự Án</h1>
-            <p>Bác xóa đoạn text này đi và bắt đầu dựng các khối nội dung (Banner, Tổng quan, Vị trí...) ở đây nhé.</p>
-        </div>
+        <!-- BẮT ĐẦU HERO BANNER VINHOMES SAIGON PARK -->
+        <section class="vsp-hero">
+            
+            <!-- Ảnh nền Banner (Bác thay link ảnh dự án thực tế vào src) -->
+            <div class="vsp-hero-bg">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80" alt="Phối cảnh Vinhomes Saigon Park">
+                <div class="vsp-hero-overlay"></div>
+            </div>
+
+            <!-- Nội dung đè lên ảnh nền -->
+            <div class="pj-container vsp-hero-content">
+                <span class="vsp-badge">Khu Đô Thị Đại Học Quốc Tế</span>
+                <h1 class="vsp-title">Vinhomes Saigon Park</h1>
+                <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
+                
+                <div class="vsp-cta-group">
+                    <a href="javascript:void(0)" onclick="if(typeof openPopupNew === 'function') openPopupNew(); else alert('Vui lòng gọi Hotline: 0932 966 700');" class="vsp-btn-primary">
+                        <i class="fas fa-download"></i> Tải Bảng Giá & CSBH
+                    </a>
+                    <a href="tel:0932966700" class="vsp-btn-secondary">
+                        <i class="fas fa-phone-alt"></i> 0932 966 700
+                    </a>
+                </div>
+            </div>
+            
+        </section>
+        <!-- KẾT THÚC HERO BANNER -->
 
     </main>
     <!-- ========================================================== -->
