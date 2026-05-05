@@ -41,7 +41,7 @@ body {
    1. BỐ CỤC CHUNG CỦA TRANG CHỦ & BANNER
 ============================================================== */
 main { padding-top: 0 !important; }
-section:not(.hero-slider-section) { padding-top: 80px; }
+section:not(.hero-slider-section) { padding-top: 40px; }
 
 /* Banner Slider & Form */
 .hero-slider-section { position: relative; height: 100vh; overflow: hidden; }
