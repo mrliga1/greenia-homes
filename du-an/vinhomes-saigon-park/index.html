@@ -48,7 +48,7 @@
         }
 
         /* ==============================================================
-           CSS ĐỘC QUYỀN: THIẾT KẾ MỚI CHO BANNER (KHÔNG ẢNH NỀN TOÀN MÀN HÌNH)
+           CSS ĐỘC QUYỀN: THIẾT KẾ MỚI CHO BANNER 
            ============================================================== */
         
         @keyframes vspFadeUp {
@@ -56,14 +56,27 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* KHỐI ẢNH ĐỘC LẬP PHÍA TRÊN */
+        .vsp-top-image {
+            width: 100%;
+            display: block;
+            padding-top: 80px; /* Dùng padding để ảnh xuống dưới menu mà không tạo khoảng đen */
+            background-color: #05080f; /* Đổ màu nền trùng màu web để lấp kín mọi kẽ hở */
+        }
+
+        .vsp-top-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
         /* KHỐI BANNER CHÍNH */
         .vsp-hero-clean {
             position: relative;
             width: 100%;
-            /* Thay margin bằng padding để nền đẩy lên sát mí màn hình, xóa viền đen */
-            padding-top: 130px; 
+            padding-top: 60px; 
             padding-bottom: 80px;
-            /* Nền màu tối loang nhẹ sang trọng thay vì dùng ảnh nền */
             background: radial-gradient(circle at 0% 0%, #111a2f 0%, #05080f 80%);
             display: flex;
             align-items: center;
@@ -164,10 +177,11 @@
 
         /* Responsive Mobile */
         @media (max-width: 968px) {
-            .vsp-hero-clean { padding-top: 100px; padding-bottom: 60px; }
+            .vsp-hero-clean { padding-top: 60px; padding-bottom: 60px; }
             .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
             .vsp-slogan { margin-left: auto; margin-right: auto; }
             .vsp-hero-right { width: 100%; max-width: 500px; }
+            .vsp-top-image { padding-top: 60px; }
         }
            
     </style>
@@ -183,10 +197,15 @@
     <div id="sub-menu" class="sub-header"></div>
 
     <!-- ========================================================== -->
-    <!-- KHU VỰC CHÍNH CỦA TRANG: BÁC TỰ DO THIẾT KẾ BÊN TRONG NÀY -->
+    <!-- KHU VỰC CHÍNH CỦA TRANG -->
     <!-- ========================================================== -->
     <main class="greenia-luxury-theme" id="page-content">
         
+        <!-- KHỐI ẢNH ĐỘC LẬP NẰM TRÊN BANNER -->
+        <div class="vsp-top-image">
+            <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
+        </div>
+
         <!-- BẮT ĐẦU HERO BANNER THIẾT KẾ MỚI (KHÔNG ẢNH NỀN) -->
         <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
