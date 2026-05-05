@@ -120,22 +120,6 @@
             animation: vspFadeUp 1s ease-out forwards;
         }
 
-        .vsp-badge {
-            display: inline-block;
-            background: rgba(197, 160, 89, 0.1);
-            color: var(--lux-gold);
-            border: 1px solid var(--lux-gold);
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
         .vsp-title {
             font-family: 'Cinzel', serif;
             font-size: clamp(40px, 5.5vw, 65px);
@@ -158,94 +142,30 @@
             text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        /* CỘT PHẢI: FORM */
+        /* CỘT PHẢI: FORM GỐC CỦA BÁC */
         .vsp-hero-right {
             flex: 0 0 400px;
             max-width: 100%;
             animation: vspFadeUp 1.2s ease-out forwards;
         }
 
-        .vsp-form-wrapper {
-            background: linear-gradient(180deg, rgba(11, 15, 25, 0.9) 0%, rgba(21, 27, 43, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            border-top: 2px solid var(--lux-gold);
-            border-bottom: 2px solid var(--lux-gold);
-            padding: 40px 25px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        }
-
-        .vsp-form-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: var(--lux-gold);
-            margin: 0 0 5px 0;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .vsp-form-stars {
-            color: #f1c40f;
-            font-size: 16px;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-        }
-
-        .vsp-form-desc {
-            font-size: 13px;
-            color: #ccc;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .vsp-input {
-            width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 14px 20px;
-            font-size: 13px;
-            border-radius: 50px;
-            margin-bottom: 15px;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .vsp-input:focus {
-            border-color: var(--lux-gold);
-            background: rgba(197, 160, 89, 0.1);
-        }
-
-        .vsp-submit-btn {
-            width: 100%;
-            padding: 14px;
-            margin-top: 5px;
-            background: var(--lux-gold);
-            color: #000;
-            border: 1px solid var(--lux-gold);
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 14px;
-        }
-
-        .vsp-submit-btn:hover {
-            background: transparent;
-            color: var(--lux-gold);
-        }
-
-        .vsp-success-msg {
-            display: none;
-            padding: 20px;
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid #2ecc71;
-            border-radius: 8px;
-            margin-top: 15px;
-            animation: vspFadeUp 0.5s forwards;
-        }
+        /* CSS FORM GỐC ĐƯỢC BÊ NGUYÊN XI VÀO */
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 20px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .v15-ver-container { max-width: 450px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
+        .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
+        .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
+        .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
+        
+        .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
+        .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
+        .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; animation: vspFadeUp 0.5s forwards; }
+        .success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
+        .success-text { color: #ddd; font-size: 13px; }
 
         /* Responsive Mobile */
         @media (max-width: 968px) {
@@ -285,34 +205,37 @@
             <!-- Nội dung đè lên ảnh nền chia 2 cột -->
             <div class="vsp-hero-container">
                 
-                <!-- Cột trái: Text & Slogan -->
+                <!-- Cột trái: Text & Slogan (Đã xóa Badge Đại học) -->
                 <div class="vsp-hero-left">
-                    <span class="vsp-badge">Khu Đô Thị Đại Học Quốc Tế</span>
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
                     <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                 </div>
 
-                <!-- Cột phải: Form Form Đăng Ký -->
+                <!-- Cột phải: Khôi phục chính xác Form gốc của Bác -->
                 <div class="vsp-hero-right">
-                    <div class="vsp-form-wrapper">
-                        <h3 class="vsp-form-title">Đăng Ký Tư Vấn</h3>
-                        <div class="vsp-form-stars">★★★★★</div>
-                        <p class="vsp-form-desc">Nhận bảng giá & chính sách ưu đãi trực tiếp từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
+                    <section id="vhgp-final-v15-vertical">
+                        <div class="v15-ver-container">
+                            <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
+                            <div class="v15-ver-rating-box" id="rating-container-v15-ver">
+                                <span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span>
+                                <span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span>
+                            </div>
+                            <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong style="color:#fff">Greenia Homes</strong> qua Zalo/Email.</p>
 
-                        <form id="vspBannerForm">
-                            <input type="text" id="vsp-name" class="vsp-input" placeholder="Họ tên *" required>
-                            <input type="tel" id="vsp-phone" class="vsp-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                            <input type="email" id="vsp-email" class="vsp-input" placeholder="Email" required>
-                            <input type="text" id="vsp-demand" class="vsp-input" placeholder="Nhu cầu (Ví dụ: Căn 2PN...)" required>
-                            <button type="submit" id="vsp-btn-submit" class="vsp-submit-btn">NHẬN BÁO GIÁ</button>
-                        </form>
+                            <form id="leadFormV15Ver" class="v15-ver-form">
+                                <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
+                                <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                                <input type="email" id="v15-ver-email" class="v15-ver-input" placeholder="Email" required>
+                                <input type="text" id="v15-ver-demand" class="v15-ver-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                                <button type="submit" id="btn-v15-ver-submit" class="v15-ver-btn">NHẬN BÁO GIÁ</button>
+                            </form>
 
-                        <div id="vsp-success-msg" class="vsp-success-msg">
-                            <div style="font-size: 30px; margin-bottom: 10px;">✔</div>
-                            <div style="color: #2ecc71; font-weight: 700; margin-bottom: 5px;">ĐĂNG KÝ THÀNH CÔNG!</div>
-                            <div style="color: #ddd; font-size: 13px;">Tài liệu đang được gửi qua Zalo/Email cho quý khách.</div>
+                            <div id="v15-ver-success" class="success-overlay" style="display:none; text-align: center;">
+                                <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                                <div class="success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách.</div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
 
             </div>
@@ -320,38 +243,57 @@
         </section>
         <!-- KẾT THÚC HERO BANNER -->
 
-        <!-- SCRIPT XỬ LÝ GỬI FORM BANNER VỀ GOOGLE SHEET (Nằm an toàn trong main) -->
+        <!-- SCRIPT XỬ LÝ ĐẾM SAO VÀ GỬI FORM VỀ GOOGLE SHEET (Khôi phục logic gốc) -->
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const form = document.getElementById('vspBannerForm');
+                const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+                let clientIPNew = "";
+
+                // Lấy IP người dùng
+                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
+
+                // Lấy số lượng đánh giá sao từ Sheet
+                fetch(API_LEAD_NEW + "?action=count")
+                .then(res => res.json())
+                .then(data => {
+                    let count = data.count !== undefined ? parseInt(data.count) : 186;
+                    if(count < 5) count = 186;
+                    let cHero = document.getElementById('count-v15-ver');
+                    if(cHero) cHero.innerText = `(5.0/5 - ${count} đánh giá)`;
+                }).catch(e => {
+                    let cHero = document.getElementById('count-v15-ver');
+                    if(cHero) cHero.innerText = `(5.0/5 - 186 đánh giá)`;
+                });
+
+                // Xử lý gửi Form
+                const form = document.getElementById('leadFormV15Ver');
                 if(form) {
                     form.addEventListener('submit', function(e) {
                         e.preventDefault();
-                        const btn = document.getElementById('vsp-btn-submit');
+                        const btn = document.getElementById('btn-v15-ver-submit');
                         const originalText = btn.innerText;
                         btn.innerText = "ĐANG GỬI..."; 
-                        btn.style.opacity = "0.7";
+                        btn.style.color = "#fff"; 
                         btn.disabled = true;
 
                         let fd = new FormData();
-                        fd.append("project", "Vinhomes Saigon Park (Banner Mới)");
-                        fd.append("name", document.getElementById('vsp-name').value);
-                        fd.append("phone", document.getElementById('vsp-phone').value);
-                        fd.append("email", document.getElementById('vsp-email').value);
-                        fd.append("demand", document.getElementById('vsp-demand').value);
+                        fd.append("project", "Vinhomes Saigon Park (Dự Án Mới)");
+                        fd.append("name", document.getElementById('v15-ver-name').value);
+                        fd.append("phone", document.getElementById('v15-ver-phone').value);
+                        fd.append("email", document.getElementById('v15-ver-email').value);
+                        fd.append("demand", document.getElementById('v15-ver-demand').value);
                         fd.append("url", window.location.href);
+                        fd.append("ip", clientIPNew);
                         fd.append("rating", 5);
 
-                        const API_LINK = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-
-                        fetch(API_LINK, { method: 'POST', body: fd }).then(res => {
+                        fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
                             form.style.display = 'none';
-                            document.getElementById('vsp-success-msg').style.display = 'block';
+                            document.getElementById('v15-ver-success').style.display = 'block';
                             if(typeof fbq === 'function') fbq('track', 'Lead');
                         }).catch(err => {
                             alert("Có lỗi xảy ra, vui lòng thử lại hoặc gọi Hotline."); 
                             btn.innerText = originalText; 
-                            btn.style.opacity = "1";
+                            btn.style.color = "var(--lux-gold)"; 
                             btn.disabled = false;
                         });
                     });
