@@ -110,37 +110,36 @@
         .success-text { color: #ddd; font-size: 13px; }
 
         /* ==============================================================
-           PHẦN TỔNG QUAN: 6 KHỐI (3 TRÁI, 3 PHẢI) - KHỐI 1 PHẢI LÀ ẢNH LỚN
+           PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - KHỐI 1 PHẢI LÀ ẢNH LỚN
            ============================================================== */
         .vsp-overview-section {
-            padding: 40px 20px;
+            padding: 30px 20px; /* Đã điều chỉnh padding gọn hơn */
             background-color: var(--lux-dark);
         }
 
         .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
 
         .vsp-section-title {
-            font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold);
-            text-align: center; margin-bottom: 30px; text-transform: uppercase; font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: 28px; color: var(--lux-gold);
+            text-align: center; margin-bottom: 25px; text-transform: uppercase; font-weight: 700;
         }
 
         .vsp-overview-6-blocks {
             display: grid;
             grid-template-columns: 1fr 1fr; /* Chia 2 cột chính */
-            gap: 20px;
+            gap: 15px; /* Padding nội bộ giữa 2 cột thu hẹp lại */
         }
 
-        /* Cấu trúc các cột trái và phải để chứa 3 khối con mỗi bên */
         .vsp-column-side {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* Khoảng cách giữa các khối trên dưới nhỏ lại */
         }
 
         .vsp-overview-block {
             background: rgba(11, 17, 32, 0.8);
             border: 1px solid rgba(197, 160, 89, 0.15);
-            padding: 20px;
+            padding: 15px 20px; /* Nội dung bên trong gọn lại */
             border-radius: 8px;
             height: 100%;
         }
@@ -148,17 +147,17 @@
         .vsp-block-label {
             font-family: 'Cinzel', serif; font-size: 12px; color: var(--lux-gold);
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            margin-bottom: 10px; display: block; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            margin-bottom: 8px; display: block; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             padding-bottom: 5px;
         }
 
-        .vsp-block-value { font-size: 14px; line-height: 1.6; color: #e2e8f0; }
+        .vsp-block-value { font-size: 14px; line-height: 1.5; color: #e2e8f0; }
         .vsp-block-value strong { color: #fff; }
 
         /* Khối 1 bên phải lớn chứa ảnh */
         .vsp-block-image-large {
             padding: 0; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.3);
-            min-height: 300px;
+            min-height: 250px;
         }
         .vsp-block-image-large img {
             width: 100%; height: 100%; object-fit: cover; display: block;
@@ -166,7 +165,7 @@
 
         /* Danh sách sản phẩm dạng Grid nhỏ */
         .grid-products {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 5px 15px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4px 15px;
             list-style: none; padding: 0; margin: 5px 0 0 0;
         }
         .grid-products li { font-size: 13px; color: #cbd5e1; position: relative; padding-left: 12px; }
@@ -174,7 +173,7 @@
 
         @media (max-width: 968px) {
             .vsp-overview-6-blocks { grid-template-columns: 1fr; }
-            .vsp-block-image-large { min-height: 250px; }
+            .vsp-block-image-large { min-height: 200px; }
         }
     </style>
     
@@ -234,21 +233,41 @@
         <section class="vsp-overview-section" id="tong-quan">
             <div class="vsp-overview-container">
                 
+                <h2 class="vsp-section-title">Tổng Quan Vinhomes Hóc Môn</h2>
+                
                 <div class="vsp-overview-6-blocks">
                     
                     <div class="vsp-column-side">
                         <div class="vsp-overview-block">
-                            <h2><span class="vsp-block-label">Tổng Quan Vinhomes Hóc Môn</span></h2>
+                            <span class="vsp-block-label">Thông tin dự án</span>
                             <div class="vsp-block-value">
                                 <strong>Vinhomes Sài Gòn Park</strong><br>
                                 Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)
                             </div>
                         </div>
+                        
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Đơn vị phát triển</span>
+                            <div class="vsp-block-value">
+                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
+                                Tổng thầu xây dựng: Coteccons
+                            </div>
+                        </div>
+                        
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thời gian sở hữu</span>
+                            <div class="vsp-block-value">
+                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
+                                • Khách nước ngoài: 50 năm
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="vsp-column-side">
                         <div class="vsp-overview-block vsp-block-image-large">
                             <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
                         </div>
+                        
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Quy mô chi tiết</span>
                             <div class="vsp-block-value">
@@ -256,6 +275,7 @@
                                 Dân số: 135.000 người | Mật độ xây dựng: 31%
                             </div>
                         </div>
+                        
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
                             <ul class="grid-products">
@@ -265,21 +285,6 @@
                                 <li>1.500 căn nhà ở xã hội</li>
                                 <li>815 căn tái định cư</li>
                             </ul>
-                        </div>
-                    </div>
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Đơn vị phát triển</span>
-                            <div class="vsp-block-value">
-                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
-                                Tổng thầu xây dựng: Coteccons
-                            </div>
-                        </div>
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Thời gian sở hữu</span>
-                            <div class="vsp-block-value">
-                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
-                                • Khách nước ngoài: 50 năm
-                            </div>
                         </div>
                     </div>
 
