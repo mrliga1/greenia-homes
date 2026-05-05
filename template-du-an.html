@@ -109,12 +109,10 @@
     <!-- NẾU TRANG NÀY CÓ MENU DỰ ÁN RIÊNG, BÁC KÍCH HOẠT ĐOẠN CODE NÀY -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Đợi 0.1s để chắc chắn cái vỏ #sub-menu đã sẵn sàng trên trang
             setTimeout(function() {
                 if (typeof loadSpecificMenu === 'function') {
-                    // Bác thay 'ten-menu-cua-bac' bằng ID của menu dự án tương ứng trong ui.js
-                    // Nếu dự án không có menu riêng thì bác cứ xóa luôn khối <script> này đi cũng được.
-                    // loadSpecificMenu('sub-menu', 'ten-menu-cua-bac');
+                    // Đã kích hoạt và điền tên menu thực tế
+                    loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park');
                 }
             }, 100);
         });
