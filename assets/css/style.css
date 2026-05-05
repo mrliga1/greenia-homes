@@ -174,7 +174,7 @@ section:not(.hero-slider-section) { padding-top: 80px; }
     .main-nav {
         display: none; 
         position: absolute;
-        top: 70px;
+        top: 40px;
         left: 0;
         width: 100%;
         background: rgba(10, 10, 10, 0.98);
