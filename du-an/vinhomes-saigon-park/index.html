@@ -8,11 +8,9 @@
     <link rel="icon" href="/assets/images/vinhomes-saigon-park-logo.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
 
-    <!-- SEO CƠ BẢN -->
     <meta name="description" content="Khám phá Vinhomes Saigon Park - Khu đô thị đẳng cấp tại khu Tây Bắc TP.HCM. Bảng giá & Chính sách ưu đãi độc quyền từ Greenia Homes." />
     <link rel="canonical" href="https://greeniahomes.vn/du-an/vinhomes-saigon-park/" />
     
-    <!-- TỐI ƯU HIỂN THỊ KHI CHIA SẺ LÊN ZALO, FACEBOOK (OPEN GRAPH) -->
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Vinhomes Saigon Park | Greenia Homes" />
@@ -23,7 +21,6 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- FONT CHỮ VÀ CSS DÙNG CHUNG CỦA HỆ THỐNG -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -229,48 +226,178 @@
             .vsp-hero-right { width: 100%; max-width: 500px; }
             .vsp-top-image { padding-top: 0px; }
         }
-           
+
+        /* ==============================================================
+           PHẦN THÊM MỚI: TỔNG QUAN DỰ ÁN
+           ============================================================== */
+        .vsp-overview-section {
+            padding: 80px 20px;
+            background-color: var(--lux-dark);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        .vsp-overview-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .vsp-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 36px;
+            color: var(--lux-gold);
+            text-align: center;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .vsp-overview-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        /* Cột trái: Lưới thông số */
+        .vsp-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .vsp-stat-box {
+            background: rgba(11, 17, 32, 0.6);
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            padding: 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .vsp-stat-box:hover {
+            border-color: var(--lux-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        .vsp-stat-icon {
+            color: var(--lux-gold);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .vsp-stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vsp-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        /* Cột phải: Thẻ bài viết (Text) */
+        .vsp-overview-card {
+            background: linear-gradient(145deg, #111a2f 0%, #080c15 100%);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            border-radius: 8px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .vsp-card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: var(--lux-gold);
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(197, 160, 89, 0.3);
+        }
+
+        .vsp-overview-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .vsp-overview-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .vsp-overview-list li::before {
+            content: '♦';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--lux-gold);
+            font-size: 14px;
+        }
+
+        .vsp-overview-list strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Responsive phần Tổng quan */
+        @media (max-width: 968px) {
+            .vsp-overview-grid { grid-template-columns: 1fr; gap: 30px; }
+            .vsp-section-title { font-size: 28px; margin-bottom: 30px; }
+        }
+
+        @media (max-width: 576px) {
+            .vsp-stats-grid { grid-template-columns: 1fr; }
+            .vsp-overview-card { padding: 25px 20px; }
+        }
+            
     </style>
     
-    <!-- THƯ VIỆN FIREBASE CỐT LÕI -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
-    <!-- KHU VỰC HEADER VÀ MENU (UI.JS SẼ TỰ ĐỘNG BƠM VÀO ĐÂY) -->
     <div id="site-header"></div>
     <div id="sub-menu" class="sub-header"></div>
 
-    <!-- ========================================================== -->
-    <!-- KHU VỰC CHÍNH CỦA TRANG -->
-    <!-- ========================================================== -->
     <main class="greenia-luxury-theme" id="page-content">
         
-        <!-- KHỐI ẢNH ĐỘC LẬP NẰM TRÊN BANNER -->
         <div class="vsp-top-image">
             <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
         </div>
 
-        <!-- BẮT ĐẦU HERO BANNER THIẾT KẾ MỚI (KHÔNG ẢNH NỀN) -->
         <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
                 
-                <!-- Cột trái: Text & Cụm Ảnh Slideshow -->
                 <div class="vsp-hero-left">
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
                     <p class="vsp-slogan"><strong style="color: var(--lux-gold);">Dự án Vinhomes Sai Gon Park</strong> (thường gọi là Vinhomes Hóc Môn) tọa lạc tại mặt tiền Quốc lộ 22, xã Tân Thới Nhì, huyện Hóc Môn, TP. Hồ Chí Minh. Đây là Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                     
-                    <!-- Cụm ảnh Slideshow thay thế cho ảnh nền -->
                     <div class="vsp-featured-gallery">
                         <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park" class="vsp-slide active">
                         <img src="https://i.ibb.co/d4pCdM23/vinhomes-saigon-park-hoc-mon-39-1536x864.jpg" alt="Vinhomes Saigon Park Hóc Môn" class="vsp-slide">
-                        <!-- Ảnh số 3 đuôi webp đã được xử lý chuẩn -->
                         <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Phối cảnh nội khu" class="vsp-slide">
                     </div>
                 </div>
 
-                <!-- Cột phải: Form Gốc -->
                 <div class="vsp-hero-right">
                     <section id="vhgp-final-v15-vertical">
                         <div class="v15-ver-container">
@@ -299,9 +426,60 @@
 
             </div>
         </section>
-        <!-- KẾT THÚC HERO BANNER -->
+        <section class="vsp-overview-section" id="tong-quan">
+            <div class="vsp-overview-container">
+                <h2 class="vsp-section-title">Tổng Quan Dự Án</h2>
+                
+                <div class="vsp-overview-grid">
+                    
+                    <div class="vsp-stats-grid">
+                        <div class="vsp-stat-box">
+                            <i class="fas fa-map-marked-alt vsp-stat-icon"></i>
+                            <div class="vsp-stat-label">Vị trí</div>
+                            <div class="vsp-stat-value">Xã Tân Thới Nhì (nay là xã Xuân Thới Sơn), huyện Hóc Môn, TP.HCM</div>
+                        </div>
+                        
+                        <div class="vsp-stat-box">
+                            <i class="far fa-building vsp-stat-icon"></i>
+                            <div class="vsp-stat-label">Chủ đầu tư</div>
+                            <div class="vsp-stat-value">Tập đoàn Vingroup</div>
+                        </div>
+                        
+                        <div class="vsp-stat-box">
+                            <i class="fas fa-hard-hat vsp-stat-icon"></i>
+                            <div class="vsp-stat-label">Tổng thầu xây dựng</div>
+                            <div class="vsp-stat-value">Coteccons</div>
+                        </div>
+                        
+                        <div class="vsp-stat-box">
+                            <i class="fas fa-file-contract vsp-stat-icon"></i>
+                            <div class="vsp-stat-label">Thời gian sở hữu</div>
+                            <div class="vsp-stat-value">Người Việt: Lâu dài<br>Người NN: 50 năm</div>
+                        </div>
+                    </div>
 
-        <!-- SCRIPT XỬ LÝ ĐẾM SAO, GỬI FORM VÀ CHẠY SLIDESHOW -->
+                    <div class="vsp-overview-card">
+                        <h3 class="vsp-card-title">Quy Mô Phát Triển</h3>
+                        <ul class="vsp-overview-list">
+                            <li><strong>Diện tích dự án:</strong> 880 ha</li>
+                            <li><strong>Tổng vốn đầu tư:</strong> 59.000 tỷ đồng</li>
+                            <li><strong>Dân số dự kiến:</strong> 135.000 người</li>
+                            <li><strong>Mật độ xây dựng:</strong> 31%</li>
+                            <li><strong>Loại hình sản phẩm:</strong> Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</li>
+                            <li style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
+                                <strong style="color: var(--lux-gold);">Số lượng sản phẩm:</strong><br>
+                                - 24 tòa căn hộ<br>
+                                - 2.491 căn nhà liền kề<br>
+                                - 552 căn biệt thự<br>
+                                - 1.500 căn nhà ở xã hội<br>
+                                - 815 căn tái định cư
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 
@@ -370,15 +548,10 @@
         </script>
 
     </main>
-    <!-- ========================================================== -->
-
-    <!-- KHU VỰC FOOTER (UI.JS SẼ TỰ ĐỘNG BƠM VÀO ĐÂY) -->
     <div id="site-footer"></div>
     
-    <!-- TẢI GIAO DIỆN CHUNG HEADER/FOOTER -->
     <script src="/assets/js/ui.js"></script>
     
-    <!-- KHỞI TẠO FIREBASE CHO TRANG -->
     <script>
         const firebaseConfig = {
             apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
@@ -394,7 +567,6 @@
         }
     </script>
     
-    <!-- NẾU TRANG NÀY CÓ MENU DỰ ÁN RIÊNG, BÁC KÍCH HOẠT ĐOẠN CODE NÀY -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(function() {
