@@ -228,7 +228,7 @@
         }
 
         /* ==============================================================
-           PHẦN THÊM MỚI: TỔNG QUAN DỰ ÁN
+           PHẦN THÊM MỚI: TỔNG QUAN DỰ ÁN (THIẾT KẾ CÓ VỊ TRÍ CHỜ ẢNH)
            ============================================================== */
         .vsp-overview-section {
             padding: 80px 20px;
@@ -251,14 +251,56 @@
             font-weight: 700;
         }
 
-        .vsp-overview-grid {
+        /* ĐỔI THÀNH LAYOUT LƯỚI BẤT ĐỐI XỨNG CÓ ẢNH */
+        .vsp-overview-grid-v2 {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 40px;
+            grid-template-columns: 450px 1fr;
+            gap: 50px;
             align-items: stretch;
         }
 
-        /* Cột trái: Lưới thông số */
+        /* Cột Trái: Vị trí chờ để chèn ảnh */
+        .vsp-overview-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+        }
+
+        .vsp-overview-image-wrapper img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .vsp-overview-image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Khung viền vàng chìm ảo diệu bọc lấy ảnh */
+        .vsp-overview-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            box-shadow: inset 0 0 30px rgba(197, 160, 89, 0.4);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Cột Phải: Nội dung thông số chia 2 tầng */
+        .vsp-overview-content-v2 {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Tầng trên: Lưới 4 ô (Grid) */
         .vsp-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -278,7 +320,7 @@
 
         .vsp-stat-box:hover {
             border-color: var(--lux-gold);
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             background: rgba(197, 160, 89, 0.05);
         }
@@ -286,7 +328,7 @@
         .vsp-stat-icon {
             color: var(--lux-gold);
             font-size: 24px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .vsp-stat-label {
@@ -294,33 +336,30 @@
             text-transform: uppercase;
             color: #94a3b8;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 600;
         }
 
         .vsp-stat-value {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
+            font-size: 18px;
             color: #fff;
             line-height: 1.4;
         }
 
-        /* Cột phải: Thẻ bài viết (Text) */
+        /* Tầng dưới: Thẻ bài viết chi tiết (Card) */
         .vsp-overview-card {
             background: linear-gradient(145deg, #111a2f 0%, #080c15 100%);
             border: 1px solid rgba(197, 160, 89, 0.3);
             border-radius: 8px;
-            padding: 40px 30px;
+            padding: 35px 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex: 1; /* Tự kéo giãn cho bằng chiều cao cột ảnh */
         }
 
         .vsp-card-title {
             font-family: 'Cinzel', serif;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--lux-gold);
             margin-top: 0;
             margin-bottom: 20px;
@@ -336,8 +375,8 @@
 
         .vsp-overview-list li {
             position: relative;
-            padding-left: 25px;
-            margin-bottom: 15px;
+            padding-left: 20px;
+            margin-bottom: 12px;
             color: #e2e8f0;
             font-size: 15px;
             line-height: 1.6;
@@ -349,7 +388,7 @@
             left: 0;
             top: 2px;
             color: var(--lux-gold);
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .vsp-overview-list strong {
@@ -357,15 +396,16 @@
             font-weight: 600;
         }
 
-        /* Responsive phần Tổng quan */
-        @media (max-width: 968px) {
-            .vsp-overview-grid { grid-template-columns: 1fr; gap: 30px; }
-            .vsp-section-title { font-size: 28px; margin-bottom: 30px; }
+        /* Responsive phần Tổng quan mới */
+        @media (max-width: 1024px) {
+            .vsp-overview-grid-v2 { grid-template-columns: 1fr; gap: 40px; }
+            .vsp-overview-image-wrapper { min-height: 400px; }
         }
 
         @media (max-width: 576px) {
             .vsp-stats-grid { grid-template-columns: 1fr; }
             .vsp-overview-card { padding: 25px 20px; }
+            .vsp-section-title { font-size: 28px; }
         }
             
     </style>
@@ -389,6 +429,7 @@
                 
                 <div class="vsp-hero-left">
                     <h1 class="vsp-title">Vinhomes Saigon Park</h1>
+                    
                     <p class="vsp-slogan"><strong style="color: var(--lux-gold);">Dự án Vinhomes Sai Gon Park</strong> (thường gọi là Vinhomes Hóc Môn) tọa lạc tại mặt tiền Quốc lộ 22, xã Tân Thới Nhì, huyện Hóc Môn, TP. Hồ Chí Minh. Đây là Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                     
                     <div class="vsp-featured-gallery">
@@ -430,53 +471,60 @@
             <div class="vsp-overview-container">
                 <h2 class="vsp-section-title">Tổng Quan Dự Án</h2>
                 
-                <div class="vsp-overview-grid">
+                <div class="vsp-overview-grid-v2">
                     
-                    <div class="vsp-stats-grid">
-                        <div class="vsp-stat-box">
-                            <i class="fas fa-map-marked-alt vsp-stat-icon"></i>
-                            <div class="vsp-stat-label">Vị trí</div>
-                            <div class="vsp-stat-value">Xã Tân Thới Nhì (nay là xã Xuân Thới Sơn), huyện Hóc Môn, TP.HCM</div>
-                        </div>
-                        
-                        <div class="vsp-stat-box">
-                            <i class="far fa-building vsp-stat-icon"></i>
-                            <div class="vsp-stat-label">Chủ đầu tư</div>
-                            <div class="vsp-stat-value">Tập đoàn Vingroup</div>
-                        </div>
-                        
-                        <div class="vsp-stat-box">
-                            <i class="fas fa-hard-hat vsp-stat-icon"></i>
-                            <div class="vsp-stat-label">Tổng thầu xây dựng</div>
-                            <div class="vsp-stat-value">Coteccons</div>
-                        </div>
-                        
-                        <div class="vsp-stat-box">
-                            <i class="fas fa-file-contract vsp-stat-icon"></i>
-                            <div class="vsp-stat-label">Thời gian sở hữu</div>
-                            <div class="vsp-stat-value">Người Việt: Lâu dài<br>Người NN: 50 năm</div>
-                        </div>
+                    <div class="vsp-overview-image-wrapper">
+                        <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Vị trí chờ ảnh tổng quan Vinhomes Saigon Park">
                     </div>
 
-                    <div class="vsp-overview-card">
-                        <h3 class="vsp-card-title">Quy Mô Phát Triển</h3>
-                        <ul class="vsp-overview-list">
-                            <li><strong>Diện tích dự án:</strong> 880 ha</li>
-                            <li><strong>Tổng vốn đầu tư:</strong> 59.000 tỷ đồng</li>
-                            <li><strong>Dân số dự kiến:</strong> 135.000 người</li>
-                            <li><strong>Mật độ xây dựng:</strong> 31%</li>
-                            <li><strong>Loại hình sản phẩm:</strong> Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</li>
-                            <li style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
-                                <strong style="color: var(--lux-gold);">Số lượng sản phẩm:</strong><br>
-                                - 24 tòa căn hộ<br>
-                                - 2.491 căn nhà liền kề<br>
-                                - 552 căn biệt thự<br>
-                                - 1.500 căn nhà ở xã hội<br>
-                                - 815 căn tái định cư
-                            </li>
-                        </ul>
-                    </div>
+                    <div class="vsp-overview-content-v2">
+                        
+                        <div class="vsp-stats-grid">
+                            <div class="vsp-stat-box">
+                                <i class="fas fa-map-marked-alt vsp-stat-icon"></i>
+                                <div class="vsp-stat-label">Vị trí</div>
+                                <div class="vsp-stat-value">Xã Tân Thới Nhì (nay là xã Xuân Thới Sơn), huyện Hóc Môn, TP.HCM</div>
+                            </div>
+                            
+                            <div class="vsp-stat-box">
+                                <i class="far fa-building vsp-stat-icon"></i>
+                                <div class="vsp-stat-label">Chủ đầu tư</div>
+                                <div class="vsp-stat-value">Tập đoàn Vingroup</div>
+                            </div>
+                            
+                            <div class="vsp-stat-box">
+                                <i class="fas fa-hard-hat vsp-stat-icon"></i>
+                                <div class="vsp-stat-label">Tổng thầu xây dựng</div>
+                                <div class="vsp-stat-value">Coteccons</div>
+                            </div>
+                            
+                            <div class="vsp-stat-box">
+                                <i class="fas fa-file-contract vsp-stat-icon"></i>
+                                <div class="vsp-stat-label">Thời gian sở hữu</div>
+                                <div class="vsp-stat-value">Người Việt: Lâu dài<br>Người NN: 50 năm</div>
+                            </div>
+                        </div>
 
+                        <div class="vsp-overview-card">
+                            <h3 class="vsp-card-title">Quy Mô Phát Triển</h3>
+                            <ul class="vsp-overview-list">
+                                <li><strong>Diện tích dự án:</strong> 880 ha</li>
+                                <li><strong>Tổng vốn đầu tư:</strong> 59.000 tỷ đồng</li>
+                                <li><strong>Dân số dự kiến:</strong> 135.000 người</li>
+                                <li><strong>Mật độ xây dựng:</strong> 31%</li>
+                                <li><strong>Loại hình sản phẩm:</strong> Khu đô thị phức hợp nhà ở thấp tầng, chung cư cao tầng, nhà phố liền kề, biệt thự, shophouse.</li>
+                                <li style="margin-top: 15px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">
+                                    <strong style="color: var(--lux-gold);">Số lượng sản phẩm:</strong><br>
+                                    - 24 tòa căn hộ<br>
+                                    - 2.491 căn nhà liền kề<br>
+                                    - 552 căn biệt thự<br>
+                                    - 1.500 căn nhà ở xã hội<br>
+                                    - 815 căn tái định cư
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </section>
