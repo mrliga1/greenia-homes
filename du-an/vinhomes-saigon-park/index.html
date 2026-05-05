@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vinhomes Saigon Park | Khu Đô Thị Đại Học Quốc Tế Berjaya Việt Nam</title>
+    <title>Vinhomes Saigon Park | Greenia Homes</title>
     
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/favicon.png">
@@ -73,9 +73,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
             overflow: hidden;
-            /* Nếu menu của bác trong suốt, bỏ margin-top đi. Nếu menu màu đen đặc thì dùng margin-top: -80px để đẩy ảnh lên kịch trần */
         }
         
         .vsp-hero-bg {
@@ -95,16 +93,31 @@
         .vsp-hero-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, rgba(5,8,15,0.6) 0%, rgba(5,8,15,0.3) 50%, #05080f 100%);
+            background: linear-gradient(180deg, rgba(5,8,15,0.7) 0%, rgba(5,8,15,0.4) 50%, #05080f 100%);
             z-index: 2;
         }
 
-        /* Nội dung Banner */
-        .vsp-hero-content {
+        /* Layout Container chia 2 cột */
+        .vsp-hero-container {
             position: relative;
             z-index: 3;
-            opacity: 0;
-            animation: vspFadeUp 1.2s ease-out forwards;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        /* CỘT TRÁI: TEXT */
+        .vsp-hero-left {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+            animation: vspFadeUp 1s ease-out forwards;
         }
 
         .vsp-badge {
@@ -125,7 +138,7 @@
 
         .vsp-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(40px, 7vw, 80px);
+            font-size: clamp(40px, 5.5vw, 65px);
             color: var(--lux-white);
             line-height: 1.1;
             margin: 0 0 20px 0;
@@ -137,73 +150,110 @@
         .vsp-slogan {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: clamp(18px, 2vw, 22px);
+            font-size: clamp(16px, 1.8vw, 20px);
             color: #d1d5db;
-            max-width: 800px;
-            margin: 0 auto 40px auto;
+            max-width: 600px;
+            margin: 0 0 40px 0;
             line-height: 1.6;
             text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
-        .vsp-cta-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+        /* CỘT PHẢI: FORM */
+        .vsp-hero-right {
+            flex: 0 0 400px;
+            max-width: 100%;
+            animation: vspFadeUp 1.2s ease-out forwards;
         }
 
-        /* Nút Vàng */
-        .vsp-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
+        .vsp-form-wrapper {
+            background: linear-gradient(180deg, rgba(11, 15, 25, 0.9) 0%, rgba(21, 27, 43, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--lux-gold);
+            border-bottom: 2px solid var(--lux-gold);
+            padding: 40px 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .vsp-form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--lux-gold);
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .vsp-form-stars {
+            color: #f1c40f;
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .vsp-form-desc {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .vsp-input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 14px 20px;
+            font-size: 13px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .vsp-input:focus {
+            border-color: var(--lux-gold);
+            background: rgba(197, 160, 89, 0.1);
+        }
+
+        .vsp-submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
             background: var(--lux-gold);
             color: #000;
-            padding: 16px 40px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 15px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.3s ease;
             border: 1px solid var(--lux-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
         }
-        .vsp-btn-primary:hover {
+
+        .vsp-submit-btn:hover {
             background: transparent;
             color: var(--lux-gold);
-            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4);
-            transform: translateY(-3px);
         }
 
-        /* Nút Viền Kính */
-        .vsp-btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(11, 17, 32, 0.4);
-            backdrop-filter: blur(8px);
-            color: var(--lux-white);
-            padding: 16px 40px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 15px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .vsp-btn-secondary:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--lux-white);
-            transform: translateY(-3px);
+        .vsp-success-msg {
+            display: none;
+            padding: 20px;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ecc71;
+            border-radius: 8px;
+            margin-top: 15px;
+            animation: vspFadeUp 0.5s forwards;
         }
 
-        /* Responsive Banner cho Mobile */
-        @media (max-width: 768px) {
-            .vsp-hero { height: auto; min-height: 80vh; padding: 120px 0 60px 0; }
-            .vsp-cta-group { flex-direction: column; width: 100%; padding: 0 15px; }
-            .vsp-btn-primary, .vsp-btn-secondary { width: 100%; justify-content: center; }
+        /* Responsive Mobile */
+        @media (max-width: 968px) {
+            .vsp-hero { height: auto; padding: 120px 0 60px 0; }
+            .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
+            .vsp-hero-left { text-align: center; }
+            .vsp-slogan { margin-left: auto; margin-right: auto; }
+            .vsp-hero-right { width: 100%; flex: none; }
         }
            
     </style>
@@ -232,24 +282,82 @@
                 <div class="vsp-hero-overlay"></div>
             </div>
 
-            <!-- Nội dung đè lên ảnh nền -->
-            <div class="pj-container vsp-hero-content">
-                <span class="vsp-badge">Khu Đô Thị Đại Học Quốc Tế</span>
-                <h1 class="vsp-title">Vinhomes Saigon Park</h1>
-                <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
+            <!-- Nội dung đè lên ảnh nền chia 2 cột -->
+            <div class="vsp-hero-container">
                 
-                <div class="vsp-cta-group">
-                    <a href="javascript:void(0)" onclick="if(typeof openPopupNew === 'function') openPopupNew(); else alert('Vui lòng gọi Hotline: 0932 966 700');" class="vsp-btn-primary">
-                        <i class="fas fa-download"></i> Tải Bảng Giá & CSBH
-                    </a>
-                    <a href="tel:0932966700" class="vsp-btn-secondary">
-                        <i class="fas fa-phone-alt"></i> 0932 966 700
-                    </a>
+                <!-- Cột trái: Text & Slogan -->
+                <div class="vsp-hero-left">
+                    <span class="vsp-badge">Khu Đô Thị Đại Học Quốc Tế</span>
+                    <h1 class="vsp-title">Vinhomes Saigon Park</h1>
+                    <p class="vsp-slogan">Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                 </div>
+
+                <!-- Cột phải: Form Form Đăng Ký -->
+                <div class="vsp-hero-right">
+                    <div class="vsp-form-wrapper">
+                        <h3 class="vsp-form-title">Đăng Ký Tư Vấn</h3>
+                        <div class="vsp-form-stars">★★★★★</div>
+                        <p class="vsp-form-desc">Nhận bảng giá & chính sách ưu đãi trực tiếp từ <strong>Greenia Homes</strong> qua Zalo/Email.</p>
+
+                        <form id="vspBannerForm">
+                            <input type="text" id="vsp-name" class="vsp-input" placeholder="Họ tên *" required>
+                            <input type="tel" id="vsp-phone" class="vsp-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                            <input type="email" id="vsp-email" class="vsp-input" placeholder="Email" required>
+                            <input type="text" id="vsp-demand" class="vsp-input" placeholder="Nhu cầu (Ví dụ: Căn 2PN...)" required>
+                            <button type="submit" id="vsp-btn-submit" class="vsp-submit-btn">NHẬN BÁO GIÁ</button>
+                        </form>
+
+                        <div id="vsp-success-msg" class="vsp-success-msg">
+                            <div style="font-size: 30px; margin-bottom: 10px;">✔</div>
+                            <div style="color: #2ecc71; font-weight: 700; margin-bottom: 5px;">ĐĂNG KÝ THÀNH CÔNG!</div>
+                            <div style="color: #ddd; font-size: 13px;">Tài liệu đang được gửi qua Zalo/Email cho quý khách.</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             
         </section>
         <!-- KẾT THÚC HERO BANNER -->
+
+        <!-- SCRIPT XỬ LÝ GỬI FORM BANNER VỀ GOOGLE SHEET (Nằm an toàn trong main) -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const form = document.getElementById('vspBannerForm');
+                if(form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const btn = document.getElementById('vsp-btn-submit');
+                        const originalText = btn.innerText;
+                        btn.innerText = "ĐANG GỬI..."; 
+                        btn.style.opacity = "0.7";
+                        btn.disabled = true;
+
+                        let fd = new FormData();
+                        fd.append("project", "Vinhomes Saigon Park (Banner Mới)");
+                        fd.append("name", document.getElementById('vsp-name').value);
+                        fd.append("phone", document.getElementById('vsp-phone').value);
+                        fd.append("email", document.getElementById('vsp-email').value);
+                        fd.append("demand", document.getElementById('vsp-demand').value);
+                        fd.append("url", window.location.href);
+                        fd.append("rating", 5);
+
+                        const API_LINK = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+
+                        fetch(API_LINK, { method: 'POST', body: fd }).then(res => {
+                            form.style.display = 'none';
+                            document.getElementById('vsp-success-msg').style.display = 'block';
+                            if(typeof fbq === 'function') fbq('track', 'Lead');
+                        }).catch(err => {
+                            alert("Có lỗi xảy ra, vui lòng thử lại hoặc gọi Hotline."); 
+                            btn.innerText = originalText; 
+                            btn.style.opacity = "1";
+                            btn.disabled = false;
+                        });
+                    });
+                }
+            });
+        </script>
 
     </main>
     <!-- ========================================================== -->
