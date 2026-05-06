@@ -557,25 +557,185 @@
             <img src="https://i.ibb.co/8npjvpJG/vinhomes-sai-gon-park-hoc-mon.jpg" alt="Toàn cảnh Vinhomes Saigon Park-Vinhomes Hóc Môn">
         </div>
 
-        <section class="vsp-location-section" id="vi-tri">
-            <div class="vsp-location-container">
-                <div class="vsp-location-grid">
-                    <div class="vsp-location-content">
-                        <h2>Vị Trí Độc Tôn</h2>
-                        <p>Dự án <strong>Vinhomes Saigon Park</strong> (Vinhomes Hóc Môn) sở hữu vị trí chiến lược tại mặt tiền Quốc lộ 22, xã Xuân Thới Sơn, huyện Hóc Môn, TP.HCM. Nằm ngay tâm điểm kết nối giao thương giữa TP.HCM và các vùng kinh tế trọng điểm phía Nam.</p>
-                        <ul class="vsp-location-list">
-                            <li><strong>3 phút</strong> di chuyển đến Ngã tư An Sương, Bến xe An Sương.</li>
-                            <li><strong>10 phút</strong> kết nối nhanh chóng đến trung tâm Quận 12, khu công nghiệp Tân Bình.</li>
-                            <li><strong>20 phút</strong> di chuyển thẳng đến Sân bay Quốc tế Tân Sơn Nhất.</li>
-                            <li><strong>Kề cận</strong> tuyến Metro số 2 (Bến Thành - Tham Lương - Củ Chi) và tuyến đường Vành đai 3 đang được triển khai.</li>
-                        </ul>
-                    </div>
-                    <div class="vsp-location-image">
-                        <img src="https://i.ibb.co/YBhwjnK8/ban-do-vi-tri-vinhomes-sai-gon-park-hoc-mon.webp" alt="Bản đồ vị trí dự án Vinhomes Saigon Park Hóc Môn">
-                    </div>
-                </div>
+        <style>
+    #vsp-location-block-v3 {
+        background-color: #0b2e21; /* Màu xanh lá tối tương đồng với trang web */
+        padding: 70px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #d1d5db;
+    }
+    .loc-v3-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    
+    /* Header căn giữa */
+    .loc-v3-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    .loc-v3-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(28px, 4vw, 36px);
+        color: #efdfa6; /* Màu vàng luxury */
+        margin: 0 0 15px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .loc-v3-desc {
+        font-size: 16px;
+        color: #94a3b8;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    /* Lưới 2 hàng x 2 cột */
+    .loc-v3-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+        margin-bottom: 60px;
+    }
+    .loc-v3-row:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Nội dung Text */
+    .loc-v3-text-box h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 26px;
+        color: #efdfa6;
+        margin: 0 0 20px 0;
+        line-height: 1.4;
+        text-transform: uppercase;
+    }
+    .loc-v3-text-box p {
+        font-size: 15px;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        color: #e2e8f0;
+    }
+    .loc-v3-text-box strong {
+        color: #efdfa6; /* Làm nổi bật các từ khóa bằng màu vàng */
+        font-weight: 700;
+    }
+
+    /* List danh sách */
+    .loc-v3-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .loc-v3-list li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 15px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #e2e8f0;
+    }
+    .loc-v3-list li::before {
+        content: '■';
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: #efdfa6;
+        font-size: 10px;
+    }
+
+    /* Nút bấm */
+    .loc-v3-btn {
+        display: inline-flex;
+        background-color: #ef4444; /* Nút đỏ */
+        color: #fff !important;
+        padding: 12px 25px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        margin-top: 15px;
+        transition: 0.3s;
+    }
+    .loc-v3-btn:hover {
+        background-color: #dc2626;
+        transform: translateY(-2px);
+    }
+
+    /* Khối Hình ảnh */
+    .loc-v3-img-box {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .loc-v3-img-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    .loc-v3-img-box:hover img {
+        transform: scale(1.03);
+    }
+
+    /* Responsive cho Mobile */
+    @media (max-width: 968px) {
+        .loc-v3-row {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        /* Đảo vị trí ảnh lên trên text ở hàng thứ 2 trên mobile */
+        .loc-v3-row.reverse-mobile .loc-v3-text-box {
+            order: 2;
+        }
+        .loc-v3-row.reverse-mobile .loc-v3-img-box {
+            order: 1;
+        }
+    }
+</style>
+
+<section id="vsp-location-block-v3">
+    <div class="loc-v3-container">
+        <div class="loc-v3-header">
+            <h2 class="loc-v3-title">Vi Trí Vinhomes Saigon Park</h2>
+            <p class="loc-v3-desc">Tâm điểm giao thương chiến lược, hưởng lợi trực tiếp từ các siêu hạ tầng cấp quốc gia tại khu vực Tây Bắc TP.HCM.</p>
+        </div>
+
+        <div class="loc-v3-row">
+            <div class="loc-v3-text-box">
+                <h3>VỊ TRÍ HÀNH CHÍNH NẰM Ở XÃ TÂN THỚI NHÌ</h3>
+                <p>Vinhomes Hóc Môn tọa lạc tại xã <strong>Tân Thới Nhì, huyện Hóc Môn</strong>, tiếp giáp trực tiếp Quốc lộ 22 – trục giao thông huyết mạch kết nối TP.HCM với các tỉnh Tây Nam Bộ và cửa khẩu Mộc Bài (Tây Ninh).</p>
+                <p>Đây là khu vực thuộc <strong>vành đai phát triển đô thị phía Tây Bắc</strong> theo quy hoạch TP.HCM 2030–2045, nằm trong lộ trình sáp nhập huyện Hóc Môn thành quận nội thành — yếu tố nền tảng thúc đẩy tăng giá đất dài hạn.</p>
+                <a href="#dang-ky-ngay" class="loc-v3-btn">ĐĂNG KÝ THAM QUAN DỰ ÁN ✔</a>
             </div>
-        </section>
+            <div class="loc-v3-img-box">
+                <img src="https://i.ibb.co/YOUR_IMAGE_LINK_1.jpg" alt="Vinhomes Hóc Môn 1080ha">
+            </div>
+        </div>
+
+        <div class="loc-v3-row reverse-mobile">
+            <div class="loc-v3-img-box">
+                <img src="https://i.ibb.co/YOUR_IMAGE_LINK_2.jpg" alt="Bản đồ kết nối giao thông Vinhomes Saigon Park">
+            </div>
+            <div class="loc-v3-text-box">
+                <h3>KẾT NỐI GIAO THÔNG VÀNH ĐAI 3 QUỐC LỘ 22</h3>
+                <p>Vị trí Vinhomes Hóc Môn được hưởng lợi trực tiếp từ loạt hạ tầng giao thông trọng điểm đang hoàn thiện:</p>
+                <ul class="loc-v3-list">
+                    <li><strong>Vành đai 3 TP.HCM</strong> — Đoạn qua Hóc Môn dài 32,6 km thông xe kỹ thuật ngày <strong>30/4/2026</strong>, rút ngắn kết nối vùng Đông – Tây – Nam TP.HCM</li>
+                    <li><strong>Quốc lộ 22</strong> — Trục đường chính qua dự án, kết nối trực tiếp vào nội đô</li>
+                    <li><strong>Metro số 2</strong> (Bến Thành – Tham Lương, tương lai kéo dài đến Hóc Môn) — Giao thông công cộng hiện đại khi hoàn thiện</li>
+                    <li><strong>Cao tốc TP.HCM – Mộc Bài</strong> (đang triển khai) — Hành lang kinh tế kết nối Tây Ninh và biên giới Campuchia</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</section>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
