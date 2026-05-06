@@ -136,7 +136,7 @@
             border: 1px solid rgba(197, 160, 89, 0.15);
             padding: 15px 20px; /* Nội dung bên trong gọn lại */
             border-radius: 8px;
-            height: 100%;
+            height: 100%125px;
         }
 
         .vsp-block-label {
@@ -327,43 +327,23 @@
                     <!-- CỘT TRÁI (Chứa đúng 3 khối) -->
                     <div class="vsp-column-side">
                         <div class="vsp-overview-block">
-                            <h2 class="vsp-title" style="font-size: 22px; text-align: left; color: var(--lux-gold); margin-top: 0; margin-bottom: 10px;">Tổng Quan Vinhomes Hóc Môn</h2>
+                            <h2> class="vsp-title"> Tổng Quan Vinhomes Hóc Môn</h2>
                             <span class="vsp-block-label">Thông tin chi tiết</span>
-                            <ul class="grid-products">
-                                <li>Tên dự án:<strong>Vinhomes Sài Gòn Park</strong></li>
-                                <li><strong>Vị trí</strong>: xã Xuân Thới Sơn, TP.HCM</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Đơn vị phát triển</span>
-                            <ul class="grid-products">
-                                <li>Chủ đầu tư: <strong>Tập đoàn Vingroup</strong></li>
-                                <li>Tổng thầu xây dựng: Coteccons</li>
-                            </ul>
+                            <div class="vsp-block-value">
+                                <strong>Vinhomes Sài Gòn Park</strong><br>
+                                Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)
+                            </div>
                         </div>
                         
                         <!-- Đã chuyển Quy mô từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Quy mô chi tiết</span>
-                            <ul class="grid-products">
-                               <li>Diện tích: 880 ha | Vốn: 59.000 tỷ đồng</li>
-                               <li>Dân số: 135.000 người | Mật độ xây dựng: 31%</li>
-                            </ul>
+                            <div class="vsp-block-value">
+                                Diện tích: 880 ha | Vốn: 59.000 tỷ đồng<br>
+                                Dân số: 135.000 người | Mật độ xây dựng: 31%
+                            </div>
                         </div>
-
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Thời gian sở hữu</span>
-                            <ul class="grid-products">
-                                <li>Khách Việt Nam: <strong>Sở hữu lâu dài</strong></li>
-                                <li>Khách nước ngoài: 50 năm</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
-                    <div class="vsp-column-side">
-   
+                        
                         <!-- Đã chuyển Số lượng sản phẩm từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
@@ -375,10 +355,31 @@
                                 <li>815 căn tái định cư</li>
                             </ul>
                         </div>
-
+                    </div>
+                    
+                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
+                    <div class="vsp-column-side">
                         <div class="vsp-overview-block vsp-block-image-large">
                             <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
-                        </div> 
+                        </div>
+                        
+                        <!-- Đã chuyển Đơn vị phát triển từ trái sang phải -->
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Đơn vị phát triển</span>
+                            <div class="vsp-block-value">
+                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
+                                Tổng thầu xây dựng: Coteccons
+                            </div>
+                        </div>
+
+                        <!-- Đã chuyển Thời gian sở hữu từ trái sang phải -->
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thời gian sở hữu</span>
+                            <div class="vsp-block-value">
+                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
+                                • Khách nước ngoài: 50 năm
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -390,7 +391,6 @@
             <div class="vsp-cta-container">
                 <h3 class="v15-hor-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
                 
-                <!-- Bê nguyên đánh giá sao xuống -->
                 <div class="v15-ver-rating-box" id="rating-container-v15-hor">
                     <span class="v15-ver-stars" id="stars-v15-hor">★★★★★</span>
                     <span class="v15-ver-count" id="count-v15-hor">(Đang tải...)</span>
@@ -398,7 +398,6 @@
                 
                 <p class="v15-hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
                 
-                <!-- Form ngang -->
                 <form id="leadFormV15Hor" class="v15-hor-form">
                     <input type="text" id="v15-hor-name" class="v15-hor-input" placeholder="Họ tên *" required>
                     <input type="tel" id="v15-hor-phone" class="v15-hor-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
@@ -414,7 +413,6 @@
             </div>
         </section>
 
-        <!-- SCRIPT CHÍNH (GIỮ NGUYÊN) -->
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
@@ -430,8 +428,6 @@
                 const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
                 let clientIPNew = "";
                 fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
-                
-                // Lấy đánh giá sao cho Form Dọc
                 fetch(API_LEAD_NEW + "?action=count").then(res => res.json()).then(data => {
                     let count = data.count !== undefined ? parseInt(data.count) : 186;
                     if(count < 5) count = 186;
@@ -462,7 +458,7 @@
             });
         </script>
 
-        <!-- SCRIPT THÊM MỚI ĐỂ XỬ LÝ RIÊNG CHO FORM NGANG (KHÔNG SỢ LỖI FORM TRÊN) -->
+        <!-- SCRIPT THÊM MỚI ĐỂ XỬ LÝ RIÊNG CHO FORM NGANG -->
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
@@ -470,7 +466,6 @@
                 let clientIPHor = "";
                 fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPHor=d.ip}).catch(e=>{});
 
-                // Lấy đánh giá sao đồng bộ cho Form Ngang
                 fetch(API_LEAD_NEW + "?action=count").then(res => res.json()).then(data => {
                     let count = data.count !== undefined ? parseInt(data.count) : 186;
                     if(count < 5) count = 186;
@@ -512,7 +507,6 @@
                 }
             });
         </script>
-
     </main>
 
     <div id="site-footer"></div>
