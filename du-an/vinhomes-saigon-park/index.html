@@ -146,7 +146,7 @@
             border: 1px solid rgba(197, 160, 89, 0.15);
             padding: 15px 20px; /* Nội dung bên trong gọn lại */
             border-radius: 8px;
-            height: 100%125px;
+            height: 100%;
         }
 
         .vsp-block-label {
@@ -287,25 +287,25 @@
             .hor-btn { width: 100%; }
         }
 
-        /* ==============================================================
-           PHẦN THÊM MỚI: CSS CHO SECTION VỊ TRÍ DỰ ÁN
-           ============================================================== */
-        .vsp-location-section { padding: 60px 20px; background-color: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
-        .vsp-location-container { max-width: 1200px; margin: 0 auto; }
-        .vsp-location-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; }
-        .vsp-location-content h2 { font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold); margin-top: 0; margin-bottom: 20px; text-transform: uppercase; }
-        .vsp-location-content p { color: #a0aec0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
-        .vsp-location-list { list-style: none; padding: 0; margin: 0; }
-        .vsp-location-list li { position: relative; padding-left: 30px; margin-bottom: 15px; color: #e2e8f0; font-size: 15px; line-height: 1.5; }
-        .vsp-location-list li::before { content: '\f3c5'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: var(--lux-gold); font-size: 16px; }
-        .vsp-location-list strong { color: #fff; }
-        .vsp-location-image { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2); position: relative; }
-        .vsp-location-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
-        .vsp-location-image:hover img { transform: scale(1.03); }
-        @media (max-width: 968px) {
-            .vsp-location-grid { grid-template-columns: 1fr; }
-            .vsp-location-content h2 { font-size: 26px; text-align: center; }
-        }
+        /* ==============================================================
+           PHẦN THÊM MỚI: CSS CHO SECTION VỊ TRÍ DỰ ÁN
+           ============================================================== */
+        .vsp-location-section { padding: 60px 20px; background-color: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
+        .vsp-location-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-location-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; }
+        .vsp-location-content h2 { font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold); margin-top: 0; margin-bottom: 20px; text-transform: uppercase; }
+        .vsp-location-content p { color: #a0aec0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        .vsp-location-list { list-style: none; padding: 0; margin: 0; }
+        .vsp-location-list li { position: relative; padding-left: 30px; margin-bottom: 15px; color: #e2e8f0; font-size: 15px; line-height: 1.5; }
+        .vsp-location-list li::before { content: '\f3c5'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: var(--lux-gold); font-size: 16px; }
+        .vsp-location-list strong { color: #fff; }
+        .vsp-location-image { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2); position: relative; }
+        .vsp-location-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
+        .vsp-location-image:hover img { transform: scale(1.03); }
+        @media (max-width: 968px) {
+            .vsp-location-grid { grid-template-columns: 1fr; }
+            .vsp-location-content h2 { font-size: 26px; text-align: center; }
+        }
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -457,28 +457,28 @@
         </section>
         <!-- KẾT THÚC SECTION FORM NGANG ĐỘC LẬP -->
 
-        <!-- BẮT ĐẦU SECTION VỊ TRÍ DỰ ÁN (THÊM MỚI HOÀN TOÀN) -->
-        <section class="vsp-location-section" id="vi-tri">
-            <div class="vsp-location-container">
-                <div class="vsp-location-grid">
-                    <div class="vsp-location-content">
-                        <h2>Vị Trí Độc Tôn</h2>
-                        <p>Dự án <strong>Vinhomes Saigon Park</strong> (Vinhomes Hóc Môn) sở hữu vị trí chiến lược tại mặt tiền Quốc lộ 22, xã Xuân Thới Sơn, huyện Hóc Môn, TP.HCM. Nằm ngay tâm điểm kết nối giao thương giữa TP.HCM và các vùng kinh tế trọng điểm phía Nam.</p>
-                        <ul class="vsp-location-list">
-                            <li><strong>3 phút</strong> di chuyển đến Ngã tư An Sương, Bến xe An Sương.</li>
-                            <li><strong>10 phút</strong> kết nối nhanh chóng đến trung tâm Quận 12, khu công nghiệp Tân Bình.</li>
-                            <li><strong>20 phút</strong> di chuyển thẳng đến Sân bay Quốc tế Tân Sơn Nhất.</li>
-                            <li><strong>Kề cận</strong> tuyến Metro số 2 (Bến Thành - Tham Lương - Củ Chi) và tuyến đường Vành đai 3 đang được triển khai.</li>
-                        </ul>
-                    </div>
-                    <div class="vsp-location-image">
-                        <!-- Bác vui lòng thay link ảnh bản đồ vị trí thực tế vào đây nhé -->
-                        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000" alt="Bản đồ vị trí dự án Vinhomes Saigon Park Hóc Môn">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- KẾT THÚC SECTION VỊ TRÍ DỰ ÁN -->
+        <!-- BẮT ĐẦU SECTION VỊ TRÍ DỰ ÁN (THÊM MỚI HOÀN TOÀN) -->
+        <section class="vsp-location-section" id="vi-tri">
+            <div class="vsp-location-container">
+                <div class="vsp-location-grid">
+                    <div class="vsp-location-content">
+                        <h2>Vị Trí Độc Tôn</h2>
+                        <p>Dự án <strong>Vinhomes Saigon Park</strong> (Vinhomes Hóc Môn) sở hữu vị trí chiến lược tại mặt tiền Quốc lộ 22, xã Xuân Thới Sơn, huyện Hóc Môn, TP.HCM. Nằm ngay tâm điểm kết nối giao thương giữa TP.HCM và các vùng kinh tế trọng điểm phía Nam.</p>
+                        <ul class="vsp-location-list">
+                            <li><strong>3 phút</strong> di chuyển đến Ngã tư An Sương, Bến xe An Sương.</li>
+                            <li><strong>10 phút</strong> kết nối nhanh chóng đến trung tâm Quận 12, khu công nghiệp Tân Bình.</li>
+                            <li><strong>20 phút</strong> di chuyển thẳng đến Sân bay Quốc tế Tân Sơn Nhất.</li>
+                            <li><strong>Kề cận</strong> tuyến Metro số 2 (Bến Thành - Tham Lương - Củ Chi) và tuyến đường Vành đai 3 đang được triển khai.</li>
+                        </ul>
+                    </div>
+                    <div class="vsp-location-image">
+                        <!-- Bác vui lòng thay link ảnh bản đồ vị trí thực tế vào đây nhé -->
+                        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000" alt="Bản đồ vị trí dự án Vinhomes Saigon Park Hóc Môn">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- KẾT THÚC SECTION VỊ TRÍ DỰ ÁN -->
 
         <div class="vsp-top-image">
             <img src="https://i.ibb.co/8npjvpJG/vinhomes-sai-gon-park-hoc-mon.jpg" alt="Toàn cảnh Vinhomes Saigon Park-Vinhomes Hóc Môn">
