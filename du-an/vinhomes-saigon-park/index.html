@@ -322,6 +322,109 @@
             <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
         </div>
 
+		<style>
+    /* Chỉ áp dụng CSS cho các class có tiền tố vsp-isolated */
+    #vsp-isolated-intro-section {
+        background-color: #0b2e21; /* Nền xanh lá thẫm chuẩn theo ảnh */
+        padding: 60px 20px;
+        text-align: center;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+    }
+    
+    .vsp-isolated-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    .vsp-isolated-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(24px, 4vw, 36px);
+        color: #efdfa6; /* Màu chữ vàng nhạt luxury */
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        line-height: 1.3;
+    }
+
+    .vsp-isolated-subtitle {
+        font-size: 15px;
+        color: #efdfa6;
+        font-style: italic;
+        margin-bottom: 30px;
+        font-weight: 400;
+    }
+
+    .vsp-isolated-paragraph {
+        font-size: 15px;
+        line-height: 1.8;
+        color: #e2e8f0; /* Màu chữ xám trắng */
+        margin-bottom: 20px;
+        text-align: justify;
+        text-align-last: center; /* Căn đều 2 bên nhưng dòng cuối căn giữa */
+    }
+
+    .vsp-isolated-paragraph strong {
+        color: #efdfa6;
+        font-weight: 700;
+    }
+
+    .vsp-isolated-update {
+        font-size: 14px;
+        font-style: italic;
+        color: #94a3b8;
+        margin-bottom: 35px;
+        margin-top: 15px;
+    }
+
+    .vsp-isolated-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ef4444; /* Màu đỏ */
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 14px 35px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .vsp-isolated-btn:hover {
+        background-color: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Tối ưu riêng cho Mobile */
+    @media (max-width: 768px) {
+        .vsp-isolated-paragraph {
+            text-align: left;
+            text-align-last: left;
+        }
+    }
+</style>
+
+<section id="vsp-isolated-intro-section">
+    <div class="vsp-isolated-container">
+        <h2 class="vsp-isolated-title">VINHOMES SAIGON PARK – VINHOMES HÓC MÔN</h2>
+        <div class="vsp-isolated-subtitle">Đại đô thị đại học quốc tế quy mô 1.080 ha tại Tây Bắc TP.HCM — Chủ đầu tư Vingroup</div>
+        
+        <p class="vsp-isolated-paragraph"><strong>Vinhomes Saigon Park</strong> còn được gọi là <strong>Vinhomes Hóc Môn</strong> là dự án đại đô thị đại học quốc tế quy mô <strong>1.080 ha</strong> do <strong>Tập đoàn Vingroup</strong> phát triển tại xã Tân Thới Nhì và Thới Tam Thôn, huyện Hóc Môn, TP.HCM – mặt tiền Quốc lộ 22. Với tổng vốn đầu tư gần <strong>59.000 tỷ đồng</strong> (~3,5 tỷ USD), đây là khu đô thị đại học có diện tích lớn nhất Việt Nam tính đến 2026, được quy hoạch thành 9 phân khu chức năng với mục tiêu phục vụ <strong>~135.000 cư dân</strong> và <strong>60.000 sinh viên</strong>.</p>
+        
+        <p class="vsp-isolated-paragraph">Bài viết cập nhật bảng giá, chính sách bán hàng (CSBH), tiến độ thi công và phân tích chi tiết về tiện ích nổi bật của dự án <strong>Vinhomes SaiGon Park Hóc Môn</strong>: hạ tầng kết nối Vành đai 3 (76 km, hoàn thành 2026 — rút ngắn thời gian về trung tâm TP.HCM còn 25-30 phút).</p>
+        
+        <p class="vsp-isolated-update">Cập nhật mới nhất: tháng 05/2026 bởi đội ngũ VietnamGroove — Đại lý phân phối chiến lược chính thức dự án Vinhomes SaiGon Park.</p>
+        
+        <a href="#dang-ky-ngay" class="vsp-isolated-btn">BOOKING SỚM NGAY ✔</a>
+    </div>
+</section>
+
         <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
                 <div class="vsp-hero-left">
@@ -358,21 +461,6 @@
                         </div>
                     </section>
                 </div>
-            </div>
-        </section>
-		
-		<section class="vsp-intro-section" id="gioi-thieu">
-            <div class="vsp-intro-container">
-                <h2 class="vsp-intro-title">VINHOMES SAIGON PARK – VINHOMES HÓC MÔN</h2>
-                <div class="vsp-intro-subtitle">Đại đô thị đại học quốc tế quy mô 1.080 ha tại Tây Bắc TP.HCM — Chủ đầu tư Vingroup</div>
-                
-                <p class="vsp-intro-paragraph"><strong>Vinhomes Saigon Park</strong> còn được gọi là <strong>Vinhomes Hóc Môn</strong> là dự án đại đô thị đại học quốc tế quy mô <strong>1.080 ha</strong> do <strong>Tập đoàn Vingroup</strong> phát triển tại xã Tân Thới Nhì và Thới Tam Thôn, huyện Hóc Môn, TP.HCM – mặt tiền Quốc lộ 22. Với tổng vốn đầu tư gần <strong>59.000 tỷ đồng</strong> (~3,5 tỷ USD), đây là khu đô thị đại học có diện tích lớn nhất Việt Nam tính đến 2026, được quy hoạch thành 9 phân khu chức năng với mục tiêu phục vụ <strong>~135.000 cư dân</strong> và <strong>60.000 sinh viên</strong>.</p>
-                
-                <p class="vsp-intro-paragraph">Bài viết cập nhật bảng giá, chính sách bán hàng (CSBH), tiến độ thi công và phân tích chi tiết về tiện ích nổi bật của dự án <strong>Vinhomes SaiGon Park Hóc Môn</strong>: hạ tầng kết nối Vành đai 3 (76 km, hoàn thành 2026 — rút ngắn thời gian về trung tâm TP.HCM còn 25-30 phút).</p>
-                
-                <p class="vsp-intro-update">Cập nhật mới nhất: tháng 05/2026 bởi đội ngũ VietnamGroove — Đại lý phân phối chiến lược chính thức dự án Vinhomes SaiGon Park.</p>
-                
-                <a href="#vhgp-horizontal-cta" class="vsp-intro-btn">BOOKING SỚM NGAY ✔</a>
             </div>
         </section>
 
