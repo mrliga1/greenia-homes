@@ -92,7 +92,7 @@
 
         .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 25px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
@@ -170,111 +170,6 @@
             .vsp-overview-6-blocks { grid-template-columns: 1fr; }
             .vsp-block-image-large { min-height: 200px; }
         }
-
-        /* ==============================================================
-           1. CÁCH KHẮC PHỤC LỖI LỆCH FORM TRÊN MOBILE
-           Lý do: CSS gốc bị thiếu @media cho mobile, nên form không được ép margin: 0 auto và flex-direction: column. Tớ chèn bổ sung đoạn lệnh dưới đây để nắn lại.
-           ============================================================== */
-        @media (max-width: 968px) {
-            .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
-            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
-            .vsp-hero-right { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 10px; box-sizing: border-box; }
-            #vhgp-final-v15-vertical { width: 100%; box-sizing: border-box; }
-        }
-
-        /* ==============================================================
-           2. CSS THÊM MỚI: CHO FORM KÊU GỌI HÀNH ĐỘNG (HIỂN THỊ NGANG)
-           ============================================================== */
-        .vsp-cta-section {
-            padding: 50px 20px;
-            background: linear-gradient(180deg, #05080f 0%, #0d1423 100%);
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-            text-align: center;
-        }
-        
-        .vsp-cta-container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .v15-hor-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--lux-gold);
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .v15-hor-desc {
-            font-size: 15px;
-            color: #ccc;
-            margin-bottom: 25px;
-        }
-
-        .v15-hor-form {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .v15-hor-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 14px 20px;
-            font-size: 14px;
-            border-radius: 50px;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-        }
-
-        .v15-hor-input:focus {
-            border-color: var(--lux-gold);
-            background: rgba(197, 160, 89, 0.1);
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-        }
-
-        .v15-hor-btn {
-            flex: 1;
-            max-width: 220px;
-            padding: 14px 25px;
-            background: transparent;
-            color: var(--lux-gold);
-            border: 1px solid var(--lux-gold);
-            font-weight: 700;
-            text-transform: uppercase;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        .v15-hor-btn:hover {
-            background: var(--lux-gold-hover);
-            color: #000;
-            border-color: var(--lux-gold-hover);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 968px) {
-            .v15-hor-form {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .v15-hor-btn {
-                max-width: 100%;
-                width: 100%;
-            }
-        }
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -338,24 +233,45 @@
                     
                     <!-- CỘT TRÁI (Chứa đúng 3 khối) -->
                     <div class="vsp-column-side">
+                    <h2 class="vsp-title" style="font-size: 22px; text-align: left; color: var(--lux-gold); margin-top: 0; margin-bottom: 10px;">Tổng Quan Vinhomes Hóc Môn</h2>
+
                         <div class="vsp-overview-block">
-                            <h2> class="vsp-title"> Tổng Quan Vinhomes Hóc Môn</h2>
                             <span class="vsp-block-label">Thông tin chi tiết</span>
-                            <div class="vsp-block-value">
-                                <strong>Vinhomes Sài Gòn Park</strong><br>
-                                Xã Tân Thới Nhì, huyện Hóc Môn, TP.HCM. (nay là xã Xuân Thới Sơn, TP.HCM)
-                            </div>
+                            <ul class="grid-products">
+                                <li>Tên dự án:<strong>Vinhomes Sài Gòn Park</strong></li>
+                                <li><strong>Vị trí</strong>: xã Xuân Thới Sơn, TP.HCM</li>
+                            </ul>
+
+                        </div>
+                            <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Đơn vị phát triển</span>
+                            <ul class="grid-products">
+                                <li>Chủ đầu tư: <strong>Tập đoàn Vingroup</strong></li>
+                                <li>Tổng thầu xây dựng: Coteccons</li>
+                            </ul>
                         </div>
                         
                         <!-- Đã chuyển Quy mô từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Quy mô chi tiết</span>
-                            <div class="vsp-block-value">
-                                Diện tích: 880 ha | Vốn: 59.000 tỷ đồng<br>
-                                Dân số: 135.000 người | Mật độ xây dựng: 31%
-                            </div>
+                            <ul class="grid-products">
+                               <li>Diện tích: 880 ha | Vốn: 59.000 tỷ đồng</li>
+                               <li>Dân số: 135.000 người | Mật độ xây dựng: 31%</li>
+                            </ul>
                         </div>
-                        
+
+                        <div class="vsp-overview-block">
+                            <span class="vsp-block-label">Thời gian sở hữu</span>
+                            <ul class="grid-products">
+                                <li>Khách Việt Nam: <strong>Sở hữu lâu dài</strong></li>
+                                <li>Khách nước ngoài: 50 năm</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
+                    <div class="vsp-column-side">
+   
                         <!-- Đã chuyển Số lượng sản phẩm từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
@@ -367,60 +283,12 @@
                                 <li>815 căn tái định cư</li>
                             </ul>
                         </div>
-                    </div>
-                    
-                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
-                    <div class="vsp-column-side">
+
                         <div class="vsp-overview-block vsp-block-image-large">
                             <img src="https://i.ibb.co/B59275rg/cong-vien-trung-tam-vinhomes-hoc-mon.webp" alt="Công viên trung tâm Vinhomes Hóc Môn">
-                        </div>
-                        
-                        <!-- Đã chuyển Đơn vị phát triển từ trái sang phải -->
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Đơn vị phát triển</span>
-                            <div class="vsp-block-value">
-                                Chủ đầu tư: <strong>Tập đoàn Vingroup</strong><br>
-                                Tổng thầu xây dựng: Coteccons
-                            </div>
-                        </div>
-
-                        <!-- Đã chuyển Thời gian sở hữu từ trái sang phải -->
-                        <div class="vsp-overview-block">
-                            <span class="vsp-block-label">Thời gian sở hữu</span>
-                            <div class="vsp-block-value">
-                                • Khách Việt Nam: <strong>Sở hữu lâu dài</strong><br>
-                                • Khách nước ngoài: 50 năm
-                            </div>
-                        </div>
+                        </div> 
                     </div>
 
-                </div>
-            </div>
-        </section>
-
-        <!-- THÊM MỚI: PHẦN KÊU GỌI ĐIỀN THÔNG TIN (FORM NGANG) -->
-        <section class="vsp-cta-section" id="dang-ky-ngay">
-            <div class="vsp-cta-container">
-                <h3 class="v15-hor-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
-                
-                <div class="v15-ver-rating-box" id="rating-container-v15-hor">
-                    <span class="v15-ver-stars" id="stars-v15-hor">★★★★★</span>
-                    <span class="v15-ver-count" id="count-v15-hor">(Đang tải...)</span>
-                </div>
-                
-                <p class="v15-hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
-                
-                <form id="leadFormV15Hor" class="v15-hor-form">
-                    <input type="text" id="v15-hor-name" class="v15-hor-input" placeholder="Họ tên *" required>
-                    <input type="tel" id="v15-hor-phone" class="v15-hor-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                    <input type="email" id="v15-hor-email" class="v15-hor-input" placeholder="Email" required>
-                    <input type="text" id="v15-hor-demand" class="v15-hor-input" placeholder="Nhu cầu (Căn 2PN...)" required>
-                    <button type="submit" id="btn-v15-hor-submit" class="v15-hor-btn">ĐĂNG KÝ NGAY</button>
-                </form>
-
-                <div id="v15-hor-success" class="success-overlay" style="display:none; text-align: center; max-width: 600px; margin: 20px auto 0;">
-                    <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
-                    <div class="success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách. Xin cảm ơn.</div>
                 </div>
             </div>
         </section>
@@ -465,55 +333,6 @@
                             form.style.display = 'none';
                             document.getElementById('v15-ver-success').style.display = 'block';
                         }).catch(err => { alert("Lỗi, vui lòng thử lại."); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
-                    });
-                }
-            });
-        </script>
-
-        <!-- SCRIPT THÊM MỚI ĐỂ XỬ LÝ RIÊNG CHO FORM NGANG -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-                let clientIPHor = "";
-                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPHor=d.ip}).catch(e=>{});
-
-                fetch(API_LEAD_NEW + "?action=count").then(res => res.json()).then(data => {
-                    let count = data.count !== undefined ? parseInt(data.count) : 186;
-                    if(count < 5) count = 186;
-                    let cHor = document.getElementById('count-v15-hor');
-                    if(cHor) cHor.innerText = `(5.0/5 - ${count} đánh giá)`;
-                }).catch(e => { 
-                    let cHor = document.getElementById('count-v15-hor');
-                    if(cHor) cHor.innerText = `(5.0/5 - 186 đánh giá)`; 
-                });
-
-                const formHor = document.getElementById('leadFormV15Hor');
-                if(formHor) {
-                    formHor.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const btn = document.getElementById('btn-v15-hor-submit');
-                        const originalText = btn.innerText;
-                        btn.innerText = "ĐANG GỬI..."; 
-                        btn.disabled = true;
-                        
-                        let fd = new FormData();
-                        fd.append("project", "Vinhomes Saigon Park (Form Ngang - Giữa Trang)");
-                        fd.append("name", document.getElementById('v15-hor-name').value);
-                        fd.append("phone", document.getElementById('v15-hor-phone').value);
-                        fd.append("email", document.getElementById('v15-hor-email').value);
-                        fd.append("demand", document.getElementById('v15-hor-demand').value);
-                        fd.append("url", window.location.href);
-                        fd.append("ip", clientIPHor);
-                        fd.append("rating", 5);
-                        
-                        fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
-                            formHor.style.display = 'none';
-                            document.getElementById('v15-hor-success').style.display = 'block';
-                        }).catch(err => { 
-                            alert("Có lỗi xảy ra, vui lòng thử lại!"); 
-                            btn.innerText = originalText; 
-                            btn.disabled = false; 
-                        });
                     });
                 }
             });
