@@ -92,7 +92,7 @@
 
         .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 25px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
@@ -172,7 +172,18 @@
         }
 
         /* ==============================================================
-           PHẦN THÊM MỚI: CSS FORM KÊU GỌI HÀNH ĐỘNG (HIỂN THỊ NGANG)
+           1. CÁCH KHẮC PHỤC LỖI LỆCH FORM TRÊN MOBILE
+           Lý do: CSS gốc bị thiếu @media cho mobile, nên form không được ép margin: 0 auto và flex-direction: column. Tớ chèn bổ sung đoạn lệnh dưới đây để nắn lại.
+           ============================================================== */
+        @media (max-width: 968px) {
+            .vsp-hero-container { flex-direction: column; text-align: center; gap: 40px; }
+            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
+            .vsp-hero-right { width: 100%; max-width: 500px; margin: 0 auto; padding: 0 10px; box-sizing: border-box; }
+            #vhgp-final-v15-vertical { width: 100%; box-sizing: border-box; }
+        }
+
+        /* ==============================================================
+           2. CSS THÊM MỚI: CHO FORM KÊU GỌI HÀNH ĐỘNG (HIỂN THỊ NGANG)
            ============================================================== */
         .vsp-cta-section {
             padding: 50px 20px;
@@ -180,28 +191,89 @@
             border-top: 1px solid rgba(197, 160, 89, 0.1);
             text-align: center;
         }
-        .vsp-cta-container { max-width: 1100px; margin: 0 auto; }
+        
+        .vsp-cta-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
         .v15-hor-title {
-            font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700;
-            color: var(--lux-gold); margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--lux-gold);
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .v15-hor-desc { font-size: 15px; color: #ccc; margin-bottom: 25px; }
-        .v15-hor-form { display: flex; flex-direction: row; justify-content: center; gap: 15px; width: 100%; }
+
+        .v15-hor-desc {
+            font-size: 15px;
+            color: #ccc;
+            margin-bottom: 25px;
+        }
+
+        .v15-hor-form {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+
         .v15-hor-input {
-            flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff; padding: 14px 20px; font-size: 14px; border-radius: 50px; outline: none;
-            transition: 0.3s; box-sizing: border-box;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 14px 20px;
+            font-size: 14px;
+            border-radius: 50px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
         }
-        .v15-hor-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+
+        .v15-hor-input:focus {
+            border-color: var(--lux-gold);
+            background: rgba(197, 160, 89, 0.1);
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+        }
+
         .v15-hor-btn {
-            flex: 1; max-width: 220px; padding: 14px 25px; background: transparent; color: var(--lux-gold);
-            border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px;
-            cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 14px; box-sizing: border-box;
+            flex: 1;
+            max-width: 220px;
+            padding: 14px 25px;
+            background: transparent;
+            color: var(--lux-gold);
+            border: 1px solid var(--lux-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 14px;
+            box-sizing: border-box;
         }
-        .v15-hor-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+
+        .v15-hor-btn:hover {
+            background: var(--lux-gold-hover);
+            color: #000;
+            border-color: var(--lux-gold-hover);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 968px) {
-            .v15-hor-form { flex-direction: column; gap: 12px; }
-            .v15-hor-btn { max-width: 100%; width: 100%; }
+            .v15-hor-form {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .v15-hor-btn {
+                max-width: 100%;
+                width: 100%;
+            }
         }
     </style>
     
@@ -330,11 +402,14 @@
         <section class="vsp-cta-section" id="dang-ky-ngay">
             <div class="vsp-cta-container">
                 <h3 class="v15-hor-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
+                
                 <div class="v15-ver-rating-box" id="rating-container-v15-hor">
                     <span class="v15-ver-stars" id="stars-v15-hor">★★★★★</span>
                     <span class="v15-ver-count" id="count-v15-hor">(Đang tải...)</span>
                 </div>
+                
                 <p class="v15-hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
+                
                 <form id="leadFormV15Hor" class="v15-hor-form">
                     <input type="text" id="v15-hor-name" class="v15-hor-input" placeholder="Họ tên *" required>
                     <input type="tel" id="v15-hor-phone" class="v15-hor-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
@@ -342,6 +417,7 @@
                     <input type="text" id="v15-hor-demand" class="v15-hor-input" placeholder="Nhu cầu (Căn 2PN...)" required>
                     <button type="submit" id="btn-v15-hor-submit" class="v15-hor-btn">ĐĂNG KÝ NGAY</button>
                 </form>
+
                 <div id="v15-hor-success" class="success-overlay" style="display:none; text-align: center; max-width: 600px; margin: 20px auto 0;">
                     <div class="success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
                     <div class="success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách. Xin cảm ơn.</div>
