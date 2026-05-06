@@ -92,7 +92,7 @@
 
         .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 25px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 40px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
@@ -108,16 +108,6 @@
         .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; width: 100%; animation: vspFadeUp 0.5s forwards; }
         .success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
         .success-text { color: #ddd; font-size: 13px; }
-
-        /* ==============================================================
-           KHÔI PHỤC CSS RESPONSIVE CHO BANNER/FORM TRÊN MOBILE (BỊ XÓA NHẦM)
-           ============================================================== */
-        @media (max-width: 968px) {
-            .vsp-hero-container { flex-direction: column; gap: 40px; }
-            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
-            .vsp-hero-right { width: 100%; max-width: 100%; margin: 0 auto; }
-            #vhgp-final-v15-vertical { box-sizing: border-box; width: 100%; }
-        }
 
         /* ==============================================================
            PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - ĐÃ ĐỔI VỊ TRÍ
@@ -286,6 +276,103 @@
             }
             .hor-btn { width: 100%; }
         }
+
+        /* ==============================================================
+           PHẦN THÊM MỚI: CSS CHO SECTION VỊ TRÍ DỰ ÁN
+           ============================================================== */
+        .vsp-location-section {
+            padding: 60px 20px;
+            background-color: var(--lux-dark);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        .vsp-location-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .vsp-location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Cột phải chứa ảnh to hơn 1 chút */
+            gap: 40px;
+            align-items: center;
+        }
+
+        .vsp-location-content h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: var(--lux-gold);
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .vsp-location-content p {
+            color: #a0aec0;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .vsp-location-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .vsp-location-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .vsp-location-list li::before {
+            content: '\f3c5'; /* Icon map marker của FontAwesome */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--lux-gold);
+            font-size: 16px;
+        }
+
+        .vsp-location-list strong {
+            color: #fff;
+        }
+
+        .vsp-location-image {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            position: relative;
+        }
+
+        .vsp-location-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .vsp-location-image:hover img {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 968px) {
+            .vsp-location-grid {
+                grid-template-columns: 1fr;
+            }
+            .vsp-location-content h2 {
+                font-size: 26px;
+                text-align: center;
+            }
+        }
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -341,13 +428,11 @@
             </div>
         </section>
 
-        <!-- PHẦN TỔNG QUAN DỰ ÁN: CẤU TRÚC 6 KHỐI ĐÃ FIX LỖI HTML & HOÁN ĐỔI VỊ TRÍ -->
         <section class="vsp-overview-section" id="tong-quan">
             <div class="vsp-overview-container">
                 
                 <div class="vsp-overview-6-blocks">
                     
-                    <!-- CỘT TRÁI (Chứa đúng 3 khối) -->
                     <div class="vsp-column-side">
                     <h2 class="vsp-title" style="font-size: 22px; text-align: left; color: var(--lux-gold); margin-top: 0; margin-bottom: 10px;">Tổng Quan Vinhomes Hóc Môn</h2>
 
@@ -367,7 +452,6 @@
                             </ul>
                         </div>
                         
-                        <!-- Đã chuyển Quy mô từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Quy mô chi tiết</span>
                             <ul class="grid-products">
@@ -385,10 +469,8 @@
                         </div>
                     </div>
                     
-                    <!-- CỘT PHẢI (Chứa đúng 3 khối, khối 1 là ảnh) -->
                     <div class="vsp-column-side">
    
-                        <!-- Đã chuyển Số lượng sản phẩm từ phải sang trái -->
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
                             <ul class="grid-products">
@@ -409,7 +491,6 @@
             </div>
         </section>
 
-        <!-- BẮT ĐẦU SECTION FORM NGANG ĐỘC LẬP -->
         <section id="vhgp-horizontal-cta">
             <div class="hor-cta-wrapper">
                 <h3 class="hor-cta-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
@@ -435,12 +516,29 @@
                 </div>
             </div>
         </section>
-        <!-- KẾT THÚC SECTION FORM NGANG ĐỘC LẬP -->
+        <section class="vsp-location-section" id="vi-tri">
+            <div class="vsp-location-container">
+                <div class="vsp-location-grid">
+                    
+                    <div class="vsp-location-content">
+                        <h2>Vị Trí Độc Tôn</h2>
+                        <p>Dự án <strong>Vinhomes Saigon Park</strong> (Vinhomes Hóc Môn) sở hữu vị trí chiến lược tại mặt tiền Quốc lộ 22, xã Xuân Thới Sơn, huyện Hóc Môn, TP.HCM. Nằm ngay tâm điểm kết nối giao thương giữa TP.HCM và các vùng kinh tế trọng điểm phía Nam.</p>
+                        
+                        <ul class="vsp-location-list">
+                            <li><strong>3 phút</strong> di chuyển đến Ngã tư An Sương, Bến xe An Sương.</li>
+                            <li><strong>10 phút</strong> kết nối nhanh chóng đến trung tâm Quận 12, khu công nghiệp Tân Bình.</li>
+                            <li><strong>20 phút</strong> di chuyển thẳng đến Sân bay Quốc tế Tân Sơn Nhất.</li>
+                            <li><strong>Kề cận</strong> tuyến Metro số 2 (Bến Thành - Tham Lương - Củ Chi) và tuyến đường Vành đai 3 đang được triển khai.</li>
+                        </ul>
+                    </div>
 
-        <div class="vsp-top-image">
-            <img src="https://i.ibb.co/8npjvpJG/vinhomes-sai-gon-park-hoc-mon.jpg" alt="Toàn cảnh Vinhomes Saigon Park-Vinhomes Hóc Môn">
-        </div>
+                    <div class="vsp-location-image">
+                        <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000" alt="Bản đồ vị trí dự án Vinhomes Saigon Park Hóc Môn">
+                    </div>
 
+                </div>
+            </div>
+        </section>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
@@ -486,7 +584,6 @@
             });
         </script>
 
-        <!-- SCRIPT ĐỘC LẬP CHO FORM NGANG -->
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const API_HOR_UNIQUE = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
