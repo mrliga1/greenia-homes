@@ -110,6 +110,16 @@
         .success-text { color: #ddd; font-size: 13px; }
 
         /* ==============================================================
+           KHÔI PHỤC CSS RESPONSIVE CHO BANNER/FORM TRÊN MOBILE (BỊ XÓA NHẦM)
+           ============================================================== */
+        @media (max-width: 968px) {
+            .vsp-hero-container { flex-direction: column; gap: 40px; }
+            .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
+            .vsp-hero-right { width: 100%; max-width: 100%; margin: 0 auto; }
+            #vhgp-final-v15-vertical { box-sizing: border-box; width: 100%; }
+        }
+
+        /* ==============================================================
            PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - ĐÃ ĐỔI VỊ TRÍ
            ============================================================== */
         .vsp-overview-section {
@@ -136,7 +146,7 @@
             border: 1px solid rgba(197, 160, 89, 0.15);
             padding: 15px 20px; /* Nội dung bên trong gọn lại */
             border-radius: 8px;
-            height: 100%;
+            height: 100%125px;
         }
 
         .vsp-block-label {
@@ -169,6 +179,112 @@
         @media (max-width: 968px) {
             .vsp-overview-6-blocks { grid-template-columns: 1fr; }
             .vsp-block-image-large { min-height: 200px; }
+        }
+
+        /* ==============================================================
+           SECTION FORM NGANG ĐỘC LẬP (KHÔNG TRÙNG LẶP CLASS/ID NÀO CẢ)
+           ============================================================== */
+        #vhgp-horizontal-cta {
+            padding: 50px 20px;
+            background: linear-gradient(180deg, #05080f 0%, #0d1423 100%);
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+        }
+        .hor-cta-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: 'Manrope', sans-serif;
+        }
+        .hor-cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--lux-gold, #c5a059);
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+        }
+        .hor-rating-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: #f1c40f;
+            background: rgba(255,255,255,0.03);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .hor-stars { font-size: 16px; letter-spacing: 2px; }
+        .hor-count { font-size: 13px; color: #aaa; }
+        .hor-desc {
+            font-size: 15px;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        .hor-form-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+        }
+        .hor-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 14px;
+            border-radius: 50px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+        .hor-input:focus {
+            border-color: var(--lux-gold, #c5a059);
+            background: rgba(197, 160, 89, 0.1);
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+        }
+        .hor-btn {
+            padding: 15px 30px;
+            background: transparent;
+            color: var(--lux-gold, #c5a059);
+            border: 1px solid var(--lux-gold, #c5a059);
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .hor-btn:hover {
+            background: var(--lux-gold-hover, #d4af37);
+            color: #000;
+            border-color: var(--lux-gold-hover, #d4af37);
+            box-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
+            transform: translateY(-2px);
+        }
+        .hor-success-msg {
+            padding: 20px;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ecc71;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        .hor-success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
+        .hor-success-text { color: #ddd; font-size: 14px; }
+        
+        @media (max-width: 968px) {
+            .hor-form-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .hor-btn { width: 100%; }
         }
     </style>
     
@@ -293,6 +409,34 @@
             </div>
         </section>
 
+        <!-- BẮT ĐẦU SECTION FORM NGANG ĐỘC LẬP -->
+        <section id="vhgp-horizontal-cta">
+            <div class="hor-cta-wrapper">
+                <h3 class="hor-cta-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
+                
+                <div class="hor-rating-box">
+                    <span class="hor-stars">★★★★★</span>
+                    <span class="hor-count" id="count-v15-hor-unique">(Đang tải...)</span>
+                </div>
+                
+                <p class="hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
+                
+                <form id="leadFormHorUnique" class="hor-form-group">
+                    <input type="text" id="hor-unique-name" class="hor-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="hor-unique-phone" class="hor-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="hor-unique-email" class="hor-input" placeholder="Email" required>
+                    <input type="text" id="hor-unique-demand" class="hor-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                    <button type="submit" id="btn-hor-unique-submit" class="hor-btn">ĐĂNG KÝ NGAY</button>
+                </form>
+
+                <div id="hor-unique-success" class="hor-success-msg">
+                    <div class="hor-success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                    <div class="hor-success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách. Xin cảm ơn.</div>
+                </div>
+            </div>
+        </section>
+        <!-- KẾT THÚC SECTION FORM NGANG ĐỘC LẬP -->
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
@@ -333,6 +477,55 @@
                             form.style.display = 'none';
                             document.getElementById('v15-ver-success').style.display = 'block';
                         }).catch(err => { alert("Lỗi, vui lòng thử lại."); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
+                    });
+                }
+            });
+        </script>
+
+        <!-- SCRIPT ĐỘC LẬP CHO FORM NGANG -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const API_HOR_UNIQUE = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+                let ipHorUnique = "";
+                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{ipHorUnique=d.ip}).catch(e=>{});
+
+                fetch(API_HOR_UNIQUE + "?action=count").then(res => res.json()).then(data => {
+                    let count = data.count !== undefined ? parseInt(data.count) : 186;
+                    if(count < 5) count = 186;
+                    let cHor = document.getElementById('count-v15-hor-unique');
+                    if(cHor) cHor.innerText = `(5.0/5 - ${count} đánh giá)`;
+                }).catch(e => { 
+                    let cHor = document.getElementById('count-v15-hor-unique');
+                    if(cHor) cHor.innerText = `(5.0/5 - 186 đánh giá)`; 
+                });
+
+                const formHorUnique = document.getElementById('leadFormHorUnique');
+                if(formHorUnique) {
+                    formHorUnique.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const btn = document.getElementById('btn-hor-unique-submit');
+                        const originalText = btn.innerText;
+                        btn.innerText = "ĐANG GỬI..."; 
+                        btn.disabled = true;
+                        
+                        let fd = new FormData();
+                        fd.append("project", "Vinhomes Saigon Park (Form Ngang Dưới Tổng Quan)");
+                        fd.append("name", document.getElementById('hor-unique-name').value);
+                        fd.append("phone", document.getElementById('hor-unique-phone').value);
+                        fd.append("email", document.getElementById('hor-unique-email').value);
+                        fd.append("demand", document.getElementById('hor-unique-demand').value);
+                        fd.append("url", window.location.href);
+                        fd.append("ip", ipHorUnique);
+                        fd.append("rating", 5);
+                        
+                        fetch(API_HOR_UNIQUE, { method: 'POST', body: fd }).then(res => {
+                            formHorUnique.style.display = 'none';
+                            document.getElementById('hor-unique-success').style.display = 'block';
+                        }).catch(err => { 
+                            alert("Có lỗi xảy ra, vui lòng thử lại!"); 
+                            btn.innerText = originalText; 
+                            btn.disabled = false; 
+                        });
                     });
                 }
             });
