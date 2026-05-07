@@ -604,7 +604,15 @@
     .loc-v3-row:last-child {
         margin-bottom: 0;
     }
+    /* Xóa gạch chân mặc định của link */
+    .loc-v3-text-box a {
+        text-decoration: none; 
+    }
 
+    /* Thêm hiệu ứng: Khi di chuột vào link thì nó mới hiện gạch chân (tuỳ chọn) */
+    .loc-v3-text-box a:hover {
+        text-decoration: underline;
+    }
     /* Nội dung Text */
     .loc-v3-text-box h3 {
         font-family: 'Playfair Display', serif;
@@ -702,7 +710,7 @@
     <div class="loc-v3-container">
         <div class="loc-v3-header">
             <h2 class="loc-v3-title">Vi Trí Vinhomes Saigon Park</h2>
-            <p class="loc-v3-text-box"><a <href="/du-an/vinhomes-sai-gon-park/vi-tri.html"><strong>Vị trí khu đô thị Vinhomes Saigon Park</strong></a> nằm ngay nút giao đường vành đai 3 TP. Hồ Chí Minh với quốc lộ 22 (sắp tới sẽ là đường cao tốc TP.HCM —- Mộc Bài), thuộc địa phận xã Tân Thới Nhì thuộc huyện Hóc Môn, TP.HCM. Đây là khu vực cửa ngõ giao thương đắc địa phía Tây Bắc của TP.HCM và sở hữu nhiều lợi thế phát triển các cụm khu công nghiệp trọng điểm, các cụm trường đại học cũng như khu đô thị mới tầm cỡ. Dự án cũng nằm trên tuyến metro số 2 Bến Thành – Tham Lương (và tuyến metro số 2 sẽ được kéo dài tới sân Bay Long Thành).</p>
+            <p class="loc-v3-text-box"><a href="/du-an/vinhomes-sai-gon-park/vi-tri.html"><strong>Vị trí khu đô thị Vinhomes Saigon Park</strong></a> nằm ngay nút giao đường vành đai 3 TP. Hồ Chí Minh với quốc lộ 22 (sắp tới sẽ là đường cao tốc TP.HCM —- Mộc Bài), thuộc địa phận xã Tân Thới Nhì thuộc huyện Hóc Môn, TP.HCM. Đây là khu vực cửa ngõ giao thương đắc địa phía Tây Bắc của TP.HCM và sở hữu nhiều lợi thế phát triển các cụm khu công nghiệp trọng điểm, các cụm trường đại học cũng như khu đô thị mới tầm cỡ. Dự án cũng nằm trên tuyến metro số 2 Bến Thành – Tham Lương (và tuyến metro số 2 sẽ được kéo dài tới sân Bay Long Thành).</p>
         </div>
 
         <div class="loc-v3-row">
@@ -713,7 +721,7 @@
                 <a href="javascript:void(0)" onclick="openPopupNew()" class="loc-v3-btn">ĐĂNG KÝ THAM QUAN DỰ ÁN ✔</a>
             </div>
             <div class="loc-v3-img-box">
-                <img src="https://i.ibb.co/VWm9Knkj/vi-tri-vinhomes-saigon-park.webp" alt="Vị trí Vinhomes Hóc Môn 1080ha">
+                <img src="/assets/images/vi-tri-vinhomes-sai-gon-park.webp" alt="Vị trí Vinhomes Hóc Môn 1080ha">
             </div>
         </div>
 
@@ -736,6 +744,95 @@
     </div>
 </section>
 
+<style>
+    /* ==============================================================
+       SECTION LIÊN KẾT VÙNG (ĐỘC LẬP - BẢN V4)
+       ============================================================== */
+    #vsp-regional-link-section {
+        background-color: #11382a; /* Màu xanh lá tối tương đồng trong ảnh */
+        padding: 60px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .loc-v4-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .loc-v4-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(22px, 3.5vw, 30px);
+        color: #efdfa6; /* Màu vàng luxury */
+        margin: 0 0 20px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .loc-v4-desc {
+        font-size: 16px;
+        color: #e2e8f0;
+        line-height: 1.8;
+        max-width: 1050px;
+        margin: 0 auto 40px auto;
+    }
+
+    .loc-v4-desc strong {
+        color: #efdfa6; /* Nhấn mạnh các tỉnh thành bằng màu vàng */
+        font-weight: 700;
+    }
+
+    /* Khối Hình ảnh */
+    .loc-v4-img-box {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .loc-v4-img-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .loc-v4-img-box:hover img {
+        transform: scale(1.02); /* Hiệu ứng phóng to nhẹ khi di chuột */
+    }
+
+    /* Responsive cho Mobile */
+    @media (max-width: 768px) {
+        #vsp-regional-link-section {
+            padding: 40px 15px;
+        }
+        .loc-v4-title {
+            font-size: 20px;
+        }
+        .loc-v4-desc {
+            font-size: 15px;
+            text-align: justify; /* Căn đều 2 bên trên mobile cho dễ đọc */
+            text-align-last: center;
+        }
+    }
+</style>
+
+<section id="vsp-regional-link-section">
+    <div class="loc-v4-container">
+        <h2 class="loc-v4-title">Liên Kết Vùng Tây Bắc TP.HCM Và Đông Nam Bộ</h2>
+        
+        <p class="loc-v4-desc">
+            Vinhomes Hóc Môn nằm tại giao điểm chiến lược của 4 tỉnh thành: <strong>TP.HCM – Bình Dương – Long An – Tây Ninh</strong>. Vị trí này mang lại lợi thế kép: vừa khai thác nhu cầu nhà ở từ lực lượng lao động các khu công nghiệp lân cận, vừa tiếp cận dễ dàng các trường đại học, trung tâm nghiên cứu đang dịch chuyển ra vùng ven TP.HCM theo quy hoạch.
+        </p>
+        
+        <div class="loc-v4-img-box">
+            <img src="/assets/images/lien-ket-vung-vi-tri-vinhomes-hoc-mon.webp" alt="Bản đồ hạ tầng Tây Bắc TP.HCM Vinhomes Hóc Môn">
+        </div>
+    </div>
+</section>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
