@@ -1615,7 +1615,7 @@
     <div class="vsp-mp-container">
         
         <div class="vsp-mp-header">
-            <h2 class="vsp-mp-title">MẶT BẰNG TỔNG THỂ</h2>
+            <h2 class="vsp-mp-title">MẶT BẰNG <br> Vinhomes Saigon Park</h2>
             <div class="vsp-mp-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
             
             <p class="vsp-mp-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
@@ -1657,6 +1657,227 @@
 
     </div>
 </section>
+
+        <div class="vsp-top-image">
+            <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Mặt Bằng Vinhomes Saigon Park-Vinhomes Hóc Môn">
+        </div>
+
+ <style>
+    /* ==============================================================
+       SECTION SẢN PHẨM (ĐỘC LẬP - BỐ CỤC 3 CỘT)
+       ============================================================== */
+    #vsp-products-section {
+        background-color: #05080f; /* Nền tối đồng bộ */
+        padding: 80px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #e2e8f0;
+    }
+
+    .vsp-prod-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ================= HEADER ================= */
+    .vsp-prod-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 50px auto;
+    }
+
+    .vsp-prod-main-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(26px, 4vw, 36px);
+        color: #efdfa6;
+        margin: 0 0 15px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .vsp-prod-main-desc {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #94a3b8;
+    }
+
+    /* ================= GRID 3 CỘT (CARDS) ================= */
+    .vsp-prod-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+
+    .vsp-prod-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(197, 160, 89, 0.15);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column; /* Quan trọng để đẩy nút xuống đáy */
+        transition: all 0.4s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .vsp-prod-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(197, 160, 89, 0.5);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        background: rgba(197, 160, 89, 0.03);
+    }
+
+    /* Hình ảnh sản phẩm */
+    .vsp-prod-img-box {
+        width: 100%;
+        height: 240px; /* Cố định chiều cao ảnh */
+        overflow: hidden;
+    }
+
+    .vsp-prod-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s ease;
+    }
+
+    .vsp-prod-card:hover .vsp-prod-img-box img {
+        transform: scale(1.05);
+    }
+
+    /* Nội dung thẻ */
+    .vsp-prod-content {
+        padding: 25px 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Chiếm hết không gian còn lại để đẩy nút xuống */
+    }
+
+    .vsp-prod-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 20px;
+        color: #efdfa6;
+        margin: 0 0 15px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+
+    .vsp-prod-desc {
+        font-size: 14.5px;
+        line-height: 1.7;
+        color: #cbd5e1;
+        margin: 0 0 25px 0;
+        text-align: justify;
+        text-align-last: center;
+    }
+
+    .vsp-prod-desc strong {
+        color: #fff;
+    }
+
+    /* Nút bấm Xem chi tiết */
+    .vsp-prod-btn-wrapper {
+        margin-top: auto; /* Lực đẩy ma thuật đẩy nút xuống sát đáy */
+        text-align: center;
+    }
+
+    .vsp-prod-btn {
+        display: inline-block;
+        padding: 10px 25px;
+        background: transparent;
+        color: var(--lux-gold, #c5a059);
+        border: 1px solid var(--lux-gold, #c5a059);
+        font-weight: 600;
+        font-size: 13px;
+        border-radius: 50px; /* Nút bo tròn hoàn toàn */
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .vsp-prod-btn:hover {
+        background: var(--lux-gold, #c5a059);
+        color: #000 !important;
+        box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 968px) {
+        .vsp-prod-grid {
+            grid-template-columns: repeat(2, 1fr); /* 2 cột trên Tablet */
+        }
+    }
+
+    @media (max-width: 650px) {
+        .vsp-prod-grid {
+            grid-template-columns: 1fr; /* 1 cột trên Mobile */
+        }
+        .vsp-prod-desc {
+            text-align: justify;
+            text-align-last: left;
+        }
+        .vsp-prod-title {
+            font-size: 18px;
+        }
+    }
+</style>
+
+<section id="vsp-products-section">
+    <div class="vsp-prod-container">
+        
+        <div class="vsp-prod-header">
+            <h2 class="vsp-prod-main-title">SẢN PHẨM VINHOMES SAI GON PARK</h2>
+            <p class="vsp-prod-main-desc">Dự án mang đến danh mục sản phẩm đa dạng, phù hợp với cả nhu cầu an cư lạc nghiệp lẫn đầu tư sinh lời bền vững cho những nhà đầu tư thông thái.</p>
+        </div>
+
+        <div class="vsp-prod-grid">
+            
+            <div class="vsp-prod-card">
+                <div class="vsp-prod-img-box">
+                    <img src="/assets/images/can-ho-vinhomes-sai-gon-park.webp" alt="Căn hộ cao tầng Vinhomes Hóc Môn">
+                </div>
+                <div class="vsp-prod-content">
+                    <h3 class="vsp-prod-title">Căn Hộ Cao Tầng</h3>
+                    <p class="vsp-prod-desc">Cung cấp từ <strong>15.000 - 18.000 căn hộ cao cấp</strong>, đa dạng loại hình từ Studio, 1PN đến 3PN, Penthouse & Duplex. Thiết kế hiện đại, thông minh, tối ưu công năng với tầm nhìn panorama ôm trọn công viên và cảnh quan sông nước tuyệt mỹ.</p>
+                    <div class="vsp-prod-btn-wrapper">
+                        <a href="/du-an/vinhomes-sai-gon-park/can-ho.html" class="vsp-prod-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vsp-prod-card">
+                <div class="vsp-prod-img-box">
+                    <img src="/assets/images/nha-pho-vinhomes-saigon-park.webp" alt="Nhà phố Shophouse Vinhomes Hóc Môn">
+                </div>
+                <div class="vsp-prod-content">
+                    <h3 class="vsp-prod-title">Nhà Phố & Shophouse</h3>
+                    <p class="vsp-prod-desc">Quy mô <strong>2.491 căn nhà phố liền kề & Shophouse</strong> thiết kế 5 tầng linh hoạt. Sở hữu vị trí mặt tiền đắc địa trên các trục đường huyết mạch, lý tưởng để kết hợp vừa ở an cư vừa kinh doanh sinh lời hiệu quả, tỷ lệ khai thác vượt trội.</p>
+                    <div class="vsp-prod-btn-wrapper">
+                        <a href="/du-an/vinhomes-sai-gon-park/nha-pho.html" class="vsp-prod-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vsp-prod-card">
+                <div class="vsp-prod-img-box">
+                    <img src="/assets/images/biet-thu-vinhomes-sai-gon-park.webp" alt="Biệt thự dinh thự vinhomes hóc môn">
+                </div>
+                <div class="vsp-prod-content">
+                    <h3 class="vsp-prod-title">Biệt Thự & Dinh Thự</h3>
+                    <p class="vsp-prod-desc">Phiên bản giới hạn với <strong>552 căn biệt thự & dinh thự</strong> cao cấp, thiết kế tân cổ điển ven hệ thống sinh thái cảnh quan yên tĩnh. Đặc quyền riêng tư tuyệt đối, khẳng định vị thế chủ nhân và là kênh trú ẩn tài sản an toàn bậc nhất.</p>
+                    <div class="vsp-prod-btn-wrapper">
+                        <a href="/du-an/vinhomes-sai-gon-park/biet-thu.html" class="vsp-prod-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>       
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
