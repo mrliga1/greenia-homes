@@ -835,6 +835,253 @@
         </div>
     </div>
 </section>
+
+        <section id="vhgp-horizontal-cta">
+            <div class="hor-cta-wrapper">
+                <h3 class="hor-cta-title">Đăng Ký Tư Vấn & Nhận Báo Giá</h3>
+                
+                <div class="hor-rating-box">
+                    <span class="hor-stars">★★★★★</span>
+                    <span class="hor-count" id="count-v15-hor-unique">(Đang tải...)</span>
+                </div>
+                
+                <p class="hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
+                
+                <form id="leadFormHorUnique" class="hor-form-group">
+                    <input type="text" id="hor-unique-name" class="hor-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="hor-unique-phone" class="hor-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="hor-unique-email" class="hor-input" placeholder="Email" required>
+                    <input type="text" id="hor-unique-demand" class="hor-input" placeholder="Nhu cầu (Căn 2PN...)" required>
+                    <button type="submit" id="btn-hor-unique-submit" class="hor-btn">ĐĂNG KÝ NGAY</button>
+                </form>
+
+                <div id="hor-unique-success" class="hor-success-msg">
+                    <div class="hor-success-title">✔ ĐĂNG KÝ THÀNH CÔNG!</div>
+                    <div class="hor-success-text">Hệ thống đang gửi tài liệu qua Zalo/Email cho quý khách. Xin cảm ơn.</div>
+                </div>
+            </div>
+        </section>
+
+<style>
+    /* ==============================================================
+       SECTION BẢNG KHOẢNG CÁCH (V5: CHIA 2 CỘT TEXT - IMAGE)
+       ============================================================== */
+    #vsp-distance-section {
+        padding: 60px 20px;
+        background-color: var(--lux-dark, #05080f); 
+        font-family: 'Manrope', sans-serif;
+    }
+
+    /* Container chia 2 cột */
+    .vsp-dist-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Chia đều 2 cột */
+        gap: 40px;
+        align-items: center; /* Căn giữa theo chiều dọc */
+    }
+
+    /* ================= CỘT TRÁI (BẢNG THÔNG SỐ) ================= */
+    .vsp-dist-container {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        overflow: hidden;
+    }
+
+    .vsp-dist-header {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr 1.2fr;
+        background: rgba(197, 160, 89, 0.08); 
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+    }
+
+    .vsp-dist-header span {
+        color: #efdfa6;
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .vsp-dist-header span:nth-child(2),
+    .vsp-dist-header span:nth-child(3) {
+        text-align: right;
+    }
+
+    .vsp-dist-row {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr 1.2fr;
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        align-items: center;
+        transition: background 0.3s ease;
+    }
+
+    .vsp-dist-row:last-child {
+        border-bottom: none;
+    }
+
+    .vsp-dist-row:hover {
+        background: rgba(197, 160, 89, 0.05); 
+    }
+
+    .vsp-dist-col {
+        color: #e2e8f0;
+        font-size: 14px; /* Giảm size xíu cho vừa khung 1 cột */
+    }
+
+    .vsp-dist-col:nth-child(2) {
+        text-align: right;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    .vsp-dist-col:nth-child(3) {
+        text-align: right;
+        color: #efdfa6; 
+        font-weight: 600;
+    }
+
+    .vsp-dist-icon {
+        width: 25px;
+        display: inline-block;
+        color: rgba(197, 160, 89, 0.8);
+        font-size: 13px;
+        text-align: center;
+        margin-right: 6px;
+    }
+
+    .vsp-dist-row.highlight-row {
+        background: linear-gradient(90deg, rgba(197, 160, 89, 0.06) 0%, rgba(197, 160, 89, 0) 100%);
+    }
+
+    /* ================= CỘT PHẢI (HÌNH ẢNH) ================= */
+    .vsp-dist-img-box {
+        width: 100%;
+        height: 100%;
+        min-height: 400px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .vsp-dist-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Đảm bảo ảnh lấp đầy khung mà không bị méo */
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .vsp-dist-img-box:hover img {
+        transform: scale(1.03); /* Hiệu ứng zoom nhẹ khi di chuột */
+    }
+
+    /* ================= RESPONSIVE CHO MOBILE ================= */
+    @media (max-width: 968px) {
+        .vsp-dist-wrapper {
+            grid-template-columns: 1fr; /* Gộp thành 1 cột */
+            gap: 30px;
+        }
+        .vsp-dist-img-box {
+            min-height: 250px;
+            order: -1; /* Đẩy hình ảnh lên trên cùng trên điện thoại */
+        }
+    }
+
+    @media (max-width: 650px) {
+        .vsp-dist-header { display: none; }
+        .vsp-dist-row {
+            grid-template-columns: 1fr;
+            gap: 6px;
+            padding: 15px 20px;
+        }
+        .vsp-dist-col:nth-child(1) {
+            font-weight: 600;
+            color: #efdfa6;
+            margin-bottom: 5px;
+        }
+        .vsp-dist-col:nth-child(2),
+        .vsp-dist-col:nth-child(3) {
+            text-align: left;
+            font-size: 13px;
+        }
+        .vsp-dist-col:nth-child(2)::before {
+            content: 'Khoảng cách: '; color: #64748b; font-size: 13px;
+        }
+        .vsp-dist-col:nth-child(3)::before {
+            content: 'Thời gian di chuyển: '; color: #64748b; font-size: 13px;
+        }
+    }
+</style>
+
+<section id="vsp-distance-section">
+    <div class="vsp-dist-wrapper">
+        
+        <div class="vsp-dist-container">
+            <div class="vsp-dist-header">
+                <span>Điểm đến</span>
+                <span>Khoảng cách</span>
+                <span>Thời gian</span>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-plane-departure vsp-dist-icon"></i>Sân bay Tân Sơn Nhất</div>
+                <div class="vsp-dist-col">~18 km</div>
+                <div class="vsp-dist-col">25–30 phút</div>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-city vsp-dist-icon"></i>Quận 1 – Trung tâm TP.HCM</div>
+                <div class="vsp-dist-col">~22 km</div>
+                <div class="vsp-dist-col">30–40 phút</div>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-bus-simple vsp-dist-icon"></i>Bến xe An Sương</div>
+                <div class="vsp-dist-col">~6 km</div>
+                <div class="vsp-dist-col">10 phút</div>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-industry vsp-dist-icon"></i>KCN Tân Phú Trung</div>
+                <div class="vsp-dist-col">~7 km</div>
+                <div class="vsp-dist-col">12 phút</div>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-road vsp-dist-icon"></i>Đường Vành Đai 3</div>
+                <div class="vsp-dist-col">~2 km</div>
+                <div class="vsp-dist-col">5 phút</div>
+            </div>
+
+            <div class="vsp-dist-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-map-location-dot vsp-dist-icon"></i>Cửa khẩu Mộc Bài</div>
+                <div class="vsp-dist-col">~55 km</div>
+                <div class="vsp-dist-col">60 phút</div>
+            </div>
+
+            <div class="vsp-dist-row highlight-row">
+                <div class="vsp-dist-col"><i class="fa-solid fa-store vsp-dist-icon"></i>Vincom Mega Mall (nội khu)</div>
+                <div class="vsp-dist-col">0 km</div>
+                <div class="vsp-dist-col"><i class="fa-solid fa-person-walking" style="margin-right: 5px;"></i>Đi bộ</div>
+            </div>
+        </div>
+
+        <div class="vsp-dist-img-box">
+            <img src="/assets/images/so-do-vi-tri-Vinhomes-saigon-park-hoc-mon.webp" alt="Bản đồ khoảng cách di chuyển từ Vinhomes Saigon Park">
+        </div>
+
+    </div>
+</section>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
