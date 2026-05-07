@@ -1877,7 +1877,226 @@
 
         </div>
     </div>
-</section>       
+</section>  
+
+<style>
+    /* ==============================================================
+       SECTION GIÁ BÁN & CHÍNH SÁCH (PHIÊN BẢN CÁCH LY TUYỆT ĐỐI - V3)
+       ============================================================== */
+    #vsp-final-price-section-v3 {
+        background-color: #05080f; 
+        padding: 80px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #e2e8f0;
+        border-top: 1px solid rgba(197, 160, 89, 0.1);
+    }
+
+    .vsp-price-v3-container { max-width: 1200px; margin: 0 auto; }
+    
+    .vsp-price-v3-header { text-align: center; margin-bottom: 40px; }
+    .vsp-price-v3-title { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 36px); color: #efdfa6; margin: 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+
+    /* Bảng giá */
+    .vsp-price-v3-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 80px; border-radius: 12px; border: 1px solid rgba(197, 160, 89, 0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.3); background: rgba(255, 255, 255, 0.02); }
+    .vsp-price-v3-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    .vsp-price-v3-table th { background: rgba(197, 160, 89, 0.1); color: #efdfa6; font-family: 'Cinzel', serif; padding: 18px 20px; text-align: left; border-bottom: 1px solid rgba(197, 160, 89, 0.3); font-size: 14px; font-weight: 700; text-transform: uppercase; }
+    .vsp-price-v3-table td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #cbd5e1; }
+    .vsp-price-v3-table tr:last-child td { border-bottom: none; }
+    .vsp-price-v3-table tr:hover td { background: rgba(197, 160, 89, 0.03); }
+    .vsp-price-v3-table td:first-child { font-family: 'Playfair Display', serif; font-weight: 700; color: #fff; font-size: 16px; }
+    .vsp-price-v3-highlight { color: #c5a059 !important; font-weight: 700; }
+
+    /* Khối Chính sách & Form */
+    .vsp-price-v3-main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; align-items: stretch; }
+    .vsp-price-v3-policy-left { display: flex; flex-direction: column; }
+    .vsp-price-v3-policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; }
+    
+    .vsp-price-v3-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.15); border-radius: 12px; padding: 25px 20px; transition: all 0.3s ease; }
+    .vsp-price-v3-card:hover { transform: translateY(-5px); background: rgba(197, 160, 89, 0.05); border-color: rgba(197, 160, 89, 0.4); }
+    .vsp-price-v3-icon { font-size: 28px; color: #60a5fa; margin-bottom: 15px; }
+    .vsp-price-v3-card h4 { font-family: 'Cinzel', serif; font-size: 16px; color: #efdfa6; margin: 0 0 10px 0; font-weight: 700; line-height: 1.4; }
+    .vsp-price-v3-card p { font-size: 14px; color: #94a3b8; line-height: 1.6; margin: 0; }
+    .vsp-price-v3-card p strong { color: #fff; }
+
+    /* Form & Rating */
+    .vsp-price-v3-form-box { background: linear-gradient(145deg, rgba(11, 23, 39, 0.9) 0%, rgba(5, 8, 15, 0.9) 100%); border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 12px; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: center; }
+    .vsp-price-v3-form-title { font-family: 'Cinzel', serif; font-size: 22px; color: #efdfa6; text-align: center; margin: 0 0 15px 0; font-weight: 700; }
+    
+    .vsp-price-v3-rating-box { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
+    .vsp-price-v3-stars { font-size: 15px; letter-spacing: 2px; }
+    .vsp-price-v3-count { font-size: 13px; color: #aaa; }
+    
+    .vsp-price-v3-form-desc { text-align: center; font-size: 14px; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
+    
+    .vsp-price-v3-input-group { display: flex; flex-direction: column; gap: 15px; }
+    .vsp-price-v3-input { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 14px 20px; font-size: 14px; border-radius: 8px; outline: none; transition: 0.3s; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
+    .vsp-price-v3-input:focus { border-color: #c5a059; background: rgba(197, 160, 89, 0.05); }
+    .vsp-price-v3-btn { width: 100%; padding: 15px; background: #ef4444; color: #fff; border: none; font-weight: 700; font-size: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 5px; font-family: 'Manrope', sans-serif; text-transform: uppercase; }
+    .vsp-price-v3-btn:hover { background: #dc2626; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
+    
+    .vsp-price-v3-success { display: none; padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; margin-top: 20px; }
+    .vsp-price-v3-success h4 { color: #2ecc71; margin: 0 0 5px 0; font-size: 16px; }
+    .vsp-price-v3-success p { color: #ddd; margin: 0; font-size: 14px; }
+
+    @media (max-width: 968px) { .vsp-price-v3-main-grid { grid-template-columns: 1fr; gap: 40px; } }
+    @media (max-width: 600px) { .vsp-price-v3-policy-grid { grid-template-columns: 1fr; } .vsp-price-v3-form-box { padding: 30px 20px; } }
+</style>
+
+<section id="vsp-final-price-section-v3">
+    <div class="vsp-price-v3-container">
+        
+        <div class="vsp-price-v3-header">
+            <h2 class="vsp-price-v3-title">THÔNG TIN CHI TIẾT CÁC LOẠI HÌNH SẢN PHẨM</h2>
+        </div>
+        
+        <div class="vsp-price-v3-table-wrapper">
+            <table class="vsp-price-v3-table">
+                <thead>
+                    <tr>
+                        <th>Loại hình</th>
+                        <th>Số lượng</th>
+                        <th>Diện tích / Loại</th>
+                        <th>Giá dự kiến</th>
+                        <th>Đặc điểm nổi bật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Căn hộ cao tầng</td>
+                        <td>15.000 – 18.000 căn</td>
+                        <td>1PN – 4PN, Penthouse</td>
+                        <td class="vsp-price-v3-highlight">Đang cập nhật</td>
+                        <td>Smarthome, cao 12–22 tầng</td>
+                    </tr>
+                    <tr>
+                        <td>Nhà phố & Shophouse</td>
+                        <td>2.491 căn liên kế</td>
+                        <td>5 tầng linh hoạt</td>
+                        <td class="vsp-price-v3-highlight">Liên hệ</td>
+                        <td>Trục thương mại sầm uất</td>
+                    </tr>
+                    <tr>
+                        <td>Biệt thự & Dinh thự</td>
+                        <td>552 căn đẳng cấp</td>
+                        <td>Tối đa 3 tầng</td>
+                        <td class="vsp-price-v3-highlight">Liên hệ</td>
+                        <td>Ven kênh rạch, riêng tư</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="vsp-price-v3-header">
+            <h2 class="vsp-price-v3-title">CHÍNH SÁCH BÁN HÀNG VINHOMES SÀI GÒN PARK</h2>
+        </div>
+
+        <div class="vsp-price-v3-main-grid">
+            
+            <div class="vsp-price-v3-policy-left">
+                <div class="vsp-price-v3-policy-grid">
+                    <div class="vsp-price-v3-card">
+                        <i class="fa-solid fa-shield-halved vsp-price-v3-icon"></i>
+                        <h4>5 NĂM KHÔNG LO LÃI SUẤT</h4>
+                        <p>Chính sách siêu ưu đãi giúp khách hàng an tâm tài chính trong suốt 5 năm đầu sở hữu.</p>
+                    </div>
+                    
+                    <div class="vsp-price-v3-card">
+                        <i class="fa-solid fa-chart-line vsp-price-v3-icon"></i>
+                        <h4>LÃI SUẤT DƯỚI 6%</h4>
+                        <p>Cam kết lãi suất cố định cực kỳ ưu đãi <strong>dưới 6%</strong>, bảo vệ khách hàng trước biến động thị trường.</p>
+                    </div>
+
+                    <div class="vsp-price-v3-card">
+                        <i class="fa-solid fa-building-columns vsp-price-v3-icon"></i>
+                        <h4>HỖ TRỢ VAY 80%</h4>
+                        <p>Ngân hàng hỗ trợ cho vay tối đa <strong>80% giá trị căn hộ</strong> với thời hạn vay lên đến 35 năm.</p>
+                    </div>
+
+                    <div class="vsp-price-v3-card">
+                        <i class="fa-solid fa-sack-dollar vsp-price-v3-icon"></i>
+                        <h4>VỐN TỰ CÓ 15 – 20%</h4>
+                        <p>Chỉ cần thanh toán trước 15-20% để ký HĐMB, nhận nhà ngay khi đủ điều kiện bàn giao.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vsp-price-v3-form-box">
+                <h3 class="vsp-price-v3-form-title">BÁO GIÁ & CSBH MỚI NHẤT</h3>
+                
+                <div style="text-align: center;">
+                    <div class="vsp-price-v3-rating-box">
+                        <span class="vsp-price-v3-stars">★★★★★</span>
+                        <span id="vsp-final-count-v3" class="vsp-price-v3-count">(Đang tải...)</span>
+                    </div>
+                </div>
+
+                <p class="vsp-price-v3-form-desc">Đăng ký để nhận trọn bộ tài liệu bảng giá chi tiết từng phân khu và phương án vay vốn tối ưu nhất.</p>
+                
+                <form id="vsp-final-form-v3" class="vsp-price-v3-input-group">
+                    <input type="text" id="vsp-final-name-v3" class="vsp-price-v3-input" placeholder="Họ tên *" required>
+                    <input type="tel" id="vsp-final-phone-v3" class="vsp-price-v3-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                    <input type="email" id="vsp-final-email-v3" class="vsp-price-v3-input" placeholder="Email" required>
+                    <button type="submit" id="vsp-final-btn-v3" class="vsp-price-v3-btn">NHẬN BÁO GIÁ</button>
+                </form>
+
+                <div id="vsp-final-success-v3" class="vsp-price-v3-success">
+                    <h4>✔ ĐĂNG KÝ THÀNH CÔNG!</h4>
+                    <p>Hệ thống đang gửi tài liệu qua Zalo/Email. Xin cảm ơn.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+(function() {
+    const CONFIG_API = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        // Load Rating Count
+        fetch(CONFIG_API + "?action=count").then(r => r.json()).then(data => {
+            const count = data.count || 186;
+            const el = document.getElementById('vsp-final-count-v3');
+            if(el) el.innerText = `(5.0/5 - ${count} đánh giá)`;
+        }).catch(() => {
+            const el = document.getElementById('vsp-final-count-v3');
+            if(el) el.innerText = `(5.0/5 - 186 đánh giá)`;
+        });
+
+        // Xử lý Gửi Form
+        const form = document.getElementById('vsp-final-form-v3');
+        if(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const btn = document.getElementById('vsp-final-btn-v3');
+                const originalText = btn.innerText;
+                btn.innerText = "ĐANG GỬI..."; 
+                btn.disabled = true;
+                
+                let fd = new FormData();
+                fd.append("project", "Vinhomes Saigon Park (Form V3 Final)");
+                fd.append("name", document.getElementById('vsp-final-name-v3').value);
+                fd.append("phone", document.getElementById('vsp-final-phone-v3').value);
+                fd.append("email", document.getElementById('vsp-final-email-v3').value);
+                fd.append("demand", "Nhận bảng giá và CSBH");
+                fd.append("url", window.location.href);
+                fd.append("rating", 5);
+
+                fetch(CONFIG_API, { method: 'POST', body: fd }).then(() => {
+                    form.style.display = 'none';
+                    document.getElementById('vsp-final-success-v3').style.display = 'block';
+                }).catch(() => { 
+                    alert("Lỗi gửi dữ liệu, vui lòng thử lại!"); 
+                    btn.innerText = originalText; 
+                    btn.disabled = false; 
+                });
+            });
+        }
+    });
+})();
+</script>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
