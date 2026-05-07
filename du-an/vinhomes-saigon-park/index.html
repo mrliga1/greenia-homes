@@ -1062,6 +1062,162 @@
     </div>
 </section>
 
+<style>
+    /* ==============================================================
+       SECTION QUY HOẠCH ĐÔ THỊ (V2: ĐƯA MÔ TẢ LÊN DƯỚI TIÊU ĐỀ)
+       ============================================================== */
+    #vsp-planning-section {
+        background-color: #0b2e21; 
+        padding: 70px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #e2e8f0;
+    }
+
+    .vsp-plan-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Tiêu đề chính */
+    .vsp-plan-title {
+        text-align: center;
+        font-family: 'Cinzel', serif;
+        font-size: clamp(24px, 4vw, 36px);
+        color: #efdfa6; 
+        margin: 0 auto 20px auto; /* Thu hẹp khoảng cách dưới tiêu đề lại */
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+        line-height: 1.4;
+        max-width: 900px;
+    }
+
+    /* ================= ĐOẠN MÔ TẢ MỚI (CĂN GIỮA DƯỚI TIÊU ĐỀ) ================= */
+    .vsp-plan-intro {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.8;
+        max-width: 950px; /* Gom độ rộng lại cho chữ không bị tràn sát lề */
+        margin: 0 auto 50px auto; /* Căn giữa màn hình và tạo khoảng cách với khối dưới */
+        color: #e2e8f0;
+    }
+
+    .vsp-plan-intro strong {
+        color: #efdfa6;
+        font-weight: 700;
+    }
+
+    /* Grid chia 2 cột */
+    .vsp-plan-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr; 
+        gap: 50px;
+        align-items: center;
+    }
+
+    /* Định dạng cột nội dung */
+    .vsp-plan-content p {
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        text-align: justify; 
+    }
+
+    .vsp-plan-subtitle {
+        font-family: 'Playfair Display', serif;
+        font-size: 18px;
+        color: #efdfa6;
+        margin: 0 0 20px 0; /* Bỏ margin-top vì nó đã lên đầu cột */
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    /* Danh sách tỷ lệ đất */
+    .vsp-plan-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 25px 0;
+    }
+
+    .vsp-plan-list li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .vsp-plan-list li::before {
+        content: '♦'; 
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: #efdfa6;
+        font-size: 12px;
+    }
+
+    /* Định dạng cột hình ảnh */
+    .vsp-plan-image-box {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .vsp-plan-image-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .vsp-plan-image-box:hover img {
+        transform: scale(1.03); 
+    }
+
+    /* Responsive cho điện thoại di động */
+    @media (max-width: 968px) {
+        .vsp-plan-grid {
+            grid-template-columns: 1fr;
+            gap: 35px;
+        }
+        .vsp-plan-intro {
+            text-align: justify; /* Trên điện thoại nên để justify hoặc left cho dễ đọc */
+            text-align-last: center;
+        }
+    }
+</style>
+
+<section id="vsp-planning-section">
+    <div class="vsp-plan-container">
+        
+        <h2 class="vsp-plan-title">QUY HOẠCH KHU ĐÔ THỊ<br>ĐẠI HỌC QUỐC TẾ VINHOMES SAIGON PARK</h2>
+        
+        <p class="vsp-plan-intro">Vinhomes Hóc Môn được phê duyệt quy hoạch chi tiết theo mô hình <strong>"đô thị đại học" (University Town)</strong> — lần đầu tiên được áp dụng quy mô lớn tại Việt Nam. Theo đó, khu Đại học Quốc tế không chỉ là một tiện ích giáo dục đơn thuần mà là <strong>hạt nhân kinh tế</strong> tạo ra lực hút cư dân, doanh nghiệp và đầu tư cho toàn khu.</p>
+        
+        <div class="vsp-plan-grid">
+            <div class="vsp-plan-content">
+                <h3 class="vsp-plan-subtitle">TỶ LỆ SỬ DỤNG ĐẤT:</h3>
+                <ul class="vsp-plan-list">
+                    <li>Đất ở (căn hộ, nhà phố, biệt thự): ~35%</li>
+                    <li>Đất giáo dục – y tế – văn hóa: ~25%</li>
+                    <li>Đất thương mại dịch vụ: ~10%</li>
+                    <li>Đất công viên, cây xanh, mặt nước: ~30%</li>
+                </ul>
+                
+                <p>Điểm nhấn quy hoạch là hệ thống hồ điều hòa trung tâm quy mô 10.2 hecta, mang đến không gian sinh thái đẳng cấp và môi trường sống trong lành cho cộng đồng cư dân tinh hoa.</p>
+            </div>
+            
+            <div class="vsp-plan-image-box">
+                <img src="/assets/images/tien-ich-vinhomes-saigon-park.webp" alt="Phối cảnh quy hoạch khu đô thị đại học Vinhomes Saigon Park Hóc Môn">
+            </div>
+        </div>
+    </div>
+</section>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
