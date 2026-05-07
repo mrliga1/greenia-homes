@@ -1458,6 +1458,206 @@
     </div>
 </section>
 
+<style>
+    /* ==============================================================
+       SECTION MẶT BẰNG TỔNG THỂ (BỐ CỤC ĐẠI ĐÔ THỊ)
+       ============================================================== */
+    #vsp-masterplan-section {
+        background-color: #081a12; /* Màu xanh đen sâu hơn một chút để tạo chiều sâu */
+        padding: 80px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #e2e8f0;
+    }
+
+    .vsp-mp-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ================= HEADER & NỘI DUNG MÔ TẢ ================= */
+    .vsp-mp-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .vsp-mp-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(28px, 4vw, 40px);
+        color: #efdfa6;
+        margin: 0 0 10px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .vsp-mp-subtitle {
+        font-family: 'Playfair Display', serif;
+        font-size: 22px;
+        color: #c5a059;
+        margin: 0 0 25px 0;
+        font-style: italic;
+    }
+
+    .vsp-mp-desc {
+        font-size: 16px;
+        line-height: 1.8;
+        max-width: 950px;
+        margin: 0 auto 15px auto;
+        color: #cbd5e1;
+    }
+
+    .vsp-mp-desc strong {
+        color: #efdfa6;
+        font-weight: 700;
+    }
+
+    /* ================= KHUNG ẢNH MẶT BẰNG LỚN ================= */
+    .vsp-mp-image-wrapper {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(197, 160, 89, 0.3);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        margin-bottom: 50px;
+        background: rgba(255,255,255,0.02);
+    }
+
+    .vsp-mp-image-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .vsp-mp-image-wrapper:hover img {
+        transform: scale(1.02); /* Phóng to nhẹ khi xem mặt bằng */
+    }
+
+    /* ================= GRID 4 PHÂN KHU (CARDS) ================= */
+    .vsp-mp-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* Chia 4 cột bằng nhau trên Desktop */
+        gap: 25px;
+    }
+
+    .vsp-mp-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 30px 20px;
+        border-radius: 10px;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Hiệu ứng viền vàng chạy khi đưa chuột vào Card */
+    .vsp-mp-card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+        background: var(--lux-gold, #c5a059);
+        transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+    }
+
+    .vsp-mp-card:hover {
+        background: rgba(197, 160, 89, 0.05);
+        border-color: rgba(197, 160, 89, 0.4);
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .vsp-mp-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .vsp-mp-icon {
+        font-size: 32px;
+        color: #efdfa6;
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+
+    .vsp-mp-card h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 19px;
+        color: #fff;
+        margin: 0 0 12px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .vsp-mp-card p {
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 968px) {
+        .vsp-mp-grid {
+            grid-template-columns: repeat(2, 1fr); /* Xuống 2 cột trên Tablet */
+        }
+    }
+
+    @media (max-width: 550px) {
+        .vsp-mp-grid {
+            grid-template-columns: 1fr; /* Xuống 1 cột trên Mobile */
+        }
+        .vsp-mp-desc {
+            text-align: justify;
+            text-align-last: center;
+        }
+    }
+</style>
+
+<section id="vsp-masterplan-section">
+    <div class="vsp-mp-container">
+        
+        <div class="vsp-mp-header">
+            <h2 class="vsp-mp-title">MẶT BẰNG TỔNG THỂ</h2>
+            <div class="vsp-mp-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
+            
+            <p class="vsp-mp-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
+            
+            <p class="vsp-mp-desc">Việc phân bổ mật độ xây dựng chỉ khoảng <strong>25%</strong> cho thấy tâm huyết của chủ đầu tư trong việc ưu tiên không gian sống cho cư dân. Các trục đường nội khu được quy hoạch theo dạng bàn cờ, lộ giới từ <strong>13m đến 52m</strong>.</p>
+        </div>
+
+        <div class="vsp-mp-image-wrapper">
+            <img src="/assets/images/mat-bang-tong-the-vinhomes-hoc-mon.webp" alt="Mặt bằng tổng thể dự án Vinhomes Saigon Park Hóc Môn 1080ha">
+        </div>
+
+        <div class="vsp-mp-grid">
+            
+            <div class="vsp-mp-card">
+                <i class="fa-regular fa-building vsp-mp-icon"></i>
+                <h4>Phân khu Cao tầng</h4>
+                <p>Gồm các block căn hộ hiện đại chuẩn Sapphire và Ruby, tầm nhìn panorama.</p>
+            </div>
+
+            <div class="vsp-mp-card">
+                <i class="fa-solid fa-house-chimney-window vsp-mp-icon"></i>
+                <h4>Phân khu Thấp tầng</h4>
+                <p>Quần thể Nhà phố liền kề, Shophouse thương mại sầm uất và Biệt thự đơn lập ven hồ.</p>
+            </div>
+
+            <div class="vsp-mp-card">
+                <i class="fa-solid fa-graduation-cap vsp-mp-icon"></i>
+                <h4>Phân khu Giáo dục</h4>
+                <p>Hệ thống trường liên cấp chuẩn quốc tế Vinschool và hạt nhân Đô thị Đại học.</p>
+            </div>
+
+            <div class="vsp-mp-card">
+                <i class="fa-solid fa-leaf vsp-mp-icon"></i>
+                <h4>Phân khu Tiện ích</h4>
+                <p>Bệnh viện Vinmec, TTTM Vincom Mega Mall, Công viên trung tâm và hồ điều hòa.</p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
