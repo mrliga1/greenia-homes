@@ -1218,6 +1218,246 @@
     </div>
 </section>
 
+        <div class="vsp-top-image">
+            <img src="/assets/images/tien-ich-vinhomes-sai-gon-park.webp" alt="Tiện ích Vinhomes Saigon Park-Vinhomes Hóc Môn">
+        </div>
+
+<style>
+    /* ==============================================================
+       SECTION TIỆN ÍCH NỘI KHU (ZIGZAG LAYOUT - ĐỘC LẬP)
+       ============================================================== */
+    #vsp-amenities-section {
+        background-color: #0b2e21; /* Nền xanh thẫm Luxury */
+        padding: 80px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #e2e8f0;
+    }
+
+    .vsp-amn-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ================= PHẦN HEADER (CĂN GIỮA) ================= */
+    .vsp-amn-header {
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 60px auto;
+    }
+
+    .vsp-amn-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(28px, 4vw, 40px);
+        color: #efdfa6; /* Màu vàng Gold */
+        margin: 0 0 20px 0;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .vsp-amn-desc {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #e2e8f0;
+    }
+
+    .vsp-amn-desc strong {
+        color: #efdfa6;
+    }
+
+    /* ================= LƯỚI 2 CỘT ZIGZAG ================= */
+    .vsp-amn-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+        margin-bottom: 70px; /* Khoảng cách giữa các mục */
+    }
+
+    .vsp-amn-row:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Lệnh THẦN THÁNH tạo hiệu ứng so le: Các hàng chẵn sẽ đảo ngược vị trí */
+    .vsp-amn-row:nth-child(even) .vsp-amn-text {
+        order: 2; /* Cột chữ chuyển sang phải */
+    }
+    .vsp-amn-row:nth-child(even) .vsp-amn-img-box {
+        order: 1; /* Cột ảnh chuyển sang trái */
+    }
+
+    /* ================= ĐỊNH DẠNG NỘI DUNG ================= */
+    .vsp-amn-item-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 26px;
+        color: #efdfa6;
+        margin: 0 0 20px 0;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .vsp-amn-item-desc {
+        font-size: 15.5px;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #cbd5e1;
+    }
+
+    .vsp-amn-item-desc strong {
+        color: #fff;
+    }
+
+    .vsp-amn-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px 0;
+    }
+
+    .vsp-amn-list li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #cbd5e1;
+    }
+
+    .vsp-amn-list li::before {
+        content: '♦';
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: #efdfa6;
+        font-size: 12px;
+    }
+
+    /* ================= ĐỊNH DẠNG HÌNH ẢNH ================= */
+    .vsp-amn-img-box {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        border: 1px solid rgba(197, 160, 89, 0.2);
+    }
+
+    .vsp-amn-img-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .vsp-amn-img-box:hover img {
+        transform: scale(1.03);
+    }
+
+    /* ================= NÚT BẤM ================= */
+    .vsp-amn-btn {
+        display: inline-block;
+        background-color: #ef4444; /* Đỏ rực rỡ thu hút click */
+        color: #fff !important;
+        text-decoration: none;
+        padding: 14px 35px;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 8px;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .vsp-amn-btn:hover {
+        background-color: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    }
+
+    /* ================= RESPONSIVE CHO MOBILE ================= */
+    @media (max-width: 968px) {
+        .vsp-amn-row {
+            grid-template-columns: 1fr; /* Về 1 cột trên điện thoại */
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        /* Ép hình ảnh luôn nằm trên chữ trên Mobile, vô hiệu hóa zigzag */
+        .vsp-amn-row:nth-child(n) .vsp-amn-img-box {
+            order: 1 !important; 
+        }
+        .vsp-amn-row:nth-child(n) .vsp-amn-text {
+            order: 2 !important;
+        }
+        
+        .vsp-amn-item-title {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<section id="vsp-amenities-section">
+    <div class="vsp-amn-container">
+        
+        <div class="vsp-amn-header">
+            <h2 class="vsp-amn-title">HỆ SINH THÁI TIỆN ÍCH ĐẲNG CẤP</h2>
+            <p class="vsp-amn-desc">Hệ tiện ích nội khu của <strong>Vinhomes Sài Gòn Park</strong> được quy hoạch theo mô hình “thành phố công viên tri thức” với 3 cụm tiện ích biểu tượng nâng tầm chuẩn sống.</p>
+        </div>
+
+        <div class="vsp-amn-row">
+            <div class="vsp-amn-text">
+                <h3 class="vsp-amn-item-title">1. VinWonders Saigon Park — 22,7 ha</h3>
+                <p class="vsp-amn-item-desc">Khu công viên giải trí VinWonders quy mô 22,7 ha bao gồm:</p>
+                <ul class="vsp-amn-list">
+                    <li><strong>Khu thế giới nước</strong> — công viên nước tích hợp các đường trượt, hồ tạo sóng, khu trẻ em.</li>
+                    <li><strong>Khu thế giới thần tiên trẻ em</strong> — không gian giải trí gia đình với các hoạt động giáo dục – giải trí kết hợp.</li>
+                </ul>
+            </div>
+            <div class="vsp-amn-img-box">
+                <img src="/assets/images/vinwonder-vinhomes-saigon-park.webp" alt="VinWonders Saigon Park 22.7ha">
+            </div>
+        </div>
+
+        <div class="vsp-amn-row">
+            <div class="vsp-amn-text">
+                <h3 class="vsp-amn-item-title">2. Sân Golf 36 hố — 90 ha</h3>
+                <p class="vsp-amn-item-desc">Sân golf đẳng cấp quốc tế quy mô 90 ha với 36 hố, là một trong những sân golf trong đô thị lớn nhất khu vực Tây Bắc TP.HCM.</p>
+                <p class="vsp-amn-item-desc">Đây là tiện ích nâng tầm giá trị bất động sản khu vực, đặc biệt cho dòng <strong>biệt thự golf</strong> tại Vinhomes Sài Gòn Park.</p>
+            </div>
+            <div class="vsp-amn-img-box">
+                <img src="/assets/images/Phoi-canh-Vinhomes-Saigon-Park.webp" alt="Sân Golf 36 hố 90ha Vinhomes Hóc Môn">
+            </div>
+        </div>
+
+        <div class="vsp-amn-row">
+            <div class="vsp-amn-text">
+                <h3 class="vsp-amn-item-title">3. Công Viên Bách Thảo — 27 ha</h3>
+                <p class="vsp-amn-item-desc">Công viên bách thảo 27 ha được thiết kế kết hợp giữa không gian xanh tự nhiên và khu nghiên cứu thực vật học, gắn với định hướng <em>khu đô thị đại học quốc tế</em> của dự án.</p>
+            </div>
+            <div class="vsp-amn-img-box">
+                <img src="/assets/images/cong-vien-vinhomes-saigon-park.webp" alt="Công viên Bách Thảo 27ha Vinhomes Saigon Park">
+            </div>
+        </div>
+
+        <div class="vsp-amn-row">
+            <div class="vsp-amn-text">
+                <h3 class="vsp-amn-item-title">Các tiện ích nội khu khác</h3>
+                <ul class="vsp-amn-list">
+                    <li>Hệ thống <strong>trường học liên cấp Vinschool</strong> + đại học quốc tế</li>
+                    <li><strong>Bệnh viện đa khoa Vinmec</strong></li>
+                    <li><strong>Trung tâm thương mại Vincom</strong></li>
+                    <li>Quảng trường, hồ điều hòa, công viên cây xanh nội khu</li>
+                    <li>Hệ thống đường nội khu kết nối trực tiếp QL22 và Đặng Công Bỉnh</li>
+                </ul>
+                <a href="javascript:void(0)" onclick="openPopupNew()" class="vsp-amn-btn">NHẬN BROCHURE CHI TIẾT ✔</a>
+            </div>
+            <div class="vsp-amn-img-box">
+                <img src="/assets/images/vinschoose-vinhomes-sai-gon-park.webp" alt="Hệ thống tiện ích nội khu Vinhomes Hóc Môn">
+            </div>
+        </div>
+
+    </div>
+</section>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const slides = document.querySelectorAll('.vsp-slide');
