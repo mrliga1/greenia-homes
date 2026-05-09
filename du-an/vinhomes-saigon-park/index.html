@@ -2050,6 +2050,180 @@
     </div>
 </section>
 
+<style>
+    /* ==============================================================
+       SECTION MẶT BẰNG TỔNG THỂ (HOÀN CHỈNH - ART TYPOGRAPHY)
+       ============================================================== */
+    /* Tải font Playfair Display bản nghiêng để nét chữ uốn lượn */
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,700&display=swap');
+
+    #vsp-masterplan-v4 {
+        background-color: #0b1a14; /* Nền xanh đen sâu thẳm */
+        padding: 80px 20px;
+        font-family: 'Manrope', sans-serif;
+        box-sizing: border-box;
+        color: #cbd5e1;
+    }
+
+    .vsp-mp4-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    /* ================= PHẦN HEADER & TYPOGRAPHY ================= */
+    .vsp-mp4-header {
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 50px auto;
+    }
+
+    /* Tiêu đề nghệ thuật Lớn - Nhỏ đan xen */
+    .vsp-title-art {
+        text-align: center;
+        color: #efdfa6;
+        margin: 0 0 15px 0;
+        line-height: 1.2;
+        /* Font chữ nghiêng nét thanh nét đậm */
+        font-family: 'Playfair Display', serif !important;
+        font-style: italic !important; 
+        font-weight: 500 !important; 
+    }
+
+    /* Chữ cái đầu tiên to bản */
+    .vsp-cap-letter {
+        font-size: clamp(48px, 6vw, 65px);
+        display: inline-block;
+        line-height: 1;
+    }
+
+    /* Các chữ cái sau nhỏ nhắn */
+    .vsp-small-letter {
+        font-size: clamp(32px, 4vw, 42px);
+        display: inline-block;
+        margin-right: 12px;
+    }
+
+    .vsp-mp4-subtitle {
+        font-family: 'Playfair Display', serif;
+        font-size: 22px;
+        color: #c5a059;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+
+    .vsp-mp4-desc {
+        font-size: 15px;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        color: #94a3b8;
+    }
+
+    .vsp-mp4-desc strong {
+        color: #efdfa6;
+        font-weight: 700;
+    }
+
+    /* ================= PHẦN BANNER ẢNH (CÓ LỚP PHỦ OVERLAY) ================= */
+    .vsp-mp4-banner-wrapper {
+        position: relative;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(197, 160, 89, 0.2);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        background: #000;
+    }
+
+    .vsp-mp4-banner-wrapper > img {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+        min-height: 350px; 
+    }
+
+    .vsp-mp4-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 40px;
+        background: linear-gradient(to top, rgba(6, 20, 15, 0.95) 0%, rgba(6, 20, 15, 0.5) 50%, transparent 100%);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .vsp-mp4-logo img {
+        width: 120px; 
+        height: auto;
+        opacity: 0.9;
+    }
+
+    .vsp-mp4-stats {
+        text-align: right;
+    }
+
+    .vsp-mp4-stats-label {
+        font-family: 'Manrope', sans-serif;
+        font-size: 16px;
+        color: #cbd5e1;
+        margin-bottom: -5px; 
+        font-weight: 500;
+    }
+
+    .vsp-mp4-stats-value {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(50px, 8vw, 90px); 
+        color: #efdfa6;
+        line-height: 1;
+        font-weight: 700;
+    }
+
+    /* ================= RESPONSIVE CHO MOBILE ================= */
+    @media (max-width: 768px) {
+        .vsp-cap-letter { font-size: 38px; }
+        .vsp-small-letter { font-size: 26px; margin-right: 8px;}
+        
+        .vsp-mp4-overlay {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            gap: 20px;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(6, 20, 15, 0.95) 0%, rgba(6, 20, 15, 0.7) 60%, transparent 100%);
+        }
+        .vsp-mp4-stats { text-align: left; }
+    }
+</style>
+
+<section id="vsp-masterplan-v4">
+    <div class="vsp-mp4-container">
+        
+        <!-- PHẦN TEXT & TIÊU ĐỀ NGHỆ THUẬT -->
+        <div class="vsp-mp4-header">
+            <h2 class="vsp-title-art">
+                <span class="vsp-cap-letter">M</span><span class="vsp-small-letter">ặt</span>
+                <span class="vsp-cap-letter">B</span><span class="vsp-small-letter">ằng</span>
+                <br>
+                <span class="vsp-cap-letter">V</span><span class="vsp-small-letter">inhomes</span>
+                <span class="vsp-cap-letter">S</span><span class="vsp-small-letter">aigon</span>
+                <span class="vsp-cap-letter">P</span><span class="vsp-small-letter">ark</span>
+            </h2>
+            <div class="vsp-mp4-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
+            
+            <p class="vsp-mp4-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
+            
+            <p class="vsp-mp4-desc">Việc phân bổ mật độ xây dựng chỉ khoảng <strong>25%</strong> cho thấy tâm huyết của chủ đầu tư trong việc ưu tiên không gian sống cho cư dân.<br>Các trục đường nội khu được quy hoạch theo dạng bàn cờ, lộ giới từ <strong>13m đến 52m</strong>.</p>
+        </div>
+
+        <!-- PHẦN BANNER ẢNH & OVERLAY -->
+        <div class="vsp-mp4-banner-wrapper">
+            <img src="/assets/images/mat-bang-tong-the-vinhomes-hoc-mon.webp" alt="Mặt bằng tổng thể Vinhomes Saigon Park">
+        </div>
+
+    </div>
+</section>
+
 <script>
 (function() {
     const CONFIG_API = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
@@ -2097,6 +2271,8 @@
     });
 })();
 </script>
+
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
