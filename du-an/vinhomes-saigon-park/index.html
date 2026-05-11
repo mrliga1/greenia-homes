@@ -22,289 +22,358 @@
     <meta property="og:image:height" content="630" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <style>
+        /* Tải font cho tiêu đề nghệ thuật */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,700&display=swap');
+
         /* ==============================================================
-           CSS NỀN TẢNG CHO TRANG CHI TIẾT DỰ ÁN (BÁC GIỮ NGUYÊN)
+           1. CẤU HÌNH BIẾN (TÔNG MÀU XANH LỤC BẢO CHUẨN VINHOMES)
            ============================================================== */
-        body, html { margin: 0; padding: 0; background: #05080f; color: #b0b8c4; font-family: 'Manrope', sans-serif; overflow-x: hidden; }
-        * { box-sizing: border-box; }
-        
         :root {
+            /* Tông màu Nền Xanh */
+            --bg-body: #081a12;         /* Nền website chính (Xanh thẫm) */
+            --bg-surface: #0c261b;      /* Nền cho Card (Xanh sáng hơn chút) */
+            --bg-section-alt: #0b2e21;  /* Nền xen kẽ cho các section */
+            
+            /* Tông màu Chữ & Nhấn (Giữ nguyên vàng gold) */
             --lux-gold: #c5a059;
             --lux-gold-hover: #d4af37;
-            --lux-dark: #05080f;
             --lux-white: #ffffff;
+            --text-main: #e2e8f0;       
+            --text-muted: #94a3b8;      
+            
+            /* Hệ thống Font */
+            --font-body: 'Manrope', sans-serif;
+            --font-heading: 'Playfair Display', serif;
+            --font-title: 'Cinzel', serif;
         }
 
+        /* ==============================================================
+           2. RESET & BASE (GỘP CHUNG)
+           ============================================================== */
+        html, body { margin: 0; padding: 0; background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-body); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        a { color: var(--lux-gold); text-decoration: none; transition: all 0.3s ease; }
+        a:hover { color: var(--lux-gold-hover); }
+        img { max-width: 100%; display: block; border-radius: 8px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 80px 0; border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
+
+        /* Tiêu đề mặc định */
+        h1, h2, h3, h4, h5, h6 { color: #efdfa6; font-family: var(--font-heading); margin-bottom: 20px; line-height: 1.3; }
+        h1 { font-size: clamp(36px, 5vw, 55px); font-weight: 700; text-transform: capitalize; text-align: center; font-family: var(--font-title); }
+        
+        p { margin-bottom: 20px; text-align: justify; }
+        strong, b { font-weight: 700; color: #fff; }
+        
+        /* Grid dùng chung */
+        .grid-products { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 15px; list-style: none; padding: 0; margin: 5px 0 0 0; }
+        .grid-products li { font-size: 13px; color: #cbd5e1; position: relative; padding-left: 12px; margin-bottom:0;}
+        .grid-products li::before { content: '♦'; position: absolute; left: 0; top: 0; color: var(--lux-gold); font-size: 10px; }
+
+        /* ==============================================================
+           CÁC CLASS RIÊNG TỪNG SECTION (ĐÃ ĐỒNG BỘ MÀU XANH)
+           ============================================================== */
+        
+        /* --- Hero Section --- */
         .greenia-luxury-theme { width: 100%; min-height: 70vh; }
-
-        @keyframes vspFadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .vsp-top-image { width: 100%; display: block; padding-top: 0px; background-color: #05080f; }
-        .vsp-top-image img { width: 100%; height: auto; display: block; object-fit: cover; }
-
-        .vsp-hero-clean {
-            position: relative; width: 100%; padding-top: 30px; padding-bottom: 50px;
-            background: linear-gradient(135deg, #05080f 0%, #0d1423 50%, #05080f 100%);
-            display: flex; align-items: center; justify-content: center;
-            border-top: 1px solid rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-        }
-
-        .vsp-hero-clean::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: linear-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px; z-index: 0; pointer-events: none;
-        }
-
-        .vsp-hero-container {
-            position: relative; z-index: 3; width: 100%; max-width: 1280px;
-            margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 60px; flex-wrap: wrap;
-        }
-
+        @keyframes vspFadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .vsp-top-image { width: 100%; display: block; padding-top: 0px; background-color: var(--bg-body); }
+        .vsp-top-image img { width: 100%; height: auto; display: block; object-fit: cover; border-radius: 0; }
+        
+        .vsp-hero-clean { position: relative; width: 100%; padding-top: 30px; padding-bottom: 50px; background: linear-gradient(135deg, var(--bg-body) 0%, var(--bg-surface) 50%, var(--bg-body) 100%); display: flex; align-items: center; justify-content: center; border-top: 1px solid rgba(197, 160, 89, 0.1); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
+        .vsp-hero-clean::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(197, 160, 89, 0.03) 1px, transparent 1px); background-size: 30px 30px; z-index: 0; pointer-events: none; }
+        .vsp-hero-container { position: relative; z-index: 3; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 60px; flex-wrap: wrap; }
         .vsp-hero-left { flex: 1.2; min-width: 320px; animation: vspFadeUp 1s ease-out forwards; }
-        .vsp-title {
-            font-family: 'Cinzel', serif; font-size: clamp(28px, 4.5vw, 40px);
-            color: var(--lux-white); line-height: 1.2; margin: 0 0 15px 0; font-weight: 600; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        .vsp-slogan {
-            font-family: 'Manrope', sans-serif; font-size: 16px; color: #a0aec0;
-            margin: 0 0 35px 0; line-height: 1.6; max-width: 95%;
-            border-left: 3px solid var(--lux-gold); padding-left: 15px;
-        }
-
-        .vsp-featured-gallery {
-            position: relative; width: 100%; padding-top: 56.25%; border-radius: 8px;
-            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(197, 160, 89, 0.2); background: #000;
-        }
-
-        .vsp-slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity 1s ease-in-out, transform 4s ease-out;
-        }
+        .vsp-title { font-family: var(--font-title); font-size: clamp(28px, 4.5vw, 40px); color: var(--lux-white); line-height: 1.2; margin: 0 0 15px 0; font-weight: 600; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .vsp-slogan { font-family: var(--font-body); font-size: 16px; color: #a0aec0; margin: 0 0 35px 0; line-height: 1.6; max-width: 95%; border-left: 3px solid var(--lux-gold); padding-left: 15px; }
+        
+        .vsp-featured-gallery { position: relative; width: 100%; padding-top: 56.25%; border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(197, 160, 89, 0.2); background: var(--bg-surface); }
+        .vsp-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity 1s ease-in-out, transform 4s ease-out; }
         .vsp-slide.active { opacity: 1; transform: scale(1); z-index: 2; }
-
         .vsp-hero-right { flex: 0.8; min-width: 320px; max-width: 450px; animation: vspFadeUp 1.2s ease-out forwards; }
 
-        #vhgp-final-v15-vertical { background: linear-gradient(180deg, #0b0f19 0%, #151b2b 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 25px 25px; font-family: 'Manrope', sans-serif; color: #fff; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        /* --- Vertical Form V15 --- */
+        #vhgp-final-v15-vertical { background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-body) 100%); border-top: 1px solid var(--lux-gold); border-bottom: 1px solid var(--lux-gold); padding: 25px 25px; text-align: center; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .v15-ver-container { width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
-        .v15-ver-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .v15-ver-title { font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: var(--lux-gold); margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1px; }
         .v15-ver-rating-box { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 3px 12px; border-radius: 20px; }
         .v15-ver-stars { font-size: 14px; letter-spacing: 1px; }
         .v15-ver-count { font-size: 12px; color: #aaa; font-weight: 400; }
         .v15-ver-desc { font-size: 13px; color: #ccc; margin-bottom: 20px; max-width: 100%; line-height: 1.5; }
-        
         .v15-ver-form { display: flex; flex-direction: column; width: 100%; gap: 12px; justify-content: center; align-items: center; }
         .v15-ver-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 20px; font-size: 13px; border-radius: 50px; outline: none; transition: 0.3s; box-sizing: border-box; }
         .v15-ver-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
         .v15-ver-btn { width: 100%; padding: 12px 25px; margin-top: 5px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 700; text-transform: uppercase; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 13px; }
         .v15-ver-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
-        .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; width: 100%; animation: vspFadeUp 0.5s forwards; }
+        .success-overlay { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 15px; width: 100%; animation: vspFadeUp 0.5s forwards; display: none;}
         .success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
         .success-text { color: #ddd; font-size: 13px; }
 
+        /* --- Isolated Intro --- */
+        #vsp-isolated-intro-section { background-color: var(--bg-section-alt); padding: 60px 20px; text-align: center; box-sizing: border-box; }
+        .vsp-isolated-container { max-width: 1000px; margin: 0 auto; box-sizing: border-box; }
+        .vsp-isolated-title { font-family: var(--font-title); font-size: clamp(24px, 4vw, 36px); color: #efdfa6; margin: 0 0 15px 0; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.3; }
+        .vsp-isolated-subtitle { font-size: 15px; color: #efdfa6; font-style: italic; margin-bottom: 30px; font-weight: 400; }
+        .vsp-isolated-paragraph { font-size: 15px; line-height: 1.8; color: #e2e8f0; margin-bottom: 20px; text-align: justify; text-align-last: center; }
+        .vsp-isolated-paragraph strong { color: #efdfa6; font-weight: 700; }
+        .vsp-isolated-update { font-size: 14px; font-style: italic; color: #94a3b8; margin-bottom: 35px; margin-top: 15px; }
+        .vsp-isolated-btn { display: inline-flex; align-items: center; justify-content: center; background-color: #ef4444; color: #ffffff !important; padding: 14px 35px; font-size: 15px; font-weight: 700; border-radius: 8px; transition: all 0.3s ease; border: none; cursor: pointer; text-decoration: none;}
+        .vsp-isolated-btn:hover { background-color: #dc2626; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
+
+        /* --- Overview --- */
+        .vsp-overview-section { padding: 40px 20px; background-color: var(--bg-body); }
+        .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-overview-6-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .vsp-column-side { display: flex; flex-direction: column; gap: 15px; }
+        .vsp-overview-block { background: var(--bg-surface); border: 1px solid rgba(197, 160, 89, 0.15); padding: 15px 20px; border-radius: 8px; height: 100%; }
+        .vsp-block-label { font-family: var(--font-title); font-size: 12px; color: var(--lux-gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 5px; }
+        .vsp-block-value { font-size: 14px; line-height: 1.5; color: #e2e8f0; }
+        .vsp-block-value strong { color: #fff; }
+        .vsp-block-image-large { padding: 0; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.3); min-height: 250px; }
+        .vsp-block-image-large img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0;}
+
+        /* --- Horizontal Form --- */
+        #vhgp-horizontal-cta { padding: 50px 20px; background: linear-gradient(180deg, var(--bg-body) 0%, var(--bg-surface) 100%); border-top: 1px solid rgba(197, 160, 89, 0.1); }
+        .hor-cta-wrapper { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .hor-cta-title { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--lux-gold); margin: 0 0 10px 0; text-transform: uppercase; }
+        .hor-rating-box { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 5px 15px; border-radius: 20px; }
+        .hor-stars { font-size: 16px; letter-spacing: 2px; }
+        .hor-count { font-size: 13px; color: #aaa; }
+        .hor-desc { font-size: 15px; color: #ccc; margin-bottom: 30px; }
+        .hor-form-group { display: flex; flex-direction: row; justify-content: center; gap: 15px; width: 100%; }
+        .hor-input { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 10px 20px; font-size: 13px; border-radius: 10px; outline: none; transition: 0.3s; box-sizing: border-box; height: 35px; }
+        .hor-input:focus { border-color: var(--lux-gold); background: rgba(197, 160, 89, 0.1); box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
+        .hor-btn { padding: 10px 30px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 600; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; font-size: 12px; box-sizing: border-box; }
+        .hor-btn:hover { background: var(--lux-gold-hover); color: #000; border-color: var(--lux-gold-hover); box-shadow: 0 0 15px rgba(197, 160, 89, 0.6); transform: translateY(-2px); }
+        .hor-success-msg { padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto; display: none; text-align: center; }
+        .hor-success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
+        .hor-success-text { color: #ddd; font-size: 14px; }
+
+        /* --- Location Block V3 --- */
+        #vsp-location-block-v3 { background-color: var(--bg-section-alt); padding: 70px 20px; color: #d1d5db; }
+        .loc-v3-container { max-width: 1200px; margin: 0 auto; }
+        .loc-v3-header { text-align: center; margin-bottom: 60px; }
+        .loc-v3-title { font-family: var(--font-title); font-size: clamp(28px, 4vw, 36px); color: #efdfa6; margin: 0 0 15px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .loc-v3-desc { font-size: 16px; color: #e2e8f0; max-width: 1100px; margin: 0 auto; line-height: 1.6; }
+        .loc-v3-row { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 60px; }
+        .loc-v3-row:last-child { margin-bottom: 0; }
+        .loc-v3-text-box h3 { font-family: var(--font-heading); font-size: 20px; color: #efdfa6; margin: 0 0 20px 0; line-height: 1.4; }
+        .loc-v3-text-box p { font-size: 15px; line-height: 1.8; margin-bottom: 15px; color: #e2e8f0; }
+        .loc-v3-text-box strong { color: #efdfa6; font-weight: 700; }
+        .loc-v3-list { list-style: none; padding: 0; margin: 0; }
+        .loc-v3-list li { position: relative; padding-left: 20px; margin-bottom: 15px; font-size: 15px; line-height: 1.6; color: #e2e8f0; }
+        .loc-v3-list li::before { content: '■'; position: absolute; left: 0; top: 2px; color: #efdfa6; font-size: 10px; }
+        .loc-v3-btn { display: inline-flex; background-color: #ef4444; color: #fff !important; padding: 12px 25px; border-radius: 6px; font-weight: 700; font-size: 14px; margin-top: 15px; transition: 0.3s; }
+        .loc-v3-btn:hover { background-color: #dc2626; transform: translateY(-2px); }
+        .loc-v3-img-box { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .loc-v3-img-box img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; border-radius: 0; }
+        .loc-v3-img-box:hover img { transform: scale(1.03); }
+
+        /* --- Regional Link V4 --- */
+        #vsp-regional-link-section { background-color: #0c261b; padding: 60px 20px; }
+        .loc-v4-container { max-width: 1200px; margin: 0 auto; text-align: center; }
+        .loc-v4-title { font-family: var(--font-title); font-size: clamp(22px, 3.5vw, 30px); color: #efdfa6; margin: 0 0 20px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .loc-v4-desc { font-size: 16px; color: #e2e8f0; line-height: 1.8; max-width: 1050px; margin: 0 auto 40px auto; }
+        .loc-v4-desc strong { color: #efdfa6; font-weight: 700; }
+        .loc-v4-img-box { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(197, 160, 89, 0.2); }
+        .loc-v4-img-box img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; border-radius: 0;}
+        .loc-v4-img-box:hover img { transform: scale(1.02); }
+
+        /* --- Distance Table V5 --- */
+        #vsp-distance-section { padding: 60px 20px; background-color: var(--bg-body); }
+        .vsp-dist-wrapper { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .vsp-dist-container { width: 100%; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; }
+        .vsp-dist-header { display: grid; grid-template-columns: 2.2fr 1fr 1.2fr; background: rgba(197, 160, 89, 0.08); padding: 16px 20px; border-bottom: 1px solid rgba(197, 160, 89, 0.3); }
+        .vsp-dist-header span { color: #efdfa6; font-family: var(--font-title); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .vsp-dist-header span:nth-child(2), .vsp-dist-header span:nth-child(3) { text-align: right; }
+        .vsp-dist-row { display: grid; grid-template-columns: 2.2fr 1fr 1.2fr; padding: 16px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); align-items: center; transition: background 0.3s ease; }
+        .vsp-dist-row:last-child { border-bottom: none; }
+        .vsp-dist-row:hover { background: rgba(197, 160, 89, 0.05); }
+        .vsp-dist-col { color: #e2e8f0; font-size: 14px; }
+        .vsp-dist-col:nth-child(2) { text-align: right; color: #94a3b8; font-weight: 500; }
+        .vsp-dist-col:nth-child(3) { text-align: right; color: #efdfa6; font-weight: 600; }
+        .vsp-dist-icon { width: 25px; display: inline-block; color: rgba(197, 160, 89, 0.8); font-size: 13px; text-align: center; margin-right: 6px; }
+        .vsp-dist-row.highlight-row { background: linear-gradient(90deg, rgba(197, 160, 89, 0.06) 0%, rgba(197, 160, 89, 0) 100%); }
+        .vsp-dist-img-box { width: 100%; height: 100%; min-height: 400px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.2); display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.015); }
+        .vsp-dist-img-box img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.5s ease; border-radius: 0;}
+        .vsp-dist-img-box:hover img { transform: scale(1.03); }
+
+        /* --- Planning V2 --- */
+        #vsp-planning-section { background-color: var(--bg-section-alt); padding: 70px 20px; color: #e2e8f0; }
+        .vsp-plan-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-plan-title { text-align: center; font-family: var(--font-title); font-size: clamp(24px, 4vw, 36px); color: #efdfa6; margin: 0 auto 20px auto; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; line-height: 1.4; max-width: 900px; }
+        .vsp-plan-intro { text-align: center; font-size: 16px; line-height: 1.8; max-width: 950px; margin: 0 auto 50px auto; color: #e2e8f0; }
+        .vsp-plan-intro strong { color: #efdfa6; font-weight: 700; }
+        .vsp-plan-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 50px; align-items: center; }
+        .vsp-plan-content p { font-size: 16px; line-height: 1.8; margin-bottom: 20px; text-align: justify; }
+        .vsp-plan-subtitle { font-family: var(--font-heading); font-size: 18px; color: #efdfa6; margin: 0 0 20px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .vsp-plan-list { list-style: none; padding: 0; margin: 0 0 25px 0; }
+        .vsp-plan-list li { position: relative; padding-left: 25px; margin-bottom: 12px; font-size: 15px; line-height: 1.6; }
+        .vsp-plan-list li::before { content: '♦'; position: absolute; left: 0; top: 2px; color: #efdfa6; font-size: 12px; }
+        .vsp-plan-image-box { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 1px solid rgba(197, 160, 89, 0.2); }
+        .vsp-plan-image-box img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; border-radius: 0; }
+        .vsp-plan-image-box:hover img { transform: scale(1.03); }
+
+        /* --- Amenities Zigzag --- */
+        #vsp-amenities-section { background-color: var(--bg-surface); padding: 80px 20px; }
+        .vsp-amn-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-amn-header { text-align: center; max-width: 900px; margin: 0 auto 60px auto; }
+        .vsp-amn-title { font-family: var(--font-title); font-size: clamp(28px, 4vw, 40px); color: #efdfa6; margin: 0 0 20px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .vsp-amn-desc { font-size: 16px; line-height: 1.8; color: #e2e8f0; margin: 0; }
+        .vsp-amn-desc strong { color: #efdfa6; }
+        .vsp-amn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-bottom: 70px; }
+        .vsp-amn-row:last-child { margin-bottom: 0; }
+        .vsp-amn-row:nth-child(even) .vsp-amn-text { order: 2; }
+        .vsp-amn-row:nth-child(even) .vsp-amn-img-box { order: 1; }
+        .vsp-amn-item-title { font-family: var(--font-heading); font-size: 26px; color: #efdfa6; margin: 0 0 20px 0; font-weight: 700; line-height: 1.3; }
+        .vsp-amn-item-desc { font-size: 15.5px; line-height: 1.7; margin-bottom: 15px; color: #cbd5e1; }
+        .vsp-amn-item-desc strong { color: #fff; }
+        .vsp-amn-list { list-style: none; padding: 0; margin: 0 0 20px 0; }
+        .vsp-amn-list li { position: relative; padding-left: 25px; margin-bottom: 12px; font-size: 15px; line-height: 1.6; color: #cbd5e1; }
+        .vsp-amn-list li::before { content: '♦'; position: absolute; left: 0; top: 0; color: #efdfa6; font-size: 12px; }
+        .vsp-amn-img-box { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2); }
+        .vsp-amn-img-box img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; border-radius: 0; }
+        .vsp-amn-img-box:hover img { transform: scale(1.03); }
+        .vsp-amn-btn { display: inline-block; background-color: #ef4444; color: #fff !important; padding: 14px 35px; font-size: 15px; font-weight: 700; border-radius: 8px; margin-top: 15px; transition: all 0.3s ease; text-transform: uppercase; text-decoration: none; border: none; }
+        .vsp-amn-btn:hover { background-color: #dc2626; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); }
+
+        /* --- Masterplan Layout --- */
+        #vsp-masterplan-section { background-color: var(--bg-body); padding: 80px 20px; }
+        .vsp-mp-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-mp-header { text-align: center; margin-bottom: 40px; }
+        .vsp-mp-title { font-family: var(--font-title); font-size: clamp(28px, 4vw, 40px); color: #efdfa6; margin: 0 0 10px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
+        .vsp-mp-subtitle { font-family: var(--font-heading); font-size: 22px; color: #c5a059; margin: 0 0 25px 0; font-style: italic; }
+        .vsp-mp-desc { font-size: 16px; line-height: 1.8; max-width: 950px; margin: 0 auto 15px auto; color: #cbd5e1; text-align: justify; text-align-last: center; }
+        .vsp-mp-desc strong { color: #efdfa6; font-weight: 700; }
+        .vsp-mp-image-wrapper { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.6); margin-bottom: 50px; background: rgba(255,255,255,0.02); }
+        .vsp-mp-image-wrapper img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; border-radius: 0; }
+        .vsp-mp-image-wrapper:hover img { transform: scale(1.02); }
+        .vsp-mp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; }
+        .vsp-mp-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 20px; border-radius: 10px; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .vsp-mp-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--lux-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .vsp-mp-card:hover { background: rgba(197, 160, 89, 0.05); border-color: rgba(197, 160, 89, 0.4); transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .vsp-mp-card:hover::before { transform: scaleX(1); }
+        .vsp-mp-icon { font-size: 32px; color: #efdfa6; margin-bottom: 20px; display: inline-block; }
+        .vsp-mp-card h4 { font-family: var(--font-heading); font-size: 19px; color: #fff; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .vsp-mp-card p { font-size: 14.5px; line-height: 1.6; color: #94a3b8; margin: 0; }
+
+        /* --- Products Section --- */
+        #vsp-products-section { background-color: var(--bg-section-alt); padding: 80px 20px; }
+        .vsp-prod-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-prod-header { text-align: center; max-width: 800px; margin: 0 auto 50px auto; }
+        .vsp-prod-main-title { font-family: var(--font-title); font-size: clamp(26px, 4vw, 36px); color: #efdfa6; margin: 0 0 15px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .vsp-prod-main-desc { font-size: 16px; line-height: 1.6; color: #94a3b8; margin: 0; text-align: center; }
+        .vsp-prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .vsp-prod-card { background: var(--bg-surface); border: 1px solid rgba(197, 160, 89, 0.15); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .vsp-prod-card:hover { transform: translateY(-10px); border-color: rgba(197, 160, 89, 0.5); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .vsp-prod-img-box { width: 100%; height: 240px; overflow: hidden; border-radius: 12px 12px 0 0; }
+        .vsp-prod-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; border-radius: 0;}
+        .vsp-prod-card:hover .vsp-prod-img-box img { transform: scale(1.05); }
+        .vsp-prod-content { padding: 25px 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .vsp-prod-title { font-family: var(--font-heading); font-size: 20px; color: #efdfa6; margin: 0 0 15px 0; text-transform: uppercase; font-weight: 700; text-align: center; letter-spacing: 1px; }
+        .vsp-prod-desc { font-size: 14.5px; line-height: 1.7; color: #cbd5e1; margin: 0 0 25px 0; text-align: justify; text-align-last: center; }
+        .vsp-prod-desc strong { color: #fff; }
+        .vsp-prod-btn-wrapper { margin-top: auto; text-align: center; }
+        .vsp-prod-btn { display: inline-block; padding: 10px 25px; background: transparent; color: var(--lux-gold); border: 1px solid var(--lux-gold); font-weight: 600; font-size: 13px; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .vsp-prod-btn:hover { background: var(--lux-gold); color: #000 !important; box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+
+        /* --- Final Price Form V3 --- */
+        #vsp-final-price-section-v3 { background-color: var(--bg-body); padding: 80px 20px; border-top: 1px solid rgba(197, 160, 89, 0.1); }
+        .vsp-price-v3-container { max-width: 1200px; margin: 0 auto; }
+        .vsp-price-v3-header { text-align: center; margin-bottom: 40px; }
+        .vsp-price-v3-title { font-family: var(--font-title); font-size: clamp(24px, 4vw, 36px); color: #efdfa6; margin: 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .vsp-price-v3-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 80px; border-radius: 12px; border: 1px solid rgba(197, 160, 89, 0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.3); background: rgba(255, 255, 255, 0.02); }
+        .vsp-price-v3-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        .vsp-price-v3-table th { background: rgba(197, 160, 89, 0.1); color: #efdfa6; font-family: var(--font-title); padding: 18px 20px; text-align: left; border-bottom: 1px solid rgba(197, 160, 89, 0.3); font-size: 14px; font-weight: 700; text-transform: uppercase; }
+        .vsp-price-v3-table td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #cbd5e1; }
+        .vsp-price-v3-table tr:last-child td { border-bottom: none; }
+        .vsp-price-v3-table tr:hover td { background: rgba(197, 160, 89, 0.03); }
+        .vsp-price-v3-table td:first-child { font-family: var(--font-heading); font-weight: 700; color: #fff; font-size: 16px; }
+        .vsp-price-v3-highlight { color: #c5a059 !important; font-weight: 700; }
+        .vsp-price-v3-main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; align-items: stretch; }
+        .vsp-price-v3-policy-left { display: flex; flex-direction: column; }
+        .vsp-price-v3-policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; }
+        .vsp-price-v3-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.15); border-radius: 12px; padding: 25px 20px; transition: all 0.3s ease; }
+        .vsp-price-v3-card:hover { transform: translateY(-5px); background: rgba(197, 160, 89, 0.05); border-color: rgba(197, 160, 89, 0.4); }
+        .vsp-price-v3-icon { font-size: 28px; color: #60a5fa; margin-bottom: 15px; }
+        .vsp-price-v3-card h4 { font-family: var(--font-title); font-size: 16px; color: #efdfa6; margin: 0 0 10px 0; font-weight: 700; line-height: 1.4; }
+        .vsp-price-v3-card p { font-size: 14px; color: #94a3b8; line-height: 1.6; margin: 0; text-align: left;}
+        .vsp-price-v3-card p strong { color: #fff; }
+        .vsp-price-v3-form-box { background: linear-gradient(145deg, var(--bg-surface) 0%, var(--bg-body) 100%); border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 12px; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: center; }
+        .vsp-price-v3-form-title { font-family: var(--font-title); font-size: 22px; color: #efdfa6; text-align: center; margin: 0 0 15px 0; font-weight: 700; }
+        .vsp-price-v3-rating-box { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
+        .vsp-price-v3-stars { font-size: 15px; letter-spacing: 2px; }
+        .vsp-price-v3-count { font-size: 13px; color: #aaa; }
+        .vsp-price-v3-form-desc { text-align: center; font-size: 14px; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
+        .vsp-price-v3-input-group { display: flex; flex-direction: column; gap: 15px; }
+        .vsp-price-v3-input { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 14px 20px; font-size: 14px; border-radius: 8px; outline: none; transition: 0.3s; box-sizing: border-box; font-family: var(--font-body); }
+        .vsp-price-v3-input:focus { border-color: #c5a059; background: rgba(197, 160, 89, 0.05); }
+        .vsp-price-v3-btn { width: 100%; padding: 15px; background: #ef4444; color: #fff; border: none; font-weight: 700; font-size: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 5px; font-family: var(--font-body); text-transform: uppercase; }
+        .vsp-price-v3-btn:hover { background: #dc2626; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
+        .vsp-price-v3-success { display: none; padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; margin-top: 20px; }
+        .vsp-price-v3-success h4 { color: #2ecc71; margin: 0 0 5px 0; font-size: 16px; }
+        .vsp-price-v3-success p { color: #ddd; margin: 0; font-size: 14px; text-align: center;}
+
         /* ==============================================================
-           KHÔI PHỤC CSS RESPONSIVE CHO BANNER/FORM TRÊN MOBILE (BỊ XÓA NHẦM)
+           5. MEDIA QUERIES GỘP CHUNG (MOBILE & TABLET)
            ============================================================== */
         @media (max-width: 968px) {
             .vsp-hero-container { flex-direction: column; gap: 40px; }
             .vsp-slogan { margin-left: auto; margin-right: auto; text-align: left; }
             .vsp-hero-right { width: 100%; max-width: 100%; margin: 0 auto; }
             #vhgp-final-v15-vertical { box-sizing: border-box; width: 100%; }
-        }
-
-        /* ==============================================================
-           PHẦN TỔNG QUAN: 6 KHỐI GỌN GÀNG (3 TRÁI, 3 PHẢI) - ĐÃ ĐỔI VỊ TRÍ
-           ============================================================== */
-        .vsp-overview-section {
-            padding: 40px 20px; /* Đã điều chỉnh padding gọn hơn */
-            background-color: var(--lux-dark);
-        }
-
-        .vsp-overview-container { max-width: 1200px; margin: 0 auto; }
-
-        .vsp-overview-6-blocks {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Chia 2 cột chính */
-            gap: 15px; /* Padding nội bộ giữa 2 cột thu hẹp lại */
-        }
-
-        .vsp-column-side {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Khoảng cách giữa các khối trên dưới nhỏ lại */
-        }
-
-        .vsp-overview-block {
-            background: rgba(11, 17, 32, 0.8);
-            border: 1px solid rgba(197, 160, 89, 0.15);
-            padding: 15px 20px; /* Nội dung bên trong gọn lại */
-            border-radius: 8px;
-            height: 100%125px;
-        }
-
-        .vsp-block-label {
-            font-family: 'Cinzel', serif; font-size: 12px; color: var(--lux-gold);
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-            margin-bottom: 8px; display: block; border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-            padding-bottom: 5px;
-        }
-
-        .vsp-block-value { font-size: 14px; line-height: 1.5; color: #e2e8f0; }
-        .vsp-block-value strong { color: #fff; }
-
-        /* Khối 1 bên phải lớn chứa ảnh */
-        .vsp-block-image-large {
-            padding: 0; overflow: hidden; border: 1px solid rgba(197, 160, 89, 0.3);
-            min-height: 250px;
-        }
-        .vsp-block-image-large img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-        }
-
-        /* Danh sách sản phẩm dạng Grid nhỏ */
-        .grid-products {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 4px 15px;
-            list-style: none; padding: 0; margin: 5px 0 0 0;
-        }
-        .grid-products li { font-size: 13px; color: #cbd5e1; position: relative; padding-left: 12px; }
-        .grid-products li::before { content: '♦'; position: absolute; left: 0; color: var(--lux-gold); font-size: 10px; }
-
-        @media (max-width: 968px) {
             .vsp-overview-6-blocks { grid-template-columns: 1fr; }
             .vsp-block-image-large { min-height: 200px; }
-        }
-
-        /* ==============================================================
-           SECTION FORM NGANG ĐỘC LẬP (KHÔNG TRÙNG LẶP CLASS/ID NÀO CẢ)
-           ============================================================== */
-        #vhgp-horizontal-cta {
-            padding: 50px 20px;
-            background: linear-gradient(180deg, #05080f 0%, #0d1423 100%);
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-        }
-        .hor-cta-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            font-family: 'Manrope', sans-serif;
-        }
-        .hor-cta-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--lux-gold, #c5a059);
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-        }
-        .hor-rating-box {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-            color: #f1c40f;
-            background: rgba(255,255,255,0.03);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-        .hor-stars { font-size: 16px; letter-spacing: 2px; }
-        .hor-count { font-size: 13px; color: #aaa; }
-        .hor-desc {
-            font-size: 15px;
-            color: #ccc;
-            margin-bottom: 30px;
-        }
-        .hor-form-group {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 15px;
-            width: 100%;
-        }
-        .hor-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 13px;
-            border-radius: 10px;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            height: 35px;
-        }
-        .hor-input:focus {
-            border-color: var(--lux-gold, #c5a059);
-            background: rgba(197, 160, 89, 0.1);
-            box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
-        }
-        .hor-btn {
-            padding: 10px 30px;
-            background: transparent;
-            color: var(--lux-gold, #c5a059);
-            border: 1px solid var(--lux-gold, #c5a059);
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-size: 12px;
-            box-sizing: border-box;
-        }
-        .hor-btn:hover {
-            background: var(--lux-gold-hover, #d4af37);
-            color: #000;
-            border-color: var(--lux-gold-hover, #d4af37);
-            box-shadow: 0 0 15px rgba(197, 160, 89, 0.6);
-            transform: translateY(-2px);
-        }
-        .hor-success-msg {
-            padding: 20px;
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid #2ecc71;
-            border-radius: 8px;
-            margin-top: 20px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            display: none;
-        }
-        .hor-success-title { color: #2ecc71; font-weight: 700; margin-bottom: 5px; font-size: 16px; }
-        .hor-success-text { color: #ddd; font-size: 14px; }
-        
-        @media (max-width: 968px) {
-            .hor-form-group {
-                flex-direction: column;
-                gap: 12px;
-            }
+            .hor-form-group { flex-direction: column; gap: 12px; }
             .hor-btn { width: 100%; }
-        }
-
-        /* ==============================================================
-           PHẦN THÊM MỚI: CSS CHO SECTION VỊ TRÍ DỰ ÁN
-           ============================================================== */
-        .vsp-location-section { padding: 60px 20px; background-color: var(--lux-dark); border-bottom: 1px solid rgba(197, 160, 89, 0.1); }
-        .vsp-location-container { max-width: 1200px; margin: 0 auto; }
-        .vsp-location-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: center; }
-        .vsp-location-content h2 { font-family: 'Cinzel', serif; font-size: 32px; color: var(--lux-gold); margin-top: 0; margin-bottom: 20px; text-transform: uppercase; }
-        .vsp-location-content p { color: #a0aec0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
-        .vsp-location-list { list-style: none; padding: 0; margin: 0; }
-        .vsp-location-list li { position: relative; padding-left: 30px; margin-bottom: 15px; color: #e2e8f0; font-size: 15px; line-height: 1.5; }
-        .vsp-location-list li::before { content: '\f3c5'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: var(--lux-gold); font-size: 16px; }
-        .vsp-location-list strong { color: #fff; }
-        .vsp-location-image { width: 100%; border-radius: 8px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.5); border: 1px solid rgba(197, 160, 89, 0.2); position: relative; }
-        .vsp-location-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
-        .vsp-location-image:hover img { transform: scale(1.03); }
-        @media (max-width: 968px) {
             .vsp-location-grid { grid-template-columns: 1fr; }
             .vsp-location-content h2 { font-size: 26px; text-align: center; }
+            .loc-v3-row { grid-template-columns: 1fr; gap: 30px; }
+            .loc-v3-row.reverse-mobile .loc-v3-text-box { order: 2; }
+            .loc-v3-row.reverse-mobile .loc-v3-img-box { order: 1; }
+            .vsp-dist-wrapper { grid-template-columns: 1fr; gap: 30px; }
+            .vsp-dist-img-box { min-height: 250px; order: -1; }
+            .vsp-plan-grid { grid-template-columns: 1fr; gap: 35px; }
+            .vsp-plan-intro { text-align: justify; text-align-last: center; }
+            .vsp-amn-row { grid-template-columns: 1fr; gap: 30px; margin-bottom: 60px; }
+            .vsp-amn-row:nth-child(n) .vsp-amn-img-box { order: 1 !important; }
+            .vsp-amn-row:nth-child(n) .vsp-amn-text { order: 2 !important; }
+            .vsp-amn-item-title { font-size: 22px; }
+            .vsp-mp-grid { grid-template-columns: repeat(2, 1fr); }
+            .vsp-prod-grid { grid-template-columns: repeat(2, 1fr); }
+            .vsp-price-v3-main-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .vsp-isolated-paragraph { text-align: left; text-align-last: left; }
+            #vsp-regional-link-section { padding: 40px 15px; }
+            .loc-v4-title { font-size: 20px; }
+            .loc-v4-desc { font-size: 15px; text-align: justify; text-align-last: center; }
+        }
+
+        @media (max-width: 650px) {
+            .vsp-dist-header { display: none; }
+            .vsp-dist-row { grid-template-columns: 1fr; gap: 6px; padding: 15px 20px; }
+            .vsp-dist-col:nth-child(1) { font-weight: 600; color: #efdfa6; margin-bottom: 5px; }
+            .vsp-dist-col:nth-child(2), .vsp-dist-col:nth-child(3) { text-align: left; font-size: 13px; }
+            .vsp-dist-col:nth-child(2)::before { content: 'Khoảng cách: '; color: #64748b; font-size: 13px; }
+            .vsp-dist-col:nth-child(3)::before { content: 'Thời gian di chuyển: '; color: #64748b; font-size: 13px; }
+            .vsp-prod-grid { grid-template-columns: 1fr; }
+            .vsp-prod-desc { text-align: justify; text-align-last: left; }
+            .vsp-prod-title { font-size: 18px; }
+            .vsp-price-v3-policy-grid { grid-template-columns: 1fr; } 
+            .vsp-price-v3-form-box { padding: 30px 20px; }
+        }
+
+        @media (max-width: 550px) {
+            .vsp-mp-grid { grid-template-columns: 1fr; }
+            .vsp-mp-desc { text-align: justify; text-align-last: center; }
         }
     </style>
     
@@ -322,113 +391,25 @@
             <img src="https://i.ibb.co/BH25SCSR/vinhomes-sai-gon-park.jpg" alt="Toàn cảnh Vinhomes Saigon Park">
         </div>
 
-		<style>
-    /* Chỉ áp dụng CSS cho các class có tiền tố vsp-isolated */
-    #vsp-isolated-intro-section {
-        background-color: #0b2e21; /* Nền xanh lá thẫm chuẩn theo ảnh */
-        padding: 60px 20px;
-        text-align: center;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-    }
-    
-    .vsp-isolated-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        box-sizing: border-box;
-    }
-
-    .vsp-isolated-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(24px, 4vw, 36px);
-        color: #efdfa6; /* Màu chữ vàng nhạt luxury */
-        margin: 0 0 15px 0;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        line-height: 1.3;
-    }
-
-    .vsp-isolated-subtitle {
-        font-size: 15px;
-        color: #efdfa6;
-        font-style: italic;
-        margin-bottom: 30px;
-        font-weight: 400;
-    }
-
-    .vsp-isolated-paragraph {
-        font-size: 15px;
-        line-height: 1.8;
-        color: #e2e8f0; /* Màu chữ xám trắng */
-        margin-bottom: 20px;
-        text-align: justify;
-        text-align-last: center; /* Căn đều 2 bên nhưng dòng cuối căn giữa */
-    }
-
-    .vsp-isolated-paragraph strong {
-        color: #efdfa6;
-        font-weight: 700;
-    }
-
-    .vsp-isolated-update {
-        font-size: 14px;
-        font-style: italic;
-        color: #94a3b8;
-        margin-bottom: 35px;
-        margin-top: 15px;
-    }
-
-    .vsp-isolated-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #ef4444; /* Màu đỏ */
-        color: #ffffff !important;
-        text-decoration: none;
-        padding: 14px 35px;
-        font-size: 15px;
-        font-weight: 700;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
-    }
-
-    .vsp-isolated-btn:hover {
-        background-color: #dc2626;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
-    }
-
-    /* Tối ưu riêng cho Mobile */
-    @media (max-width: 768px) {
-        .vsp-isolated-paragraph {
-            text-align: left;
-            text-align-last: left;
-        }
-    }
-</style>
-
-<section id="vsp-isolated-intro-section">
-    <div class="vsp-isolated-container">
-        <h1 class="vsp-isolated-title">VINHOMES SAIGON PARK – VINHOMES HÓC MÔN</h1>
-        <div class="vsp-isolated-subtitle">Đại đô thị đại học quốc tế quy mô 1.080 ha tại Tây Bắc TP.HCM — Chủ đầu tư Vingroup</div>
-        
-        <p class="vsp-isolated-paragraph"><strong>Vinhomes Saigon Park</strong> còn được gọi là <strong>Vinhomes Hóc Môn</strong> là dự án đại đô thị đại học quốc tế quy mô <strong>1.080 ha</strong> do <strong>Tập đoàn Vingroup</strong> phát triển tại xã Tân Thới Nhì và Thới Tam Thôn, huyện Hóc Môn, TP.HCM – mặt tiền Quốc lộ 22. Với tổng vốn đầu tư gần <strong>59.000 tỷ đồng</strong> (~3,5 tỷ USD), đây là khu đô thị đại học có diện tích lớn nhất Việt Nam tính đến 2026, được quy hoạch thành 9 phân khu chức năng với mục tiêu phục vụ <strong>~135.000 cư dân</strong> và <strong>60.000 sinh viên</strong>.</p>
-        
-        <p class="vsp-isolated-paragraph">Bài viết cập nhật bảng giá, chính sách bán hàng (CSBH), tiến độ thi công và phân tích chi tiết về tiện ích nổi bật của dự án <strong>Vinhomes SaiGon Park Hóc Môn</strong>: hạ tầng kết nối Vành đai 3 (76 km, hoàn thành 2026 — rút ngắn thời gian về trung tâm TP.HCM còn 25-30 phút).</p>
-        
-        <p class="vsp-isolated-update">Cập nhật mới nhất: <span id="auto-update-month">tháng 05/2026</span> bởi đội ngũ Greenia Homes Đại lý phân phối chiến lược chính thức dự án Vinhomes SaiGon Park.</p>
-        
-        <a href="javascript:void(0)" onclick="openPopupNew()" class="vsp-isolated-btn">BOOKING SỚM NGAY ✔</a>
-    </div>
-</section>
+        <section id="vsp-isolated-intro-section">
+            <div class="vsp-isolated-container">
+                <h1 class="vsp-isolated-title">VINHOMES SAIGON PARK – VINHOMES HÓC MÔN</h1>
+                <div class="vsp-isolated-subtitle">Đại đô thị đại học quốc tế quy mô 1.080 ha tại Tây Bắc TP.HCM — Chủ đầu tư Vingroup</div>
+                
+                <p class="vsp-isolated-paragraph"><strong>Vinhomes Saigon Park</strong> còn được gọi là <strong>Vinhomes Hóc Môn</strong> là dự án đại đô thị đại học quốc tế quy mô <strong>1.080 ha</strong> do <strong>Tập đoàn Vingroup</strong> phát triển tại xã Tân Thới Nhì và Thới Tam Thôn, huyện Hóc Môn, TP.HCM – mặt tiền Quốc lộ 22. Với tổng vốn đầu tư gần <strong>59.000 tỷ đồng</strong> (~3,5 tỷ USD), đây là khu đô thị đại học có diện tích lớn nhất Việt Nam tính đến 2026, được quy hoạch thành 9 phân khu chức năng với mục tiêu phục vụ <strong>~135.000 cư dân</strong> và <strong>60.000 sinh viên</strong>.</p>
+                
+                <p class="vsp-isolated-paragraph">Bài viết cập nhật bảng giá, chính sách bán hàng (CSBH), tiến độ thi công và phân tích chi tiết về tiện ích nổi bật của dự án <strong>Vinhomes SaiGon Park Hóc Môn</strong>: hạ tầng kết nối Vành đai 3 (76 km, hoàn thành 2026 — rút ngắn thời gian về trung tâm TP.HCM còn 25-30 phút).</p>
+                
+                <p class="vsp-isolated-update">Cập nhật mới nhất: <span id="auto-update-month">tháng 05/2026</span> bởi đội ngũ Greenia Homes Đại lý phân phối chiến lược chính thức dự án Vinhomes SaiGon Park.</p>
+                
+                <a href="javascript:void(0)" onclick="openPopupNew()" class="vsp-isolated-btn">BOOKING SỚM NGAY ✔</a>
+            </div>
+        </section>
 
         <section class="vsp-hero-clean">
             <div class="vsp-hero-container">
                 <div class="vsp-hero-left">
-                    <h2 class="vsp-title">Vinhomes Saigon Park</h2>
+                    <h2 class="vsp-title" style="margin-bottom: 15px; font-family: 'Cinzel', serif; font-weight: 600; text-transform: none; text-align: left;">Vinhomes Saigon Park</h2>
                     <p class="vsp-slogan"><strong style="color: var(--lux-gold);">Dự án Vinhomes Sai Gon Park</strong> (thường gọi là Vinhomes Hóc Môn) tọa lạc tại mặt tiền Quốc lộ 22, xã Tân Thới Nhì, huyện Hóc Môn, TP. Hồ Chí Minh. Đây là Biểu tượng sống đẳng cấp mới tại tâm điểm Tây Bắc TP.HCM. Nơi hội tụ tinh hoa giáo dục và không gian sinh thái hoàn mỹ.</p>
                     
                     <div class="vsp-featured-gallery">
@@ -444,9 +425,10 @@
                             <h3 class="v15-ver-title">Đăng Ký Tư Vấn</h3>
                             <div class="v15-ver-rating-box" id="rating-container-v15-ver">
                                 <span class="v15-ver-stars" id="stars-v15-ver">★★★★★</span>
-                                <span class="v15-ver-count" id="count-v15-ver">(Đang tải...)</span>
+                                <span class="v15-ver-count vsp-global-rating-text" id="count-v15-ver">(Đang tải...)</span>
                             </div>
                             <p class="v15-ver-desc">Nhận bảng giá & chính sách ưu đãi từ <strong style="color:#fff">Greenia Homes</strong> qua Zalo/Email.</p>
+                            
                             <form id="leadFormV15Ver" class="v15-ver-form">
                                 <input type="text" id="v15-ver-name" class="v15-ver-input" placeholder="Họ tên *" required>
                                 <input type="tel" id="v15-ver-phone" class="v15-ver-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
@@ -470,7 +452,7 @@
                 <div class="vsp-overview-6-blocks">
                     
                     <div class="vsp-column-side">
-                    <h2 class="vsp-title" style="font-size: 22px; text-align: left; color: var(--lux-gold); margin-top: 0; margin-bottom: 10px;">Tổng Quan Vinhomes Hóc Môn</h2>
+                    <h2 class="vsp-title" style="font-size: 22px; text-align: left; color: var(--lux-gold); margin-top: 0; margin-bottom: 10px; font-family: 'Cinzel', serif; text-transform: none;">Tổng Quan Vinhomes Hóc Môn</h2>
 
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Thông tin chi tiết</span>
@@ -478,9 +460,8 @@
                                 <li>Tên dự án:<strong>Vinhomes Sài Gòn Park</strong></li>
                                 <li><strong>Vị trí</strong>: xã Xuân Thới Sơn, TP.HCM</li>
                             </ul>
-
                         </div>
-                            <div class="vsp-overview-block">
+                        <div class="vsp-overview-block">
                             <span class="vsp-block-label">Đơn vị phát triển</span>
                             <ul class="grid-products">
                                 <li>Chủ đầu tư: <strong>Tập đoàn Vingroup</strong></li>
@@ -506,7 +487,6 @@
                     </div>
                     
                     <div class="vsp-column-side">
-   
                         <div class="vsp-overview-block">
                             <span class="vsp-block-label">Số lượng sản phẩm</span>
                             <ul class="grid-products">
@@ -533,7 +513,7 @@
                 
                 <div class="hor-rating-box">
                     <span class="hor-stars">★★★★★</span>
-                    <span class="hor-count" id="count-v15-hor-unique">(Đang tải...)</span>
+                    <span class="hor-count vsp-global-rating-text" id="count-v15-hor-unique">(Đang tải...)</span>
                 </div>
                 
                 <p class="hor-desc">Để lại thông tin để chuyên viên <strong style="color:#fff">Greenia Homes</strong> hỗ trợ ngay lập tức qua Zalo/Email.</p>
@@ -557,1820 +537,434 @@
             <img src="https://i.ibb.co/8npjvpJG/vinhomes-sai-gon-park-hoc-mon.jpg" alt="Toàn cảnh Vinhomes Saigon Park-Vinhomes Hóc Môn">
         </div>
 
-        <style>
-    #vsp-location-block-v3 {
-        background-color: #0b2e21; /* Màu xanh lá tối tương đồng với trang web */
-        padding: 70px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #d1d5db;
-    }
-    .loc-v3-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        box-sizing: border-box;
-    }
-    
-    /* Header căn giữa */
-    .loc-v3-header {
-        text-align: center;
-        margin-bottom: 60px;
-    }
-    .loc-v3-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(28px, 4vw, 36px);
-        color: #efdfa6; /* Màu vàng luxury */
-        margin: 0 0 15px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-    .loc-v3-desc {
-        font-size: 16px;
-        color: #e2e8f0;
-        max-width: 1100px;
-        margin: 0 auto;
-        line-height: 1.6;
-    }
+        <section id="vsp-location-block-v3">
+            <div class="loc-v3-container">
+                <div class="loc-v3-header">
+                    <h2 class="loc-v3-title">Vi Trí Vinhomes Saigon Park</h2>
+                    <p class="loc-v3-desc"><a href="/du-an/vinhomes-sai-gon-park/vi-tri.html"><strong>Vị trí khu đô thị Vinhomes Saigon Park</strong></a> nằm ngay nút giao đường vành đai 3 TP. Hồ Chí Minh với quốc lộ 22 (sắp tới sẽ là đường cao tốc TP.HCM —- Mộc Bài), thuộc địa phận xã Tân Thới Nhì thuộc huyện Hóc Môn, TP.HCM. Đây là khu vực cửa ngõ giao thương đắc địa phía Tây Bắc của TP.HCM và sở hữu nhiều lợi thế phát triển các cụm khu công nghiệp trọng điểm, các cụm trường đại học cũng như khu đô thị mới tầm cỡ. Dự án cũng nằm trên tuyến metro số 2 Bến Thành – Tham Lương (và tuyến metro số 2 sẽ được kéo dài tới sân Bay Long Thành).</p>
+                </div>
 
-    /* Lưới 2 hàng x 2 cột */
-    .loc-v3-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 50px;
-        align-items: center;
-        margin-bottom: 60px;
-    }
-    .loc-v3-row:last-child {
-        margin-bottom: 0;
-    }
-    /* Xóa gạch chân mặc định của link */
-    .loc-v3-text-box a {
-        text-decoration: none; 
-    }
+                <div class="loc-v3-row">
+                    <div class="loc-v3-text-box">
+                        <h3>Vị Trí Hành Chính Vinhomes Hóc Môn</h3>
+                        <p>Vinhoms Hóc Môn tọa lạc tại xã <strong>Tân Thới Nhì, huyện Hóc Môn</strong>, tiếp giáp trực tiếp Quốc lộ 22 – trục giao thông huyết mạch kết nối TP.HCM với các tỉnh Tây Nam Bộ và cửa khẩu Mộc Bài (Tây Ninh).</p>
+                        <p>Đây là khu vực thuộc <strong>vành đai phát triển đô thị phía Tây Bắc</strong> theo quy hoạch TP.HCM 2030–2045, nằm trong lộ trình sáp nhập huyện Hóc Môn thành quận nội thành — yếu tố nền tảng thúc đẩy tăng giá đất dài hạn.</p>
+                        <a href="javascript:void(0)" onclick="openPopupNew()" class="loc-v3-btn">ĐĂNG KÝ THAM QUAN DỰ ÁN ✔</a>
+                    </div>
+                    <div class="loc-v3-img-box">
+                        <img src="/assets/images/vi-tri-vinhomes-sai-gon-park.webp" alt="Vị trí Vinhomes Hóc Môn 1080ha">
+                    </div>
+                </div>
 
-    /* Thêm hiệu ứng: Khi di chuột vào link thì nó mới hiện gạch chân (tuỳ chọn) */
-    .loc-v3-text-box a:hover {
-        text-decoration: underline;
-    }
-    /* Nội dung Text */
-    .loc-v3-text-box h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 20px;
-        color: #efdfa6;
-        margin: 0 0 20px 0;
-        line-height: 1.4;
-    }
-    .loc-v3-text-box p {
-        font-size: 15px;
-        line-height: 1.8;
-        margin-bottom: 15px;
-        color: #e2e8f0;
-    }
-    .loc-v3-text-box strong {
-        color: #efdfa6; /* Làm nổi bật các từ khóa bằng màu vàng */
-        font-weight: 700;
-    }
+                <div class="loc-v3-row reverse-mobile">
+                    <div class="loc-v3-img-box">
+                        <img src="https://i.ibb.co/YBhwjnK8/ban-do-vi-tri-vinhomes-sai-gon-park-hoc-mon.webp" alt="Bản đồ kết nối giao thông Vinhomes Saigon Park">
+                    </div>
+                    <div class="loc-v3-text-box">
+                        <h3>Kết Nối Giao Thông Vành Đai 3 Quốc Lộ 22</h3>
+                        <p>Vị trí Vinhomes Hóc Môn được hưởng lợi trực tiếp từ loạt hạ tầng giao thông trọng điểm đang hoàn thiện:</p>
+                        <ul class="loc-v3-list">
+                            <li><strong>Vành đai 3 TP.HCM</strong> — Đoạn qua Hóc Môn dài 32,6 km thông xe kỹ thuật ngày <strong>30/4/2026</strong>, rút ngắn kết nối vùng Đông – Tây – Nam TP.HCM</li>
+                            <li><strong>Quốc lộ 22</strong> — Trục đường chính qua dự án, kết nối trực tiếp vào nội đô</li>
+                            <li><strong>Metro số 2</strong> (Bến Thành – Tham Lương, tương lai kéo dài đến Hóc Môn) — Giao thông công cộng hiện đại khi hoàn thiện</li>
+                            <li><strong>Cao tốc TP.HCM – Mộc Bài</strong> (đang triển khai) — Hành lang kinh tế kết nối Tây Ninh và biên giới Campuchia</li>
+                        </ul>
+                    </div>
+                </div>
 
-    /* List danh sách */
-    .loc-v3-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .loc-v3-list li {
-        position: relative;
-        padding-left: 20px;
-        margin-bottom: 15px;
-        font-size: 15px;
-        line-height: 1.6;
-        color: #e2e8f0;
-    }
-    .loc-v3-list li::before {
-        content: '■';
-        position: absolute;
-        left: 0;
-        top: 2px;
-        color: #efdfa6;
-        font-size: 10px;
-    }
-
-    /* Nút bấm */
-    .loc-v3-btn {
-        display: inline-flex;
-        background-color: #ef4444; /* Nút đỏ */
-        color: #fff !important;
-        padding: 12px 25px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 14px;
-        margin-top: 15px;
-        transition: 0.3s;
-    }
-    .loc-v3-btn:hover {
-        background-color: #dc2626;
-        transform: translateY(-2px);
-    }
-
-    /* Khối Hình ảnh */
-    .loc-v3-img-box {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .loc-v3-img-box img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-    .loc-v3-img-box:hover img {
-        transform: scale(1.03);
-    }
-
-    /* Responsive cho Mobile */
-    @media (max-width: 968px) {
-        .loc-v3-row {
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-        /* Đảo vị trí ảnh lên trên text ở hàng thứ 2 trên mobile */
-        .loc-v3-row.reverse-mobile .loc-v3-text-box {
-            order: 2;
-        }
-        .loc-v3-row.reverse-mobile .loc-v3-img-box {
-            order: 1;
-        }
-    }
-</style>
-
-<section id="vsp-location-block-v3">
-    <div class="loc-v3-container">
-        <div class="loc-v3-header">
-            <h2 class="loc-v3-title">Vi Trí Vinhomes Saigon Park</h2>
-            <p class="loc-v3-text-box"><a href="/du-an/vinhomes-sai-gon-park/vi-tri.html"><strong>Vị trí khu đô thị Vinhomes Saigon Park</strong></a> nằm ngay nút giao đường vành đai 3 TP. Hồ Chí Minh với quốc lộ 22 (sắp tới sẽ là đường cao tốc TP.HCM —- Mộc Bài), thuộc địa phận xã Tân Thới Nhì thuộc huyện Hóc Môn, TP.HCM. Đây là khu vực cửa ngõ giao thương đắc địa phía Tây Bắc của TP.HCM và sở hữu nhiều lợi thế phát triển các cụm khu công nghiệp trọng điểm, các cụm trường đại học cũng như khu đô thị mới tầm cỡ. Dự án cũng nằm trên tuyến metro số 2 Bến Thành – Tham Lương (và tuyến metro số 2 sẽ được kéo dài tới sân Bay Long Thành).</p>
-        </div>
-
-        <div class="loc-v3-row">
-            <div class="loc-v3-text-box">
-                <h3>Vị Trí Hành Chính Vinhomes Hóc Môn</h3>
-                <p>Vinhoms Hóc Môn tọa lạc tại xã <strong>Tân Thới Nhì, huyện Hóc Môn</strong>, tiếp giáp trực tiếp Quốc lộ 22 – trục giao thông huyết mạch kết nối TP.HCM với các tỉnh Tây Nam Bộ và cửa khẩu Mộc Bài (Tây Ninh).</p>
-                <p>Đây là khu vực thuộc <strong>vành đai phát triển đô thị phía Tây Bắc</strong> theo quy hoạch TP.HCM 2030–2045, nằm trong lộ trình sáp nhập huyện Hóc Môn thành quận nội thành — yếu tố nền tảng thúc đẩy tăng giá đất dài hạn.</p>
-                <a href="javascript:void(0)" onclick="openPopupNew()" class="loc-v3-btn">ĐĂNG KÝ THAM QUAN DỰ ÁN ✔</a>
             </div>
-            <div class="loc-v3-img-box">
-                <img src="/assets/images/vi-tri-vinhomes-sai-gon-park.webp" alt="Vị trí Vinhomes Hóc Môn 1080ha">
-            </div>
-        </div>
-
-        <div class="loc-v3-row reverse-mobile">
-            <div class="loc-v3-img-box">
-                <img src="https://i.ibb.co/YBhwjnK8/ban-do-vi-tri-vinhomes-sai-gon-park-hoc-mon.webp" alt="Bản đồ kết nối giao thông Vinhomes Saigon Park">
-            </div>
-            <div class="loc-v3-text-box">
-                <h3>Kết Nối Giao Thông Vành Đai 3 Quốc Lộ 22</h3>
-                <p>Vị trí Vinhomes Hóc Môn được hưởng lợi trực tiếp từ loạt hạ tầng giao thông trọng điểm đang hoàn thiện:</p>
-                <ul class="loc-v3-list">
-                    <li><strong>Vành đai 3 TP.HCM</strong> — Đoạn qua Hóc Môn dài 32,6 km thông xe kỹ thuật ngày <strong>30/4/2026</strong>, rút ngắn kết nối vùng Đông – Tây – Nam TP.HCM</li>
-                    <li><strong>Quốc lộ 22</strong> — Trục đường chính qua dự án, kết nối trực tiếp vào nội đô</li>
-                    <li><strong>Metro số 2</strong> (Bến Thành – Tham Lương, tương lai kéo dài đến Hóc Môn) — Giao thông công cộng hiện đại khi hoàn thiện</li>
-                    <li><strong>Cao tốc TP.HCM – Mộc Bài</strong> (đang triển khai) — Hành lang kinh tế kết nối Tây Ninh và biên giới Campuchia</li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
-</section>
+        </section>
+        
         <div class="vsp-top-image">
             <img src="/assets/images/mat-bang-vinhomes-saigon-park-hoc-mon.webp" alt="Toàn cảnh Vinhomes Saigon Park-Vinhomes Hóc Môn">
         </div>
-<style>
-    /* ==============================================================
-       SECTION LIÊN KẾT VÙNG (ĐỘC LẬP - BẢN V4)
-       ============================================================== */
-    #vsp-regional-link-section {
-        background-color: #11382a; /* Màu xanh lá tối tương đồng trong ảnh */
-        padding: 60px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-    }
 
-    .loc-v4-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .loc-v4-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(22px, 3.5vw, 30px);
-        color: #efdfa6; /* Màu vàng luxury */
-        margin: 0 0 20px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .loc-v4-desc {
-        font-size: 16px;
-        color: #e2e8f0;
-        line-height: 1.8;
-        max-width: 1050px;
-        margin: 0 auto 40px auto;
-    }
-
-    .loc-v4-desc strong {
-        color: #efdfa6; /* Nhấn mạnh các tỉnh thành bằng màu vàng */
-        font-weight: 700;
-    }
-
-    /* Khối Hình ảnh */
-    .loc-v4-img-box {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        border: 1px solid rgba(197, 160, 89, 0.2);
-    }
-
-    .loc-v4-img-box img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    .loc-v4-img-box:hover img {
-        transform: scale(1.02); /* Hiệu ứng phóng to nhẹ khi di chuột */
-    }
-
-    /* Responsive cho Mobile */
-    @media (max-width: 768px) {
-        #vsp-regional-link-section {
-            padding: 40px 15px;
-        }
-        .loc-v4-title {
-            font-size: 20px;
-        }
-        .loc-v4-desc {
-            font-size: 15px;
-            text-align: justify; /* Căn đều 2 bên trên mobile cho dễ đọc */
-            text-align-last: center;
-        }
-    }
-</style>
-
-<section id="vsp-regional-link-section">
-    <div class="loc-v4-container">
-        <h2 class="loc-v4-title">Liên Kết Vùng Tây Bắc TP.HCM Và Đông Nam Bộ</h2>
-        
-        <p class="loc-v4-desc">
-            Vinhomes Hóc Môn nằm tại giao điểm chiến lược của 4 tỉnh thành: <strong>TP.HCM – Bình Dương – Long An – Tây Ninh</strong>. Vị trí này mang lại lợi thế kép: vừa khai thác nhu cầu nhà ở từ lực lượng lao động các khu công nghiệp lân cận, vừa tiếp cận dễ dàng các trường đại học, trung tâm nghiên cứu đang dịch chuyển ra vùng ven TP.HCM theo quy hoạch.
-        </p>
-        
-        <div class="loc-v4-img-box">
-            <img src="/assets/images/lien-ket-vung-vi-tri-vinhomes-hoc-mon.webp" alt="Bản đồ hạ tầng Tây Bắc TP.HCM Vinhomes Hóc Môn">
-        </div>
-    </div>
-</section>
-
-
-<style>
-    /* ==============================================================
-       SECTION BẢNG KHOẢNG CÁCH (V5: CHIA 2 CỘT TEXT - IMAGE)
-       ============================================================== */
-    #vsp-distance-section {
-        padding: 60px 20px;
-        background-color: var(--lux-dark, #05080f); 
-        font-family: 'Manrope', sans-serif;
-    }
-
-    /* Container chia 2 cột */
-    .vsp-dist-wrapper {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* Chia đều 2 cột */
-        gap: 40px;
-        align-items: center; /* Căn giữa theo chiều dọc */
-    }
-
-    /* ================= CỘT TRÁI (BẢNG THÔNG SỐ) ================= */
-    .vsp-dist-container {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(197, 160, 89, 0.2);
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        overflow: hidden;
-    }
-
-    .vsp-dist-header {
-        display: grid;
-        grid-template-columns: 2.2fr 1fr 1.2fr;
-        background: rgba(197, 160, 89, 0.08); 
-        padding: 16px 20px;
-        border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-    }
-
-    .vsp-dist-header span {
-        color: #efdfa6;
-        font-family: 'Cinzel', serif;
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .vsp-dist-header span:nth-child(2),
-    .vsp-dist-header span:nth-child(3) {
-        text-align: right;
-    }
-
-    .vsp-dist-row {
-        display: grid;
-        grid-template-columns: 2.2fr 1fr 1.2fr;
-        padding: 16px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        align-items: center;
-        transition: background 0.3s ease;
-    }
-
-    .vsp-dist-row:last-child {
-        border-bottom: none;
-    }
-
-    .vsp-dist-row:hover {
-        background: rgba(197, 160, 89, 0.05); 
-    }
-
-    .vsp-dist-col {
-        color: #e2e8f0;
-        font-size: 14px; 
-    }
-
-    .vsp-dist-col:nth-child(2) {
-        text-align: right;
-        color: #94a3b8;
-        font-weight: 500;
-    }
-
-    .vsp-dist-col:nth-child(3) {
-        text-align: right;
-        color: #efdfa6; 
-        font-weight: 600;
-    }
-
-    .vsp-dist-icon {
-        width: 25px;
-        display: inline-block;
-        color: rgba(197, 160, 89, 0.8);
-        font-size: 13px;
-        text-align: center;
-        margin-right: 6px;
-    }
-
-    .vsp-dist-row.highlight-row {
-        background: linear-gradient(90deg, rgba(197, 160, 89, 0.06) 0%, rgba(197, 160, 89, 0) 100%);
-    }
-
-    /* ================= CỘT PHẢI (HÌNH ẢNH) - HIỂN THỊ ĐẦY ĐỦ ================= */
-    .vsp-dist-img-box {
-        width: 100%;
-        height: 100%;
-        min-height: 400px;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid rgba(197, 160, 89, 0.2);
-        
-        /* Box Flex giúp hình ảnh luôn căn giữa khung khi dùng contain */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.015); /* Làm nền khung mờ ảo cho sang */
-    }
-
-    .vsp-dist-img-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Lệnh "thần thánh" giúp ảnh không bị mất mép */
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    .vsp-dist-img-box:hover img {
-        transform: scale(1.03); 
-    }
-
-    /* ================= RESPONSIVE CHO MOBILE ================= */
-    @media (max-width: 968px) {
-        .vsp-dist-wrapper {
-            grid-template-columns: 1fr; 
-            gap: 30px;
-        }
-        .vsp-dist-img-box {
-            min-height: 250px;
-            order: -1; 
-        }
-    }
-
-    @media (max-width: 650px) {
-        .vsp-dist-header { display: none; }
-        .vsp-dist-row {
-            grid-template-columns: 1fr;
-            gap: 6px;
-            padding: 15px 20px;
-        }
-        .vsp-dist-col:nth-child(1) {
-            font-weight: 600;
-            color: #efdfa6;
-            margin-bottom: 5px;
-        }
-        .vsp-dist-col:nth-child(2),
-        .vsp-dist-col:nth-child(3) {
-            text-align: left;
-            font-size: 13px;
-        }
-        .vsp-dist-col:nth-child(2)::before {
-            content: 'Khoảng cách: '; color: #64748b; font-size: 13px;
-        }
-        .vsp-dist-col:nth-child(3)::before {
-            content: 'Thời gian di chuyển: '; color: #64748b; font-size: 13px;
-        }
-    }
-</style>
-
-<section id="vsp-distance-section">
-    <div class="vsp-dist-wrapper">
-        
-        <div class="vsp-dist-container">
-            <div class="vsp-dist-header">
-                <span>Điểm đến</span>
-                <span>Khoảng cách</span>
-                <span>Thời gian</span>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-plane-departure vsp-dist-icon"></i>Sân bay Tân Sơn Nhất</div>
-                <div class="vsp-dist-col">~18 km</div>
-                <div class="vsp-dist-col">25–30 phút</div>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-city vsp-dist-icon"></i>Quận 1 – Trung tâm TP.HCM</div>
-                <div class="vsp-dist-col">~22 km</div>
-                <div class="vsp-dist-col">30–40 phút</div>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-bus-simple vsp-dist-icon"></i>Bến xe An Sương</div>
-                <div class="vsp-dist-col">~6 km</div>
-                <div class="vsp-dist-col">10 phút</div>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-industry vsp-dist-icon"></i>KCN Tân Phú Trung</div>
-                <div class="vsp-dist-col">~7 km</div>
-                <div class="vsp-dist-col">12 phút</div>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-road vsp-dist-icon"></i>Đường Vành Đai 3</div>
-                <div class="vsp-dist-col">~2 km</div>
-                <div class="vsp-dist-col">5 phút</div>
-            </div>
-
-            <div class="vsp-dist-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-map-location-dot vsp-dist-icon"></i>Cửa khẩu Mộc Bài</div>
-                <div class="vsp-dist-col">~55 km</div>
-                <div class="vsp-dist-col">60 phút</div>
-            </div>
-
-            <div class="vsp-dist-row highlight-row">
-                <div class="vsp-dist-col"><i class="fa-solid fa-store vsp-dist-icon"></i>Vincom Mega Mall (nội khu)</div>
-                <div class="vsp-dist-col">0 km</div>
-                <div class="vsp-dist-col"><i class="fa-solid fa-person-walking" style="margin-right: 5px;"></i>Đi bộ</div>
-            </div>
-        </div>
-
-        <div class="vsp-dist-img-box">
-            <img src="/assets/images/so-do-vi-tri-Vinhomes-saigon-park-hoc-mon.webp" alt="Bản đồ khoảng cách di chuyển từ Vinhomes Saigon Park">
-        </div>
-
-    </div>
-</section>
-
-<style>
-    /* ==============================================================
-       SECTION QUY HOẠCH ĐÔ THỊ (V2: ĐƯA MÔ TẢ LÊN DƯỚI TIÊU ĐỀ)
-       ============================================================== */
-    #vsp-planning-section {
-        background-color: #0b2e21; 
-        padding: 70px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #e2e8f0;
-    }
-
-    .vsp-plan-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* Tiêu đề chính */
-    .vsp-plan-title {
-        text-align: center;
-        font-family: 'Cinzel', serif;
-        font-size: clamp(24px, 4vw, 36px);
-        color: #efdfa6; 
-        margin: 0 auto 20px auto; /* Thu hẹp khoảng cách dưới tiêu đề lại */
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-        line-height: 1.4;
-        max-width: 900px;
-    }
-
-    /* ================= ĐOẠN MÔ TẢ MỚI (CĂN GIỮA DƯỚI TIÊU ĐỀ) ================= */
-    .vsp-plan-intro {
-        text-align: center;
-        font-size: 16px;
-        line-height: 1.8;
-        max-width: 950px; /* Gom độ rộng lại cho chữ không bị tràn sát lề */
-        margin: 0 auto 50px auto; /* Căn giữa màn hình và tạo khoảng cách với khối dưới */
-        color: #e2e8f0;
-    }
-
-    .vsp-plan-intro strong {
-        color: #efdfa6;
-        font-weight: 700;
-    }
-
-    /* Grid chia 2 cột */
-    .vsp-plan-grid {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr; 
-        gap: 50px;
-        align-items: center;
-    }
-
-    /* Định dạng cột nội dung */
-    .vsp-plan-content p {
-        font-size: 16px;
-        line-height: 1.8;
-        margin-bottom: 20px;
-        text-align: justify; 
-    }
-
-    .vsp-plan-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-size: 18px;
-        color: #efdfa6;
-        margin: 0 0 20px 0; /* Bỏ margin-top vì nó đã lên đầu cột */
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    /* Danh sách tỷ lệ đất */
-    .vsp-plan-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 25px 0;
-    }
-
-    .vsp-plan-list li {
-        position: relative;
-        padding-left: 25px;
-        margin-bottom: 12px;
-        font-size: 15px;
-        line-height: 1.6;
-    }
-
-    .vsp-plan-list li::before {
-        content: '♦'; 
-        position: absolute;
-        left: 0;
-        top: 2px;
-        color: #efdfa6;
-        font-size: 12px;
-    }
-
-    /* Định dạng cột hình ảnh */
-    .vsp-plan-image-box {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        border: 1px solid rgba(197, 160, 89, 0.2);
-    }
-
-    .vsp-plan-image-box img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    .vsp-plan-image-box:hover img {
-        transform: scale(1.03); 
-    }
-
-    /* Responsive cho điện thoại di động */
-    @media (max-width: 968px) {
-        .vsp-plan-grid {
-            grid-template-columns: 1fr;
-            gap: 35px;
-        }
-        .vsp-plan-intro {
-            text-align: justify; /* Trên điện thoại nên để justify hoặc left cho dễ đọc */
-            text-align-last: center;
-        }
-    }
-</style>
-
-<section id="vsp-planning-section">
-    <div class="vsp-plan-container">
-        
-        <h2 class="vsp-plan-title">QUY HOẠCH KHU ĐÔ THỊ<br>ĐẠI HỌC QUỐC TẾ VINHOMES SAIGON PARK</h2>
-        
-        <p class="vsp-plan-intro">Vinhomes Hóc Môn được phê duyệt quy hoạch chi tiết theo mô hình <strong>"đô thị đại học" (University Town)</strong> — lần đầu tiên được áp dụng quy mô lớn tại Việt Nam. Theo đó, khu Đại học Quốc tế không chỉ là một tiện ích giáo dục đơn thuần mà là <strong>hạt nhân kinh tế</strong> tạo ra lực hút cư dân, doanh nghiệp và đầu tư cho toàn khu.</p>
-        
-        <div class="vsp-plan-grid">
-            <div class="vsp-plan-content">
-                <h3 class="vsp-plan-subtitle">TỶ LỆ SỬ DỤNG ĐẤT:</h3>
-                <ul class="vsp-plan-list">
-                    <li>Đất ở (căn hộ, nhà phố, biệt thự): ~35%</li>
-                    <li>Đất giáo dục – y tế – văn hóa: ~25%</li>
-                    <li>Đất thương mại dịch vụ: ~10%</li>
-                    <li>Đất công viên, cây xanh, mặt nước: ~30%</li>
-                </ul>
+        <section id="vsp-regional-link-section">
+            <div class="loc-v4-container">
+                <h2 class="loc-v4-title">Liên Kết Vùng Tây Bắc TP.HCM Và Đông Nam Bộ</h2>
                 
-                <p>Điểm nhấn quy hoạch là hệ thống hồ điều hòa trung tâm quy mô 10.2 hecta, mang đến không gian sinh thái đẳng cấp và môi trường sống trong lành cho cộng đồng cư dân tinh hoa.</p>
+                <p class="loc-v4-desc">
+                    Vinhomes Hóc Môn nằm tại giao điểm chiến lược của 4 tỉnh thành: <strong>TP.HCM – Bình Dương – Long An – Tây Ninh</strong>. Vị trí này mang lại lợi thế kép: vừa khai thác nhu cầu nhà ở từ lực lượng lao động các khu công nghiệp lân cận, vừa tiếp cận dễ dàng các trường đại học, trung tâm nghiên cứu đang dịch chuyển ra vùng ven TP.HCM theo quy hoạch.
+                </p>
+                
+                <div class="loc-v4-img-box">
+                    <img src="/assets/images/lien-ket-vung-vi-tri-vinhomes-hoc-mon.webp" alt="Bản đồ hạ tầng Tây Bắc TP.HCM Vinhomes Hóc Môn">
+                </div>
             </div>
-            
-            <div class="vsp-plan-image-box">
-                <img src="/assets/images/tien-ich-vinhomes-saigon-park.webp" alt="Phối cảnh quy hoạch khu đô thị đại học Vinhomes Saigon Park Hóc Môn">
+        </section>
+
+        <section id="vsp-distance-section">
+            <div class="vsp-dist-wrapper">
+                
+                <div class="vsp-dist-container">
+                    <div class="vsp-dist-header">
+                        <span>Điểm đến</span>
+                        <span>Khoảng cách</span>
+                        <span>Thời gian</span>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-plane-departure vsp-dist-icon"></i>Sân bay Tân Sơn Nhất</div>
+                        <div class="vsp-dist-col">~18 km</div>
+                        <div class="vsp-dist-col">25–30 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-city vsp-dist-icon"></i>Quận 1 – Trung tâm TP.HCM</div>
+                        <div class="vsp-dist-col">~22 km</div>
+                        <div class="vsp-dist-col">30–40 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-bus-simple vsp-dist-icon"></i>Bến xe An Sương</div>
+                        <div class="vsp-dist-col">~6 km</div>
+                        <div class="vsp-dist-col">10 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-industry vsp-dist-icon"></i>KCN Tân Phú Trung</div>
+                        <div class="vsp-dist-col">~7 km</div>
+                        <div class="vsp-dist-col">12 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-road vsp-dist-icon"></i>Đường Vành Đai 3</div>
+                        <div class="vsp-dist-col">~2 km</div>
+                        <div class="vsp-dist-col">5 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-map-location-dot vsp-dist-icon"></i>Cửa khẩu Mộc Bài</div>
+                        <div class="vsp-dist-col">~55 km</div>
+                        <div class="vsp-dist-col">60 phút</div>
+                    </div>
+
+                    <div class="vsp-dist-row highlight-row">
+                        <div class="vsp-dist-col"><i class="fa-solid fa-store vsp-dist-icon"></i>Vincom Mega Mall (nội khu)</div>
+                        <div class="vsp-dist-col">0 km</div>
+                        <div class="vsp-dist-col"><i class="fa-solid fa-person-walking" style="margin-right: 5px;"></i>Đi bộ</div>
+                    </div>
+                </div>
+
+                <div class="vsp-dist-img-box">
+                    <img src="/assets/images/so-do-vi-tri-Vinhomes-saigon-park-hoc-mon.webp" alt="Bản đồ khoảng cách di chuyển từ Vinhomes Saigon Park">
+                </div>
+
             </div>
-        </div>
-    </div>
-</section>
+        </section>
+
+        <section id="vsp-planning-section">
+            <div class="vsp-plan-container">
+                
+                <h2 class="vsp-plan-title">QUY HOẠCH KHU ĐÔ THỊ<br>ĐẠI HỌC QUỐC TẾ VINHOMES SAIGON PARK</h2>
+                
+                <p class="vsp-plan-intro">Vinhomes Hóc Môn được phê duyệt quy hoạch chi tiết theo mô hình <strong>"đô thị đại học" (University Town)</strong> — lần đầu tiên được áp dụng quy mô lớn tại Việt Nam. Theo đó, khu Đại học Quốc tế không chỉ là một tiện ích giáo dục đơn thuần mà là <strong>hạt nhân kinh tế</strong> tạo ra lực hút cư dân, doanh nghiệp và đầu tư cho toàn khu.</p>
+                
+                <div class="vsp-plan-grid">
+                    <div class="vsp-plan-content">
+                        <h3 class="vsp-plan-subtitle">TỶ LỆ SỬ DỤNG ĐẤT:</h3>
+                        <ul class="vsp-plan-list">
+                            <li>Đất ở (căn hộ, nhà phố, biệt thự): ~35%</li>
+                            <li>Đất giáo dục – y tế – văn hóa: ~25%</li>
+                            <li>Đất thương mại dịch vụ: ~10%</li>
+                            <li>Đất công viên, cây xanh, mặt nước: ~30%</li>
+                        </ul>
+                        
+                        <p>Điểm nhấn quy hoạch là hệ thống hồ điều hòa trung tâm quy mô 10.2 hecta, mang đến không gian sinh thái đẳng cấp và môi trường sống trong lành cho cộng đồng cư dân tinh hoa.</p>
+                    </div>
+                    
+                    <div class="vsp-plan-image-box">
+                        <img src="/assets/images/tien-ich-vinhomes-saigon-park.webp" alt="Phối cảnh quy hoạch khu đô thị đại học Vinhomes Saigon Park Hóc Môn">
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <div class="vsp-top-image">
             <img src="/assets/images/tien-ich-vinhomes-sai-gon-park.webp" alt="Tiện ích Vinhomes Saigon Park-Vinhomes Hóc Môn">
         </div>
 
-<style>
-    /* ==============================================================
-       SECTION TIỆN ÍCH NỘI KHU (ZIGZAG LAYOUT - ĐỘC LẬP)
-       ============================================================== */
-    #vsp-amenities-section {
-        background-color: #0b2e21; /* Nền xanh thẫm Luxury */
-        padding: 80px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #e2e8f0;
-    }
+        <section id="vsp-amenities-section">
+            <div class="vsp-amn-container">
+                
+                <div class="vsp-amn-header">
+                    <h2 class="vsp-amn-title">HỆ SINH THÁI TIỆN ÍCH ĐẲNG CẤP</h2>
+                    <p class="vsp-amn-desc">Hệ tiện ích nội khu của <strong>Vinhomes Sài Gòn Park</strong> được quy hoạch theo mô hình “thành phố công viên tri thức” với 3 cụm tiện ích biểu tượng nâng tầm chuẩn sống.</p>
+                </div>
 
-    .vsp-amn-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+                <div class="vsp-amn-row">
+                    <div class="vsp-amn-text">
+                        <h3 class="vsp-amn-item-title">1. VinWonders Saigon Park — 22,7 ha</h3>
+                        <p class="vsp-amn-item-desc">Khu công viên giải trí VinWonders quy mô 22,7 ha bao gồm:</p>
+                        <ul class="vsp-amn-list">
+                            <li><strong>Khu thế giới nước</strong> — công viên nước tích hợp các đường trượt, hồ tạo sóng, khu trẻ em.</li>
+                            <li><strong>Khu thế giới thần tiên trẻ em</strong> — không gian giải trí gia đình với các hoạt động giáo dục – giải trí kết hợp.</li>
+                        </ul>
+                    </div>
+                    <div class="vsp-amn-img-box">
+                        <img src="/assets/images/vinwonder-vinhomes-saigon-park.webp" alt="VinWonders Saigon Park 22.7ha">
+                    </div>
+                </div>
 
-    /* ================= PHẦN HEADER (CĂN GIỮA) ================= */
-    .vsp-amn-header {
-        text-align: center;
-        max-width: 900px;
-        margin: 0 auto 60px auto;
-    }
+                <div class="vsp-amn-row">
+                    <div class="vsp-amn-text">
+                        <h3 class="vsp-amn-item-title">2. Sân Golf 36 hố — 90 ha</h3>
+                        <p class="vsp-amn-item-desc">Sân golf đẳng cấp quốc tế quy mô 90 ha với 36 hố, là một trong những sân golf trong đô thị lớn nhất khu vực Tây Bắc TP.HCM.</p>
+                        <p class="vsp-amn-item-desc">Đây là tiện ích nâng tầm giá trị bất động sản khu vực, đặc biệt cho dòng <strong>biệt thự golf</strong> tại Vinhomes Sài Gòn Park.</p>
+                    </div>
+                    <div class="vsp-amn-img-box">
+                        <img src="/assets/images/Phoi-canh-Vinhomes-Saigon-Park.webp" alt="Sân Golf 36 hố 90ha Vinhomes Hóc Môn">
+                    </div>
+                </div>
 
-    .vsp-amn-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(28px, 4vw, 40px);
-        color: #efdfa6; /* Màu vàng Gold */
-        margin: 0 0 20px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
+                <div class="vsp-amn-row">
+                    <div class="vsp-amn-text">
+                        <h3 class="vsp-amn-item-title">3. Công Viên Bách Thảo — 27 ha</h3>
+                        <p class="vsp-amn-item-desc">Công viên bách thảo 27 ha được thiết kế kết hợp giữa không gian xanh tự nhiên và khu nghiên cứu thực vật học, gắn với định hướng <em>khu đô thị đại học quốc tế</em> của dự án.</p>
+                    </div>
+                    <div class="vsp-amn-img-box">
+                        <img src="/assets/images/cong-vien-vinhomes-saigon-park.webp" alt="Công viên Bách Thảo 27ha Vinhomes Saigon Park">
+                    </div>
+                </div>
 
-    .vsp-amn-desc {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #e2e8f0;
-    }
+                <div class="vsp-amn-row">
+                    <div class="vsp-amn-text">
+                        <h3 class="vsp-amn-item-title">Các tiện ích nội khu khác</h3>
+                        <ul class="vsp-amn-list">
+                            <li>Hệ thống <strong>trường học liên cấp Vinschool</strong> + đại học quốc tế</li>
+                            <li><strong>Bệnh viện đa khoa Vinmec</strong></li>
+                            <li><strong>Trung tâm thương mại Vincom</strong></li>
+                            <li>Quảng trường, hồ điều hòa, công viên cây xanh nội khu</li>
+                            <li>Hệ thống đường nội khu kết nối trực tiếp QL22 và Đặng Công Bỉnh</li>
+                        </ul>
+                        <a href="javascript:void(0)" onclick="openPopupNew()" class="vsp-amn-btn">NHẬN BROCHURE CHI TIẾT ✔</a>
+                    </div>
+                    <div class="vsp-amn-img-box">
+                        <img src="/assets/images/vinschoose-vinhomes-sai-gon-park.webp" alt="Hệ thống tiện ích nội khu Vinhomes Hóc Môn">
+                    </div>
+                </div>
 
-    .vsp-amn-desc strong {
-        color: #efdfa6;
-    }
-
-    /* ================= LƯỚI 2 CỘT ZIGZAG ================= */
-    .vsp-amn-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 50px;
-        align-items: center;
-        margin-bottom: 70px; /* Khoảng cách giữa các mục */
-    }
-
-    .vsp-amn-row:last-child {
-        margin-bottom: 0;
-    }
-
-    /* Lệnh THẦN THÁNH tạo hiệu ứng so le: Các hàng chẵn sẽ đảo ngược vị trí */
-    .vsp-amn-row:nth-child(even) .vsp-amn-text {
-        order: 2; /* Cột chữ chuyển sang phải */
-    }
-    .vsp-amn-row:nth-child(even) .vsp-amn-img-box {
-        order: 1; /* Cột ảnh chuyển sang trái */
-    }
-
-    /* ================= ĐỊNH DẠNG NỘI DUNG ================= */
-    .vsp-amn-item-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 26px;
-        color: #efdfa6;
-        margin: 0 0 20px 0;
-        font-weight: 700;
-        line-height: 1.3;
-    }
-
-    .vsp-amn-item-desc {
-        font-size: 15.5px;
-        line-height: 1.7;
-        margin-bottom: 15px;
-        color: #cbd5e1;
-    }
-
-    .vsp-amn-item-desc strong {
-        color: #fff;
-    }
-
-    .vsp-amn-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 20px 0;
-    }
-
-    .vsp-amn-list li {
-        position: relative;
-        padding-left: 25px;
-        margin-bottom: 12px;
-        font-size: 15px;
-        line-height: 1.6;
-        color: #cbd5e1;
-    }
-
-    .vsp-amn-list li::before {
-        content: '♦';
-        position: absolute;
-        left: 0;
-        top: 2px;
-        color: #efdfa6;
-        font-size: 12px;
-    }
-
-    /* ================= ĐỊNH DẠNG HÌNH ẢNH ================= */
-    .vsp-amn-img-box {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-        border: 1px solid rgba(197, 160, 89, 0.2);
-    }
-
-    .vsp-amn-img-box img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    .vsp-amn-img-box:hover img {
-        transform: scale(1.03);
-    }
-
-    /* ================= NÚT BẤM ================= */
-    .vsp-amn-btn {
-        display: inline-block;
-        background-color: #ef4444; /* Đỏ rực rỡ thu hút click */
-        color: #fff !important;
-        text-decoration: none;
-        padding: 14px 35px;
-        font-size: 15px;
-        font-weight: 700;
-        border-radius: 8px;
-        margin-top: 15px;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-    }
-
-    .vsp-amn-btn:hover {
-        background-color: #dc2626;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-    }
-
-    /* ================= RESPONSIVE CHO MOBILE ================= */
-    @media (max-width: 968px) {
-        .vsp-amn-row {
-            grid-template-columns: 1fr; /* Về 1 cột trên điện thoại */
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        /* Ép hình ảnh luôn nằm trên chữ trên Mobile, vô hiệu hóa zigzag */
-        .vsp-amn-row:nth-child(n) .vsp-amn-img-box {
-            order: 1 !important; 
-        }
-        .vsp-amn-row:nth-child(n) .vsp-amn-text {
-            order: 2 !important;
-        }
-        
-        .vsp-amn-item-title {
-            font-size: 22px;
-        }
-    }
-</style>
-
-<section id="vsp-amenities-section">
-    <div class="vsp-amn-container">
-        
-        <div class="vsp-amn-header">
-            <h2 class="vsp-amn-title">HỆ SINH THÁI TIỆN ÍCH ĐẲNG CẤP</h2>
-            <p class="vsp-amn-desc">Hệ tiện ích nội khu của <strong>Vinhomes Sài Gòn Park</strong> được quy hoạch theo mô hình “thành phố công viên tri thức” với 3 cụm tiện ích biểu tượng nâng tầm chuẩn sống.</p>
-        </div>
-
-        <div class="vsp-amn-row">
-            <div class="vsp-amn-text">
-                <h3 class="vsp-amn-item-title">1. VinWonders Saigon Park — 22,7 ha</h3>
-                <p class="vsp-amn-item-desc">Khu công viên giải trí VinWonders quy mô 22,7 ha bao gồm:</p>
-                <ul class="vsp-amn-list">
-                    <li><strong>Khu thế giới nước</strong> — công viên nước tích hợp các đường trượt, hồ tạo sóng, khu trẻ em.</li>
-                    <li><strong>Khu thế giới thần tiên trẻ em</strong> — không gian giải trí gia đình với các hoạt động giáo dục – giải trí kết hợp.</li>
-                </ul>
             </div>
-            <div class="vsp-amn-img-box">
-                <img src="/assets/images/vinwonder-vinhomes-saigon-park.webp" alt="VinWonders Saigon Park 22.7ha">
+        </section>
+
+        <section id="vsp-masterplan-section">
+            <div class="vsp-mp-container">
+                
+                <div class="vsp-mp-header">
+                    <h2 class="vsp-mp-title">MẶT BẰNG <br> Vinhomes Saigon Park</h2>
+                    <div class="vsp-mp-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
+                    
+                    <p class="vsp-mp-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
+                    
+                    <p class="vsp-mp-desc">Việc phân bổ mật độ xây dựng chỉ khoảng <strong>25%</strong> cho thấy tâm huyết của chủ đầu tư trong việc ưu tiên không gian sống cho cư dân. Các trục đường nội khu được quy hoạch theo dạng bàn cờ, lộ giới từ <strong>13m đến 52m</strong>.</p>
+                </div>
+
+                <div class="vsp-mp-image-wrapper">
+                    <img src="/assets/images/mat-bang-tong-the-vinhomes-hoc-mon.webp" alt="Mặt bằng tổng thể dự án Vinhomes Saigon Park Hóc Môn 1080ha">
+                </div>
+
+                <div class="vsp-mp-grid">
+                    
+                    <div class="vsp-mp-card">
+                        <i class="fa-regular fa-building vsp-mp-icon"></i>
+                        <h4>Phân khu Cao tầng</h4>
+                        <p>Gồm các block căn hộ hiện đại chuẩn Sapphire và Ruby, tầm nhìn panorama.</p>
+                    </div>
+
+                    <div class="vsp-mp-card">
+                        <i class="fa-solid fa-house-chimney-window vsp-mp-icon"></i>
+                        <h4>Phân khu Thấp tầng</h4>
+                        <p>Quần thể Nhà phố liền kề, Shophouse thương mại sầm uất và Biệt thự đơn lập ven hồ.</p>
+                    </div>
+
+                    <div class="vsp-mp-card">
+                        <i class="fa-solid fa-graduation-cap vsp-mp-icon"></i>
+                        <h4>Phân khu Giáo dục</h4>
+                        <p>Hệ thống trường liên cấp chuẩn quốc tế Vinschool và hạt nhân Đô thị Đại học.</p>
+                    </div>
+
+                    <div class="vsp-mp-card">
+                        <i class="fa-solid fa-leaf vsp-mp-icon"></i>
+                        <h4>Phân khu Tiện ích</h4>
+                        <p>Bệnh viện Vinmec, TTTM Vincom Mega Mall, Công viên trung tâm và hồ điều hòa.</p>
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-
-        <div class="vsp-amn-row">
-            <div class="vsp-amn-text">
-                <h3 class="vsp-amn-item-title">2. Sân Golf 36 hố — 90 ha</h3>
-                <p class="vsp-amn-item-desc">Sân golf đẳng cấp quốc tế quy mô 90 ha với 36 hố, là một trong những sân golf trong đô thị lớn nhất khu vực Tây Bắc TP.HCM.</p>
-                <p class="vsp-amn-item-desc">Đây là tiện ích nâng tầm giá trị bất động sản khu vực, đặc biệt cho dòng <strong>biệt thự golf</strong> tại Vinhomes Sài Gòn Park.</p>
-            </div>
-            <div class="vsp-amn-img-box">
-                <img src="/assets/images/Phoi-canh-Vinhomes-Saigon-Park.webp" alt="Sân Golf 36 hố 90ha Vinhomes Hóc Môn">
-            </div>
-        </div>
-
-        <div class="vsp-amn-row">
-            <div class="vsp-amn-text">
-                <h3 class="vsp-amn-item-title">3. Công Viên Bách Thảo — 27 ha</h3>
-                <p class="vsp-amn-item-desc">Công viên bách thảo 27 ha được thiết kế kết hợp giữa không gian xanh tự nhiên và khu nghiên cứu thực vật học, gắn với định hướng <em>khu đô thị đại học quốc tế</em> của dự án.</p>
-            </div>
-            <div class="vsp-amn-img-box">
-                <img src="/assets/images/cong-vien-vinhomes-saigon-park.webp" alt="Công viên Bách Thảo 27ha Vinhomes Saigon Park">
-            </div>
-        </div>
-
-        <div class="vsp-amn-row">
-            <div class="vsp-amn-text">
-                <h3 class="vsp-amn-item-title">Các tiện ích nội khu khác</h3>
-                <ul class="vsp-amn-list">
-                    <li>Hệ thống <strong>trường học liên cấp Vinschool</strong> + đại học quốc tế</li>
-                    <li><strong>Bệnh viện đa khoa Vinmec</strong></li>
-                    <li><strong>Trung tâm thương mại Vincom</strong></li>
-                    <li>Quảng trường, hồ điều hòa, công viên cây xanh nội khu</li>
-                    <li>Hệ thống đường nội khu kết nối trực tiếp QL22 và Đặng Công Bỉnh</li>
-                </ul>
-                <a href="javascript:void(0)" onclick="openPopupNew()" class="vsp-amn-btn">NHẬN BROCHURE CHI TIẾT ✔</a>
-            </div>
-            <div class="vsp-amn-img-box">
-                <img src="/assets/images/vinschoose-vinhomes-sai-gon-park.webp" alt="Hệ thống tiện ích nội khu Vinhomes Hóc Môn">
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<style>
-    /* ==============================================================
-       SECTION MẶT BẰNG TỔNG THỂ (BỐ CỤC ĐẠI ĐÔ THỊ)
-       ============================================================== */
-    #vsp-masterplan-section {
-        background-color: #081a12; /* Màu xanh đen sâu hơn một chút để tạo chiều sâu */
-        padding: 80px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #e2e8f0;
-    }
-
-    .vsp-mp-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* ================= HEADER & NỘI DUNG MÔ TẢ ================= */
-    .vsp-mp-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .vsp-mp-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(28px, 4vw, 40px);
-        color: #efdfa6;
-        margin: 0 0 10px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 2px;
-    }
-
-    .vsp-mp-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-size: 22px;
-        color: #c5a059;
-        margin: 0 0 25px 0;
-        font-style: italic;
-    }
-
-    .vsp-mp-desc {
-        font-size: 16px;
-        line-height: 1.8;
-        max-width: 950px;
-        margin: 0 auto 15px auto;
-        color: #cbd5e1;
-    }
-
-    .vsp-mp-desc strong {
-        color: #efdfa6;
-        font-weight: 700;
-    }
-
-    /* ================= KHUNG ẢNH MẶT BẰNG LỚN ================= */
-    .vsp-mp-image-wrapper {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid rgba(197, 160, 89, 0.3);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-        margin-bottom: 50px;
-        background: rgba(255,255,255,0.02);
-    }
-
-    .vsp-mp-image-wrapper img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.5s ease;
-    }
-
-    .vsp-mp-image-wrapper:hover img {
-        transform: scale(1.02); /* Phóng to nhẹ khi xem mặt bằng */
-    }
-
-    /* ================= GRID 4 PHÂN KHU (CARDS) ================= */
-    .vsp-mp-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* Chia 4 cột bằng nhau trên Desktop */
-        gap: 25px;
-    }
-
-    .vsp-mp-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        padding: 30px 20px;
-        border-radius: 10px;
-        text-align: center;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Hiệu ứng viền vàng chạy khi đưa chuột vào Card */
-    .vsp-mp-card::before {
-        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-        background: var(--lux-gold, #c5a059);
-        transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
-    }
-
-    .vsp-mp-card:hover {
-        background: rgba(197, 160, 89, 0.05);
-        border-color: rgba(197, 160, 89, 0.4);
-        transform: translateY(-8px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    }
-
-    .vsp-mp-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .vsp-mp-icon {
-        font-size: 32px;
-        color: #efdfa6;
-        margin-bottom: 20px;
-        display: inline-block;
-    }
-
-    .vsp-mp-card h4 {
-        font-family: 'Playfair Display', serif;
-        font-size: 19px;
-        color: #fff;
-        margin: 0 0 12px 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .vsp-mp-card p {
-        font-size: 14.5px;
-        line-height: 1.6;
-        color: #94a3b8;
-        margin: 0;
-    }
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 968px) {
-        .vsp-mp-grid {
-            grid-template-columns: repeat(2, 1fr); /* Xuống 2 cột trên Tablet */
-        }
-    }
-
-    @media (max-width: 550px) {
-        .vsp-mp-grid {
-            grid-template-columns: 1fr; /* Xuống 1 cột trên Mobile */
-        }
-        .vsp-mp-desc {
-            text-align: justify;
-            text-align-last: center;
-        }
-    }
-</style>
-
-<section id="vsp-masterplan-section">
-    <div class="vsp-mp-container">
-        
-        <div class="vsp-mp-header">
-            <h2 class="vsp-mp-title">MẶT BẰNG <br> Vinhomes Saigon Park</h2>
-            <div class="vsp-mp-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
-            
-            <p class="vsp-mp-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
-            
-            <p class="vsp-mp-desc">Việc phân bổ mật độ xây dựng chỉ khoảng <strong>25%</strong> cho thấy tâm huyết của chủ đầu tư trong việc ưu tiên không gian sống cho cư dân. Các trục đường nội khu được quy hoạch theo dạng bàn cờ, lộ giới từ <strong>13m đến 52m</strong>.</p>
-        </div>
-
-        <div class="vsp-mp-image-wrapper">
-            <img src="/assets/images/mat-bang-tong-the-vinhomes-hoc-mon.webp" alt="Mặt bằng tổng thể dự án Vinhomes Saigon Park Hóc Môn 1080ha">
-        </div>
-
-        <div class="vsp-mp-grid">
-            
-            <div class="vsp-mp-card">
-                <i class="fa-regular fa-building vsp-mp-icon"></i>
-                <h4>Phân khu Cao tầng</h4>
-                <p>Gồm các block căn hộ hiện đại chuẩn Sapphire và Ruby, tầm nhìn panorama.</p>
-            </div>
-
-            <div class="vsp-mp-card">
-                <i class="fa-solid fa-house-chimney-window vsp-mp-icon"></i>
-                <h4>Phân khu Thấp tầng</h4>
-                <p>Quần thể Nhà phố liền kề, Shophouse thương mại sầm uất và Biệt thự đơn lập ven hồ.</p>
-            </div>
-
-            <div class="vsp-mp-card">
-                <i class="fa-solid fa-graduation-cap vsp-mp-icon"></i>
-                <h4>Phân khu Giáo dục</h4>
-                <p>Hệ thống trường liên cấp chuẩn quốc tế Vinschool và hạt nhân Đô thị Đại học.</p>
-            </div>
-
-            <div class="vsp-mp-card">
-                <i class="fa-solid fa-leaf vsp-mp-icon"></i>
-                <h4>Phân khu Tiện ích</h4>
-                <p>Bệnh viện Vinmec, TTTM Vincom Mega Mall, Công viên trung tâm và hồ điều hòa.</p>
-            </div>
-
-        </div>
-
-    </div>
-</section>
+        </section>
 
         <div class="vsp-top-image">
             <img src="https://i.ibb.co/MyrF53DD/vinhomes-sai-gon-park.webp" alt="Mặt Bằng Vinhomes Saigon Park-Vinhomes Hóc Môn">
         </div>
 
- <style>
-    /* ==============================================================
-       SECTION SẢN PHẨM (ĐỘC LẬP - BỐ CỤC 3 CỘT)
-       ============================================================== */
-    #vsp-products-section {
-        background-color: #05080f; /* Nền tối đồng bộ */
-        padding: 80px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #e2e8f0;
-    }
-
-    .vsp-prod-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    /* ================= HEADER ================= */
-    .vsp-prod-header {
-        text-align: center;
-        max-width: 800px;
-        margin: 0 auto 50px auto;
-    }
-
-    .vsp-prod-main-title {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(26px, 4vw, 36px);
-        color: #efdfa6;
-        margin: 0 0 15px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .vsp-prod-main-desc {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #94a3b8;
-    }
-
-    /* ================= GRID 3 CỘT (CARDS) ================= */
-    .vsp-prod-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-    }
-
-    .vsp-prod-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(197, 160, 89, 0.15);
-        border-radius: 12px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column; /* Quan trọng để đẩy nút xuống đáy */
-        transition: all 0.4s ease;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .vsp-prod-card:hover {
-        transform: translateY(-10px);
-        border-color: rgba(197, 160, 89, 0.5);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-        background: rgba(197, 160, 89, 0.03);
-    }
-
-    /* Hình ảnh sản phẩm */
-    .vsp-prod-img-box {
-        width: 100%;
-        height: 240px; /* Cố định chiều cao ảnh */
-        overflow: hidden;
-    }
-
-    .vsp-prod-img-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        transition: transform 0.6s ease;
-    }
-
-    .vsp-prod-card:hover .vsp-prod-img-box img {
-        transform: scale(1.05);
-    }
-
-    /* Nội dung thẻ */
-    .vsp-prod-content {
-        padding: 25px 20px;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1; /* Chiếm hết không gian còn lại để đẩy nút xuống */
-    }
-
-    .vsp-prod-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 20px;
-        color: #efdfa6;
-        margin: 0 0 15px 0;
-        text-transform: uppercase;
-        font-weight: 700;
-        text-align: center;
-        letter-spacing: 1px;
-    }
-
-    .vsp-prod-desc {
-        font-size: 14.5px;
-        line-height: 1.7;
-        color: #cbd5e1;
-        margin: 0 0 25px 0;
-        text-align: justify;
-        text-align-last: center;
-    }
-
-    .vsp-prod-desc strong {
-        color: #fff;
-    }
-
-    /* Nút bấm Xem chi tiết */
-    .vsp-prod-btn-wrapper {
-        margin-top: auto; /* Lực đẩy ma thuật đẩy nút xuống sát đáy */
-        text-align: center;
-    }
-
-    .vsp-prod-btn {
-        display: inline-block;
-        padding: 10px 25px;
-        background: transparent;
-        color: var(--lux-gold, #c5a059);
-        border: 1px solid var(--lux-gold, #c5a059);
-        font-weight: 600;
-        font-size: 13px;
-        border-radius: 50px; /* Nút bo tròn hoàn toàn */
-        text-decoration: none;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .vsp-prod-btn:hover {
-        background: var(--lux-gold, #c5a059);
-        color: #000 !important;
-        box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4);
-    }
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 968px) {
-        .vsp-prod-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2 cột trên Tablet */
-        }
-    }
-
-    @media (max-width: 650px) {
-        .vsp-prod-grid {
-            grid-template-columns: 1fr; /* 1 cột trên Mobile */
-        }
-        .vsp-prod-desc {
-            text-align: justify;
-            text-align-last: left;
-        }
-        .vsp-prod-title {
-            font-size: 18px;
-        }
-    }
-</style>
-
-<section id="vsp-products-section">
-    <div class="vsp-prod-container">
-        
-        <div class="vsp-prod-header">
-            <h2 class="vsp-prod-main-title">SẢN PHẨM VINHOMES SAI GON PARK</h2>
-            <p class="vsp-prod-main-desc">Dự án mang đến danh mục sản phẩm đa dạng, phù hợp với cả nhu cầu an cư lạc nghiệp lẫn đầu tư sinh lời bền vững cho những nhà đầu tư thông thái.</p>
-        </div>
-
-        <div class="vsp-prod-grid">
-            
-            <div class="vsp-prod-card">
-                <div class="vsp-prod-img-box">
-                    <img src="/assets/images/can-ho-vinhomes-sai-gon-park.webp" alt="Căn hộ cao tầng Vinhomes Hóc Môn">
+        <section id="vsp-products-section">
+            <div class="vsp-prod-container">
+                
+                <div class="vsp-prod-header">
+                    <h2 class="vsp-prod-main-title">SẢN PHẨM VINHOMES SAI GON PARK</h2>
+                    <p class="vsp-prod-main-desc">Dự án mang đến danh mục sản phẩm đa dạng, phù hợp với cả nhu cầu an cư lạc nghiệp lẫn đầu tư sinh lời bền vững cho những nhà đầu tư thông thái.</p>
                 </div>
-                <div class="vsp-prod-content">
-                    <h3 class="vsp-prod-title">Căn Hộ Cao Tầng</h3>
-                    <p class="vsp-prod-desc">Cung cấp từ <strong>15.000 - 18.000 căn hộ cao cấp</strong>, đa dạng loại hình từ Studio, 1PN đến 3PN, Penthouse & Duplex. Thiết kế hiện đại, thông minh, tối ưu công năng với tầm nhìn panorama ôm trọn công viên và cảnh quan sông nước tuyệt mỹ.</p>
-                    <div class="vsp-prod-btn-wrapper">
-                        <a href="/du-an/vinhomes-sai-gon-park/can-ho.html" class="vsp-prod-btn">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
 
-            <div class="vsp-prod-card">
-                <div class="vsp-prod-img-box">
-                    <img src="/assets/images/nha-pho-vinhomes-saigon-park.webp" alt="Nhà phố Shophouse Vinhomes Hóc Môn">
-                </div>
-                <div class="vsp-prod-content">
-                    <h3 class="vsp-prod-title">Nhà Phố & Shophouse</h3>
-                    <p class="vsp-prod-desc">Quy mô <strong>2.491 căn nhà phố liền kề & Shophouse</strong> thiết kế 5 tầng linh hoạt. Sở hữu vị trí mặt tiền đắc địa trên các trục đường huyết mạch, lý tưởng để kết hợp vừa ở an cư vừa kinh doanh sinh lời hiệu quả, tỷ lệ khai thác vượt trội.</p>
-                    <div class="vsp-prod-btn-wrapper">
-                        <a href="/du-an/vinhomes-sai-gon-park/nha-pho.html" class="vsp-prod-btn">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="vsp-prod-card">
-                <div class="vsp-prod-img-box">
-                    <img src="/assets/images/biet-thu-vinhomes-sai-gon-park.webp" alt="Biệt thự dinh thự vinhomes hóc môn">
-                </div>
-                <div class="vsp-prod-content">
-                    <h3 class="vsp-prod-title">Biệt Thự & Dinh Thự</h3>
-                    <p class="vsp-prod-desc">Phiên bản giới hạn với <strong>552 căn biệt thự & dinh thự</strong> cao cấp, thiết kế tân cổ điển ven hệ thống sinh thái cảnh quan yên tĩnh. Đặc quyền riêng tư tuyệt đối, khẳng định vị thế chủ nhân và là kênh trú ẩn tài sản an toàn bậc nhất.</p>
-                    <div class="vsp-prod-btn-wrapper">
-                        <a href="/du-an/vinhomes-sai-gon-park/biet-thu.html" class="vsp-prod-btn">Xem chi tiết</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>  
-
-<style>
-    /* ==============================================================
-       SECTION GIÁ BÁN & CHÍNH SÁCH (PHIÊN BẢN CÁCH LY TUYỆT ĐỐI - V3)
-       ============================================================== */
-    #vsp-final-price-section-v3 {
-        background-color: #05080f; 
-        padding: 80px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #e2e8f0;
-        border-top: 1px solid rgba(197, 160, 89, 0.1);
-    }
-
-    .vsp-price-v3-container { max-width: 1200px; margin: 0 auto; }
-    
-    .vsp-price-v3-header { text-align: center; margin-bottom: 40px; }
-    .vsp-price-v3-title { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 36px); color: #efdfa6; margin: 0; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
-
-    /* Bảng giá */
-    .vsp-price-v3-table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 80px; border-radius: 12px; border: 1px solid rgba(197, 160, 89, 0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.3); background: rgba(255, 255, 255, 0.02); }
-    .vsp-price-v3-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-    .vsp-price-v3-table th { background: rgba(197, 160, 89, 0.1); color: #efdfa6; font-family: 'Cinzel', serif; padding: 18px 20px; text-align: left; border-bottom: 1px solid rgba(197, 160, 89, 0.3); font-size: 14px; font-weight: 700; text-transform: uppercase; }
-    .vsp-price-v3-table td { padding: 18px 20px; font-size: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: #cbd5e1; }
-    .vsp-price-v3-table tr:last-child td { border-bottom: none; }
-    .vsp-price-v3-table tr:hover td { background: rgba(197, 160, 89, 0.03); }
-    .vsp-price-v3-table td:first-child { font-family: 'Playfair Display', serif; font-weight: 700; color: #fff; font-size: 16px; }
-    .vsp-price-v3-highlight { color: #c5a059 !important; font-weight: 700; }
-
-    /* Khối Chính sách & Form */
-    .vsp-price-v3-main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; align-items: stretch; }
-    .vsp-price-v3-policy-left { display: flex; flex-direction: column; }
-    .vsp-price-v3-policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; }
-    
-    .vsp-price-v3-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.15); border-radius: 12px; padding: 25px 20px; transition: all 0.3s ease; }
-    .vsp-price-v3-card:hover { transform: translateY(-5px); background: rgba(197, 160, 89, 0.05); border-color: rgba(197, 160, 89, 0.4); }
-    .vsp-price-v3-icon { font-size: 28px; color: #60a5fa; margin-bottom: 15px; }
-    .vsp-price-v3-card h4 { font-family: 'Cinzel', serif; font-size: 16px; color: #efdfa6; margin: 0 0 10px 0; font-weight: 700; line-height: 1.4; }
-    .vsp-price-v3-card p { font-size: 14px; color: #94a3b8; line-height: 1.6; margin: 0; }
-    .vsp-price-v3-card p strong { color: #fff; }
-
-    /* Form & Rating */
-    .vsp-price-v3-form-box { background: linear-gradient(145deg, rgba(11, 23, 39, 0.9) 0%, rgba(5, 8, 15, 0.9) 100%); border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 12px; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: center; }
-    .vsp-price-v3-form-title { font-family: 'Cinzel', serif; font-size: 22px; color: #efdfa6; text-align: center; margin: 0 0 15px 0; font-weight: 700; }
-    
-    .vsp-price-v3-rating-box { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; color: #f1c40f; background: rgba(255,255,255,0.03); padding: 6px 15px; border-radius: 20px; border: 1px solid rgba(197, 160, 89, 0.2); }
-    .vsp-price-v3-stars { font-size: 15px; letter-spacing: 2px; }
-    .vsp-price-v3-count { font-size: 13px; color: #aaa; }
-    
-    .vsp-price-v3-form-desc { text-align: center; font-size: 14px; color: #cbd5e1; margin-bottom: 25px; line-height: 1.6; }
-    
-    .vsp-price-v3-input-group { display: flex; flex-direction: column; gap: 15px; }
-    .vsp-price-v3-input { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 14px 20px; font-size: 14px; border-radius: 8px; outline: none; transition: 0.3s; box-sizing: border-box; font-family: 'Manrope', sans-serif; }
-    .vsp-price-v3-input:focus { border-color: #c5a059; background: rgba(197, 160, 89, 0.05); }
-    .vsp-price-v3-btn { width: 100%; padding: 15px; background: #ef4444; color: #fff; border: none; font-weight: 700; font-size: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; margin-top: 5px; font-family: 'Manrope', sans-serif; text-transform: uppercase; }
-    .vsp-price-v3-btn:hover { background: #dc2626; box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4); }
-    
-    .vsp-price-v3-success { display: none; padding: 20px; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; border-radius: 8px; text-align: center; margin-top: 20px; }
-    .vsp-price-v3-success h4 { color: #2ecc71; margin: 0 0 5px 0; font-size: 16px; }
-    .vsp-price-v3-success p { color: #ddd; margin: 0; font-size: 14px; }
-
-    @media (max-width: 968px) { .vsp-price-v3-main-grid { grid-template-columns: 1fr; gap: 40px; } }
-    @media (max-width: 600px) { .vsp-price-v3-policy-grid { grid-template-columns: 1fr; } .vsp-price-v3-form-box { padding: 30px 20px; } }
-</style>
-
-<section id="vsp-final-price-section-v3">
-    <div class="vsp-price-v3-container">
-        
-        <div class="vsp-price-v3-header">
-            <h2 class="vsp-price-v3-title">THÔNG TIN CHI TIẾT CÁC LOẠI HÌNH SẢN PHẨM</h2>
-        </div>
-        
-        <div class="vsp-price-v3-table-wrapper">
-            <table class="vsp-price-v3-table">
-                <thead>
-                    <tr>
-                        <th>Loại hình</th>
-                        <th>Số lượng</th>
-                        <th>Diện tích / Loại</th>
-                        <th>Giá dự kiến</th>
-                        <th>Đặc điểm nổi bật</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Căn hộ cao tầng</td>
-                        <td>15.000 – 18.000 căn</td>
-                        <td>1PN – 4PN, Penthouse</td>
-                        <td class="vsp-price-v3-highlight">Đang cập nhật</td>
-                        <td>Smarthome, cao 12–22 tầng</td>
-                    </tr>
-                    <tr>
-                        <td>Nhà phố & Shophouse</td>
-                        <td>2.491 căn liên kế</td>
-                        <td>5 tầng linh hoạt</td>
-                        <td class="vsp-price-v3-highlight">Liên hệ</td>
-                        <td>Trục thương mại sầm uất</td>
-                    </tr>
-                    <tr>
-                        <td>Biệt thự & Dinh thự</td>
-                        <td>552 căn đẳng cấp</td>
-                        <td>Tối đa 3 tầng</td>
-                        <td class="vsp-price-v3-highlight">Liên hệ</td>
-                        <td>Ven kênh rạch, riêng tư</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="vsp-price-v3-header">
-            <h2 class="vsp-price-v3-title">CHÍNH SÁCH BÁN HÀNG VINHOMES SÀI GÒN PARK</h2>
-        </div>
-
-        <div class="vsp-price-v3-main-grid">
-            
-            <div class="vsp-price-v3-policy-left">
-                <div class="vsp-price-v3-policy-grid">
-                    <div class="vsp-price-v3-card">
-                        <i class="fa-solid fa-shield-halved vsp-price-v3-icon"></i>
-                        <h4>5 NĂM KHÔNG LO LÃI SUẤT</h4>
-                        <p>Chính sách siêu ưu đãi giúp khách hàng an tâm tài chính trong suốt 5 năm đầu sở hữu.</p>
-                    </div>
+                <div class="vsp-prod-grid">
                     
-                    <div class="vsp-price-v3-card">
-                        <i class="fa-solid fa-chart-line vsp-price-v3-icon"></i>
-                        <h4>LÃI SUẤT DƯỚI 6%</h4>
-                        <p>Cam kết lãi suất cố định cực kỳ ưu đãi <strong>dưới 6%</strong>, bảo vệ khách hàng trước biến động thị trường.</p>
+                    <div class="vsp-prod-card">
+                        <div class="vsp-prod-img-box">
+                            <img src="/assets/images/can-ho-vinhomes-sai-gon-park.webp" alt="Căn hộ cao tầng Vinhomes Hóc Môn">
+                        </div>
+                        <div class="vsp-prod-content">
+                            <h3 class="vsp-prod-title">Căn Hộ Cao Tầng</h3>
+                            <p class="vsp-prod-desc">Cung cấp từ <strong>15.000 - 18.000 căn hộ cao cấp</strong>, đa dạng loại hình từ Studio, 1PN đến 3PN, Penthouse & Duplex. Thiết kế hiện đại, thông minh, tối ưu công năng với tầm nhìn panorama ôm trọn công viên và cảnh quan sông nước tuyệt mỹ.</p>
+                            <div class="vsp-prod-btn-wrapper">
+                                <a href="/du-an/vinhomes-sai-gon-park/can-ho.html" class="vsp-prod-btn">Xem chi tiết</a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="vsp-price-v3-card">
-                        <i class="fa-solid fa-building-columns vsp-price-v3-icon"></i>
-                        <h4>HỖ TRỢ VAY 80%</h4>
-                        <p>Ngân hàng hỗ trợ cho vay tối đa <strong>80% giá trị căn hộ</strong> với thời hạn vay lên đến 35 năm.</p>
+                    <div class="vsp-prod-card">
+                        <div class="vsp-prod-img-box">
+                            <img src="/assets/images/nha-pho-vinhomes-saigon-park.webp" alt="Nhà phố Shophouse Vinhomes Hóc Môn">
+                        </div>
+                        <div class="vsp-prod-content">
+                            <h3 class="vsp-prod-title">Nhà Phố & Shophouse</h3>
+                            <p class="vsp-prod-desc">Quy mô <strong>2.491 căn nhà phố liền kề & Shophouse</strong> thiết kế 5 tầng linh hoạt. Sở hữu vị trí mặt tiền đắc địa trên các trục đường huyết mạch, lý tưởng để kết hợp vừa ở an cư vừa kinh doanh sinh lời hiệu quả, tỷ lệ khai thác vượt trội.</p>
+                            <div class="vsp-prod-btn-wrapper">
+                                <a href="/du-an/vinhomes-sai-gon-park/nha-pho.html" class="vsp-prod-btn">Xem chi tiết</a>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="vsp-price-v3-card">
-                        <i class="fa-solid fa-sack-dollar vsp-price-v3-icon"></i>
-                        <h4>VỐN TỰ CÓ 15 – 20%</h4>
-                        <p>Chỉ cần thanh toán trước 15-20% để ký HĐMB, nhận nhà ngay khi đủ điều kiện bàn giao.</p>
+                    <div class="vsp-prod-card">
+                        <div class="vsp-prod-img-box">
+                            <img src="/assets/images/biet-thu-vinhomes-sai-gon-park.webp" alt="Biệt thự dinh thự vinhomes hóc môn">
+                        </div>
+                        <div class="vsp-prod-content">
+                            <h3 class="vsp-prod-title">Biệt Thự & Dinh Thự</h3>
+                            <p class="vsp-prod-desc">Phiên bản giới hạn với <strong>552 căn biệt thự & dinh thự</strong> cao cấp, thiết kế tân cổ điển ven hệ thống sinh thái cảnh quan yên tĩnh. Đặc quyền riêng tư tuyệt đối, khẳng định vị thế chủ nhân và là kênh trú ẩn tài sản an toàn bậc nhất.</p>
+                            <div class="vsp-prod-btn-wrapper">
+                                <a href="/du-an/vinhomes-sai-gon-park/biet-thu.html" class="vsp-prod-btn">Xem chi tiết</a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
+        </section>  
 
-            <div class="vsp-price-v3-form-box">
-                <h3 class="vsp-price-v3-form-title">BÁO GIÁ & CSBH MỚI NHẤT</h3>
+        <section id="vsp-final-price-section-v3">
+            <div class="vsp-price-v3-container">
                 
-                <div style="text-align: center;">
-                    <div class="vsp-price-v3-rating-box">
-                        <span class="vsp-price-v3-stars">★★★★★</span>
-                        <span id="vsp-final-count-v3" class="vsp-price-v3-count">(Đang tải...)</span>
-                    </div>
+                <div class="vsp-price-v3-header">
+                    <h2 class="vsp-price-v3-title">THÔNG TIN CHI TIẾT CÁC LOẠI HÌNH SẢN PHẨM</h2>
+                </div>
+                
+                <div class="vsp-price-v3-table-wrapper">
+                    <table class="vsp-price-v3-table">
+                        <thead>
+                            <tr>
+                                <th>Loại hình</th>
+                                <th>Số lượng</th>
+                                <th>Diện tích / Loại</th>
+                                <th>Giá dự kiến</th>
+                                <th>Đặc điểm nổi bật</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Căn hộ cao tầng</td>
+                                <td>15.000 – 18.000 căn</td>
+                                <td>1PN – 4PN, Penthouse</td>
+                                <td class="vsp-price-v3-highlight">Đang cập nhật</td>
+                                <td>Smarthome, cao 12–22 tầng</td>
+                            </tr>
+                            <tr>
+                                <td>Nhà phố & Shophouse</td>
+                                <td>2.491 căn liên kế</td>
+                                <td>5 tầng linh hoạt</td>
+                                <td class="vsp-price-v3-highlight">Liên hệ</td>
+                                <td>Trục thương mại sầm uất</td>
+                            </tr>
+                            <tr>
+                                <td>Biệt thự & Dinh thự</td>
+                                <td>552 căn đẳng cấp</td>
+                                <td>Tối đa 3 tầng</td>
+                                <td class="vsp-price-v3-highlight">Liên hệ</td>
+                                <td>Ven kênh rạch, riêng tư</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <p class="vsp-price-v3-form-desc">Đăng ký để nhận trọn bộ tài liệu bảng giá chi tiết từng phân khu và phương án vay vốn tối ưu nhất.</p>
-                
-                <form id="vsp-final-form-v3" class="vsp-price-v3-input-group">
-                    <input type="text" id="vsp-final-name-v3" class="vsp-price-v3-input" placeholder="Họ tên *" required>
-                    <input type="tel" id="vsp-final-phone-v3" class="vsp-price-v3-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
-                    <input type="email" id="vsp-final-email-v3" class="vsp-price-v3-input" placeholder="Email" required>
-                    <button type="submit" id="vsp-final-btn-v3" class="vsp-price-v3-btn">NHẬN BÁO GIÁ</button>
-                </form>
+                <div class="vsp-price-v3-header">
+                    <h2 class="vsp-price-v3-title">CHÍNH SÁCH BÁN HÀNG VINHOMES SÀI GÒN PARK</h2>
+                </div>
 
-                <div id="vsp-final-success-v3" class="vsp-price-v3-success">
-                    <h4>✔ ĐĂNG KÝ THÀNH CÔNG!</h4>
-                    <p>Hệ thống đang gửi tài liệu qua Zalo/Email. Xin cảm ơn.</p>
+                <div class="vsp-price-v3-main-grid">
+                    
+                    <div class="vsp-price-v3-policy-left">
+                        <div class="vsp-price-v3-policy-grid">
+                            <div class="vsp-price-v3-card">
+                                <i class="fa-solid fa-shield-halved vsp-price-v3-icon"></i>
+                                <h4>5 NĂM KHÔNG LO LÃI SUẤT</h4>
+                                <p>Chính sách siêu ưu đãi giúp khách hàng an tâm tài chính trong suốt 5 năm đầu sở hữu.</p>
+                            </div>
+                            
+                            <div class="vsp-price-v3-card">
+                                <i class="fa-solid fa-chart-line vsp-price-v3-icon"></i>
+                                <h4>LÃI SUẤT DƯỚI 6%</h4>
+                                <p>Cam kết lãi suất cố định cực kỳ ưu đãi <strong>dưới 6%</strong>, bảo vệ khách hàng trước biến động thị trường.</p>
+                            </div>
+
+                            <div class="vsp-price-v3-card">
+                                <i class="fa-solid fa-building-columns vsp-price-v3-icon"></i>
+                                <h4>HỖ TRỢ VAY 80%</h4>
+                                <p>Ngân hàng hỗ trợ cho vay tối đa <strong>80% giá trị căn hộ</strong> với thời hạn vay lên đến 35 năm.</p>
+                            </div>
+
+                            <div class="vsp-price-v3-card">
+                                <i class="fa-solid fa-sack-dollar vsp-price-v3-icon"></i>
+                                <h4>VỐN TỰ CÓ 15 – 20%</h4>
+                                <p>Chỉ cần thanh toán trước 15-20% để ký HĐMB, nhận nhà ngay khi đủ điều kiện bàn giao.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vsp-price-v3-form-box">
+                        <h3 class="vsp-price-v3-form-title">BÁO GIÁ & CSBH MỚI NHẤT</h3>
+                        
+                        <div style="text-align: center;">
+                            <div class="vsp-price-v3-rating-box">
+                                <span class="vsp-price-v3-stars">★★★★★</span>
+                                <span id="vsp-final-count-v3" class="vsp-price-v3-count vsp-global-rating-text">(Đang tải...)</span>
+                            </div>
+                        </div>
+
+                        <p class="vsp-price-v3-form-desc">Đăng ký để nhận trọn bộ tài liệu bảng giá chi tiết từng phân khu và phương án vay vốn tối ưu nhất.</p>
+                        
+                        <form id="vsp-final-form-v3" class="vsp-price-v3-input-group">
+                            <input type="text" id="vsp-final-name-v3" class="vsp-price-v3-input" placeholder="Họ tên *" required>
+                            <input type="tel" id="vsp-final-phone-v3" class="vsp-price-v3-input" placeholder="Số điện thoại *" required pattern="[0-9]{10}">
+                            <input type="email" id="vsp-final-email-v3" class="vsp-price-v3-input" placeholder="Email" required>
+                            <button type="submit" id="vsp-final-btn-v3" class="vsp-price-v3-btn">NHẬN BÁO GIÁ</button>
+                        </form>
+
+                        <div id="vsp-final-success-v3" class="vsp-price-v3-success">
+                            <h4>✔ ĐĂNG KÝ THÀNH CÔNG!</h4>
+                            <p>Hệ thống đang gửi tài liệu qua Zalo/Email. Xin cảm ơn.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </section>
 
-        </div>
-    </div>
-</section>
-
-<style>
-    /* ==============================================================
-       SECTION MẶT BẰNG TỔNG THỂ (HOÀN CHỈNH - ART TYPOGRAPHY)
-       ============================================================== */
-    /* Tải font Playfair Display bản nghiêng để nét chữ uốn lượn */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,700&display=swap');
-
-    #vsp-masterplan-v4 {
-        background-color: #0b1a14; /* Nền xanh đen sâu thẳm */
-        padding: 80px 20px;
-        font-family: 'Manrope', sans-serif;
-        box-sizing: border-box;
-        color: #cbd5e1;
-    }
-
-    .vsp-mp4-container {
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    /* ================= PHẦN HEADER & TYPOGRAPHY ================= */
-    .vsp-mp4-header {
-        text-align: center;
-        max-width: 900px;
-        margin: 0 auto 50px auto;
-    }
-
-    /* Tiêu đề nghệ thuật Lớn - Nhỏ đan xen */
-    .vsp-title-art {
-        text-align: center;
-        color: #efdfa6;
-        margin: 0 0 15px 0;
-        line-height: 1.2;
-        /* Font chữ nghiêng nét thanh nét đậm */
-        font-family: 'Playfair Display', serif !important;
-        font-style: italic !important; 
-        font-weight: 500 !important; 
-    }
-
-    /* Chữ cái đầu tiên to bản */
-    .vsp-cap-letter {
-        font-size: clamp(48px, 6vw, 65px);
-        display: inline-block;
-        line-height: 1;
-    }
-
-    /* Các chữ cái sau nhỏ nhắn */
-    .vsp-small-letter {
-        font-size: clamp(32px, 4vw, 42px);
-        display: inline-block;
-        margin-right: 12px;
-    }
-
-    .vsp-mp4-subtitle {
-        font-family: 'Playfair Display', serif;
-        font-size: 22px;
-        color: #c5a059;
-        font-style: italic;
-        margin-bottom: 30px;
-    }
-
-    .vsp-mp4-desc {
-        font-size: 15px;
-        line-height: 1.8;
-        margin-bottom: 20px;
-        color: #94a3b8;
-    }
-
-    .vsp-mp4-desc strong {
-        color: #efdfa6;
-        font-weight: 700;
-    }
-
-    /* ================= PHẦN BANNER ẢNH (CÓ LỚP PHỦ OVERLAY) ================= */
-    .vsp-mp4-banner-wrapper {
-        position: relative;
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid rgba(197, 160, 89, 0.2);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        background: #000;
-    }
-
-    .vsp-mp4-banner-wrapper > img {
-        width: 100%;
-        display: block;
-        object-fit: cover;
-        min-height: 350px; 
-    }
-
-    .vsp-mp4-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 40px;
-        background: linear-gradient(to top, rgba(6, 20, 15, 0.95) 0%, rgba(6, 20, 15, 0.5) 50%, transparent 100%);
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
-
-    .vsp-mp4-logo img {
-        width: 120px; 
-        height: auto;
-        opacity: 0.9;
-    }
-
-    .vsp-mp4-stats {
-        text-align: right;
-    }
-
-    .vsp-mp4-stats-label {
-        font-family: 'Manrope', sans-serif;
-        font-size: 16px;
-        color: #cbd5e1;
-        margin-bottom: -5px; 
-        font-weight: 500;
-    }
-
-    .vsp-mp4-stats-value {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(50px, 8vw, 90px); 
-        color: #efdfa6;
-        line-height: 1;
-        font-weight: 700;
-    }
-
-    /* ================= RESPONSIVE CHO MOBILE ================= */
-    @media (max-width: 768px) {
-        .vsp-cap-letter { font-size: 38px; }
-        .vsp-small-letter { font-size: 26px; margin-right: 8px;}
-        
-        .vsp-mp4-overlay {
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-end;
-            gap: 20px;
-            padding: 25px;
-            background: linear-gradient(to top, rgba(6, 20, 15, 0.95) 0%, rgba(6, 20, 15, 0.7) 60%, transparent 100%);
-        }
-        .vsp-mp4-stats { text-align: left; }
-    }
-</style>
-
-<section id="vsp-masterplan-v4">
-    <div class="vsp-mp4-container">
-        
-        <!-- PHẦN TEXT & TIÊU ĐỀ NGHỆ THUẬT -->
-        <div class="vsp-mp4-header">
-            <h2 class="vsp-title-art">
-                <span class="vsp-cap-letter">M</span><span class="vsp-small-letter">ặt</span>
-                <span class="vsp-cap-letter">B</span><span class="vsp-small-letter">ằng</span>
-                <br>
-                <span class="vsp-cap-letter">V</span><span class="vsp-small-letter">inhomes</span>
-                <span class="vsp-cap-letter">S</span><span class="vsp-small-letter">aigon</span>
-                <span class="vsp-cap-letter">P</span><span class="vsp-small-letter">ark</span>
-            </h2>
-            <div class="vsp-mp4-subtitle">Quy hoạch “Thuận phong tụ thủy”</div>
-            
-            <p class="vsp-mp4-desc">Mặt bằng <strong>Vinhomes Sai Gon Park</strong> được tư vấn thiết kế bởi các đơn vị hàng đầu thế giới, tối ưu hóa diện tích <strong>1.080 ha</strong> để kiến tạo một thành phố đa năng. Điểm nhấn của mặt bằng là sự phân bổ thông minh giữa các cụm cao tầng năng động và các tiểu khu thấp tầng yên tĩnh, xen kẽ là hệ thống kênh đào và công viên cây xanh.</p>
-            
-            <p class="vsp-mp4-desc">Việc phân bổ mật độ xây dựng chỉ khoảng <strong>25%</strong> cho thấy tâm huyết của chủ đầu tư trong việc ưu tiên không gian sống cho cư dân.<br>Các trục đường nội khu được quy hoạch theo dạng bàn cờ, lộ giới từ <strong>13m đến 52m</strong>.</p>
-        </div>
-
-        <!-- PHẦN BANNER ẢNH & OVERLAY -->
-        <div class="vsp-mp4-banner-wrapper">
-            <img src="/assets/images/mat-bang-tong-the-vinhomes-hoc-mon.webp" alt="Mặt bằng tổng thể Vinhomes Saigon Park">
-        </div>
-
-    </div>
-</section>
-
-<script>
-(function() {
-    const CONFIG_API = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-    
-    document.addEventListener("DOMContentLoaded", function() {
-        // Load Rating Count
-        fetch(CONFIG_API + "?action=count").then(r => r.json()).then(data => {
-            const count = data.count || 186;
-            const el = document.getElementById('vsp-final-count-v3');
-            if(el) el.innerText = `(5.0/5 - ${count} đánh giá)`;
-        }).catch(() => {
-            const el = document.getElementById('vsp-final-count-v3');
-            if(el) el.innerText = `(5.0/5 - 186 đánh giá)`;
-        });
-
-        // Xử lý Gửi Form
-        const form = document.getElementById('vsp-final-form-v3');
-        if(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const btn = document.getElementById('vsp-final-btn-v3');
-                const originalText = btn.innerText;
-                btn.innerText = "ĐANG GỬI..."; 
-                btn.disabled = true;
-                
-                let fd = new FormData();
-                fd.append("project", "Vinhomes Saigon Park (Form V3 Final)");
-                fd.append("name", document.getElementById('vsp-final-name-v3').value);
-                fd.append("phone", document.getElementById('vsp-final-phone-v3').value);
-                fd.append("email", document.getElementById('vsp-final-email-v3').value);
-                fd.append("demand", "Nhận bảng giá và CSBH");
-                fd.append("url", window.location.href);
-                fd.append("rating", 5);
-
-                fetch(CONFIG_API, { method: 'POST', body: fd }).then(() => {
-                    form.style.display = 'none';
-                    document.getElementById('vsp-final-success-v3').style.display = 'block';
-                }).catch(() => { 
-                    alert("Lỗi gửi dữ liệu, vui lòng thử lại!"); 
-                    btn.innerText = originalText; 
-                    btn.disabled = false; 
-                });
-            });
-        }
-    });
-})();
-</script>
-
-
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const slides = document.querySelectorAll('.vsp-slide');
-                if (slides.length > 1) {
-                    let currentSlide = 0;
-                    setInterval(() => {
-                        slides[currentSlide].classList.remove('active');
-                        currentSlide = (currentSlide + 1) % slides.length;
-                        slides[currentSlide].classList.add('active');
-                    }, 4000);
-                }
-
-                const API_LEAD_NEW = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-                let clientIPNew = "";
-                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{clientIPNew=d.ip}).catch(e=>{});
-                fetch(API_LEAD_NEW + "?action=count").then(res => res.json()).then(data => {
-                    let count = data.count !== undefined ? parseInt(data.count) : 186;
-                    if(count < 5) count = 186;
-                    document.getElementById('count-v15-ver').innerText = `(5.0/5 - ${count} đánh giá)`;
-                }).catch(e => { document.getElementById('count-v15-ver').innerText = `(5.0/5 - 186 đánh giá)`; });
-
-                const form = document.getElementById('leadFormV15Ver');
-                if(form) {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const btn = document.getElementById('btn-v15-ver-submit');
-                        btn.innerText = "ĐANG GỬI..."; btn.disabled = true;
-                        let fd = new FormData();
-                        fd.append("project", "Vinhomes Saigon Park (Dự Án Mới)");
-                        fd.append("name", document.getElementById('v15-ver-name').value);
-                        fd.append("phone", document.getElementById('v15-ver-phone').value);
-                        fd.append("email", document.getElementById('v15-ver-email').value);
-                        fd.append("demand", document.getElementById('v15-ver-demand').value);
-                        fd.append("url", window.location.href);
-                        fd.append("ip", clientIPNew);
-                        fd.append("rating", 5);
-                        fetch(API_LEAD_NEW, { method: 'POST', body: fd }).then(res => {
-                            form.style.display = 'none';
-                            document.getElementById('v15-ver-success').style.display = 'block';
-                        }).catch(err => { alert("Lỗi, vui lòng thử lại."); btn.innerText = "NHẬN BÁO GIÁ"; btn.disabled = false; });
-                    });
-                }
-            });
-        </script>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const API_HOR_UNIQUE = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
-                let ipHorUnique = "";
-                fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{ipHorUnique=d.ip}).catch(e=>{});
-
-                fetch(API_HOR_UNIQUE + "?action=count").then(res => res.json()).then(data => {
-                    let count = data.count !== undefined ? parseInt(data.count) : 186;
-                    if(count < 5) count = 186;
-                    let cHor = document.getElementById('count-v15-hor-unique');
-                    if(cHor) cHor.innerText = `(5.0/5 - ${count} đánh giá)`;
-                }).catch(e => { 
-                    let cHor = document.getElementById('count-v15-hor-unique');
-                    if(cHor) cHor.innerText = `(5.0/5 - 186 đánh giá)`; 
-                });
-
-                const formHorUnique = document.getElementById('leadFormHorUnique');
-                if(formHorUnique) {
-                    formHorUnique.addEventListener('submit', function(e) {
-                        e.preventDefault();
-                        const btn = document.getElementById('btn-hor-unique-submit');
-                        const originalText = btn.innerText;
-                        btn.innerText = "ĐANG GỬI..."; 
-                        btn.disabled = true;
-                        
-                        let fd = new FormData();
-                        fd.append("project", "Vinhomes Saigon Park (Form Ngang Dưới Tổng Quan)");
-                        fd.append("name", document.getElementById('hor-unique-name').value);
-                        fd.append("phone", document.getElementById('hor-unique-phone').value);
-                        fd.append("email", document.getElementById('hor-unique-email').value);
-                        fd.append("demand", document.getElementById('hor-unique-demand').value);
-                        fd.append("url", window.location.href);
-                        fd.append("ip", ipHorUnique);
-                        fd.append("rating", 5);
-                        
-                        fetch(API_HOR_UNIQUE, { method: 'POST', body: fd }).then(res => {
-                            formHorUnique.style.display = 'none';
-                            document.getElementById('hor-unique-success').style.display = 'block';
-                        }).catch(err => { 
-                            alert("Có lỗi xảy ra, vui lòng thử lại!"); 
-                            btn.innerText = originalText; 
-                            btn.disabled = false; 
-                        });
-                    });
-                }
-            });
-        </script>
     </main>
 
     <div id="site-footer"></div>
     <script src="/assets/js/ui.js"></script>
+
     <script>
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: String.fromCharCode(65,73,122,97,83,121,68,105,79,69,122,77,57,114,78,65,102,106,45,109,88,97,70,53,49,89,86,78,74,103,121,85,45,99,104,105,51,116,115),
             authDomain: "greenia-homes.firebaseapp.com",
@@ -2381,25 +975,130 @@
             measurementId: "G-YRK63BNPP0"
         };
         if (typeof firebase !== 'undefined' && !firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-    </script>
-	
-	<script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const monthSpan = document.getElementById("auto-update-month");
-                if (monthSpan) {
-                    const now = new Date();
-                    const month = String(now.getMonth() + 1).padStart(2, '0'); // Lấy tháng và thêm số 0 đằng trước nếu là tháng 1-9
-                    const year = now.getFullYear();
-                    monthSpan.innerText = `tháng ${month}/${year}`;
-                }
-            });
-        </script>
-	
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Cập nhật tháng tự động
+            const monthSpan = document.getElementById("auto-update-month");
+            if (monthSpan) {
+                const now = new Date();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                monthSpan.innerText = `tháng ${month}/${year}`;
+            }
+
+            // 2. Load menu cụ thể
             setTimeout(function() {
                 if (typeof loadSpecificMenu === 'function') { loadSpecificMenu('sub-menu', 'menu-vinhomes-saigon-park'); }
             }, 100);
+
+            // 3. Xử lý Slider hình ảnh đầu trang
+            const slides = document.querySelectorAll('.vsp-slide');
+            if (slides.length > 1) {
+                let currentSlide = 0;
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 4000);
+            }
+
+            // ==========================================================
+            // 4. HỆ THỐNG XỬ LÝ FORM & ĐÁNH GIÁ (DÙNG CHUNG 1 SCRIPT)
+            // ==========================================================
+            const GLOBAL_API = 'https://script.google.com/macros/s/AKfycbxMkdZKscj17D2CRG7zUpzHWx_YiTbvg35zGm3eGdim3n4cA76j42d7VoxmNXrxpvPA-Q/exec';
+            let globalClientIP = "";
+
+            // 4.1. Lấy IP khách hàng 1 lần duy nhất
+            fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>{ globalClientIP = d.ip; }).catch(e=>{});
+
+            // 4.2. Lấy số lượng đánh giá 1 lần duy nhất và gán cho tất cả các chỗ có đánh giá
+            fetch(GLOBAL_API + "?action=count").then(res => res.json()).then(data => {
+                let count = data.count !== undefined ? parseInt(data.count) : 186;
+                if(count < 5) count = 186;
+                // Tìm tất cả các thẻ có class vsp-global-rating-text để điền số vào
+                document.querySelectorAll('.vsp-global-rating-text').forEach(el => {
+                    el.innerText = `(5.0/5 - ${count} đánh giá)`;
+                });
+            }).catch(e => { 
+                document.querySelectorAll('.vsp-global-rating-text').forEach(el => {
+                    el.innerText = `(5.0/5 - 186 đánh giá)`;
+                });
+            });
+
+            // 4.3. Cấu hình mảng danh sách các form trên trang
+            const formsConfig = [
+                {
+                    formId: 'leadFormV15Ver',
+                    nameId: 'v15-ver-name',
+                    phoneId: 'v15-ver-phone',
+                    emailId: 'v15-ver-email',
+                    demandId: 'v15-ver-demand',
+                    btnId: 'btn-v15-ver-submit',
+                    successId: 'v15-ver-success',
+                    projectName: 'Vinhomes Saigon Park (Dự Án Mới - Đầu trang)'
+                },
+                {
+                    formId: 'leadFormHorUnique',
+                    nameId: 'hor-unique-name',
+                    phoneId: 'hor-unique-phone',
+                    emailId: 'hor-unique-email',
+                    demandId: 'hor-unique-demand',
+                    btnId: 'btn-hor-unique-submit',
+                    successId: 'hor-unique-success',
+                    projectName: 'Vinhomes Saigon Park (Form Ngang Giữa Trang)'
+                },
+                {
+                    formId: 'vsp-final-form-v3',
+                    nameId: 'vsp-final-name-v3',
+                    phoneId: 'vsp-final-phone-v3',
+                    emailId: 'vsp-final-email-v3',
+                    demandId: null, // Form cuối trang không có ô nhu cầu
+                    btnId: 'vsp-final-btn-v3',
+                    successId: 'vsp-final-success-v3',
+                    projectName: 'Vinhomes Saigon Park (Form Cuối Trang Nhận CSBH)'
+                }
+            ];
+
+            // 4.4. Duyệt qua từng form và gắn sự kiện Submit
+            formsConfig.forEach(config => {
+                const formEl = document.getElementById(config.formId);
+                if (formEl) {
+                    formEl.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const btn = document.getElementById(config.btnId);
+                        const originalText = btn.innerText;
+                        btn.innerText = "ĐANG GỬI..."; 
+                        btn.disabled = true;
+                        
+                        let fd = new FormData();
+                        fd.append("project", config.projectName);
+                        fd.append("name", document.getElementById(config.nameId).value);
+                        fd.append("phone", document.getElementById(config.phoneId).value);
+                        fd.append("email", document.getElementById(config.emailId).value);
+                        
+                        // Nếu form có ô nhập Nhu cầu thì lấy, không thì gán mặc định
+                        if (config.demandId && document.getElementById(config.demandId)) {
+                            fd.append("demand", document.getElementById(config.demandId).value);
+                        } else {
+                            fd.append("demand", "Nhận bảng giá và CSBH");
+                        }
+                        
+                        fd.append("url", window.location.href);
+                        fd.append("ip", globalClientIP);
+                        fd.append("rating", 5);
+
+                        fetch(GLOBAL_API, { method: 'POST', body: fd }).then(res => {
+                            formEl.style.display = 'none';
+                            document.getElementById(config.successId).style.display = 'block';
+                        }).catch(err => { 
+                            alert("Có lỗi xảy ra, vui lòng thử lại!"); 
+                            btn.innerText = originalText; 
+                            btn.disabled = false; 
+                        });
+                    });
+                }
+            });
+
         });
     </script>
 </body>
