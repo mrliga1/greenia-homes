@@ -13,17 +13,17 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- CHUẨN HÓA LINK GỐC TỰ ĐỘNG (SEO) -->
-    <link rel="canonical" href="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <link rel="canonical" href="https://greeniahomes.vn/san-pham/can-ho/" />
     
-    <meta name="description" content="{{DESC}}" />
-    <meta name="keywords" content="{{KEYWORDS}}" />
+    <meta name="description" content="sfsfd" />
+    <meta name="keywords" content="sffsf" />
     
     <!-- KHAI BÁO THẺ HIỂN THỊ KHI SHARE -->
-    <meta property="og:title" content="{{TITLE}} | Greenia Homes" />
-    <meta property="og:description" content="{{DESC}}" />
+    <meta property="og:title" content="sfsdf | Greenia Homes" />
+    <meta property="og:description" content="sfsfd" />
     <!-- Lấy logo mặc định làm ảnh share cho danh mục -->
     <meta property="og:image" content="https://i.ibb.co/M515GTDh/Gemini-Generated-Image-px9jf4px9jf4px9j-removebg-preview-150x150.png" />
-    <meta property="og:url" content="https://greeniahomes.vn/{{FOLDER}}/{{SLUG}}/" />
+    <meta property="og:url" content="https://greeniahomes.vn/san-pham/can-ho/" />
     <meta property="og:type" content="website" />
 
     <style>
@@ -146,24 +146,6 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <link rel="canonical" href="https://greeniahomes.vn/san-pham/can-ho/" />
-    <meta name="description" content="sfsfd" />
-    <meta name="keywords" content="sffsf" />
-    <meta property="og:title" content="sfsdf" />
-    <meta property="og:description" content="sfsfd" />
-    <meta property="og:url" content="https://greeniahomes.vn/san-pham/can-ho/" />
-    <meta property="og:type" content="website" />
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "sfsdf",
-      "description": "sfsfd",
-      "url": "https://greeniahomes.vn/san-pham/can-ho/"
-    }
-    </script>
-    
 </head>
 <body>
 
@@ -293,7 +275,7 @@
         let currentPage = 1;
         
         let defaultCat = null;
-        try { defaultCat = { slug: "{{SLUG}}", name: "{{TITLE}}", desc: "{{DESC}}" }; } catch(e) {}
+        try { defaultCat = { slug: "can-ho", name: "sfsdf", desc: "sfsfd" }; } catch(e) {}
         window.GREENIA_CURRENT_CATEGORY = defaultCat;
         
         let filterState = { mainType: '', catType: '', catPrice: '', catLoc: '', keyword: '' };
@@ -427,7 +409,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             let keywordFromUrl = urlParams.get('keyword');
             
-            let templateSlug = '{{SLUG}}';
+            let templateSlug = 'can-ho';
             let initialCatSlug = '';
 
             if (templateSlug && !templateSlug.includes('{{')) {
